@@ -1,0 +1,113 @@
+Below are the extensions I use in VSCode when working with this project. This could help you match the development flow.
+
+Name: Better Comments
+Id: aaron-bond.better-comments
+Description: Improve your code commenting by annotating with alert, informational, TODOs, and more!
+Version: 2.0.5
+Publisher: Aaron Bond
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments
+
+Name: C/C++
+Id: ms-vscode.cpptools
+Description: C/C++ IntelliSense, debugging, and code browsing.
+Version: 0.26.2
+Publisher: Microsoft
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools
+
+Name: C/C++ Compile Run
+Id: danielpinto8zz6.c-cpp-compile-run
+Description: Compile & Run single c/c++ files easly
+Version: 1.0.5
+Publisher: danielpinto8zz6
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=danielpinto8zz6.c-cpp-compile-run
+
+Name: C/C++ Project Generator
+Id: danielpinto8zz6.c-cpp-project-generator
+Description: Generate C/C++ Projects
+Version: 1.2.0
+Publisher: danielpinto8zz6
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=danielpinto8zz6.c-cpp-project-generator
+
+Name: C/C++ Snippets
+Id: hars.cppsnippets
+Description: Code snippets for C/C++
+Version: 0.0.14
+Publisher: Harsh
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=hars.CppSnippets
+
+Name: C# FixFormat
+Id: leopotam.csharpfixformat
+Description: Fix format of usings / indents / braces / empty lines
+Version: 0.0.84
+Publisher: Leopotam
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=Leopotam.csharpfixformat
+
+Name: licenser
+Id: ymotongpoo.licenser
+Description: inserts license header in source files and creates license file.
+Version: 1.4.0
+Publisher: ymotongpoo
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=ymotongpoo.licenser
+
+Name: Markdown All in One
+Id: yzhang.markdown-all-in-one
+Description: All you need to write Markdown (keyboard shortcuts, table of contents, auto preview and more)
+Version: 2.7.0
+Publisher: Yu Zhang
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
+
+Name: Markdown Preview Enhanced
+Id: shd101wyy.markdown-preview-enhanced
+Description: Markdown Preview Enhanced ported to vscode
+Version: 0.5.1
+Publisher: Yiyi Wang
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced
+
+Name: Remote - SSH
+Id: ms-vscode-remote.remote-ssh
+Description: Open any folder on a remote machine using SSH and take advantage of VS Code's full feature set.
+Version: 0.48.0
+Publisher: Microsoft
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh
+
+Name: Remote - SSH: Editing Configuration Files
+Id: ms-vscode-remote.remote-ssh-edit
+Description: Edit SSH configuration files
+Version: 0.48.0
+Publisher: Microsoft
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-ssh-edit
+
+Name: Task Explorer
+Id: spmeesseman.vscode-taskexplorer
+Description: Manage tasks for npm, vscode, ant, gradle, grunt, gulp, batch, bash, make, python, perl, powershell, ruby, and nsis
+Version: 1.21.0
+Publisher: Scott Meesseman
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=spmeesseman.vscode-taskexplorer
+
+Name: TODO List
+Id: tzachovadia.todo-list
+Description: List all action comments (TODO, FIXME, HACK etc) in an easy-to-read list
+Version: 1.5.1
+Publisher: Tzach Ovadia
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=TzachOvadia.todo-list
+
+Name: Trailing Spaces
+Id: shardulm94.trailing-spaces
+Description: Highlight trailing spaces and delete them in a flash!
+Version: 0.3.1
+Publisher: Shardul Mahadik
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=shardulm94.trailing-spaces
+
+Name: Visual Studio IntelliCode
+Id: visualstudioexptteam.vscodeintellicode
+Description: AI-assisted development
+Version: 1.2.4
+Publisher: Microsoft
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode
+
+Name: XML Tools
+Id: dotjoshjohnson.xml
+Description: XML Formatting, XQuery, and XPath Tools for Visual Studio Code
+Version: 2.5.0
+Publisher: Josh Johnson
+VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=DotJoshJohnson.xml
