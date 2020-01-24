@@ -19,7 +19,7 @@
       },
       "args": [
         "-c",
-        "mingw32-make"
+        "cd Native; mingw32-make"
       ]
     },
     {
@@ -40,7 +40,7 @@
       },
       "args": [
         "-c",
-        "mingw32-make run"
+        "cd Native; mingw32-make run"
       ]
     },
     {
@@ -57,7 +57,7 @@
       },
       "args": [
         "-c",
-        "mingw32-make clean"
+        "cd Native; mingw32-make clean"
       ]
     }
   ]
