@@ -10,13 +10,19 @@ LIBRARIES	:=
 
 ifeq ($(OS),Windows_NT)
 EXECUTABLE	:= main.exe
+
+SOURCEDIRS	:= $(shell bash -c find $(SRC) -type d)
+INCLUDEDIRS	:= $(shell bash -c find $(INCLUDE) -type d)
+LIBDIRS		:= $(shell bash -c find $(LIB) -type d)
 else
 EXECUTABLE	:= main
-endif
 
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
 INCLUDEDIRS	:= $(shell find $(INCLUDE) -type d)
 LIBDIRS		:= $(shell find $(LIB) -type d)
+endif
+
+
 
 CINCLUDES	:= $(patsubst %,-I%, $(INCLUDEDIRS:%/=%))
 CLIBS		:= $(patsubst %,-L%, $(LIBDIRS:%/=%))
