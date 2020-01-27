@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (C) 2020 Quaint Studios, Kristopher Ali (Makosai) <kristopher.ali.dev@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,10 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-int main(int argc, char *argv[]) {
-    printf("Hello World");
-
-    return (0);
+namespace Sustenet.Client
+{
+    class Client
+    {
+    }
 }

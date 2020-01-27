@@ -1,6 +1,0 @@
-{
-  "licenser.author": "Quaint Studios, Kristopher Ali (Makosai) <kristopher.ali.dev@gmail.com>",
-  "licenser.license": "AGPLv3",
-  "licenser.projectName": "Sustenetce",
-  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, UseTab: Never, IndentWidth: 4, TabWidth: 4, BreakBeforeBraces: Attach, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 0, AccessModifierOffset: -4 }"
-}
