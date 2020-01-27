@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (C) 2020 Quaint Studios, Kristopher Ali (Makosai) <kristopher.ali.dev@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,10 +15,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-int main(int argc, char *argv[]) {
-    printf("Hello World");
+namespace Sustenet.TransportLayer
+{
+    using Master;
 
-    return (0);
+    class TransportLayer
+    {
+        public bool isListening = false;
+
+        private readonly Master master;
+
+        /// <summary>
+        /// Initializes a Transport Layer.
+        /// </summary>
+        /// <param name="master">The master server that has all of the server data.</param>
+        public TransportLayer(Master master)
+        {
+            this.master = master;
+        }
+
+        //
+        public void Listen()
+        {
+            isListening = true;
+
+            Console.WriteLine($"Listening on: {master.host}:{master.port}");
+            // listen for incoming traffic here.
+        }
+    }
 }
