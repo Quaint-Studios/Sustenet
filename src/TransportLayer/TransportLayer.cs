@@ -26,6 +26,9 @@ namespace Sustenet.TransportLayer
     {
         public bool isListening = false;
 
+        private readonly TCPSocket tcpSocket;
+        private readonly UDPSocket udpSocket;
+
         private readonly Server server;
 
         /// <summary>
@@ -35,6 +38,9 @@ namespace Sustenet.TransportLayer
         public TransportLayer(Server server)
         {
             this.server = server;
+
+            tcpSocket = new TCPSocket(this.server.port);
+            udpSocket = new UDPSocket(this.server.port);
         }
 
         //
@@ -42,10 +48,16 @@ namespace Sustenet.TransportLayer
         {
             isListening = true;
 
+            Receive();
 
-
-            Console.WriteLine($"Listening on port {server.port}.");
+            Console.WriteLine($"Listening on port {server.port} (TCP/UDP).");
             // listen for incoming traffic here.
+        }
+
+        private void Receive()
+        {
+            tcpSocket.Receive();
+            udpSocket.Receive();
         }
     }
 }
