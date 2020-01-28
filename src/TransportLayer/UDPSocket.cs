@@ -20,15 +20,21 @@ namespace Sustenet.TransportLayer
     using System;
     using System.Net.Sockets;
     using System.Net;
+    using System.Text;
 
     class UDPSocket
     {
         private readonly Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
+        /// <summary>
+        /// Local IP for the socket. This is only set after it connects to something.
+        /// </summary>
+        public string localIP;
+
         private const ushort bufferSize = 8 * 1024;
         private readonly State state = new State();
         private const byte offset = 0;
-        private EndPoint remoteEP;
+        private EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
         private AsyncCallback cb = null;
 
         class State
@@ -36,20 +42,30 @@ namespace Sustenet.TransportLayer
             public byte[] buffer = new byte[bufferSize];
         }
 
-        public UDPSocket(ushort port)
+        public void Send(string msg)
         {
-            remoteEP = new IPEndPoint(IPAddress.Any, port);
+            byte[] data = Encoding.ASCII.GetBytes(msg);
+
+            void sendcb(IAsyncResult cbData)
+            {
+                State cbState = (State)cbData.AsyncState;
+                int bytes = socket.EndSend(cbData);
+
+                Console.WriteLine("SEND: {0}, {1}", bytes, msg);
+            }
+
+            socket.BeginSend(data, offset, data.Length, SocketFlags.None, sendcb, state);
         }
 
         public void Receive()
         {
-            cb = (data) =>
+            cb = (cbData) =>
             {
-                State cbState = (State)data.AsyncState;
-                int bytes = socket.EndReceiveFrom(data, ref remoteEP);
+                State cbState = (State)cbData.AsyncState;
+                int bytes = socket.EndReceiveFrom(cbData, ref remoteEP);
                 socket.BeginReceiveFrom(cbState.buffer, offset, bufferSize, SocketFlags.None, ref remoteEP, cb, cbState);
 
-                Console.WriteLine("RECV: {0}: {1}, {2}", remoteEP.ToString(), bytes, System.Text.Encoding.ASCII.GetString(cbState.buffer, 0, bytes));
+                Console.WriteLine("RECV: {0}: {1}, {2}", remoteEP.ToString(), bytes, Encoding.ASCII.GetString(cbState.buffer, 0, bytes));
             };
 
             socket.BeginReceiveFrom(state.buffer, offset, bufferSize, SocketFlags.None, ref remoteEP, cb, state);
@@ -57,7 +73,7 @@ namespace Sustenet.TransportLayer
 
         public void BindAndReceive(ushort port)
         {
-            BindAndReceive(IPAddress.Loopback, port);
+            BindAndReceive(IPAddress.Any, port);
         }
         public void BindAndReceive(string address, ushort port)
         {
@@ -72,12 +88,17 @@ namespace Sustenet.TransportLayer
         public void BindAndReceive(IPAddress address, ushort port)
         {
             socket.Bind(new IPEndPoint(address, port));
+
             Receive();
         }
 
         public void ConnectAndReceive(string address, ushort port)
         {
             socket.Connect(IPAddress.Parse(address), port);
+
+            localIP = (socket.LocalEndPoint as IPEndPoint).Address.ToString();
+
+            Receive();
         }
     }
 }

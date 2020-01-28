@@ -39,8 +39,8 @@ namespace Sustenet.TransportLayer
         {
             this.server = server;
 
-            tcpSocket = new TCPSocket(this.server.port);
-            udpSocket = new UDPSocket(this.server.port);
+            tcpSocket = new TCPSocket();
+            udpSocket = new UDPSocket();
         }
 
         //
@@ -58,6 +58,13 @@ namespace Sustenet.TransportLayer
         {
             tcpSocket.BindAndReceive(server.port);
             udpSocket.BindAndReceive(server.port);
+
+            string ip = "127.0.0.1";
+
+            #region Test (UDP Socket sending data)
+            udpSocket.ConnectAndReceive(ip, server.port);
+            udpSocket.Send("Hello Socket!");
+            #endregion
         }
     }
 }

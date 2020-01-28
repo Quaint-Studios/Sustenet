@@ -82,6 +82,7 @@ namespace Sustenet.Master
         {
             transport.Listen();
 
+            #region Test (Cluster example data)
             ClusterData[] testClusters = new ClusterData[]{
                 new ClusterData("World 0", IPAddress.Parse("10.8.0.2"), 6575) { Connections = 9024 },
                 new ClusterData("World 1", IPAddress.Parse("10.8.0.3"), 6576) { Connections = 240 }
@@ -91,11 +92,7 @@ namespace Sustenet.Master
             {
                 AddCluster(cluster);
             }
-
-            while (transport.isListening)
-            {
-                // Jobs, send / receive, etc
-            }
+            #endregion
         }
 
         /// <summary>

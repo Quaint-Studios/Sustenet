@@ -25,21 +25,21 @@ namespace Sustenet.TransportLayer
     {
         /* private readonly Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
+        /// <summary>
+        /// Local IP for the socket. This is only set after it connects to something.
+        /// </summary>
+        public string localIP;
+
         private const ushort bufferSize = 8 * 1024;
         private readonly State state = new State();
         private const byte offset = 0;
-        private EndPoint remoteEP;
+        private EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
         private AsyncCallback cb = null;
 
         class State
         {
             public byte[] buffer = new byte[bufferSize];
         } */
-
-        public TCPSocket(ushort port)
-        {
-            // remoteEP = new IPEndPoint(IPAddress.Any, port);
-        }
 
         public void Receive()
         {
@@ -57,7 +57,7 @@ namespace Sustenet.TransportLayer
 
         public void BindAndReceive(ushort port)
         {
-            BindAndReceive(IPAddress.Loopback, port);
+            BindAndReceive(IPAddress.Any, port);
         }
         public void BindAndReceive(string address, ushort port)
         {
@@ -77,7 +77,11 @@ namespace Sustenet.TransportLayer
 
         public void ConnectAndReceive(string address, ushort port)
         {
-            // socket.Connect(IPAddress.Parse(address), port);
+            /* socket.Connect(IPAddress.Parse(address), port);
+
+            localIP = (socket.LocalEndPoint as IPEndPoint).Address.ToString();
+
+            Receive(); */
         }
     }
 }
