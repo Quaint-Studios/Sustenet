@@ -19,8 +19,6 @@ using System;
 
 namespace Sustenet
 {
-    using Master;
-
     class Sustenet
     {
         static void Main(string[] args)
