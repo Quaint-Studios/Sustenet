@@ -28,7 +28,7 @@ namespace Sustenet.TransportLayer
         /// <summary>
         /// Initializes a Transport Layer.
         /// </summary>
-        /// <param name="master">The master server that has all of the server data.</param>
+        /// <param name="server">The master server that has all of the server data.</param>
         public TransportLayer(Server server)
         {
             this.server = server;
