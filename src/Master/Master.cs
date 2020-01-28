@@ -65,7 +65,7 @@ namespace Sustenet.Master
             }
         }
 
-        public Dictionary<string, ClusterData> clusters;
+        public Dictionary<string, ClusterData> clusters = new Dictionary<string, ClusterData>();
 
         /// <summary>
         /// Creates a Transport Layer and prepares other functions.
