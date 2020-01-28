@@ -17,6 +17,8 @@
 
 namespace Sustenet.TransportLayer
 {
+    using System;
+
     class TransportLayer
     {
         public bool isListening = false;
@@ -39,7 +41,7 @@ namespace Sustenet.TransportLayer
 
 
 
-            Console.WriteLine($"Listening on: {server.host}:{server.port}");
+            Console.WriteLine($"Listening on port {server.port}.");
             // listen for incoming traffic here.
         }
     }
