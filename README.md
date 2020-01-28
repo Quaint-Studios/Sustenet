@@ -15,7 +15,7 @@ The goal for Sustenet is to develop a connetion of servers. There are four major
     - `[Connection Limit = 0]` - This is an optional property. Since it's set to 0, no connection limit is being enforced.
     - *more soon...*
 - The `Fragment` is only used if you want to break down Clusters. An example of this would be where a certain section of a map belongs to a fragment. When the player moves enough out of the Fragment's zone, they'll be transferred to another fragment. This should work well if the Fragment servers are all on a local network. Primarily because if the user is on the border of the Fragment's zone, then it would actually overlap with the border of another Fragment's zone. This overlap means that the user should actually get an updates from both servers. Not duplicates, of course. But if there was another player in the edge of that zone but on a different Fragment server, we'd still want to see them.
-- The `Client` is simply a Client. They'll connect to the Master server and have two options.
+- The `Client` is simply a Client. They'll connect to the Master server and have two options:
     - Login immediately, joining whatever Cluster they've been automatically allocated to, based on how much traffic the other Clusters are experiencing.
     - Manaully select a cluster, browsing their names and other information. If there's a connection limit, then lock access to join that server.
 
