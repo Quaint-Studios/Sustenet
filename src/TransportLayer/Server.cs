@@ -23,7 +23,6 @@ namespace Sustenet.TransportLayer
     /// </summary>
     abstract class Server
     {
-        public IPAddress host = IPAddress.Loopback;
         public ushort port;
 
         protected readonly TransportLayer transport;
@@ -31,8 +30,6 @@ namespace Sustenet.TransportLayer
         protected Server(ushort port = 6256)
         {
             this.port = port;
-
-            host = Dns.GetHostAddresses(Dns.GetHostName())[0];
 
             transport = new TransportLayer(this);
 
