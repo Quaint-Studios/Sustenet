@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-
 namespace Sustenet.Master
 {
     using System.Collections.Generic;
@@ -26,13 +24,8 @@ namespace Sustenet.Master
     /// <summary>
     /// The Master Server keeps track of all Cluster Servers. It also allocates connecting users to Cluster Servers automatically, or allows the users to manually select one.
     /// </summary>
-    public class Master
+    class Master : Server
     {
-        public IPAddress host = IPAddress.Loopback;
-        public ushort port = 0;
-
-        private readonly TransportLayer transport;
-
         public struct ClusterData
         {
             string _name;
@@ -77,24 +70,27 @@ namespace Sustenet.Master
         /// <summary>
         /// Creates a Transport Layer and prepares other functions.
         /// </summary>
-        public Master()
+        public Master() : base()
         {
-            if (port == 0)
-            {
-                port = 6256; // Default port for Sustenet.
-            }
 
-            transport = new TransportLayer(this);
-
-            Init();
         }
 
         /// <summary>
         /// Initialize the Master server.
         /// </summary>
-        void Init()
+        protected override void Init()
         {
             transport.Listen();
+
+            ClusterData[] testClusters = new ClusterData[]{
+                new ClusterData("World 0", IPAddress.Parse("10.8.0.2"), 6575) { Connections = 9024 },
+                new ClusterData("World 1", IPAddress.Parse("10.8.0.3"), 6576) { Connections = 240 }
+            };
+
+            foreach (ClusterData cluster in testClusters)
+            {
+                AddCluster(cluster);
+            }
 
             while (transport.isListening)
             {
@@ -105,12 +101,18 @@ namespace Sustenet.Master
         /// <summary>
         /// Adds only information required for indexing a cluster.
         /// </summary>
-        void AddCluster()
+        /// <returns>The success status of adding the cluster. Fails if key exists.</returns>
+        bool AddCluster(ClusterData cluster)
         {
-            ClusterData testCluster = new ClusterData();
+            if (clusters.ContainsKey(cluster.Name))
+            {
+                return false;
+            }
 
             // TODO: If ClusterData.Name is a taken key in the clusters Dictionary, throw an error.
-            clusters.Add(testCluster.Name, testCluster);
+            clusters.Add(cluster.Name, cluster);
+
+            return true;
         }
     }
 }
