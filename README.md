@@ -22,3 +22,6 @@ The goal for Sustenet is to develop a connetion of servers. There are four major
     That's it. After that, they'll just send and receive messages from their Cluster.
 
 Sustenet is aiming to improve this methodology over time. It's a learning experience. The structure may change over time. This will be the route taken for now though.
+
+# Collaboration
+While I am still in the process of designing the structure of this project, I will not be actively accepting any callaborative efforts via pull requests. I am, however, open to being pointed in certain directions. Articles and documentation on specific issues are greatly appreciated. Even discussing it directly is welcome. If you're interested in that, feel free to join my [Discord](https://discord.makosai.com). You can discuss more about it in the #sustenet channel.
