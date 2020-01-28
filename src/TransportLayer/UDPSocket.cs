@@ -54,5 +54,30 @@ namespace Sustenet.TransportLayer
 
             socket.BeginReceiveFrom(state.buffer, offset, bufferSize, SocketFlags.None, ref remoteEP, cb, state);
         }
+
+        public void BindAndReceive(ushort port)
+        {
+            BindAndReceive(IPAddress.Loopback, port);
+        }
+        public void BindAndReceive(string address, ushort port)
+        {
+            if (!IPAddress.TryParse(address, out IPAddress ip))
+            {
+                Console.Error.WriteLine($"Failed to bind the IP address {address}");
+                return;
+            }
+
+            BindAndReceive(ip, port);
+        }
+        public void BindAndReceive(IPAddress address, ushort port)
+        {
+            socket.Bind(new IPEndPoint(address, port));
+            Receive();
+        }
+
+        public void ConnectAndReceive(string address, ushort port)
+        {
+            socket.Connect(IPAddress.Parse(address), port);
+        }
     }
 }

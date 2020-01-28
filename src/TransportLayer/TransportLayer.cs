@@ -56,8 +56,8 @@ namespace Sustenet.TransportLayer
 
         private void Receive()
         {
-            tcpSocket.Receive();
-            udpSocket.Receive();
+            tcpSocket.BindAndReceive(server.port);
+            udpSocket.BindAndReceive(server.port);
         }
     }
 }
