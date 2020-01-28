@@ -15,27 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Sustenet.TransportLayer
 {
-    using Master;
-
     class TransportLayer
     {
         public bool isListening = false;
 
-        private readonly Master master;
+        private readonly Server server;
 
         /// <summary>
         /// Initializes a Transport Layer.
         /// </summary>
         /// <param name="master">The master server that has all of the server data.</param>
-        public TransportLayer(Master master)
+        public TransportLayer(Server server)
         {
-            this.master = master;
+            this.server = server;
         }
 
         //
@@ -43,7 +37,9 @@ namespace Sustenet.TransportLayer
         {
             isListening = true;
 
-            Console.WriteLine($"Listening on: {master.host}:{master.port}");
+
+
+            Console.WriteLine($"Listening on: {server.host}:{server.port}");
             // listen for incoming traffic here.
         }
     }
