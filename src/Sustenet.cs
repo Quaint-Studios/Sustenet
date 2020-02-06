@@ -24,7 +24,10 @@ namespace Sustenet
         static void Main(string[] args)
         {
             Master.Master m = new Master.Master();
-            Console.WriteLine("Hello World!");
+
+            // Wait for the user to respond before closing.
+            Console.Write("Press any key to close Sustenet...");
+            Console.ReadKey();
         }
     }
 }
