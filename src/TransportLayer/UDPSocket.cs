@@ -21,6 +21,7 @@ namespace Sustenet.TransportLayer
     using System.Net.Sockets;
     using System.Net;
     using System.Text;
+    using System.Threading;
 
     class UDPSocket
     {
@@ -51,7 +52,7 @@ namespace Sustenet.TransportLayer
                 State cbState = (State)cbData.AsyncState;
                 int bytes = socket.EndSend(cbData);
 
-                Console.WriteLine("SEND: {0}, {1}", bytes, msg);
+                Console.WriteLine($"SEND: len: {bytes} | msg: {msg}");
             }
 
             socket.BeginSend(data, offset, data.Length, SocketFlags.None, sendcb, state);
@@ -59,25 +60,24 @@ namespace Sustenet.TransportLayer
 
         public void Receive()
         {
-            cb = (cbData) =>
-            {
-                State cbState = (State)cbData.AsyncState;
+            cb = (cbData) => {
+                Socket recv = (Socket)cbData.AsyncState;
                 int bytes = socket.EndReceiveFrom(cbData, ref remoteEP);
-                socket.BeginReceiveFrom(cbState.buffer, offset, bufferSize, SocketFlags.None, ref remoteEP, cb, cbState);
+                socket.BeginReceiveFrom(state.buffer, offset, bufferSize, SocketFlags.None, ref remoteEP, cb, recv);
 
-                Console.WriteLine("RECV: {0}: {1}, {2}", remoteEP.ToString(), bytes, Encoding.ASCII.GetString(cbState.buffer, 0, bytes));
+                Console.WriteLine($"RECV: (len: {bytes}) from {((IPEndPoint)recv.RemoteEndPoint).Address}:{((IPEndPoint)recv.RemoteEndPoint).Port} to {remoteEP.ToString()} | msg: {Encoding.ASCII.GetString(state.buffer, 0, bytes)}");
             };
 
-            socket.BeginReceiveFrom(state.buffer, offset, bufferSize, SocketFlags.None, ref remoteEP, cb, state);
+            socket.BeginReceiveFrom(state.buffer, offset, bufferSize, SocketFlags.None, ref remoteEP, cb, socket);
         }
 
         public void BindAndReceive(ushort port)
         {
-            BindAndReceive(IPAddress.Any, port);
+            BindAndReceive(IPAddress.Loopback, port);
         }
         public void BindAndReceive(string address, ushort port)
         {
-            if (!IPAddress.TryParse(address, out IPAddress ip))
+            if(!IPAddress.TryParse(address, out IPAddress ip))
             {
                 Console.Error.WriteLine($"Failed to bind the IP address {address}");
                 return;
@@ -88,15 +88,6 @@ namespace Sustenet.TransportLayer
         public void BindAndReceive(IPAddress address, ushort port)
         {
             socket.Bind(new IPEndPoint(address, port));
-
-            Receive();
-        }
-
-        public void ConnectAndReceive(string address, ushort port)
-        {
-            socket.Connect(IPAddress.Parse(address), port);
-
-            localIP = (socket.LocalEndPoint as IPEndPoint).Address.ToString();
 
             Receive();
         }
