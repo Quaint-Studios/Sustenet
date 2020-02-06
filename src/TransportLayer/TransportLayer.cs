@@ -18,6 +18,20 @@
 namespace Sustenet.TransportLayer
 {
     using System;
+    using System.Net.Sockets;
+
+    public struct TransportLayerResponse
+    {
+        public Action<Socket> OnListening;
+
+        public Action OnConnect;
+        public Action OnDisconnect;
+
+        public Action OnMessageSent;
+        public Action OnMessageReceived;
+
+        public Action OnShutdown;
+    }
 
     /// <summary>
     /// TODO
@@ -26,8 +40,11 @@ namespace Sustenet.TransportLayer
     {
         public bool isListening = false;
 
-        private readonly TCPSocket tcpSocket;
-        private readonly UDPSocket udpSocket;
+        public TCPSocket.Server tcpServer;
+        public TCPSocket.Client tcpClient;
+
+        public readonly UDPSocket udpSocket;
+        public readonly UDPSocket udpSocket2;
 
         private readonly Server server;
 
@@ -38,33 +55,17 @@ namespace Sustenet.TransportLayer
         public TransportLayer(Server server)
         {
             this.server = server;
-
-            tcpSocket = new TCPSocket();
-            udpSocket = new UDPSocket();
         }
 
         //
-        public void Listen()
+        public void Listen(TransportLayerResponse responses)
         {
             isListening = true;
 
-            Receive();
+            tcpServer = new TCPSocket.Server(port: server.port, responses: responses);
 
             Console.WriteLine($"Listening on port {server.port} (TCP/UDP).");
             // listen for incoming traffic here.
-        }
-
-        private void Receive()
-        {
-            tcpSocket.BindAndReceive(server.port);
-            udpSocket.BindAndReceive(server.port);
-
-            string ip = "127.0.0.1";
-
-            #region Test (UDP Socket sending data)
-            udpSocket.ConnectAndReceive(ip, server.port);
-            udpSocket.Send("Hello Socket!");
-            #endregion
         }
     }
 }
