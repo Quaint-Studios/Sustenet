@@ -23,7 +23,27 @@ namespace Sustenet
     {
         static void Main(string[] args)
         {
-            Master.Master m = new Master.Master();
+            if(args.Length == 0)
+            {
+                Master.Master master = new Master.Master();
+            }
+            else
+            {
+                bool handled = false;
+                foreach(string arg in args)
+                {
+                    switch(arg)
+                    {
+                        case "client":
+                            handled = true;
+                            break;
+                    }
+
+                    // If an argument has been handled.
+                    if(handled)
+                        break;
+                }
+            }
 
             // Wait for the user to respond before closing.
             Console.Write("Press any key to close Sustenet...");
