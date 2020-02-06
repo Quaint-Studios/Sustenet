@@ -88,7 +88,7 @@ namespace Sustenet.Master
                 new ClusterData("World 1", IPAddress.Parse("10.8.0.3"), 6576) { Connections = 240 }
             };
 
-            foreach (ClusterData cluster in testClusters)
+            foreach(ClusterData cluster in testClusters)
             {
                 AddCluster(cluster);
             }
@@ -101,7 +101,7 @@ namespace Sustenet.Master
         /// <returns>The success status of adding the cluster. Fails if key exists.</returns>
         bool AddCluster(ClusterData cluster)
         {
-            if (clusters.ContainsKey(cluster.Name))
+            if(clusters.ContainsKey(cluster.Name))
             {
                 return false;
             }
