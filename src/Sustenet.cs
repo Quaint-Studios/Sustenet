@@ -25,7 +25,7 @@ namespace Sustenet
         {
             if(args.Length == 0)
             {
-                Master.Master master = new Master.Master();
+                Master.MasterServer master = new Master.MasterServer();
             }
             else
             {
@@ -36,6 +36,17 @@ namespace Sustenet
                     {
                         case "client":
                             handled = true;
+                            Clients.Client client = new Clients.Client();
+                            break;
+
+                        case "cluster":
+                            handled = true;
+                            World.Cluster cluster = new World.Cluster();
+                            break;
+
+                        case "master":
+                            handled = true;
+                            Master.MasterServer master = new Master.MasterServer();
                             break;
                     }
 

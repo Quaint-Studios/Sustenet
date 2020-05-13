@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.TransportLayer
+namespace Sustenet.Transport
 {
     using System;
     using System.Net.Sockets;

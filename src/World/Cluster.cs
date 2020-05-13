@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport
+namespace Sustenet.World
 {
     /// <summary>
-    /// The core for all sockets in Sustenet.
+    /// A regionally hosted server that controls and allocates users to
+    /// smaller fragmented servers.
     /// </summary>
-    abstract class SNetSocket
+    class Cluster
     {
-
     }
 }

@@ -15,13 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.TransportLayer
+namespace Sustenet.Transport
 {
     using System;
     using System.Net.Sockets;
+    using Master;
 
     public struct TransportLayerResponse
     {
+        // TODO: Convert to events delegates.
         public Action<Socket> OnListening;
 
         public Action OnConnect;
@@ -36,36 +38,18 @@ namespace Sustenet.TransportLayer
     /// <summary>
     /// TODO
     /// </summary>
-    class TransportLayer
+    static class TransportLayer
     {
-        public bool isListening = false;
-
-        public TCPSocket.Server tcpServer;
-        public TCPSocket.Client tcpClient;
-
-        public readonly UDPSocket udpSocket;
-        public readonly UDPSocket udpSocket2;
-
-        private readonly Server server;
-
-        /// <summary>
-        /// Initializes a Transport Layer.
-        /// </summary>
-        /// <param name="server">The master server that has all of the server data.</param>
-        public TransportLayer(Server server)
+        public static void Listen(TransportLayerResponse responses, BaseServer server)
         {
-            this.server = server;
-        }
+            server.isListening = true;
 
-        //
-        public void Listen(TransportLayerResponse responses)
-        {
-            isListening = true;
-
-            tcpServer = new TCPSocket.Server(port: server.port, responses: responses);
+            server.tcpServer = new TCPSocket.Server(port: server.port, responses: responses);
 
             Console.WriteLine($"Listening on port {server.port} (TCP/UDP).");
             // listen for incoming traffic here.
+
+            // TODO: Return an event for the server to use with updates.
         }
     }
 }

@@ -15,13 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport
+namespace Sustenet.World
 {
     /// <summary>
-    /// The core for all sockets in Sustenet.
+    /// A single server that typically hosts a specific in-game location. It's
+    /// used to split users up and to apply different settings based on the load
+    /// for that in-game location.
+    /// 
+    /// The Fragment is ran on the same physical server as the Cluster but provides
+    /// added flexibility with the ability to differentiate which users should receive
+    /// certain update rates or which ones are in a certain location.
     /// </summary>
-    abstract class SNetSocket
+    class Fragment
     {
-
     }
 }

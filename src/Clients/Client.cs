@@ -19,8 +19,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sustenet.Client
+namespace Sustenet.Clients
 {
+    /// <summary>
+    /// A standard client that connects to a server.
+    /// </summary>
     class Client
     {
     }

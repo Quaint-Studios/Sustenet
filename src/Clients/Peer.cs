@@ -19,9 +19,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Sustenet.Fragment
+namespace Sustenet.Clients
 {
-    class Fragment
+    /// <summary>
+    /// Standard peer-to-peer connection for situations that involve parties
+    /// or instanced areas.
+    /// </summary>
+    class Peer
     {
     }
 }

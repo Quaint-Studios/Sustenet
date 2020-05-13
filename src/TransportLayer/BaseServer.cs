@@ -15,24 +15,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.TransportLayer
+namespace Sustenet.Transport
 {
     using System.Net;
 
     /// <summary>
     /// Base class of all server types.
     /// </summary>
-    abstract class Server
+    abstract class BaseServer
     {
+        public bool isListening = false;
+
+        public TCPSocket.Server tcpServer;
+
         public ushort port;
 
-        protected readonly TransportLayer transport;
-
-        protected Server(ushort port = 6256)
+        protected BaseServer(ushort port = 6256)
         {
             this.port = port;
-
-            transport = new TransportLayer(this);
 
             Init();
         }

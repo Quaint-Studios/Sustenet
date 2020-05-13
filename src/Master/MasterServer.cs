@@ -19,12 +19,13 @@ namespace Sustenet.Master
 {
     using System.Collections.Generic;
     using System.Net;
-    using TransportLayer;
+    using System.Net.Sockets;
+    using Transport;
 
     /// <summary>
     /// The Master Server keeps track of all Cluster Servers. It also allocates connecting users to Cluster Servers automatically, or allows the users to manually select one.
     /// </summary>
-    class Master : Server
+    class MasterServer : BaseServer
     {
         public struct ClusterData
         {
@@ -70,7 +71,7 @@ namespace Sustenet.Master
         /// <summary>
         /// Creates a Transport Layer and prepares other functions.
         /// </summary>
-        public Master() : base()
+        public MasterServer() : base()
         {
 
         }
@@ -80,8 +81,6 @@ namespace Sustenet.Master
         /// </summary>
         protected override void Init()
         {
-            transport.Listen();
-
             #region Test (Cluster example data)
             ClusterData[] testClusters = new ClusterData[]{
                 new ClusterData("World 0", IPAddress.Parse("10.8.0.2"), 6575) { Connections = 9024 },
@@ -93,6 +92,51 @@ namespace Sustenet.Master
                 AddCluster(cluster);
             }
             #endregion
+
+            TransportLayerResponse responses = new TransportLayerResponse
+            {
+                OnListening = OnListening,
+
+                OnConnect = OnConnect,
+                OnDisconnect = OnDisconnect,
+
+                OnMessageSent = OnMessageSent,
+                OnMessageReceived = OnMessageReceived,
+
+                OnShutdown = OnShutdown
+            };
+
+            TransportLayer.Listen(responses, this); // TODO: Should return events. Subscribe to them.
+        }
+
+        void OnListening(Socket handler)
+        {
+
+        }
+
+        void OnConnect()
+        {
+
+        }
+
+        void OnDisconnect()
+        {
+
+        }
+
+        void OnMessageSent()
+        {
+
+        }
+
+        void OnMessageReceived()
+        {
+
+        }
+
+        void OnShutdown()
+        {
+
         }
 
         /// <summary>
