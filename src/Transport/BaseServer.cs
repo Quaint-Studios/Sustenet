@@ -91,7 +91,7 @@ namespace Sustenet.Transport
 
         protected void Init()
         {
-            for(int id = 1; i <= maxConnections; id++)
+            for(int id = 1; id <= maxConnections; id++)
             {
                 clients.Add(id, new BaseClient(id));
             }
