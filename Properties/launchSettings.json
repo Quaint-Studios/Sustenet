@@ -1,0 +1,27 @@
+{
+  "profiles": {
+    "Sustenet": {
+      "commandName": "Project"
+    },
+    "Client": {
+      "commandName": "Project",
+      "commandLineArgs": "--client"
+    },
+    "Cluster": {
+      "commandName": "Project",
+      "commandLineArgs": "--cluster"
+    },
+    "Master": {
+      "commandName": "Project",
+      "commandLineArgs": "--master"
+    },
+    "Grouped": {
+      "commandName": "Project",
+      "commandLineArgs": "--master --cluster"
+    },
+    "All": {
+      "commandName": "Project",
+      "commandLineArgs": "--client --cluster --master"
+    }
+  }
+}
