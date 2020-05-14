@@ -17,7 +17,70 @@
 
 namespace Sustenet.Transport
 {
+    using System;
+    using System.Net;
+    using System.Net.Sockets;
+
     class BaseClient
     {
+        public int id;
+        public TcpHandler tcp;
+        public static int bufferSize = 4096;
+
+        public BaseClient(int _id)
+        {
+            id = _id;
+            tcp = new TcpHandler(id);
+        }
+
+        public class TcpHandler
+        {
+            private readonly int id;
+
+            public TcpClient socket;
+            private NetworkStream stream;
+            private byte[] receiveBuffer;
+
+            public TcpHandler(int _id)
+            {
+                id = _id;
+            }
+
+            public void Connect(TcpClient _socket)
+            {
+                socket = _socket;
+                socket.ReceiveBufferSize = bufferSize;
+                socket.SendBufferSize = bufferSize;
+
+                stream = socket.GetStream();
+
+                receiveBuffer = new byte[bufferSize];
+
+                stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, socket);
+            }
+
+            private void ReceiveCallback(IAsyncResult ar)
+            {
+                try
+                {
+                    int byteLength = stream.EndRead(ar);
+                    if(byteLength <= 0)
+                    {
+                        // disconnect
+                        return;
+                    }
+
+                    byte[] data = new byte[byteLength];
+
+                    Array.Copy(receiveBuffer, data, byteLength);
+
+                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, socket);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine($"Error receiving TCP data: {e}");
+                }
+            }
+        }
     }
 }
