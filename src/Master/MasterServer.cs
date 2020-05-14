@@ -32,7 +32,7 @@ namespace Sustenet.Master
         /// </summary>
         public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
         {
-
+            Start(ServerType.MasterServer);
         }
     }
 }
