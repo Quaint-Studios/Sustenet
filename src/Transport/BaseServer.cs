@@ -56,13 +56,13 @@ namespace Sustenet.Transport
         /// <param name="serverType">The type of server to notify in the console.</param>
         protected void Start(ServerType serverType)
         {
-            Console.WriteLine($"===== Starting {nameof(serverType)} on port {this.port} =====");
+            Console.WriteLine($"===== Starting {serverType.ToString()} on Port {this.port} =====");
 
             tcpListener = new TcpListener(IPAddress.Any, this.port);
             tcpListener.Start();
             tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), this);
 
-            Console.WriteLine($"===== {nameof(serverType)} Started =====");
+            Console.WriteLine($"===== {serverType.ToString()} Started =====");
         }
 
         /// <summary>
