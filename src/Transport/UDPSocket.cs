@@ -30,7 +30,7 @@ namespace Sustenet.Transport
         /// <summary>
         /// Local IP for the socket. This is only set after it connects to something.
         /// </summary>
-        public string localIP;
+        // public string localIP;
 
         private const ushort bufferSize = 8 * 1024;
         private readonly State state = new State();
