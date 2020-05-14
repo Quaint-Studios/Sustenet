@@ -16,20 +16,34 @@
  */
 
 using System;
+using System.IO;
 using System.Configuration;
 
 namespace Sustenet.Utils
 {
     /// <summary>
-    /// Loads confurations.
+    /// Loads configurations.
     /// </summary>
     class Config
     {
-        public static NameValueConfigurationCollection GetConfig(string section)
+        public enum ConfigType
         {
-            var config = ConfigurationManager.GetSection("MasterServer") as NameValueConfigurationCollection;
-            Console.WriteLine(config);
-            return config;
+            MasterServer,
+            ClusterServer
+        }
+
+        /// <summary>
+        /// Loads a custom config file and returns the data associated with it.
+        /// </summary>
+        /// <param name="section">The name of the custom config file.</param>
+        /// <returns>The data associated with the custom config file.</returns>
+        public static KeyValueConfigurationCollection GetConfig(ConfigType configType)
+        {
+            ExeConfigurationFileMap configMap = new ExeConfigurationFileMap();
+            configMap.ExeConfigFilename = Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\{configType.ToString()}.config");
+            Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
+
+            return config.AppSettings.Settings;
         }
     }
 }
