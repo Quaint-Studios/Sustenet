@@ -25,7 +25,7 @@ namespace Sustenet.Transport
     /// <summary>
     /// Base class of all server types.
     /// </summary>
-    abstract class BaseServer
+    class BaseServer
     {
         protected enum ServerType
         {
@@ -85,7 +85,7 @@ namespace Sustenet.Transport
             Console.WriteLine($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.")
         }
 
-        protected abstract void Init()
+        protected void Init()
         {
             for(int id = 1; i <= maxConnections; id++)
             {
