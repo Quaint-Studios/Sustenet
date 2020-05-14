@@ -42,7 +42,7 @@ namespace Sustenet.Transport
 
         public Dictionary<int, BaseClient> clients = new Dictionary<int, BaseClient>();
 
-        protected BaseServer(int _maxConnections, ushort _port = 6256)
+        protected BaseServer(int _maxConnections = 0, ushort _port = 6256)
         {
             this.maxConnections = _maxConnections;
             this.port = _port;
@@ -65,31 +65,35 @@ namespace Sustenet.Transport
             Console.WriteLine($"===== {nameof(serverType)} Started =====");
         }
 
+        /// <summary>
+        /// Handles new connections.
+        /// </summary>
+        /// <param name="ar">Async Result, the state contains this instance.</param>
         private static void OnConnectCallback(IAsyncResult ar)
         {
             BaseServer server = (BaseServer)ar.AsyncState;
             TcpListener listener = server.tcpListener;
 
             TcpClient client = listener.EndAcceptTcpClient(ar);
-            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), this);
+            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
 
             for(int id = 1; id <= server.maxConnections; id++)
             {
-                if(server.clients[i].tcp.socket == null)
+                if(server.clients[id].tcp.socket == null)
                 {
-                    server.clients[i].tcp.Connect(client);
+                    server.clients[id].tcp.Connect(client);
                     return;
                 }
             }
 
-            Console.WriteLine($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.")
+            Console.WriteLine($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
         }
 
         protected void Init()
         {
             for(int id = 1; i <= maxConnections; id++)
             {
-                clients.Add(id, new Clients(id));
+                clients.Add(id, new BaseClient(id));
             }
         }
     }
