@@ -44,8 +44,8 @@ namespace Sustenet.Transport
 
         protected BaseServer(int _maxConnections = 0, ushort _port = 6256)
         {
-            this.maxConnections = _maxConnections;
-            this.port = _port;
+            maxConnections = _maxConnections;
+            port = _port == 0 ? (ushort)6256 : _port;
 
             Init();
         }
@@ -56,13 +56,13 @@ namespace Sustenet.Transport
         /// <param name="serverType">The type of server to notify in the console.</param>
         protected void Start(ServerType serverType)
         {
-            Console.WriteLine($"===== Starting {serverType.ToString()} on Port {this.port} =====");
+            Console.WriteLine($"===== Starting {serverType.ToString()} on Port {port} =====");
 
-            tcpListener = new TcpListener(IPAddress.Any, this.port);
+            tcpListener = new TcpListener(IPAddress.Any, port);
             tcpListener.Start();
             tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), this);
 
-            Console.WriteLine($"===== {serverType.ToString()} Started =====");
+            Console.WriteLine($"===== {serverType.ToString()} Started (Max connections: {(maxConnections == 0 ? "Until it breaks" : maxConnections.ToString())}) =====");
         }
 
         /// <summary>
