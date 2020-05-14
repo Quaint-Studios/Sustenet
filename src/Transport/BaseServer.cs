@@ -39,10 +39,10 @@ namespace Sustenet.Transport
         public int maxConnections;
         public ushort port;
 
-        protected BaseServer(int maxConnections, ushort port = 6256)
+        protected BaseServer(int _maxConnections, ushort _port = 6256)
         {
-            this.maxConnections = maxConnections;
-            this.port = port;
+            this.maxConnections = _maxConnections;
+            this.port = _port;
 
             Init();
         }
@@ -57,17 +57,17 @@ namespace Sustenet.Transport
 
             tcpListener = new TcpListener(IPAddress.Any, this.port);
             tcpListener.Start();
-            tcpListener.BeginAcceptTcpClient(new AsyncCallback(TcpClientCallback), tcpListener);
+            tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), tcpListener);
 
             Console.WriteLine($"===== {nameof(serverType)} Started =====");
         }
 
-        private static void TcpClientCallback(IAsyncResult ar)
+        private static void OnConnectCallback(IAsyncResult ar)
         {
             TcpListener listener = (TcpListener)ar.AsyncState;
 
             TcpClient client = listener.EndAcceptTcpClient(ar);
-            listener.BeginAcceptTcpClient(new AsyncCallback(TcpClientCallback), listener);
+            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), listener);
         }
 
         protected abstract void Init();
