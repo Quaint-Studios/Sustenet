@@ -44,8 +44,6 @@ namespace Sustenet.Transport
         {
             server.isListening = true;
 
-            server.tcpServer = new TCPSocket.Server(port: server.port, responses: responses);
-
             Console.WriteLine($"Listening on port {server.port} (TCP/UDP).");
             // listen for incoming traffic here.
 
