@@ -23,7 +23,11 @@ namespace Sustenet
 {
     class Options
     {
-
+        /// <summary>
+        /// Loads command-line arguments. Defaults --master if no other connection type is provided.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static string[] GetOptions(string[] args)
         {
             List<string> connectionTypes = new List<string>();
@@ -51,8 +55,12 @@ namespace Sustenet
             try
             {
                 extra = options.Parse(args);
-                Console.WriteLine(string.Join(",", extra));
-                Console.WriteLine(string.Join(",", connectionTypes));
+
+                if(connectionTypes.Count <= 0)
+                {
+                    connectionTypes.Add("master");
+                }
+
                 return connectionTypes.ToArray();
             }
             catch(OptionException e)
@@ -69,50 +77,33 @@ namespace Sustenet
     {
         static void Main(string[] args)
         {
+            Console.Title = "Sustenet";
+
             string[] options = Options.GetOptions(args);
 
-            if(options.Length == 0)
+            foreach(string option in options)
             {
-                var config = Utils.Config.GetConfig("MasterServer");
-                Console.WriteLine("T:" + config["test"]);
-                Console.WriteLine("F:" + string.Join(",", config));
-                Master.MasterServer master = new Master.MasterServer();
-            }
-            else
-            {
-                bool handled = false;
-                foreach(string option in options)
+                switch(option)
                 {
-                    switch(option)
-                    {
-                        case "client":
-                            handled = true;
-                            Clients.Client client = new Clients.Client();
-                            break;
+                    case "client":
+                        Clients.Client client = new Clients.Client();
+                        break;
 
-                        case "cluster":
-                            handled = true;
-                            // TODO: var config = Utils.Config.GetConfig("ClusterServer");
-                            World.Cluster cluster = new World.Cluster();
-                            break;
+                    case "cluster":
+                        // TODO: var config = Utils.Config.GetConfig("ClusterServer");
+                        World.Cluster cluster = new World.Cluster();
+                        break;
 
-                        case "master":
-                            handled = true;
-                            var config = Utils.Config.GetConfig("MasterServer");
-                            Console.WriteLine(string.Join(",", config));
-                            Master.MasterServer master = new Master.MasterServer();
-                            break;
-                    }
-
-                    // If an argument has been handled.
-                    if(handled)
+                    case "master":
+                        var config = Utils.Config.GetConfig("MasterServer");
+                        Master.MasterServer master = new Master.MasterServer();
                         break;
                 }
-            }
 
-            // Wait for the user to respond before closing.
-            Console.Write("Press any key to close Sustenet...");
-            Console.ReadKey();
+
+                // Wait for the user to respond before closing.
+                Console.Write("Press any key to close Sustenet...");
+                Console.ReadKey();
+            }
         }
     }
-}
