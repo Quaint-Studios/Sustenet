@@ -29,8 +29,8 @@ namespace Sustenet.Transport
     {
         protected enum ServerType
         {
-            Master,
-            Cluster
+            MasterServer,
+            ClusterServer
         }
 
         public bool isListening = false;
