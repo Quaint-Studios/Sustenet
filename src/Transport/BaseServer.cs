@@ -18,6 +18,7 @@
 namespace Sustenet.Transport
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
 
@@ -39,6 +40,8 @@ namespace Sustenet.Transport
         public int maxConnections;
         public ushort port;
 
+        public Dictionary<int, BaseClient> clients = new Dictionary<int, BaseClient>();
+
         protected BaseServer(int _maxConnections, ushort _port = 6256)
         {
             this.maxConnections = _maxConnections;
@@ -57,19 +60,37 @@ namespace Sustenet.Transport
 
             tcpListener = new TcpListener(IPAddress.Any, this.port);
             tcpListener.Start();
-            tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), tcpListener);
+            tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), this);
 
             Console.WriteLine($"===== {nameof(serverType)} Started =====");
         }
 
         private static void OnConnectCallback(IAsyncResult ar)
         {
-            TcpListener listener = (TcpListener)ar.AsyncState;
+            BaseServer server = (BaseServer)ar.AsyncState;
+            TcpListener listener = server.tcpListener;
 
             TcpClient client = listener.EndAcceptTcpClient(ar);
-            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), listener);
+            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), this);
+
+            for(int id = 1; id <= server.maxConnections; id++)
+            {
+                if(server.clients[i].tcp.socket == null)
+                {
+                    server.clients[i].tcp.Connect(client);
+                    return;
+                }
+            }
+
+            Console.WriteLine($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.")
         }
 
-        protected abstract void Init();
+        protected abstract void Init()
+        {
+            for(int id = 1; i <= maxConnections; id++)
+            {
+                clients.Add(id, new Clients(id));
+            }
+        }
     }
 }
