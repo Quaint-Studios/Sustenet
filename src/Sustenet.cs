@@ -15,12 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using NDesk.Options;
-
 namespace Sustenet
 {
+    using System;
+    using System.Collections.Generic;
+    using NDesk.Options;
+    using Utils;
+
     class Options
     {
         /// <summary>
@@ -81,6 +82,8 @@ namespace Sustenet
 
             string[] options = Options.GetOptions(args);
 
+            Console.WriteLine("Options: " + string.Join(",", options));
+
             foreach(string option in options)
             {
                 switch(option)
@@ -95,8 +98,21 @@ namespace Sustenet
                         break;
 
                     case "master":
-                        var config = Utils.Config.GetConfig("MasterServer");
-                        Master.MasterServer master = new Master.MasterServer();
+                        var masterConfig = Config.GetConfig(Config.ConfigType.MasterServer);
+
+                        int? maxConnections = null;
+                        if(masterConfig["maxConnections"] != null)
+                        {
+                            Utilities.TryParseNullable(masterConfig["maxConnections"].Value, out maxConnections);
+                        }
+
+                        ushort? port = null;
+                        if(masterConfig["port"] != null)
+                        {
+                            Utilities.TryParseNullable(masterConfig["port"].Value, out port);
+                        }
+
+                        Master.MasterServer master = new Master.MasterServer(maxConnections ?? 0, port ?? 6256);
                         break;
                 }
 
@@ -107,3 +123,4 @@ namespace Sustenet
             }
         }
     }
+}
