@@ -17,9 +17,6 @@
 
 namespace Sustenet.Master
 {
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Net.Sockets;
     using Transport;
 
     /// <summary>
