@@ -90,7 +90,13 @@ namespace Sustenet
                 switch(option)
                 {
                     case "client":
-                        Clients.Client client = new Clients.Client();
+                        // Only to be used for debugging.
+                        int maxClients = 5000; // TEST: Breaks on Windows after ~500 connections. More tests required.
+                        Clients.Client[] clients = new Clients.Client[maxClients];
+                        for(int i = 0; i < maxClients; i++)
+                        {
+                            clients[i] = new Clients.Client();
+                        }
                         break;
 
                     case "cluster":
