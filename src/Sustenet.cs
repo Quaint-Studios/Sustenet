@@ -119,7 +119,7 @@ namespace Sustenet
             }
 
             // Wait for the user to respond before closing.
-            Console.Write("Press any key to close Sustenet...");
+            Console.WriteLine("Press any key to close Sustenet...");
             Console.ReadKey();
         }
     }
