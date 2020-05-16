@@ -94,7 +94,7 @@ namespace Sustenet.Transport
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine($"Client error with receiving TCP data: {e}");
+                    DebugClient($"Error with receiving TCP data...: {e}");
                 }
             }
 
@@ -119,23 +119,35 @@ namespace Sustenet.Transport
 
             private void ConnectCallback(IAsyncResult ar)
             {
-                socket.EndConnect(ar);
-
-                if(!socket.Connected)
+                try
                 {
-                    Console.WriteLine($"Client failed to connect to the server at {socket.Client.RemoteEndPoint}.");
-                    return;
+                    socket.EndConnect(ar);
+
+                    if(!socket.Connected)
+                    {
+                        DebugClient($"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
+                        return;
+                    }
+
+                    DebugClient($"Connected to server at {socket.Client.RemoteEndPoint}.");
+
+                    if(stream == null)
+                    {
+                        stream = socket.GetStream();
+                    }
+
+                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
                 }
-
-                Console.WriteLine($"Client connected to server at {socket.Client.RemoteEndPoint}.");
-
-                if(stream == null)
+                catch
                 {
-                    stream = socket.GetStream();
+                    DebugClient("Error while trying to connect.");
                 }
-
-                stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
             }
+        }
+
+        protected static void DebugClient(string msg)
+        {
+            Console.WriteLine($"Client: {msg}");
         }
     }
 }
