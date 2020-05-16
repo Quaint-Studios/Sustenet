@@ -17,6 +17,7 @@
 
 namespace Sustenet.World
 {
+    using System.Net;
     using Transport;
 
     /// <summary>
@@ -25,6 +26,8 @@ namespace Sustenet.World
     /// </summary>
     class ClusterServer : BaseServer
     {
+        BaseClient masterConn = new BaseClient(0);
+
         /// <summary>
         /// Creates a Cluster Server that creates Fragment Servers to be used.
         /// TODO: Will currently only create a single server for itself.
@@ -32,6 +35,7 @@ namespace Sustenet.World
         public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(_maxConnections, _port)
         {
             Start(ServerType.ClusterServer);
+            masterConn.tcp.Connect(IPAddress.Parse("127.0.0.1"), 6256);
         }
     }
 }
