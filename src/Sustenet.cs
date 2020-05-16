@@ -62,6 +62,8 @@ namespace Sustenet
                     connectionTypes.Add("master");
                 }
 
+                // TODO: Do something with extra.
+
                 return connectionTypes.ToArray();
             }
             catch(OptionException e)
@@ -81,8 +83,6 @@ namespace Sustenet
             Console.Title = "Sustenet";
 
             string[] options = Options.GetOptions(args);
-
-            Console.WriteLine("Options: " + string.Join(",", options));
 
             foreach(string option in options)
             {
