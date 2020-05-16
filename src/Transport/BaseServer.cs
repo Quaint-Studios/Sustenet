@@ -63,6 +63,7 @@ namespace Sustenet.Transport
             string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
 
             Console.WriteLine($"===== Starting {serverTypeName} on Port {port} =====");
+            Init();
 
             tcpListener = new TcpListener(IPAddress.Any, port);
             tcpListener.Start();
@@ -97,6 +98,9 @@ namespace Sustenet.Transport
             Console.WriteLine($"{server.serverType.ToString()}: {client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
         }
 
+        /// <summary>
+        /// Initializes the server's data.
+        /// </summary>
         protected void Init()
         {
             for(int id = 1; id <= maxConnections; id++)
