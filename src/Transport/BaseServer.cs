@@ -21,13 +21,14 @@ namespace Sustenet.Transport
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
+    using Utils;
 
     /// <summary>
     /// Base class of all server types.
     /// </summary>
     class BaseServer
     {
-        protected enum ServerType
+        public enum ServerType
         {
             MasterServer,
             ClusterServer
@@ -37,6 +38,7 @@ namespace Sustenet.Transport
 
         private TcpListener tcpListener;
 
+        public ServerType serverType;
         public int maxConnections;
         public ushort port;
 
@@ -54,15 +56,21 @@ namespace Sustenet.Transport
         /// Starts a server.
         /// </summary>
         /// <param name="serverType">The type of server to notify in the console.</param>
-        protected void Start(ServerType serverType)
+        protected void Start(ServerType _serverType)
         {
-            Console.WriteLine($"===== Starting {serverType.ToString()} on Port {port} =====");
+            serverType = _serverType;
+
+            string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
+
+            Console.WriteLine($"===== Starting {serverTypeName} on Port {port} =====");
 
             tcpListener = new TcpListener(IPAddress.Any, port);
             tcpListener.Start();
             tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), this);
 
-            Console.WriteLine($"===== {serverType.ToString()} Started (Max connections: {(maxConnections == 0 ? "Until it breaks" : maxConnections.ToString())}) =====");
+            string maxConnectionsValue = (maxConnections == 0 ? "Until it breaks" : Utilities.SplitByPascalCase(maxConnections.ToString()));
+
+            Utilities.ConsoleHeader($"{serverTypeName} Started (Max connections: {maxConnectionsValue})");
         }
 
         /// <summary>
@@ -86,7 +94,7 @@ namespace Sustenet.Transport
                 }
             }
 
-            Console.WriteLine($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
+            Console.WriteLine($"{server.serverType.ToString()}: {client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
         }
 
         protected void Init()
