@@ -116,11 +116,11 @@ namespace Sustenet
                         Master.MasterServer master = new Master.MasterServer(maxConnections ?? 0, port ?? 6256);
                         break;
                 }
-
-                // Wait for the user to respond before closing.
-                Console.Write("Press any key to close Sustenet...");
-                Console.ReadKey();
             }
+
+            // Wait for the user to respond before closing.
+            Console.Write("Press any key to close Sustenet...");
+            Console.ReadKey();
         }
     }
 }
