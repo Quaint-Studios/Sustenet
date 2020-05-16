@@ -48,15 +48,31 @@ namespace Sustenet.Transport
 
             public void Receive(TcpClient _socket)
             {
+                if(socket != null)
+                {
+                    if(stream != null)
+                    {
+                        stream.Close();
+                    }
+
+                    socket.Close();
+                }
+
                 socket = _socket;
                 socket.ReceiveBufferSize = bufferSize;
                 socket.SendBufferSize = bufferSize;
 
-                stream = socket.GetStream();
+                if(stream == null)
+                {
+                    stream = socket.GetStream();
+                }
 
-                receiveBuffer = new byte[bufferSize];
+                if(receiveBuffer == null)
+                {
+                    receiveBuffer = new byte[bufferSize];
+                }
 
-                stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, socket);
+                stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
             }
 
             private void ReceiveCallback(IAsyncResult ar)
@@ -74,12 +90,51 @@ namespace Sustenet.Transport
 
                     Array.Copy(receiveBuffer, data, byteLength);
 
-                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, socket);
+                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine($"Error receiving TCP data: {e}");
+                    Console.WriteLine($"Client error with receiving TCP data: {e}");
                 }
+            }
+
+            public void Connect(IPAddress ip, ushort port)
+            {
+                if(socket == null)
+                {
+                    socket = new TcpClient
+                    {
+                        ReceiveBufferSize = bufferSize,
+                        SendBufferSize = bufferSize
+                    };
+                }
+
+                if(receiveBuffer == null)
+                {
+                    receiveBuffer = new byte[bufferSize];
+                }
+
+                socket.BeginConnect(ip, port, ConnectCallback, null);
+            }
+
+            private void ConnectCallback(IAsyncResult ar)
+            {
+                socket.EndConnect(ar);
+
+                if(!socket.Connected)
+                {
+                    Console.WriteLine($"Client failed to connect to the server at {socket.Client.RemoteEndPoint}.");
+                    return;
+                }
+
+                Console.WriteLine($"Client connected to server at {socket.Client.RemoteEndPoint}.");
+
+                if(stream == null)
+                {
+                    stream = socket.GetStream();
+                }
+
+                stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
             }
         }
     }
