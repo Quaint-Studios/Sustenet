@@ -43,13 +43,12 @@ namespace Sustenet.Transport
         public ushort port;
 
         public Dictionary<int, BaseClient> clients = new Dictionary<int, BaseClient>();
+        public List<int> releasedIds = new List<int>();
 
         protected BaseServer(int _maxConnections = 0, ushort _port = 6256)
         {
             maxConnections = _maxConnections;
             port = _port == 0 ? (ushort)6256 : _port;
-
-            Init();
         }
 
         /// <summary>
@@ -86,13 +85,32 @@ namespace Sustenet.Transport
             TcpClient client = listener.EndAcceptTcpClient(ar);
             listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
 
-            for(int id = 1; id <= server.maxConnections; id++)
+            if(server.maxConnections == 0 || server.clients.Count < server.maxConnections)
             {
-                if(server.clients[id].tcp.socket == null)
+                int id;
+
+                if(server.releasedIds.Count > 0)
                 {
-                    server.clients[id].tcp.Receive(client);
-                    return;
+                    id = server.releasedIds[0];
+                    server.clients.Add(id, null); // Reserve this spot instantly.
+
+                    server.releasedIds.RemoveAt(0);
                 }
+                else
+                {
+                    id = server.clients.Count;
+                    server.clients.Add(id, null); // Reserve this spot instantly here too.
+                }
+
+                server.clients[id] = new BaseClient(id);
+
+                Console.WriteLine(id);
+
+                server.clients[id].tcp.Receive(client);
+
+                DebugServer(server.serverType, $"Client#{id} connected.");
+
+                return;
             }
 
             Console.WriteLine($"{server.serverType.ToString()}: {client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
@@ -101,11 +119,17 @@ namespace Sustenet.Transport
         /// <summary>
         /// Initializes the server's data.
         /// </summary>
-        protected void Init()
+        protected bool Init(int id)
         {
-            for(int id = 1; id <= maxConnections; id++)
+            try
             {
                 clients.Add(id, new BaseClient(id));
+                DebugServer(serverType, $"Client#{id} initialized.");
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }
