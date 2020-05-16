@@ -46,7 +46,7 @@ namespace Sustenet.Transport
                 id = _id;
             }
 
-            public void Connect(TcpClient _socket)
+            public void Receive(TcpClient _socket)
             {
                 socket = _socket;
                 socket.ReceiveBufferSize = bufferSize;

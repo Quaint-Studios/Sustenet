@@ -90,7 +90,7 @@ namespace Sustenet.Transport
             {
                 if(server.clients[id].tcp.socket == null)
                 {
-                    server.clients[id].tcp.Connect(client);
+                    server.clients[id].tcp.Receive(client);
                     return;
                 }
             }
