@@ -33,22 +33,23 @@ namespace Sustenet
         {
             List<string> connectionTypes = new List<string>();
 
+            // TODO: Add functionality for duplicates of each connection type.
             OptionSet options = new OptionSet()
             {
                 {
                     "client",
                     "starts a client and waits for Connect() to be triggered.",
-                    v => connectionTypes.Add("client")
+                    v => { if(connectionTypes.Contains("client")) connectionTypes.Add("client"); }
                 },
                 {
                     "cluster",
                     "starts a cluster server and uses the config file to connect to a master server.",
-                    v => connectionTypes.Add("cluster")
+                    v => { if(connectionTypes.Contains("cluster")) connectionTypes.Add("cluster"); }
                 },
                 {
                     "master",
                     "starts a master server, uses the config file to set it up, and waits for clusters and clients to connect.",
-                    v => connectionTypes.Add("master")
+                    v => { if(connectionTypes.Contains("master")) connectionTypes.Add("master"); }
                 }
             };
 
