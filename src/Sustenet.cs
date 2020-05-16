@@ -95,7 +95,7 @@ namespace Sustenet
 
                     case "cluster":
                         // TODO: var config = Utils.Config.GetConfig("ClusterServer");
-                        World.Cluster cluster = new World.Cluster();
+                        World.ClusterServer cluster = new World.ClusterServer();
                         break;
 
                     case "master":

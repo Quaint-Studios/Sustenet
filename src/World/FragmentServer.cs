@@ -26,7 +26,7 @@ namespace Sustenet.World
     /// added flexibility with the ability to differentiate which users should receive
     /// certain update rates or which ones are in a certain location.
     /// </summary>
-    class Fragment
+    class FragmentServer
     {
     }
 }
