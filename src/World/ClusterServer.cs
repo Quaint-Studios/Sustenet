@@ -31,7 +31,7 @@ namespace Sustenet.World
         /// </summary>
         public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(_maxConnections, _port)
         {
-            Start(ServerType.MasterServer);
+            Start(ServerType.ClusterServer);
         }
     }
 }
