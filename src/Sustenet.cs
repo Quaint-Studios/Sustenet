@@ -39,17 +39,17 @@ namespace Sustenet
                 {
                     "client",
                     "starts a client and waits for Connect() to be triggered.",
-                    v => { if(connectionTypes.Contains("client")) connectionTypes.Add("client"); }
+                    v => { if(!connectionTypes.Contains("client")) connectionTypes.Add("client"); }
                 },
                 {
                     "cluster",
                     "starts a cluster server and uses the config file to connect to a master server.",
-                    v => { if(connectionTypes.Contains("cluster")) connectionTypes.Add("cluster"); }
+                    v => { if(!connectionTypes.Contains("cluster")) connectionTypes.Add("cluster"); }
                 },
                 {
                     "master",
                     "starts a master server, uses the config file to set it up, and waits for clusters and clients to connect.",
-                    v => { if(connectionTypes.Contains("master")) connectionTypes.Add("master"); }
+                    v => { if(!connectionTypes.Contains("master")) connectionTypes.Add("master"); }
                 }
             };
 
