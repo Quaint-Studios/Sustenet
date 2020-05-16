@@ -116,7 +116,6 @@ namespace Sustenet
                         break;
                 }
 
-
                 // Wait for the user to respond before closing.
                 Console.Write("Press any key to close Sustenet...");
                 Console.ReadKey();
