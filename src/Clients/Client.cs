@@ -21,10 +21,23 @@ using System.Text;
 
 namespace Sustenet.Clients
 {
+    using System.Net;
+    using Transport;
+
     /// <summary>
     /// A standard client that connects to a server.
     /// </summary>
-    class Client
+    class Client : BaseClient
     {
+        public IPAddress ip;
+        public ushort port = 6256;
+
+
+        public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(0)
+        {
+            ip = IPAddress.Parse(_ip);
+
+            tcp.Connect(ip, port);
+        }
     }
 }
