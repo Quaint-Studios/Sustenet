@@ -22,6 +22,9 @@ namespace Sustenet.Transport
     using System.Net;
     using System.Net.Sockets;
     using Utils;
+    using Network;
+    using World;
+    using Master;
 
     /// <summary>
     /// Base class of all server types.
@@ -109,6 +112,8 @@ namespace Sustenet.Transport
 
                 DebugServer(server.serverType, $"Client#{id} connected.");
 
+                server.Welcome(id, $"Welcome to the {Utilities.SplitByPascalCase(server.serverType.ToString())}, Client#{id}.");
+
                 return;
             }
 
@@ -124,6 +129,7 @@ namespace Sustenet.Transport
             {
                 clients.Add(id, new BaseClient(id));
                 DebugServer(serverType, $"Client#{id} initialized.");
+
                 return true;
             }
             catch
@@ -135,6 +141,47 @@ namespace Sustenet.Transport
         private static void DebugServer(ServerType serverType, string msg)
         {
             Console.WriteLine($"{serverType.ToString()}: {msg}");
+        }
+    }
+
+    static class ServerDataHandler
+    {
+        private static void SendTcpData(this BaseServer server, int toClient, Packet packet)
+        {
+            packet.WriteLength();
+            server.clients[toClient].tcp.SendData(packet);
+        }
+
+        private static void SendTcpDataToAll(this BaseServer server, Packet packet)
+        {
+            packet.WriteLength();
+            foreach(BaseClient client in server.clients.Values)
+            {
+                client.tcp.SendData(packet);
+            }
+        }
+
+        private static void SendTcpDataToAll(this BaseServer server, int exceptClient, Packet packet)
+        {
+            packet.WriteLength();
+            foreach(BaseClient client in server.clients.Values)
+            {
+                if(client.id == exceptClient)
+                {
+                    client.tcp.SendData(packet);
+                }
+            }
+        }
+
+        public static void Welcome(this BaseServer server, int toClient, string msg)
+        {
+            using(Packet packet = new Packet((int)ServerPackets.welcome))
+            {
+                packet.Write(msg);
+                packet.Write(toClient);
+
+                server.SendTcpData(toClient, packet);
+            }
         }
     }
 }
