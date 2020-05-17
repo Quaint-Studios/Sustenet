@@ -17,37 +17,10 @@
 
 namespace Sustenet.Transport
 {
-    using System;
-    using System.Net.Sockets;
-    using Master;
-
-    public struct TransportLayerResponse
-    {
-        // TODO: Convert to events delegates.
-        public Action<Socket> OnListening;
-
-        public Action OnConnect;
-        public Action OnDisconnect;
-
-        public Action OnMessageSent;
-        public Action OnMessageReceived;
-
-        public Action OnShutdown;
-    }
-
     /// <summary>
     /// TODO
     /// </summary>
     static class TransportLayer
     {
-        public static void Listen(TransportLayerResponse responses, BaseServer server)
-        {
-            server.isListening = true;
-
-            Console.WriteLine($"Listening on port {server.port} (TCP/UDP).");
-            // listen for incoming traffic here.
-
-            // TODO: Return an event for the server to use with updates.
-        }
     }
 }
