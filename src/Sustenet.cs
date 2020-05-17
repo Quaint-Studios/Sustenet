@@ -79,6 +79,10 @@ namespace Sustenet
 
     class Sustenet
     {
+        public static Clients.Client[] clients;
+        public static World.ClusterServer cluster;
+        public static Master.MasterServer master;
+
         static void Main(string[] args)
         {
             Console.Title = "Sustenet";
@@ -92,7 +96,7 @@ namespace Sustenet
                     case "client":
                         // Only to be used for debugging.
                         int maxClients = 5000; // TEST: Breaks on Windows after ~500 connections. More tests required.
-                        Clients.Client[] clients = new Clients.Client[maxClients];
+                        clients = new Clients.Client[maxClients];
                         for(int i = 0; i < maxClients; i++)
                         {
                             clients[i] = new Clients.Client();
@@ -101,7 +105,7 @@ namespace Sustenet
 
                     case "cluster":
                         // TODO: var config = Utils.Config.GetConfig("ClusterServer");
-                        World.ClusterServer cluster = new World.ClusterServer();
+                        cluster = new World.ClusterServer();
                         break;
 
                     case "master":
@@ -119,7 +123,7 @@ namespace Sustenet
                             Utilities.TryParseNullable(masterConfig["port"].Value, out port);
                         }
 
-                        Master.MasterServer master = new Master.MasterServer(maxConnections ?? 0, port ?? 6256);
+                        master = new Master.MasterServer(maxConnections ?? 0, port ?? 6256);
                         break;
                 }
             }
