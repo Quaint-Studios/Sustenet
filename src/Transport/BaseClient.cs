@@ -21,8 +21,9 @@ namespace Sustenet.Transport
     using System.Net;
     using System.Net.Sockets;
     using Network;
+    using Events;
 
-    class BaseClient
+    public class BaseClient
     {
         public int id;
         public TcpHandler tcp;
@@ -42,7 +43,8 @@ namespace Sustenet.Transport
             private NetworkStream stream;
             private byte[] receiveBuffer;
 
-            private Packet receivedData;
+            public BaseEvent onConnected = new BaseEvent();
+            public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
 
             public TcpHandler(int _id)
             {
@@ -94,7 +96,7 @@ namespace Sustenet.Transport
 
                     Array.Copy(receiveBuffer, data, byteLength);
 
-                    receivedData.Reset(HandleData(data));
+                    onReceived.RaiseEvent(data);
 
                     stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
                 }
@@ -142,7 +144,7 @@ namespace Sustenet.Transport
                         stream = socket.GetStream();
                     }
 
-                    receivedData = new Packet();
+                    onConnected.RaiseEvent();
 
                     stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
                 }
@@ -170,42 +172,17 @@ namespace Sustenet.Transport
                     DebugClient($"Error sending data via TCP...: {e}");
                 }
             }
-
-            private bool HandleData(byte[] data)
-            {
-                int packageLength = 0;
-
-                receivedData.SetBytes(data);
-
-                if(receivedData.UnreadLength() >= 4)
-                {
-                    packageLength = receivedData.ReadInt();
-                    if(packageLength <= 0)
-                    {
-                        return true;
-                    }
-                }
-
-                while(packageLength > 0 && packageLength <= receivedData.UnreadLength())
-                {
-                    byte[] packetBytes = receivedData.ReadBytes(packageLength);
-
-                    /** ThreadManager.ExecuteOnMainThread(() => {
-                        using(Packet packet = new Packet(packetBytes))
-                        {
-                            {
-                                int packetId = packet.ReadInt();
-                            }
-                        }
-                    });**/
-                }
-            }
             #endregion
         }
 
         protected static void DebugClient(string msg)
         {
             Console.WriteLine($"Client: {msg}");
+        }
+
+        private void InitializeClientData()
+        {
+
         }
     }
 }
