@@ -3,6 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <Copyright />
   </PropertyGroup>
 
   <ItemGroup>
