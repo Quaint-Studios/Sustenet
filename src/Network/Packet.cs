@@ -26,7 +26,7 @@ namespace Sustenet.Network
     using System.Collections.Generic;
     using System.Text;
 
-    class Packet : IDisposable
+    public class Packet : IDisposable
     {
         private List<byte> buffer = new List<byte>();
         private byte[] readableBuffer;
