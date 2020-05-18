@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="SET &quot;ImplementationPath=G:\Workspace\Unity\Reia\Assets\Sustenet&quot;&#xD;&#xA;&#xD;&#xA;IF $(ConfigurationName)==Release (&#xD;&#xA;  IF EXIST %25ImplementationPath%25 (&#xD;&#xA;    COPY $(TargetPath) %25ImplementationPath%25\$(TargetFileName)&#xD;&#xA;  ) ELSE (&#xD;&#xA;    ECHO The implementation path to copy the DLL to does not exist. Change it or create it in the Project's post-build settings.&#xD;&#xA;  )&#xD;&#xA;) ELSE (&#xD;&#xA;  ECHO Skipping post-build.&#xD;&#xA;)" />
+    <Exec Command="SET &quot;ImplementationPath=G:\Workspace\Unity\Reia\Assets\Sustenet&quot;&#xD;&#xA;&#xD;&#xA;IF $(ConfigurationName)==Release (&#xD;&#xA;  IF EXIST %25ImplementationPath%25 (&#xD;&#xA;    XCOPY $(TargetDir)runtimes\* %25ImplementationPath%25\runtimes\* /D /E /Y&#xD;&#xA;    ECHO F| XCOPY $(TargetPath) %25ImplementationPath%25\$(TargetFileName) /D /Y&#xD;&#xA;  ) ELSE (&#xD;&#xA;    ECHO The implementation path to copy the DLL to does not exist. Change it or create it in the Project's post-build settings.&#xD;&#xA;  )&#xD;&#xA;) ELSE (&#xD;&#xA;  ECHO Skipping post-build.&#xD;&#xA;)" />
   </Target>
 
 </Project>
