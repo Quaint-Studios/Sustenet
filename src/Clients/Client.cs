@@ -33,8 +33,8 @@ namespace Sustenet.Clients
 
         private Packet receivedData;
 
-        private delegate string PacketHandler(Packet packet);
-        private static Dictionary<int, PacketHandler> packetHandlers;
+        protected delegate string PacketHandler(Packet packet);
+        protected static Dictionary<int, PacketHandler> packetHandlers;
 
         public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(0)
         {
@@ -105,7 +105,7 @@ namespace Sustenet.Clients
             return false;
         }
 
-        private void InitializeClientData()
+        protected virtual void InitializeClientData()
         {
             packetHandlers = new Dictionary<int, PacketHandler>()
             {
