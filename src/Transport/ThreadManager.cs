@@ -17,7 +17,57 @@
 
 namespace Sustenet.Transport
 {
-    class ThreadManager
+    using System;
+    using System.Collections.Generic;
+
+    public sealed class ThreadManager
     {
+        public static readonly ThreadManager instance = new ThreadManager();
+        private readonly List<Action> mainPool, mainPoolCopied;
+        private bool executeAction = false;
+
+        public ThreadManager()
+        {
+            mainPool = new List<Action>();
+            mainPoolCopied = new List<Action>();
+        }
+
+        /// <summary>
+        /// Sets an action to be executed on the main thread.
+        /// </summary>
+        /// <param name="action">The action to be executed on the main thread.</param>
+        public static void ExecuteOnMainThread(Action action)
+        {
+            if(action == null)
+            {
+                Console.WriteLine("No action to execute on main thread!");
+                return;
+            }
+
+            lock(instance.mainPool)
+            {
+                instance.mainPool.Add(action);
+                instance.executeAction = true;
+            }
+        }
+
+        /// <summary>
+        /// Execute all code meant to run on the main thread. Should only be called from the main thread.
+        /// </summary>
+        public static void UpdateMain()
+        {
+            if(instance.executeAction)
+            {
+                instance.mainPoolCopied.Clear();
+                lock(instance.mainPool)
+                {
+                    instance.mainPoolCopied.AddRange(instance.mainPool);
+                    instance.mainPool.Clear();
+                    instance.executeAction = false;
+                }
+
+                instance.mainPoolCopied.ForEach((action) => action());
+            }
+        }
     }
 }
