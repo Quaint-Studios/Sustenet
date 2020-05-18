@@ -15,17 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Sustenet.Clients
 {
     /// <summary>
     /// Standard peer-to-peer connection for situations that involve parties
     /// or instanced areas.
     /// </summary>
-    class Peer
+    public class Peer
     {
+        public Peer() { }
     }
 }
