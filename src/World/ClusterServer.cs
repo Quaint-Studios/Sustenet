@@ -17,8 +17,9 @@
 
 namespace Sustenet.World
 {
-    using System.Net;
+    using System.Timers;
     using Transport;
+    using Clients;
 
     /// <summary>
     /// A regionally hosted server that controls and allocates users to
@@ -26,7 +27,9 @@ namespace Sustenet.World
     /// </summary>
     class ClusterServer : BaseServer
     {
-        BaseClient masterConn = new BaseClient(0);
+        Client masterConn = new Client();
+
+        Timer timer;
 
         /// <summary>
         /// Creates a Cluster Server that creates Fragment Servers to be used.
@@ -34,8 +37,20 @@ namespace Sustenet.World
         /// </summary>
         public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(_maxConnections, _port)
         {
+            timer = new Timer(2000);
+            // Hook up the Elapsed event for the timer.
+            timer.Elapsed += UpdateMain;
+            timer.AutoReset = true;
+            timer.Enabled = true;
+
             Start(ServerType.ClusterServer);
-            masterConn.tcp.Connect(IPAddress.Parse("127.0.0.1"), 6256);
+            masterConn.Connect();
+        }
+
+        public void UpdateMain(object source, ElapsedEventArgs e)
+        {
+            ThreadManager.UpdateMain();
+            System.Console.WriteLine(masterConn);
         }
     }
 }
