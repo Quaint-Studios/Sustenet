@@ -137,6 +137,15 @@ namespace Sustenet.Network
             buffer.AddRange(BitConverter.GetBytes(data));
         }
 
+        public void Write(int data)
+        {
+            buffer.AddRange(BitConverter.GetBytes(data));
+        }
+        public void Write(long data)
+        {
+            buffer.AddRange(BitConverter.GetBytes(data));
+        }
+
         public void Write(float data)
         {
             buffer.AddRange(BitConverter.GetBytes(data));
