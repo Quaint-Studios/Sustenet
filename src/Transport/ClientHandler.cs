@@ -29,6 +29,8 @@ namespace Sustenet.Transport
 
             client.id = id;
 
+            System.Console.WriteLine($"Client#{client.id} (Server says): {msg}");
+
             return msg;
         }
     }
