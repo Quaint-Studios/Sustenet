@@ -36,7 +36,7 @@ namespace Sustenet.Clients
         protected delegate string PacketHandler(Packet packet);
         protected static Dictionary<int, PacketHandler> packetHandlers;
 
-        public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(0)
+        public Client(string _ip = "127.0.0.1", ushort _port = 6256, bool debug = true) : base(0, debug)
         {
             ip = IPAddress.Parse(_ip);
             port = _port;
@@ -50,7 +50,13 @@ namespace Sustenet.Clients
             };
 
             InitializeClientData();
+        }
 
+        /// <summary>
+        /// Connects to the currently assigned IP and port.
+        /// </summary>
+        public void Connect()
+        {
             tcp.Connect(ip, port);
         }
 
