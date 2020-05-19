@@ -77,12 +77,10 @@ namespace Sustenet.Clients
                 ThreadManager.ExecuteOnMainThread(() => {
                     using(Packet packet = new Packet(packetBytes))
                     {
-                        {
-                            int packetId = packet.ReadInt();
-                            packetHandlers[packetId](packet);
-                        }
-                    }
+                        int packetId = packet.ReadInt();
 
+                        packetHandlers[packetId](packet);
+                    }
                 });
 
                 packetLength = 0;
