@@ -179,10 +179,5 @@ namespace Sustenet.Transport
         {
             Console.WriteLine($"Client: {msg}");
         }
-
-        private void InitializeClientData()
-        {
-
-        }
     }
 }
