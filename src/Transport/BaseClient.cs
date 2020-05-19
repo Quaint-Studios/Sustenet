@@ -29,10 +29,14 @@ namespace Sustenet.Transport
         public TcpHandler tcp;
         public static int bufferSize = 4096;
 
-        public BaseClient(int _id)
+        public BaseClient(int _id, bool debug = true)
         {
             id = _id;
             tcp = new TcpHandler(id);
+
+            if(debug)
+                tcp.onDebug.Run += (msg) => DebugClient(msg);
+
         }
 
         public class TcpHandler
