@@ -103,8 +103,6 @@ namespace Sustenet.Transport
 
                 server.clients[id] = new BaseClient(id);
 
-                Console.WriteLine(id);
-
                 server.clients[id].tcp.Receive(client);
 
                 DebugServer(server.serverType, $"Client#{id} connected.");

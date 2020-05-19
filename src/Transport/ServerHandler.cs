@@ -39,7 +39,6 @@ namespace Sustenet.Transport
         #region Data Functions
         private static void SendTcpData(this BaseServer server, int toClient, Packet packet)
         {
-            System.Console.WriteLine($"Fired SendTcpData to Client#{toClient}.");
             packet.WriteLength();
             server.clients[toClient].tcp.SendData(packet);
         }
