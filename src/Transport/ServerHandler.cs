@@ -57,7 +57,7 @@ namespace Sustenet.Transport
             packet.WriteLength();
             foreach(BaseClient client in server.clients.Values)
             {
-                if(client.id == exceptClient)
+                if(client.id != exceptClient)
                 {
                     client.tcp.SendData(packet);
                 }
