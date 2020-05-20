@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net45</TargetFramework>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <Copyright />
+    <ApplicationIcon />
+    <StartupObject />
+    <RootNamespace>Sustenet</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>bin\Client\Release</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Client\Debug</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="cfg\**" />
+    <Compile Remove="libs\**" />
+    <Compile Remove="src\Master\**" />
+    <Compile Remove="src\World\**" />
+    <EmbeddedResource Remove="cfg\**" />
+    <EmbeddedResource Remove="libs\**" />
+    <EmbeddedResource Remove="src\Master\**" />
+    <EmbeddedResource Remove="src\World\**" />
+    <None Remove="cfg\**" />
+    <None Remove="libs\**" />
+    <None Remove="src\Master\**" />
+    <None Remove="src\World\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="src\Sustenet.cs" />
+    <Compile Remove="src\Transport\BaseServer.cs" />
+    <Compile Remove="src\Transport\ServerHandler.cs" />
+    <Compile Remove="src\Utils\Config.cs" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="SET &quot;ImplementationPath=G:\Workspace\Unity\Reia\Assets\Sustenet&quot;&#xD;&#xA;&#xD;&#xA;IF $(ConfigurationName)==Release (&#xD;&#xA;  IF EXIST %25ImplementationPath%25 (&#xD;&#xA;    ECHO F| XCOPY $(TargetDir)*.dll %25ImplementationPath%25\* /D /Y&#xD;&#xA;  ) ELSE (&#xD;&#xA;    ECHO The implementation path to copy the DLL to does not exist. Change it or create it in the Project's post-build settings.&#xD;&#xA;  )&#xD;&#xA;) ELSE (&#xD;&#xA;  ECHO Skipping post-build.&#xD;&#xA;)" />
+  </Target>
+
+</Project>

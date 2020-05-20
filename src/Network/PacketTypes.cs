@@ -15,13 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sustenet.Client
+namespace Sustenet.Network
 {
-    class Client
+    public enum ServerPackets
     {
+        welcome = 1
+    }
+
+    public enum ClientPackets
+    {
+        welcomeReceived = 1
     }
 }

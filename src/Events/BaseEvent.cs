@@ -15,13 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.TransportLayer
-{
-    /// <summary>
-    /// The core for all sockets in Sustenet.
-    /// </summary>
-    abstract class SNetSocket
-    {
 
+
+namespace Sustenet.Events
+{
+    using System;
+
+    public class BaseEvent
+    {
+        public event Action Run = delegate { };
+
+        public void RaiseEvent()
+        {
+            Run();
+        }
+    }
+
+    public class BaseEvent<T>
+    {
+        public event Action<T> Run = delegate { };
+
+        public void RaiseEvent(T args)
+        {
+            Run(args);
+        }
     }
 }

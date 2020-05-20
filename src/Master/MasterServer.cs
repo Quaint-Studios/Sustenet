@@ -15,13 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sustenet.Fragment
+namespace Sustenet.Master
 {
-    class Fragment
+    using Transport;
+
+    /// <summary>
+    /// The Master Server keeps track of all Cluster Servers. It also allocates connecting users to Cluster Servers automatically, or allows the users to manually select one.
+    /// </summary>
+    class MasterServer : BaseServer
     {
+        /// <summary>
+        /// Creates a Master Server that takes in Clusters.
+        /// </summary>
+        public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
+        {
+            Start(ServerType.MasterServer);
+        }
     }
 }

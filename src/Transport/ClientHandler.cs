@@ -15,28 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.TransportLayer
+namespace Sustenet.Transport
 {
-    using System.Net;
+    using Network;
+    using Clients;
 
-    /// <summary>
-    /// Base class of all server types.
-    /// </summary>
-    abstract class Server
+    public static class ClientHandler
     {
-        public ushort port;
-
-        protected readonly TransportLayer transport;
-
-        protected Server(ushort port = 6256)
+        public static string Welcome(this Client client, Packet packet)
         {
-            this.port = port;
+            string msg = packet.ReadString();
+            int id = packet.ReadInt();
 
-            transport = new TransportLayer(this);
+            client.id = id;
 
-            Init();
+            System.Console.WriteLine($"Client#{client.id} (Server says): {msg}");
+
+            return msg;
         }
-
-        protected abstract void Init();
     }
 }
