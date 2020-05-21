@@ -17,7 +17,28 @@
 
 namespace Sustenet.Transport
 {
+    using Network;
+    using World;
+
     static class ClusterHandler
     {
+        #region Command Functions
+        /// <summary>
+        /// Sends a packet to the master server that requests a string of text that must be
+        /// decrypted and sent back.
+        /// </summary>
+        /// <param name="server">The cluster server requesting access.</param>
+        /// <param name="keyName">The name of the SSH key stored on the master server. These are
+        /// preloaded so there's no need to sanitize directory requests.</param>
+        internal static void RegisterCluster(this ClusterServer server, string keyName)
+        {
+            using(Packet packet = new Packet((int)ClientPackets.cluster))
+            {
+                packet.Write(keyName);
+
+                server.masterConn.SendData(packet);
+            }
+        }
+        #endregion
     }
 }

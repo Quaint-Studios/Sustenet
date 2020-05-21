@@ -27,7 +27,7 @@ namespace Sustenet.World
     /// </summary>
     class ClusterServer : BaseServer
     {
-        private Client masterConn = new Client();
+        internal Client masterConn = new Client();
         private readonly Timer timer; // TODO: Only make this active if the server is command-line and not in Unity.
 
         /// <summary>
