@@ -17,6 +17,8 @@
 
 namespace Sustenet.Master
 {
+    using Network;
+    using System.Collections.Generic;
     using Transport;
 
     /// <summary>
@@ -26,9 +28,24 @@ namespace Sustenet.Master
     /// </summary>
     class MasterServer : BaseServer
     {
+        private delegate void PacketHandler(int fromClient, Packet packet);
+        private static Dictionary<int, PacketHandler> packetHandlers;
+
         public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
         {
             Start(ServerType.MasterServer);
+        }
+
+        private void InitializeData()
+        {
+            if(packetHandlers == null)
+            {
+                packetHandlers = new Dictionary<int, PacketHandler>()
+                {
+                    { (int)ClientPackets.cluster, this.ValidateCluster },
+                    { (int)ClientPackets.login, this.ValidateUser }
+                };
+            }
         }
     }
 }
