@@ -56,6 +56,7 @@ namespace Sustenet.Transport
             private byte[] receiveBuffer;
 
             public BaseEvent onConnected = new BaseEvent();
+            public BaseEvent onDisconnected = new BaseEvent();
             public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
             public BaseEvent<string> onDebug = new BaseEvent<string>();
 
@@ -120,6 +121,7 @@ namespace Sustenet.Transport
                 catch(Exception e)
                 {
                     onDebug.RaiseEvent($"Error with receiving TCP data...: {e}");
+                    onDisconnected.RaiseEvent();
                 }
             }
 
