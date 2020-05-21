@@ -31,6 +31,9 @@ namespace Sustenet.Master
         private delegate void PacketHandler(int fromClient, Packet packet);
         private static Dictionary<int, PacketHandler> packetHandlers;
 
+        public Dictionary<int, BaseClient> clusterClients = new Dictionary<int, BaseClient>();
+        public List<int> releasedClusterIds = new List<int>();
+
         public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
         {
             Start(ServerType.MasterServer);
@@ -46,6 +49,13 @@ namespace Sustenet.Master
                     { (int)ClientPackets.login, this.ValidateUser }
                 };
             }
+        }
+
+        internal void ClearClusterClient(int clientId)
+        {
+            clusterClients.Remove(clientId);
+            releasedClusterIds.Add(clientId);
+            onDebug.RaiseEvent($"Disconnected ClusterClient#{clientId}.");
         }
     }
 }
