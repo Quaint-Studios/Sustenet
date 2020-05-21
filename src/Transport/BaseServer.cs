@@ -21,6 +21,7 @@ namespace Sustenet.Transport
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
+    using Events;
     using Utils;
 
     /// <summary>
@@ -43,6 +44,10 @@ namespace Sustenet.Transport
         public Dictionary<int, BaseClient> clients = new Dictionary<int, BaseClient>();
         public List<int> releasedIds = new List<int>();
 
+        public BaseEvent<int> onConnection = new BaseEvent<int>();
+        public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
+        public BaseEvent<string> onDebug = new BaseEvent<string>();
+
         protected BaseServer(int _maxConnections = 0, ushort _port = 6256)
         {
             maxConnections = _maxConnections;
@@ -58,6 +63,9 @@ namespace Sustenet.Transport
             serverType = _serverType;
 
             string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
+
+            onConnection.Run += (id) => DebugServer(serverTypeName, $"Client#{id} has connected.");
+            onDebug.Run += (msg) => DebugServer(serverTypeName, msg);
 
             Utilities.ConsoleHeader($"Starting {serverTypeName} on Port {port}");
 
@@ -103,37 +111,19 @@ namespace Sustenet.Transport
 
                 server.clients[id].tcp.Receive(client);
 
-                DebugServer(server.serverType, $"Client#{id} connected.");
+                server.onConnection.RaiseEvent(id);
 
                 server.Welcome(id, $"Welcome to the {Utilities.SplitByPascalCase(server.serverType.ToString())}, Client#{id}.");
 
                 return;
             }
 
-            DebugServer(server.serverType, $"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
+            server.onDebug.RaiseEvent($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
         }
 
-        /// <summary>
-        /// Initializes the server's data.
-        /// </summary>
-        protected bool Init(int id)
+        private static void DebugServer(string serverTypeName, string msg)
         {
-            try
-            {
-                clients.Add(id, new BaseClient(id));
-                DebugServer(serverType, $"Client#{id} initialized.");
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private static void DebugServer(ServerType serverType, string msg)
-        {
-            Console.WriteLine($"({serverType.ToString()}) {msg}");
+            Console.WriteLine($"({serverTypeName}) {msg}");
         }
     }
 }
