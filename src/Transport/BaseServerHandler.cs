@@ -22,13 +22,11 @@ namespace Sustenet.Transport
     static class BaseServerHandler
     {
         #region Command Functions
-        // Packet ID = 1
-        internal static void Welcome(this BaseServer server, int toClient, string msg)
+        internal static void Message(this BaseServer server, int toClient, string msg)
         {
-            using(Packet packet = new Packet((int)ServerPackets.welcome))
+            using(Packet packet = new Packet((int)ServerPackets.message))
             {
                 packet.Write(msg);
-                packet.Write(toClient);
 
                 server.SendTcpData(toClient, packet);
             }
