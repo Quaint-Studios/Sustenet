@@ -160,10 +160,13 @@ namespace Sustenet.Clients
 
         protected virtual void InitializeClientData()
         {
-            packetHandlers = new Dictionary<int, PacketHandler>()
+            if(packetHandlers == null)
             {
-                { (int)ServerPackets.welcome, this.Welcome }
-            };
+                packetHandlers = new Dictionary<int, PacketHandler>()
+                {
+                    { (int)ServerPackets.welcome, this.Welcome }
+                };
+            }
         }
         #endregion
     }
