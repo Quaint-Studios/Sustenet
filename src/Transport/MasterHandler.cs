@@ -39,6 +39,31 @@ namespace Sustenet.Transport
              *    time, add it to a list of banned IPs. 0 will result in never banning. 1 bans on the first mistake.
              * 7. If answered correctly, move the client's info to the cluster Dictionary and send a ServerPackets.clusterWelcome
              */
+            string keyName = packet.ReadString();
+
+            int id;
+
+            if(server.releasedClusterIds.Count > 0)
+            {
+                id = server.releasedClusterIds[0];
+                server.clusterClients.Add(id, null); // Reserve this spot instantly.
+
+                server.releasedClusterIds.RemoveAt(0);
+            }
+            else
+            {
+                id = server.clusterClients.Count;
+                server.clusterClients.Add(id, null); // Reserve this spot instantly here too.
+            }
+
+            server.clusterClients[id] = server.clients[fromClient];
+
+            server.clusterClients[id].tcp.onDisconnected.ClearEvents();
+            server.clusterClients[id].tcp.onDisconnected.Run += () => server.ClearClusterClient(id);
+
+            server.ClearClient(fromClient);
+
+            server.onConnection.RaiseEvent(id);
         }
 
         /// <summary>
