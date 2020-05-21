@@ -29,22 +29,13 @@ namespace Sustenet.Transport
         public TcpHandler tcp;
         public static int bufferSize = 4096;
 
-        public class Dbug
-        {
-            public int constructed, tcpconstructed, connected, received, senddata, debugClient, receivedCB, connectedCB, initialized = 0;
-        }
-
-        public static Dbug dbug = new Dbug();
-
         public BaseClient(int _id, bool debug = true)
         {
             id = _id;
             tcp = new TcpHandler(id);
 
             if(debug)
-                tcp.onDebug.Run += (msg) => DebugClient(msg);
-
-            dbug.constructed++;
+                tcp.onDebug.Run += (msg) => DebugClient(id, msg);
         }
 
         public class TcpHandler
@@ -62,15 +53,11 @@ namespace Sustenet.Transport
             public TcpHandler(int _id)
             {
                 id = _id;
-
-                dbug.tcpconstructed++;
             }
 
             #region Connection Functions
             public void Receive(TcpClient _socket)
             {
-                dbug.received++;
-
                 if(socket != null)
                 {
                     if(stream != null)
@@ -100,10 +87,6 @@ namespace Sustenet.Transport
 
             public void ReceiveCallback(IAsyncResult ar)
             {
-                dbug.receivedCB++;
-
-                onDebug.RaiseEvent("RECEIVED DATA");
-
                 try
                 {
                     int byteLength = stream.EndRead(ar);
@@ -129,8 +112,6 @@ namespace Sustenet.Transport
 
             public void Connect(IPAddress ip, ushort port)
             {
-                dbug.connected++;
-
                 if(socket == null)
                 {
                     socket = new TcpClient
@@ -150,8 +131,6 @@ namespace Sustenet.Transport
 
             public void ConnectCallback(IAsyncResult ar)
             {
-                dbug.connectedCB++;
-
                 try
                 {
                     socket.EndConnect(ar);
@@ -183,8 +162,6 @@ namespace Sustenet.Transport
             #region Data Functions
             public void SendData(Packet packet)
             {
-                dbug.senddata++;
-
                 try
                 {
                     if(socket == null)
@@ -202,10 +179,9 @@ namespace Sustenet.Transport
             #endregion
         }
 
-        private static void DebugClient(string msg)
+        private static void DebugClient(int id, string msg)
         {
-            dbug.debugClient++;
-            Console.WriteLine($"Client: {msg}");
+            Console.WriteLine($"(Client#{id}) {msg}");
         }
     }
 }

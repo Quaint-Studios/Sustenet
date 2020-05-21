@@ -135,7 +135,7 @@ namespace Sustenet.Transport
 
         private static void DebugServer(ServerType serverType, string msg)
         {
-            Console.WriteLine($"{serverType.ToString()}: {msg}");
+            Console.WriteLine($"({serverType.ToString()}) {msg}");
         }
     }
 }

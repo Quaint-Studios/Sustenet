@@ -50,7 +50,6 @@ namespace Sustenet.World
         public void UpdateMain(object source, ElapsedEventArgs e)
         {
             ThreadManager.UpdateMain();
-            System.Console.WriteLine(masterConn);
         }
     }
 }
