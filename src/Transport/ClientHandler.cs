@@ -34,6 +34,7 @@ namespace Sustenet.Transport
         internal static void Message(this Client client, Packet packet)
         {
             string msg = packet.ReadString();
+
             client.tcp.onDebug.RaiseEvent($"(Server Message) {msg}");
         }
 
@@ -54,11 +55,18 @@ namespace Sustenet.Transport
         /// <param name="username">The username to login as.</param>
         internal static void Login(this Client client, string username)
         {
-            using(Packet packet = new Packet((int)ClientPackets.login))
+            if(client.activeConnection == Client.ConnectionType.MasterServer)
             {
-                packet.Write(username);
+                using(Packet packet = new Packet((int)ClientPackets.login))
+                {
+                    packet.Write(username);
 
-                client.SendData(packet);
+                    client.SendData(packet);
+                }
+            }
+            else
+            {
+                client.tcp.onDebug.RaiseEvent("Cannot login unless connected to a Master Server.");
             }
         }
         #endregion
