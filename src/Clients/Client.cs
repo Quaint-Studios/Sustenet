@@ -74,6 +74,8 @@ namespace Sustenet.Clients
         protected delegate void PacketHandler(Packet packet);
         protected static Dictionary<int, PacketHandler> packetHandlers;
 
+        public string username;
+
         public Client(string _ip = "127.0.0.1", ushort _port = 6256, bool debug = true) : base(0, debug)
         {
             masterConnection = new Connection
