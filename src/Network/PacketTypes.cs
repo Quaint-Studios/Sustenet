@@ -23,14 +23,16 @@ namespace Sustenet.Network
     public enum ServerPackets
     {
         /// <summary>
-        /// Gives the client an ID.
-        /// </summary>
-        welcome = 1,
-        /// <summary>
         /// Turns a regular client into a Cluster Client and gives it a
         /// new ID. Should only be used from a Master Server.
         /// </summary>
-        clusterWelcome = 2
+        validateCluster = -1,
+        /// <summary>
+        /// Gives the client an ID. Validates the user locally from Master Server.
+        /// If ran on a Cluster Server, asks the Master Server if they're actual
+        /// a valid user.
+        /// </summary>
+        validateUser = 1
     }
 
     /// <summary>
