@@ -24,7 +24,7 @@ namespace Sustenet.Transport
     using Utils;
 
     /// <summary>
-    /// Base class of all server types.
+    /// Base class of all server types. Takes in clients.
     /// </summary>
     class BaseServer
     {
@@ -33,8 +33,6 @@ namespace Sustenet.Transport
             MasterServer,
             ClusterServer
         }
-
-        public bool isListening = false;
 
         private TcpListener tcpListener;
 

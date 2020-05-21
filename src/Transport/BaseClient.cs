@@ -23,6 +23,10 @@ namespace Sustenet.Transport
     using Network;
     using Events;
 
+    /// <summary>
+    /// The core for all clients. Handles basic functionality like sending
+    /// and receiving data. Also handles the core for connecting to servers.
+    /// </summary>
     public class BaseClient
     {
         public int id;
@@ -38,34 +42,37 @@ namespace Sustenet.Transport
                 tcp.onDebug.Run += (msg) => DebugClient(id, msg);
         }
 
+        /// <summary>
+        /// Handles events for connecting, receiving, and debugging.
+        /// Also controls the socket connection.
+        /// </summary>
         public class TcpHandler
         {
-            private readonly int id;
 
             public TcpClient socket;
-            private NetworkStream stream;
+            internal NetworkStream stream;
             private byte[] receiveBuffer;
 
             public BaseEvent onConnected = new BaseEvent();
             public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
             public BaseEvent<string> onDebug = new BaseEvent<string>();
 
-            public TcpHandler(int _id)
-            {
-                id = _id;
-            }
-
             #region Connection Functions
+            /// <summary>
+            /// Used for servers that create local records of clients.
+            /// It will wipe any existing connections and start a new one.
+            /// </summary>
+            /// <param name="_socket">The socket to replace the current socket with.</param>
             public void Receive(TcpClient _socket)
             {
                 if(socket != null)
                 {
                     if(stream != null)
                     {
-                        stream.Close();
+                        stream.Dispose();
                     }
 
-                    socket.Close();
+                    socket.Dispose();
                 }
 
                 socket = _socket;
@@ -85,6 +92,10 @@ namespace Sustenet.Transport
                 stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
             }
 
+            /// <summary>
+            /// When the current stream receives data.
+            /// </summary>
+            /// <param name="ar">The result of BeginRead().</param>
             public void ReceiveCallback(IAsyncResult ar)
             {
                 try
@@ -110,6 +121,11 @@ namespace Sustenet.Transport
                 }
             }
 
+            /// <summary>
+            /// Connects to a server.
+            /// </summary>
+            /// <param name="ip">The IP address.</param>
+            /// <param name="port">The port number.</param>
             public void Connect(IPAddress ip, ushort port)
             {
                 if(socket == null)
@@ -129,6 +145,10 @@ namespace Sustenet.Transport
                 socket.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), null);
             }
 
+            /// <summary>
+            /// Triggered after BeginConnect().
+            /// </summary>
+            /// <param name="ar">Result from BeginConnect().</param>
             public void ConnectCallback(IAsyncResult ar)
             {
                 try
@@ -155,25 +175,6 @@ namespace Sustenet.Transport
                 catch
                 {
                     onDebug.RaiseEvent("Error while trying to connect.");
-                }
-            }
-            #endregion
-
-            #region Data Functions
-            public void SendData(Packet packet)
-            {
-                try
-                {
-                    if(socket == null)
-                    {
-                        throw new Exception("TCPHandler socket is null.");
-                    }
-
-                    stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null);
-                }
-                catch(Exception e)
-                {
-                    onDebug.RaiseEvent($"Error sending data via TCP to Client#{id}...: {e}");
                 }
             }
             #endregion

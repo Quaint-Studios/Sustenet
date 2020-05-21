@@ -19,47 +19,32 @@ namespace Sustenet.Transport
 {
     using Network;
 
-    static class ServerHandler
+    static class BaseServerHandler
     {
-        #region Command Functions
-
-        // Packet ID = 1
-        public static void Welcome(this BaseServer server, int toClient, string msg)
-        {
-            using(Packet packet = new Packet((int)ServerPackets.welcome))
-            {
-                packet.Write(msg);
-                packet.Write(toClient);
-
-                server.SendTcpData(toClient, packet);
-            }
-        }
-        #endregion
-
         #region Data Functions
-        private static void SendTcpData(this BaseServer server, int toClient, Packet packet)
+        internal static void SendTcpData(this BaseServer server, int toClient, Packet packet)
         {
             packet.WriteLength();
-            server.clients[toClient].tcp.SendData(packet);
+            server.clients[toClient].SendData(packet);
         }
 
-        private static void SendTcpDataToAll(this BaseServer server, Packet packet)
+        internal static void SendTcpDataToAll(this BaseServer server, Packet packet)
         {
             packet.WriteLength();
             foreach(BaseClient client in server.clients.Values)
             {
-                client.tcp.SendData(packet);
+                client.SendData(packet);
             }
         }
 
-        private static void SendTcpDataToAll(this BaseServer server, int exceptClient, Packet packet)
+        internal static void SendTcpDataToAll(this BaseServer server, int exceptClient, Packet packet)
         {
             packet.WriteLength();
             foreach(BaseClient client in server.clients.Values)
             {
                 if(client.id != exceptClient)
                 {
-                    client.tcp.SendData(packet);
+                    client.SendData(packet);
                 }
             }
         }

@@ -15,20 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Master
+namespace Sustenet.Transport
 {
-    using Transport;
+    using Master;
+    using World;
+    using Network;
 
     /// <summary>
-    /// The Master Server keeps track of all Cluster Servers. It also allocates
-    /// connecting users to Cluster Servers automatically, or allows the users
-    /// to manually select one.
+    /// Handles sending data to a client from a server.
     /// </summary>
-    class MasterServer : BaseServer
+    static class MasterHandler
     {
-        public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
+        #region Command Functions
+        // Packet ID = 1
+        internal static void Welcome(this MasterServer server, int toClient, string msg)
         {
-            Start(ServerType.MasterServer);
+            using(Packet packet = new Packet((int)MasterPackets.welcome))
+            {
+                packet.Write(msg);
+                packet.Write(toClient);
+
+                server.SendTcpData(toClient, packet);
+            }
         }
+        #endregion
     }
 }

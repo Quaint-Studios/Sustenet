@@ -17,34 +17,30 @@
 
 namespace Sustenet.Transport
 {
+    using System;
     using Network;
-    using Clients;
 
-    /// <summary>
-    /// Handles functionality for clients.
-    /// </summary>
-    static class ClientHandler
+    static class BaseClientHandler
     {
-        #region Command Functions
-        internal static string Welcome(this Client client, Packet packet)
+        #region Data Functions
+        /// <summary>
+        /// Sends a packet through the current stream.
+        /// </summary>
+        /// <param name="packet">The packet to be sent.</param>
+        internal static void SendData(this BaseClient client, Packet packet)
         {
-            string msg = packet.ReadString();
-            int id = packet.ReadInt();
-
-            client.id = id;
-
-            client.tcp.onDebug.RaiseEvent($"(Server says)...: {msg}");
-
-            return msg;
-        }
-
-        internal static void WelcomeReply(this Client client, string username)
-        {
-            using(Packet packet = new Packet((int)ClientPackets.welcomeReceived))
+            try
             {
-                packet.Write(username);
+                if(client.tcp.socket == null)
+                {
+                    throw new Exception("TCPHandler socket is null.");
+                }
 
-                client.SendData(packet);
+                client.tcp.stream.BeginWrite(packet.ToArray(), 0, packet.Length(), null, null);
+            }
+            catch(Exception e)
+            {
+                client.tcp.onDebug.RaiseEvent($"Error sending data via TCP to Client#{client.id}...: {e}");
             }
         }
         #endregion

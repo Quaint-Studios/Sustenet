@@ -17,13 +17,35 @@
 
 namespace Sustenet.Network
 {
-    public enum ServerPackets
+    /// <summary>
+    /// Used on a client to determine what type of packet they just received
+    /// from their masterConnection variable.
+    /// </summary>
+    public enum MasterPackets
     {
         welcome = 1
     }
 
+    /// <summary>
+    /// Used on a client to determine what type of packet they just received
+    /// from their clusterConnection variable.
+    /// </summary>
+    public enum ClusterPackets
+    {
+        welcome = 1
+    }
+
+    /// <summary>
+    /// Used on a BaseServer to determine what a client is sending.
+    /// </summary>
     public enum ClientPackets
     {
-        welcomeReceived = 1
+        #region Cluster Client
+        register = -1,
+        #endregion
+
+        #region Regular Client
+        welcomeReply = 1
+        #endregion
     }
 }

@@ -15,20 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Master
+namespace Sustenet.Transport
 {
-    using Transport;
-
-    /// <summary>
-    /// The Master Server keeps track of all Cluster Servers. It also allocates
-    /// connecting users to Cluster Servers automatically, or allows the users
-    /// to manually select one.
-    /// </summary>
-    class MasterServer : BaseServer
+    static class ClusterHandler
     {
-        public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
-        {
-            Start(ServerType.MasterServer);
-        }
     }
 }

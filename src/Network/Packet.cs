@@ -26,6 +26,9 @@ namespace Sustenet.Network
     using System.Collections.Generic;
     using System.Text;
 
+    /// <summary>
+    /// Handles reading and writing data of varying types.
+    /// </summary>
     public class Packet : IDisposable
     {
         private List<byte> buffer;
