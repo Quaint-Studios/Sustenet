@@ -45,6 +45,7 @@ namespace Sustenet.Transport
         public List<int> releasedIds = new List<int>();
 
         public BaseEvent<int> onConnection = new BaseEvent<int>();
+        public BaseEvent<int> onDisconnection = new BaseEvent<int>();
         public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
         public BaseEvent<string> onDebug = new BaseEvent<string>();
 
@@ -113,12 +114,33 @@ namespace Sustenet.Transport
 
                 server.onConnection.RaiseEvent(id);
 
-                server.Welcome(id, $"Welcome to the {Utilities.SplitByPascalCase(server.serverType.ToString())}, Client#{id}.");
+                server.clients[id].tcp.onDisconnected.Run += () => server.ClearClient(id);
 
                 return;
             }
 
             server.onDebug.RaiseEvent($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
+        }
+
+        /// <summary>
+        /// Kicks a client off the server and clears their entry.
+        /// </summary>
+        /// <param name="clientId">The client id to kick and clear.</param>
+        internal void DisconnectClient(int clientId)
+        {
+            clients[clientId].tcp.socket.Close();
+            ClearClient(clientId);
+        }
+
+        /// <summary>
+        /// Frees up a client ID by wiping them from the server list.
+        /// </summary>
+        /// <param name="clientId">The client id to free up.</param>
+        internal void ClearClient(int clientId)
+        {
+            clients.Remove(clientId);
+            releasedIds.Add(clientId);
+            onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
         }
 
         private static void DebugServer(string serverTypeName, string msg)
