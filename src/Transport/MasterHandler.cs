@@ -41,14 +41,46 @@ namespace Sustenet.Transport
              */
         }
 
+        /// <summary>
+        /// Gives the client an ID and checks if the current username belongs to them.
+        /// </summary>
+        /// <param name="server">The Master Server to run this on.</param>
+        /// <param name="toClient">The client's new ID.</param>
+        /// <param name="username">The client's username to validate.</param>
         internal static void ValidateUser(this MasterServer server, int fromClient, Packet packet)
         {
+            string username = packet.ReadString();
+
+            // If the username's length is less than 3, disconnect the client and warn them.
+            if(username.Length < 3)
+            {
+                using(Packet packetResponse = new Packet((int)ServerPackets.message))
+                {
+                    packetResponse.Write("Please enter a username longer than 2 characters. Disconnecting.");
+
+                    server.SendTcpData(fromClient, packet);
+                    server.DisconnectClient(fromClient);
+                }
+                server.onDebug.RaiseEvent($"Disconnecting Client#{fromClient} for having the username \"{username}\" which is too short.");
+
+                return;
+            }
+
+            server.onDebug.RaiseEvent($"Setting Client#{fromClient}'s username to {username}.");
+
             /**
              * TODO:
              * 1. There's no API decided currently. But, when the time comes, the user should authenticate through that.
              * 2. For now, just receive a username and let them use that name. No real validation needs to take place yet.
              * 3. Think about making it flexible enough to allow users to import their own auth systems.
              */
+            using(Packet packetResponse = new Packet((int)ServerPackets.validateUser))
+            {
+                packetResponse.Write(username);
+                packetResponse.Write(fromClient);
+
+                server.SendTcpData(fromClient, packet);
+            }
         }
         #endregion
     }

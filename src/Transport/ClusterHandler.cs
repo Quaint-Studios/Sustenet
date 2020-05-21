@@ -24,6 +24,29 @@ namespace Sustenet.Transport
     {
         #region Command Functions
         /// <summary>
+        /// Gives the client an ID and asks the Master Server if the current username belongs to them.
+        /// </summary>
+        /// <param name="server">The Cluster Server to run this on.</param>
+        /// <param name="toClient">The client's new ID.</param>
+        /// <param name="username">The client's username to validate.</param>
+        internal static void ValidateUser(this ClusterServer server, int toClient, string username)
+        {
+            /**
+             * TODO:
+             * 1. There's no API decided currently. But, when the time comes, the user should authenticate through that.
+             * 2. For now, just receive a username and let them use that name. No real validation needs to take place yet.
+             * 3. Think about making it flexible enough to allow users to import their own auth systems.
+             */
+            using(Packet packet = new Packet((int)ServerPackets.validateUser))
+            {
+                packet.Write(username);
+                packet.Write(toClient);
+
+                server.SendTcpData(toClient, packet);
+            }
+        }
+
+        /// <summary>
         /// Sends a packet to the master server that requests a string of text that must be
         /// decrypted and sent back.
         /// </summary>
