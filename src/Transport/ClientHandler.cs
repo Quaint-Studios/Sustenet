@@ -27,13 +27,16 @@ namespace Sustenet.Transport
     {
         #region Receive Command Functions
         /// <summary>
-        /// Handles data that sets this client's ID.
+        /// Handle a message from the server.
         /// </summary>
-        /// <param name="client">The client whose ID should be changed.</param>
-        /// <param name="packet">The packet containing the new client ID.</param>
-        internal static void Welcome(this Client client, Packet packet)
+        /// <param name="client">The client who received the message.</param>
+        /// <param name="packet">The packet containing the message from the server.</param>
+        internal static void Message(this Client client, Packet packet)
         {
             string msg = packet.ReadString();
+            client.tcp.onDebug.RaiseEvent($"(Server Message) {msg}");
+        }
+
             int id = packet.ReadInt();
 
             client.id = id;
