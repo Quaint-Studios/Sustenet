@@ -18,7 +18,6 @@
 namespace Sustenet.Transport
 {
     using Master;
-    using World;
     using Network;
 
     /// <summary>
@@ -27,16 +26,29 @@ namespace Sustenet.Transport
     static class MasterHandler
     {
         #region Command Functions
-        // Packet ID = 1
-        internal static void Welcome(this MasterServer server, int toClient, string msg)
+        internal static void ValidateCluster(this MasterServer server, int fromClient, Packet packet)
         {
-            using(Packet packet = new Packet((int)MasterPackets.welcome))
-            {
-                packet.Write(msg);
-                packet.Write(toClient);
+            /**
+             * TODO:
+             * 1. Load all public keys in ./cfg/keys.
+             * 2. Store the keys in memory using a Dictionary<string (the filename), string (the content)>().
+             * 3. When a cluster requests access, encrypt a random string of text that varies in size and wait 5 seconds.
+             * 4. If 5 seconds passes and a response isn't given, disconnect the cluster.
+             * 5. If a cluster gives the wrong response, disconnect it.
+             * 6. If a specific IP gives the wrong response a predefined (Defined in ./cfg/MasterServer.config) amount of
+             *    time, add it to a list of banned IPs. 0 will result in never banning. 1 bans on the first mistake.
+             * 7. If answered correctly, move the client's info to the cluster Dictionary and send a ServerPackets.clusterWelcome
+             */
+        }
 
-                server.SendTcpData(toClient, packet);
-            }
+        internal static void ValidateUser(this MasterServer server, int fromClient, Packet packet)
+        {
+            /**
+             * TODO:
+             * 1. There's no API decided currently. But, when the time comes, the user should authenticate through that.
+             * 2. For now, just receive a username and let them use that name. No real validation needs to take place yet.
+             * 3. Think about making it flexible enough to allow users to import their own auth systems.
+             */
         }
         #endregion
     }
