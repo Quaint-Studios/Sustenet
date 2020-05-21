@@ -25,8 +25,13 @@ namespace Sustenet.Transport
     /// </summary>
     static class ClientHandler
     {
-        #region Command Functions
-        internal static string Welcome(this Client client, Packet packet)
+        #region Receive Command Functions
+        /// <summary>
+        /// Handles data that sets this client's ID.
+        /// </summary>
+        /// <param name="client">The client whose ID should be changed.</param>
+        /// <param name="packet">The packet containing the new client ID.</param>
+        internal static void Welcome(this Client client, Packet packet)
         {
             string msg = packet.ReadString();
             int id = packet.ReadInt();
@@ -34,13 +39,19 @@ namespace Sustenet.Transport
             client.id = id;
 
             client.tcp.onDebug.RaiseEvent($"(Server says)...: {msg}");
-
-            return msg;
         }
+        #endregion
 
-        internal static void WelcomeReply(this Client client, string username)
+        #region Send Command Functions
+        /// <summary>
+        /// Sends a request to the server to login.
+        /// TODO: Authentication and persistent sessions.
+        /// </summary>
+        /// <param name="client">The client requesting to login.</param>
+        /// <param name="username">The username to login as.</param>
+        internal static void Login(this Client client, string username)
         {
-            using(Packet packet = new Packet((int)ClientPackets.welcomeReceived))
+            using(Packet packet = new Packet((int)ClientPackets.login))
             {
                 packet.Write(username);
 
