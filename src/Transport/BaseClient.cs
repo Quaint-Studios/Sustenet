@@ -36,7 +36,7 @@ namespace Sustenet.Transport
         public BaseClient(int _id, bool debug = true)
         {
             id = _id;
-            tcp = new TcpHandler(id);
+            tcp = new TcpHandler();
 
             if(debug)
                 tcp.onDebug.Run += (msg) => DebugClient(id, msg);
