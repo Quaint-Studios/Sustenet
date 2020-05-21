@@ -28,6 +28,10 @@ namespace Sustenet.Network
         /// </summary>
         validateCluster = -1,
         /// <summary>
+        /// Send a standard message to the client.
+        /// </summary>
+        message = 0,
+        /// <summary>
         /// Gives the client an ID. Validates the user locally from Master Server.
         /// If ran on a Cluster Server, asks the Master Server if they're actual
         /// a valid user.
