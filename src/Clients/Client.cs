@@ -17,6 +17,7 @@
 
 namespace Sustenet.Clients
 {
+    using System;
     using System.Net;
     using System.Collections.Generic;
     using Transport;
@@ -28,8 +29,44 @@ namespace Sustenet.Clients
     /// </summary>
     public class Client : BaseClient
     {
-        public IPAddress ip;
-        public ushort port;
+        public enum ConnectionType
+        {
+            MasterServer,
+            ClusterServer
+        }
+
+        public struct Connection
+        {
+            private IPAddress ip;
+            private ushort port;
+            public string Ip
+            {
+                get
+                {
+                    if(ip == null)
+                    {
+                        throw new Exception("Failed to get the IP address because it's not set.");
+                    }
+                    return ip.ToString();
+                }
+                set
+                {
+                    if(!IPAddress.TryParse(value, out ip))
+                    {
+                        throw new Exception("Failed to set the IP address because of an invalid format.");
+                    }
+                }
+            }
+
+            public ushort Port
+            {
+                get { return port; }
+                set { port = value; }
+            }
+        }
+
+        private Connection masterConnection;
+        private Connection clusterConnection;
 
         private Packet receivedData;
 
@@ -38,8 +75,11 @@ namespace Sustenet.Clients
 
         public Client(string _ip = "127.0.0.1", ushort _port = 6256, bool debug = true) : base(0, debug)
         {
-            ip = IPAddress.Parse(_ip);
-            port = _port;
+            masterConnection = new Connection
+            {
+                Ip = _ip,
+                Port = _port
+            };
 
             tcp.onConnected.Run += () => {
                 receivedData = new Packet();
@@ -55,9 +95,18 @@ namespace Sustenet.Clients
         /// <summary>
         /// Connects to the currently assigned IP and port.
         /// </summary>
-        public void Connect()
+        public void Connect(ConnectionType connectType = ConnectionType.MasterServer)
         {
-            tcp.Connect(ip, port);
+            switch(connectType)
+            {
+                case ConnectionType.MasterServer:
+                    tcp.Connect(IPAddress.Parse(masterConnection.Ip), masterConnection.Port);
+                    break;
+
+                case ConnectionType.ClusterServer:
+                    tcp.Connect(IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port);
+                    break;
+            }
         }
 
         #region Data Functions
