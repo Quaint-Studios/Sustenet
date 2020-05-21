@@ -33,6 +33,8 @@ namespace Sustenet.Transport
         public TcpHandler tcp;
         public static int bufferSize = 4096;
 
+        public string name;
+
         public BaseClient(int _id, bool debug = true)
         {
             id = _id;
