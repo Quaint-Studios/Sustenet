@@ -18,34 +18,46 @@
 namespace Sustenet.Network
 {
     /// <summary>
-    /// Used on a client to determine what type of packet they just received
-    /// from their masterConnection variable.
+    /// What a server sends. What a client receives.
     /// </summary>
-    public enum MasterPackets
+    public enum ServerPackets
     {
-        welcome = 1
+        /// <summary>
+        /// Gives the client an ID.
+        /// </summary>
+        welcome = 1,
+        /// <summary>
+        /// Turns a regular client into a Cluster Client and gives it a
+        /// new ID. Should only be used from a Master Server.
+        /// </summary>
+        clusterWelcome = 2
     }
 
     /// <summary>
-    /// Used on a client to determine what type of packet they just received
-    /// from their clusterConnection variable.
+    /// What a client sends and what only a cluster should receive.
     /// </summary>
     public enum ClusterPackets
     {
-        welcome = 1
+        /// <summary>
+        /// Sends movement updates.
+        /// </summary>
+        move = 1
     }
 
     /// <summary>
-    /// Used on a BaseServer to determine what a client is sending.
+    /// What a client sends. What a server receives.
     /// </summary>
     public enum ClientPackets
     {
-        #region Cluster Client
-        register = -1,
-        #endregion
-
-        #region Regular Client
-        welcomeReply = 1
-        #endregion
+        /// <summary>
+        /// Request to be a Cluster. If authenticated, the client
+        /// will get a new ID and will be moved to a server
+        /// dictionary on the Master server.
+        /// </summary>
+        cluster = -1,
+        /// <summary>
+        /// Logs in with a username.
+        /// </summary>
+        login = 1
     }
 }
