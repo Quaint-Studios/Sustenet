@@ -38,6 +38,9 @@
   <ItemGroup>
     <Compile Remove="src\Sustenet.cs" />
     <Compile Remove="src\Transport\BaseServer.cs" />
+    <Compile Remove="src\Transport\BaseServerHandler.cs" />
+    <Compile Remove="src\Transport\ClusterHandler.cs" />
+    <Compile Remove="src\Transport\MasterHandler.cs" />
     <Compile Remove="src\Transport\ServerHandler.cs" />
     <Compile Remove="src\Utils\Config.cs" />
   </ItemGroup>
