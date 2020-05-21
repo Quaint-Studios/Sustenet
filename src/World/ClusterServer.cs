@@ -43,6 +43,7 @@ namespace Sustenet.World
             timer.Enabled = true;
 
             Start(ServerType.ClusterServer);
+            masterConn.tcp.onConnected.Run += () => this.RegisterCluster("ClusterTestName");
             masterConn.Connect();
         }
 

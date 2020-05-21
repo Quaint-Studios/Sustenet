@@ -25,6 +25,12 @@ namespace Sustenet.Events
     {
         public event Action Run = delegate { };
 
+        internal void ClearEvents()
+        {
+            Run = delegate
+            { };
+        }
+
         public void RaiseEvent()
         {
             Run();
@@ -34,6 +40,12 @@ namespace Sustenet.Events
     public class BaseEvent<T>
     {
         public event Action<T> Run = delegate { };
+
+        internal void ClearEvents()
+        {
+            Run = delegate
+            { };
+        }
 
         public void RaiseEvent(T args)
         {
