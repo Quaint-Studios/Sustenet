@@ -38,11 +38,23 @@ namespace Sustenet.Transport
             client.tcp.onDebug.RaiseEvent($"(Server Message) {msg}");
         }
 
+        /// <summary>
+        /// Initializes the client's ID and username.
+        /// If the client is a Cluster, the username is the key.
+        /// 
+        /// TODO: Change to the cluster config name in the future.
+        /// </summary>
+        /// <param name="client">The client whose ID and username should be changed.</param>
+        /// <param name="packet">The packet containing the new client ID.</param>
+        internal static void ValidateClient(this Client client, Packet packet)
+        {
+            string username = packet.ReadString();
             int id = packet.ReadInt();
 
+            client.name = username;
             client.id = id;
 
-            client.tcp.onDebug.RaiseEvent($"(Server says)...: {msg}");
+            client.tcp.onDebug.RaiseEvent($"Welcome, {username}!");
         }
         #endregion
 
