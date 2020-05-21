@@ -65,6 +65,7 @@ namespace Sustenet.Clients
             }
         }
 
+        internal ConnectionType activeConnection;
         private Connection masterConnection;
         private Connection clusterConnection;
 
@@ -100,10 +101,12 @@ namespace Sustenet.Clients
             switch(connectType)
             {
                 case ConnectionType.MasterServer:
+                    activeConnection = connectType;
                     tcp.Connect(IPAddress.Parse(masterConnection.Ip), masterConnection.Port);
                     break;
 
                 case ConnectionType.ClusterServer:
+                    activeConnection = connectType;
                     tcp.Connect(IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port);
                     break;
             }
