@@ -33,8 +33,8 @@ namespace Sustenet.Clients
         {
             base.InitializeClientData();
 
-            packetHandlers.Add(ServerPackets.initializeCluster, this.initializeCluster);
-            packetHandlers.Add(ServerPackets.passphrase, this.Passphrase);
+            packetHandlers.Add((int)ServerPackets.initializeCluster, this.InitializeCluster);
+            packetHandlers.Add((int)ServerPackets.passphrase, this.Passphrase);
         }
     }
 }
