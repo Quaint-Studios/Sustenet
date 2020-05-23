@@ -28,7 +28,7 @@ namespace Sustenet.World
     /// </summary>
     class ClusterServer : BaseServer
     {
-        internal Client masterConn = new Client();
+        internal ClusterClient masterConn = new ClusterClient();
         private readonly Timer timer; // TODO: Only make this active if the server is command-line and not in Unity.
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Sustenet.World
             timer.Enabled = true;
 
             Start(ServerType.ClusterServer);
-            masterConn.tcp.onConnected.Run += () => this.RegisterCluster("ClusterTestName");
+
             masterConn.Connect();
         }
 
