@@ -36,12 +36,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="src\Clients\ClusterClient.cs" />
     <Compile Remove="src\Sustenet.cs" />
     <Compile Remove="src\Transport\BaseServer.cs" />
-    <Compile Remove="src\Transport\BaseServerHandler.cs" />
-    <Compile Remove="src\Transport\ClusterHandler.cs" />
-    <Compile Remove="src\Transport\MasterHandler.cs" />
-    <Compile Remove="src\Transport\ServerHandler.cs" />
+    <Compile Remove="src\Transport\Messages\BaseServerHandler.cs" />
+    <Compile Remove="src\Transport\Messages\ClusterClientHandler.cs" />
+    <Compile Remove="src\Transport\Messages\ClusterHandler.cs" />
+    <Compile Remove="src\Transport\Messages\MasterHandler.cs" />
     <Compile Remove="src\Utils\Config.cs" />
   </ItemGroup>
 
