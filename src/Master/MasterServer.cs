@@ -48,8 +48,8 @@ namespace Sustenet.Master
             {
                 packetHandlers = new Dictionary<int, PacketHandler>()
                 {
-                    { (int)ClientPackets.cluster, this.ValidateCluster },
-                    { (int)ClientPackets.login, this.ValidateUser }
+                    { (int)ClientPackets.validateCluster, this.ValidateCluster },
+                    { (int)ClientPackets.validateLogin, this.ValidateLogin }
                 };
             }
         }

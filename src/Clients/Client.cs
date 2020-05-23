@@ -73,6 +73,10 @@ namespace Sustenet.Clients
         private Packet receivedData;
 
         protected delegate void PacketHandler(Packet packet);
+
+        /// <summary>
+        /// A dictionary on how a packet should be handled.
+        /// </summary>
         protected static Dictionary<int, PacketHandler> packetHandlers;
 
         public Client(string _ip = "127.0.0.1", ushort _port = 6256, bool debug = true) : base(0, debug)
@@ -168,9 +172,8 @@ namespace Sustenet.Clients
             {
                 packetHandlers = new Dictionary<int, PacketHandler>()
                 {
-                    { (int)ServerPackets.validateCluster, this.ValidateClient },
                     { (int)ServerPackets.message, this.Message },
-                    { (int)ServerPackets.validateUser, this.ValidateClient }
+                    { (int)ServerPackets.initializeLogin, this.InitializeClient }
                 };
             }
         }

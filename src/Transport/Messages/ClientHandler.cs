@@ -31,11 +31,11 @@ namespace Sustenet.Transport.Messages
         /// </summary>
         /// <param name="client">The client requesting to login.</param>
         /// <param name="username">The username to login as.</param>
-        internal static void Login(this Client client, string username)
+        internal static void ValidateLogin(this Client client, string username)
         {
             if(client.activeConnection == Client.ConnectionType.MasterServer)
             {
-                using(Packet packet = new Packet((int)ClientPackets.login))
+                using(Packet packet = new Packet((int)ClientPackets.validateLogin))
                 {
                     packet.Write(username);
 

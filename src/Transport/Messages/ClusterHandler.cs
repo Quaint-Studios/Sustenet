@@ -37,7 +37,7 @@ namespace Sustenet.Transport.Messages
         /// <param name="server">The Cluster Server to run this on.</param>
         /// <param name="toClient">The client's new ID.</param>
         /// <param name="username">The client's username to validate.</param>
-        internal static void InitializeUser(this ClusterServer server, int toClient, string username)
+        internal static void InitializeLogin(this ClusterServer server, int toClient, string username)
         {
             /**
              * TODO:
@@ -45,7 +45,7 @@ namespace Sustenet.Transport.Messages
              * 2. For now, just receive a username and let them use that name. No real validation needs to take place yet.
              * 3. Think about making it flexible enough to allow users to import their own auth systems.
              */
-            using(Packet packet = new Packet((int)ServerPackets.initializeUser))
+            using(Packet packet = new Packet((int)ServerPackets.initializeLogin))
             {
                 packet.Write(username);
                 packet.Write(toClient);

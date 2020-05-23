@@ -25,7 +25,6 @@ namespace Sustenet.Transport.Messages
     /// </summary>
     static class BaseClientCore
     {
-        #region Data Functions
         /// <summary>
         /// Sends a packet through the current stream.
         /// </summary>
@@ -46,7 +45,6 @@ namespace Sustenet.Transport.Messages
                 client.tcp.onDebug.RaiseEvent($"Error sending data via TCP to Client#{client.id}...: {e}");
             }
         }
-        #endregion
     }
 
     /// <summary>
@@ -58,7 +56,7 @@ namespace Sustenet.Transport.Messages
     }
 
     /// <summary>
-    /// Messages that are received from the Base Client.
+    /// Messages that are received by the Base Client.
     /// </summary>
     static class BaseClientReceive
     {

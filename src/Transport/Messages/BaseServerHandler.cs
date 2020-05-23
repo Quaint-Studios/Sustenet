@@ -24,13 +24,23 @@ namespace Sustenet.Transport.Messages
     /// </summary>
     static class BaseServerCore
     {
-        #region Data Functions
+        /// <summary>
+        /// Send data to a single client.
+        /// </summary>
+        /// <param name="server">The server to send from.</param>
+        /// <param name="toClient">The client to send data to.</param>
+        /// <param name="packet">The packet to send.</param>
         internal static void SendTcpData(this BaseServer server, int toClient, Packet packet)
         {
             packet.WriteLength();
             server.clients[toClient].SendData(packet);
         }
 
+        /// <summary>
+        /// Send data to all clients.
+        /// </summary>
+        /// <param name="server">The server to send from.</param>
+        /// <param name="packet">The packet to send.</param>
         internal static void SendTcpDataToAll(this BaseServer server, Packet packet)
         {
             packet.WriteLength();
@@ -40,6 +50,12 @@ namespace Sustenet.Transport.Messages
             }
         }
 
+        /// <summary>
+        /// Send data to all clients except one.
+        /// </summary>
+        /// <param name="server">The server to send from.</param>
+        /// <param name="exceptClient">The client to exclude from the mass send.</param>
+        /// <param name="packet">The packet to send.</param>
         internal static void SendTcpDataToAll(this BaseServer server, int exceptClient, Packet packet)
         {
             packet.WriteLength();
@@ -51,7 +67,6 @@ namespace Sustenet.Transport.Messages
                 }
             }
         }
-        #endregion
     }
 
     /// <summary>
@@ -59,7 +74,12 @@ namespace Sustenet.Transport.Messages
     /// </summary>
     static class BaseServerSend
     {
-        #region Command Functions
+        /// <summary>
+        /// Sends a basic message to a client.
+        /// </summary>
+        /// <param name="server">The server to send from.</param>
+        /// <param name="toClient">The client to send to.</param>
+        /// <param name="msg">The message to send.</param>
         internal static void Message(this BaseServer server, int toClient, string msg)
         {
             using(Packet packet = new Packet((int)ServerPackets.message))
@@ -69,11 +89,10 @@ namespace Sustenet.Transport.Messages
                 server.SendTcpData(toClient, packet);
             }
         }
-        #endregion
     }
 
     /// <summary>
-    /// Messages that the Base Server receives from a client.
+    /// Messages that the Base Server receives from a Client.
     /// </summary>
     static class BaseServerReceive
     {

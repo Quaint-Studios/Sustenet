@@ -31,7 +31,7 @@ namespace Sustenet.Transport.Messages
     static class MasterSend
     {
         /// <summary>
-        /// Sends a client their validated login information.
+        /// Sends a Client their validated login information.
         /// </summary>
         /// <param name="server">The Master Server to run this on.</param>
         /// <param name="toClient">The client to give a username and ID.</param>
@@ -56,11 +56,11 @@ namespace Sustenet.Transport.Messages
         }
 
         /// <summary>
-        /// Turns a client into a cluster.
+        /// Turns a Client into a Cluster.
         /// </summary>
-        /// <param name="server"></param>
-        /// <param name="toClient"></param>
-        /// <param name="keyName"></param>
+        /// <param name="server">The Master Server to run this on.</param>
+        /// <param name="toClient">The client to send this to.</param>
+        /// <param name="keyName">The name to send to the client.</param>
         internal static void InitializeCluster(this MasterServer server, int toClient, string keyName)
         {
             int id;
@@ -78,7 +78,7 @@ namespace Sustenet.Transport.Messages
                 server.clusterClients.Add(id, null); // Reserve this spot instantly here too.
             }
 
-            server.clusterClients[id] = server.clients[fromClient];
+            server.clusterClients[id] = server.clients[toClient];
 
             server.clusterClients[id].tcp.onDisconnected.ClearEvents();
             server.clusterClients[id].tcp.onDisconnected.Run += () => server.ClearClusterClient(id);
@@ -86,6 +86,8 @@ namespace Sustenet.Transport.Messages
             server.ClearClient(toClient);
 
             server.onConnection.RaiseEvent(id);
+
+            //TODO: Send a packet back with the Cluster's keyName to let them know they're verified.
         }
     }
 
@@ -121,7 +123,7 @@ namespace Sustenet.Transport.Messages
         }
 
         /// <summary>
-        /// 
+        /// Verifies that a Client has the proper authority to register as a Cluster.
         /// </summary>
         /// <param name="server"></param>
         /// <param name="fromClient"></param>
