@@ -20,6 +20,7 @@ namespace Sustenet.Master
     using Network;
     using System.Collections.Generic;
     using Transport;
+    using Transport.Messages;
 
     /// <summary>
     /// The Master Server keeps track of all Cluster Servers. It also allocates

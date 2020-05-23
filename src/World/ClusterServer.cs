@@ -19,6 +19,7 @@ namespace Sustenet.World
 {
     using System.Timers;
     using Transport;
+    using Transport.Messages;
     using Clients;
 
     /// <summary>

@@ -26,7 +26,7 @@ namespace Sustenet.Network
         /// Turns a regular client into a Cluster Client and gives it a
         /// new ID. Should only be used from a Master Server.
         /// </summary>
-        validateCluster = -1,
+        initializeCluster = -1,
         /// <summary>
         /// Send a standard message to the client.
         /// </summary>
@@ -36,7 +36,7 @@ namespace Sustenet.Network
         /// If ran on a Cluster Server, asks the Master Server if they're actual
         /// a valid user.
         /// </summary>
-        validateUser = 1
+        initializeLogin = 1
     }
 
     /// <summary>
@@ -60,10 +60,10 @@ namespace Sustenet.Network
         /// will get a new ID and will be moved to a server
         /// dictionary on the Master server.
         /// </summary>
-        cluster = -1,
+        validateCluster = -1,
         /// <summary>
         /// Logs in with a username.
         /// </summary>
-        login = 1
+        validateLogin = 1
     }
 }

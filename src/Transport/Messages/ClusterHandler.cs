@@ -15,21 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport
+namespace Sustenet.Transport.Messages
 {
     using Network;
     using World;
 
-    static class ClusterHandler
+    /// <summary>
+    /// The core all Cluster messages.
+    /// </summary>
+    static class ClusterCore { }
+
+    /// <summary>
+    /// Any message that is outbound from the Cluster or goes through the cluster to
+    /// get to its client connection to the Master Server.
+    /// </summary>
+    static class ClusterSend
     {
-        #region Command Functions
         /// <summary>
         /// Gives the client an ID and asks the Master Server if the current username belongs to them.
         /// </summary>
         /// <param name="server">The Cluster Server to run this on.</param>
         /// <param name="toClient">The client's new ID.</param>
         /// <param name="username">The client's username to validate.</param>
-        internal static void ValidateUser(this ClusterServer server, int toClient, string username)
+        internal static void InitializeUser(this ClusterServer server, int toClient, string username)
         {
             /**
              * TODO:
@@ -37,7 +45,7 @@ namespace Sustenet.Transport
              * 2. For now, just receive a username and let them use that name. No real validation needs to take place yet.
              * 3. Think about making it flexible enough to allow users to import their own auth systems.
              */
-            using(Packet packet = new Packet((int)ServerPackets.validateUser))
+            using(Packet packet = new Packet((int)ServerPackets.initializeUser))
             {
                 packet.Write(username);
                 packet.Write(toClient);
@@ -53,15 +61,27 @@ namespace Sustenet.Transport
         /// <param name="server">The cluster server requesting access.</param>
         /// <param name="keyName">The name of the SSH key stored on the master server. These are
         /// preloaded so there's no need to sanitize directory requests.</param>
-        internal static void RegisterCluster(this ClusterServer server, string keyName)
+        internal static void ValidateCluster(this ClusterServer server, string keyName)
         {
-            using(Packet packet = new Packet((int)ClientPackets.cluster))
+            using(Packet packet = new Packet((int)ClientPackets.validateCluster))
             {
                 packet.Write(keyName);
 
                 server.masterConn.SendData(packet);
             }
         }
-        #endregion
+
+        /// <summary>
+        /// Placeholder for answering the passphrase the server may send to the cluster.
+        /// </summary>
+        internal static void AnswerCluster() { }
+    }
+
+    /// <summary>
+    /// Any message the Cluster receives.
+    /// </summary>
+    static class ClusterReceive
+    {
+
     }
 }

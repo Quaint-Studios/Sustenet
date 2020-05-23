@@ -15,12 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport
+namespace Sustenet.Transport.Messages
 {
     using System;
     using Network;
 
-    static class BaseClientHandler
+    /// <summary>
+    /// The core for the Base Client's message system.
+    /// </summary>
+    static class BaseClientCore
     {
         #region Data Functions
         /// <summary>
@@ -44,5 +47,21 @@ namespace Sustenet.Transport
             }
         }
         #endregion
+    }
+
+    /// <summary>
+    /// Messages that are sent from the Base Client.
+    /// </summary>
+    static class BaseClientSend
+    {
+
+    }
+
+    /// <summary>
+    /// Messages that are received from the Base Client.
+    /// </summary>
+    static class BaseClientReceive
+    {
+
     }
 }

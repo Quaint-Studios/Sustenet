@@ -15,50 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport
+namespace Sustenet.Transport.Messages
 {
     using Network;
     using Clients;
 
     /// <summary>
-    /// Handles functionality for clients.
+    /// 
     /// </summary>
-    static class ClientHandler
+    static class ClientSend
     {
-        #region Receive Command Functions
-        /// <summary>
-        /// Handle a message from the server.
-        /// </summary>
-        /// <param name="client">The client who received the message.</param>
-        /// <param name="packet">The packet containing the message from the server.</param>
-        internal static void Message(this Client client, Packet packet)
-        {
-            string msg = packet.ReadString();
-
-            client.tcp.onDebug.RaiseEvent($"(Server Message) {msg}");
-        }
-
-        /// <summary>
-        /// Initializes the client's ID and username.
-        /// If the client is a Cluster, the username is the key.
-        /// 
-        /// TODO: Change to the cluster config name in the future.
-        /// </summary>
-        /// <param name="client">The client whose ID and username should be changed.</param>
-        /// <param name="packet">The packet containing the new client ID.</param>
-        internal static void ValidateClient(this Client client, Packet packet)
-        {
-            string username = packet.ReadString();
-            int id = packet.ReadInt();
-
-            client.name = username;
-            client.id = id;
-
-            client.tcp.onDebug.RaiseEvent($"Welcome, {username}!");
-        }
-        #endregion
-
-        #region Send Command Functions
         /// <summary>
         /// Sends a request to the server to login.
         /// TODO: Authentication and persistent sessions.
@@ -81,6 +47,42 @@ namespace Sustenet.Transport
                 client.tcp.onDebug.RaiseEvent("Cannot login unless connected to a Master Server.");
             }
         }
-        #endregion
+    }
+
+    /// <summary>
+    /// Messages that the Client would receive from a server.
+    /// </summary>
+    static class ClientReceive
+    {
+        /// <summary>
+        /// Handle a message from the server.
+        /// </summary>
+        /// <param name="client">The client who received the message.</param>
+        /// <param name="packet">The packet containing the message from the server.</param>
+        internal static void Message(this Client client, Packet packet)
+        {
+            string msg = packet.ReadString();
+
+            client.tcp.onDebug.RaiseEvent($"(Server Message) {msg}");
+        }
+
+        /// <summary>
+        /// Initializes the client's ID and username.
+        /// If the client is a Cluster, the username is the key.
+        /// 
+        /// TODO: Change to the cluster config name in the future.
+        /// </summary>
+        /// <param name="client">The client whose ID and username should be changed.</param>
+        /// <param name="packet">The packet containing the new client ID.</param>
+        internal static void InitializeClient(this Client client, Packet packet)
+        {
+            string username = packet.ReadString();
+            int id = packet.ReadInt();
+
+            client.name = username;
+            client.id = id;
+
+            client.tcp.onDebug.RaiseEvent($"Welcome, {username}!");
+        }
     }
 }

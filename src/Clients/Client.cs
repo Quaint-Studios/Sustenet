@@ -21,6 +21,7 @@ namespace Sustenet.Clients
     using System.Net;
     using System.Collections.Generic;
     using Transport;
+    using Transport.Messages;
     using Network;
 
 

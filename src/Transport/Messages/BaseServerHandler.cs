@@ -15,24 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport
+namespace Sustenet.Transport.Messages
 {
     using Network;
 
-    static class BaseServerHandler
+    /// <summary>
+    /// The core for the Base Server's message system.
+    /// </summary>
+    static class BaseServerCore
     {
-        #region Command Functions
-        internal static void Message(this BaseServer server, int toClient, string msg)
-        {
-            using(Packet packet = new Packet((int)ServerPackets.message))
-            {
-                packet.Write(msg);
-
-                server.SendTcpData(toClient, packet);
-            }
-        }
-        #endregion
-
         #region Data Functions
         internal static void SendTcpData(this BaseServer server, int toClient, Packet packet)
         {
@@ -61,5 +52,31 @@ namespace Sustenet.Transport
             }
         }
         #endregion
+    }
+
+    /// <summary>
+    /// All the messages that the Base Server might send.
+    /// </summary>
+    static class BaseServerSend
+    {
+        #region Command Functions
+        internal static void Message(this BaseServer server, int toClient, string msg)
+        {
+            using(Packet packet = new Packet((int)ServerPackets.message))
+            {
+                packet.Write(msg);
+
+                server.SendTcpData(toClient, packet);
+            }
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// Messages that the Base Server receives from a client.
+    /// </summary>
+    static class BaseServerReceive
+    {
+
     }
 }
