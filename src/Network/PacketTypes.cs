@@ -23,6 +23,10 @@ namespace Sustenet.Network
     public enum ServerPackets
     {
         /// <summary>
+        /// Sends a passphrase that a Cluster Client should decrypt and answer.
+        /// </summary>
+        passphrase = -2,
+        /// <summary>
         /// Turns a regular client into a Cluster Client and gives it a
         /// new ID. Should only be used from a Master Server.
         /// </summary>
@@ -55,6 +59,10 @@ namespace Sustenet.Network
     /// </summary>
     public enum ClientPackets
     {
+        /// <summary>
+        /// Sends an answer to a passphrase to the server.
+        /// </summary>
+        answerPassphrase = -2,
         /// <summary>
         /// Request to be a Cluster. If authenticated, the client
         /// will get a new ID and will be moved to a server
