@@ -53,28 +53,6 @@ namespace Sustenet.Transport.Messages
                 server.SendTcpData(toClient, packet);
             }
         }
-
-        /// <summary>
-        /// Sends a packet to the master server that requests a string of text that must be
-        /// decrypted and sent back.
-        /// </summary>
-        /// <param name="server">The cluster server requesting access.</param>
-        /// <param name="keyName">The name of the SSH key stored on the master server. These are
-        /// preloaded so there's no need to sanitize directory requests.</param>
-        internal static void ValidateCluster(this ClusterServer server, string keyName)
-        {
-            using(Packet packet = new Packet((int)ClientPackets.validateCluster))
-            {
-                packet.Write(keyName);
-
-                server.masterConn.SendData(packet);
-            }
-        }
-
-        /// <summary>
-        /// Placeholder for answering the passphrase the server may send to the cluster.
-        /// </summary>
-        internal static void AnswerCluster() { }
     }
 
     /// <summary>
