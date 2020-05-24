@@ -25,6 +25,7 @@ namespace Sustenet.Utils
     using System.Security.Cryptography;
     using System.IO;
     using System.Xml.Serialization;
+    using System.Reflection;
 
     public static class Security
     {
@@ -142,13 +143,13 @@ namespace Sustenet.Utils
                 XmlSerializer serializer = new XmlSerializer(typeof(RSAParameters));
 
                 // Private Key
-                using(StreamWriter writer = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\keys\priv\{keyName}_priv.xml")))
+                using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), @$"cfg\keys\priv\{keyName}_priv.xml")))
                 {
                     serializer.Serialize(writer, privKey);
                 }
 
                 // Public Key
-                using(StreamWriter writer = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\keys\pub\{keyName}_pub.xml")))
+                using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), @$"cfg\keys\pub\{keyName}_pub.xml")))
                 {
                     serializer.Serialize(writer, pubKey);
                 }
@@ -171,7 +172,7 @@ namespace Sustenet.Utils
             /// <param name="serializer">An optional serializer to use.</param>
             public static void LoadPubKeys(XmlSerializer serializer = null)
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\keys\pub");
+                string path = Path.Combine(Utilities.GetAppPath(), @$"cfg\keys\pub");
 
                 // Public Key
                 foreach(string pubKeyName in Directory.GetFiles(path, "*_pub.xml"))
@@ -187,7 +188,7 @@ namespace Sustenet.Utils
             /// <param name="serializer">An optional serializer to use.</param>
             public static void LoadPrivKeys(XmlSerializer serializer = null)
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\keys\priv");
+                string path = Path.Combine(Utilities.GetAppPath(), @$"cfg\keys\priv");
 
                 // Private Key
                 foreach(string privKeyName in Directory.GetFiles(path, "*_priv.xml"))

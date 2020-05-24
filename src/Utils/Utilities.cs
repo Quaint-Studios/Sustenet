@@ -59,5 +59,12 @@ namespace Sustenet.Utils
             Console.WriteLine($"===== {h} =====");
         }
         #endregion
+
+        #region Files Handling
+        public static string GetAppPath()
+        {
+            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        }
+        #endregion
     }
 }

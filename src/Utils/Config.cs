@@ -18,6 +18,7 @@
 using System;
 using System.IO;
 using System.Configuration;
+using System.Reflection;
 
 namespace Sustenet.Utils
 {
@@ -40,7 +41,7 @@ namespace Sustenet.Utils
         public static KeyValueConfigurationCollection GetConfig(ConfigType configType)
         {
             ExeConfigurationFileMap configMap = new ExeConfigurationFileMap();
-            configMap.ExeConfigFilename = Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\{configType.ToString()}.config");
+            configMap.ExeConfigFilename = Path.Combine(Utilities.GetAppPath(), @$"cfg\{configType.ToString()}.config");
             Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
 
             return config.AppSettings.Settings;
