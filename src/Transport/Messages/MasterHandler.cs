@@ -153,38 +153,14 @@ namespace Sustenet.Transport.Messages
         }
 
         /// <summary>
-        /// Verifies that a Client has the proper authority to register as a Cluster.
+        /// Starts the Cluster Client verification process.
         /// </summary>
         /// <param name="server"></param>
         /// <param name="fromClient"></param>
         /// <param name="packet"></param>
         internal static void ValidateCluster(this MasterServer server, int fromClient, Packet packet)
         {
-            /**
-             * TODO:
-             * 1. Load all public keys in ./cfg/keys.
-             * 2. Store the keys in memory using a Dictionary<string (the filename), string (the content)>().
-             * 3. When a cluster requests access, encrypt a random string of text that varies in size and wait 5 seconds.
-             * 4. If 5 seconds passes and a response isn't given, disconnect the cluster.
-             * 5. If a cluster gives the wrong response, disconnect it.
-             * 6. If a specific IP gives the wrong response a predefined (Defined in ./cfg/MasterServer.config) amount of
-             *    time, add it to a list of banned IPs. 0 will result in never banning. 1 bans on the first mistake.
-             * 7. If answered correctly, move the client's info to the cluster Dictionary and send a ServerPackets.clusterWelcome
-             */
             string keyName = packet.ReadString();
-            // string answer = packet.ReadString();
-            /**
-             * 1. Make sure there are more bytes to read.
-             * 2. If there's another string, it's probably the answer. Read it.
-             * 3. If the answer matches the passphrase in this client's name, continue and make them into a cluster.
-             * 4. If there are no more bytes, reply with server.Passphrase() or server.FightClub(), an alias.
-             * This would make it so the client knows what to decrypt. Then the client must ValidateCluster() again
-             * but with both the keyName and answer attached.
-             * 5. Repeat Step #1-3.
-
-            // TODO: Validate with passphrase that is encrypted with a public key and must be decrypted with a private key.
-            */
-
             server.InitializeCluster(fromClient, keyName);
         }
     }
