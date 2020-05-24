@@ -126,7 +126,7 @@ namespace Sustenet.Transport
         /// Kicks a client off the server and clears their entry.
         /// </summary>
         /// <param name="clientId">The client id to kick and clear.</param>
-        internal void DisconnectClient(int clientId)
+        internal virtual void DisconnectClient(int clientId)
         {
             clients[clientId].tcp.socket.Close();
             ClearClient(clientId);

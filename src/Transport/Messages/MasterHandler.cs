@@ -97,31 +97,15 @@ namespace Sustenet.Transport.Messages
         /// <param name="clusterName">The name the client requested and to send back to them.</param>
         internal static void InitializeCluster(this MasterServer server, int toClient, string clusterName)
         {
-            int id;
 
-            if(server.releasedClusterIds.Count > 0)
+            server.clusterIds.Add(toClient); // Store the ID as a cluster since they've been verified.
+
+            using(Packet packet = new Packet((int)ServerPackets.initializeCluster))
             {
-                id = server.releasedClusterIds[0];
-                server.clusterClients.Add(id, null); // Reserve this spot instantly.
+                packet.Write(clusterName);
 
-                server.releasedClusterIds.RemoveAt(0);
+                server.SendTcpData(toClient, packet);
             }
-            else
-            {
-                id = server.clusterClients.Count;
-                server.clusterClients.Add(id, null); // Reserve this spot instantly here too.
-            }
-
-            server.clusterClients[id] = server.clients[toClient];
-
-            server.clusterClients[id].tcp.onDisconnected.ClearEvents();
-            server.clusterClients[id].tcp.onDisconnected.Run += () => server.ClearClusterClient(id);
-
-            server.ClearClient(toClient);
-
-            server.onConnection.RaiseEvent(id);
-
-            //TODO: Send a packet back with the Cluster's keyName to let them know they're verified.
         }
     }
 
