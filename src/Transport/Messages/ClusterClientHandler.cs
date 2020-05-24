@@ -86,6 +86,11 @@ namespace Sustenet.Transport.Messages
             client.tcp.onDebug.RaiseEvent($"Welcome, {keyName}!");
         }
 
+        /// <summary>
+        /// Reads a keyName and passphrase from the server and attempts to answer it.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="packet"></param>
         internal static void Passphrase(this ClusterClient client, Packet packet)
         {
             string keyName = packet.ReadString();
