@@ -6,6 +6,8 @@ namespace Sustenet.Utils
 {
     using System.Linq;
     using System.Security.Cryptography;
+    using System.IO;
+    using System.Xml.Serialization;
 
     public static class Security
     {
@@ -69,6 +71,225 @@ namespace Sustenet.Utils
             }
 
             return new string(chars.ToArray());
+        }
+
+        public static class Keys
+        {
+            private static Dictionary<string, RSAParameters> rsaPrivKeys = new Dictionary<string, RSAParameters>();
+            private static Dictionary<string, RSAParameters> rsaPubKeys = new Dictionary<string, RSAParameters>();
+
+            public enum KeyType
+            {
+                PublicKey,
+                PrivateKey
+            }
+
+            public struct KeyData
+            {
+                public readonly string name;
+                public readonly RSAParameters key;
+
+                public KeyData(string _name, RSAParameters _key)
+                {
+                    name = _name;
+                    key = _key;
+                }
+            }
+
+            /// <summary>
+            /// Generates an RSA public and private key pair.
+            /// </summary>
+            /// <param name="keyName">The name to save the key as.</param>
+            /// <param name="bit">The bit encryption.</param>
+            public static void GenerateKeyPair(string keyName, int bit = 2048)
+            {
+                RSACryptoServiceProvider csp = new RSACryptoServiceProvider(bit);
+
+                RSAParameters privKey = csp.ExportParameters(true);
+                RSAParameters pubKey = csp.ExportParameters(false);
+
+                rsaPrivKeys.Add(keyName, privKey);
+                rsaPubKeys.Add(keyName, pubKey);
+
+                SaveKeyPair(keyName, privKey, pubKey);
+            }
+
+            /// <summary>
+            /// Saves a key pair.
+            /// </summary>
+            /// <param name="keyName">The name of the key.</param>
+            /// <param name="privKey">The private key.</param>
+            /// <param name="pubKey">The public key.</param>
+            public static void SaveKeyPair(string keyName, RSAParameters privKey, RSAParameters pubKey)
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(RSAParameters));
+
+                // Private Key
+                using(StreamWriter writer = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\keys\priv\{keyName}_priv.xml")))
+                {
+                    serializer.Serialize(writer, privKey);
+                }
+
+                // Public Key
+                using(StreamWriter writer = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\keys\pub\{keyName}_pub.xml")))
+                {
+                    serializer.Serialize(writer, pubKey);
+                }
+            }
+
+            /// <summary>
+            /// Loads all public and private keys.
+            /// </summary>
+            public static void LoadKeys()
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(RSAParameters));
+
+                LoadPrivKeys(serializer);
+                LoadPubKeys(serializer);
+            }
+
+            /// <summary>
+            /// Loads all public keys in ./cfg/keys/pub/
+            /// </summary>
+            /// <param name="serializer">An optional serializer to use.</param>
+            public static void LoadPubKeys(XmlSerializer serializer = null)
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\keys\pub");
+
+                // Public Key
+                foreach(string pubKeyName in Directory.GetFiles(path, "*_pub.xml"))
+                {
+                    KeyData data = GetKey(path, pubKeyName, KeyType.PublicKey, serializer);
+                    rsaPrivKeys.Add(data.name, data.key);
+                }
+            }
+
+            /// <summary>
+            /// Loads all private keys in ./cfg/keys/priv/
+            /// </summary>
+            /// <param name="serializer">An optional serializer to use.</param>
+            public static void LoadPrivKeys(XmlSerializer serializer = null)
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), @$"cfg\keys\priv");
+
+                // Private Key
+                foreach(string privKeyName in Directory.GetFiles(path, "*_priv.xml"))
+                {
+                    KeyData data = GetKey(path, privKeyName, KeyType.PrivateKey, serializer);
+                    rsaPrivKeys.Add(data.name, data.key);
+                }
+            }
+
+            /// <summary>
+            /// Loads a key from a file.
+            /// </summary>
+            /// <param name="directory">The directory containing the file.</param>
+            /// <param name="keyName">The file name without the suffix.</param>
+            /// <param name="keyType">The type of key to load.</param>
+            /// <param name="serializer">An optional serializer to use.</param>
+            /// <returns>The formatted name of the key without any suffixes and the key itself.</returns>
+            public static KeyData GetKey(string directory, string keyName, KeyType keyType, XmlSerializer serializer = null)
+            {
+                try
+                {
+                    if(serializer == null)
+                        serializer = new XmlSerializer(typeof(RSAParameters));
+
+                    string file = Path.Join(directory, keyName);
+
+                    if(!File.Exists(file))
+                    {
+                        throw new Exception($"{file} does not exist.");
+                    }
+
+                    string fileSuffix = keyType == KeyType.PublicKey ? "_pub.xml" : "_priv.xml";
+
+                    using(StreamReader reader = new StreamReader(file))
+                    {
+                        string formattedName = keyName.Substring(0, keyName.Length - fileSuffix.Length);
+
+                        Console.WriteLine($"Formatted Name: {formattedName}");
+
+                        return new KeyData(formattedName, (RSAParameters)serializer.Deserialize(reader));
+                    }
+                }
+                catch(Exception e)
+                {
+                    throw new Exception($"Failed to get the key {keyName}: {e}");
+                }
+            }
+
+            /// <summary>
+            /// Checks if a key exists in either the pubkey or privkey dictionaries.
+            /// </summary>
+            /// <param name="keyName">The name of the key to check for.</param>
+            /// <param name="keyType">The type of key to check for.</param>
+            public static bool KeyExists(string keyName, KeyType keyType = KeyType.PublicKey)
+            {
+                return keyType == KeyType.PublicKey ? rsaPubKeys.ContainsKey(keyName) : rsaPrivKeys.ContainsKey(keyName);
+            }
+
+            /// <summary>
+            /// Encrypts a string of data and converts it to Base64.
+            /// </summary>
+            /// <param name="keyName">The public or private key to use to encrypt data.</param>
+            /// <param name="data">The string to encrypt.</param>
+            /// <returns>An encrypted base64 string.</returns>
+            public static string Encrypt(string keyName, string data)
+            {
+                RSAParameters? key = null;
+                if(rsaPubKeys.ContainsKey(keyName))
+                {
+                    key = rsaPubKeys[keyName];
+                }
+
+                // If no public key is found, try to find a private key.
+                if(key == null && rsaPrivKeys.ContainsKey(keyName))
+                {
+                    key = rsaPrivKeys[keyName];
+                }
+
+                if(key == null)
+                {
+                    throw new Exception($"Failed to find a key that matched '{keyName}'");
+                }
+
+                RSACryptoServiceProvider csp = new RSACryptoServiceProvider();
+                csp.ImportParameters((RSAParameters)key);
+
+                byte[] dataBytes = Encoding.Unicode.GetBytes(data);
+
+                return Convert.ToBase64String(csp.Encrypt(dataBytes, false));
+            }
+
+            /// <summary>
+            /// Decrypts an encrypted string with the provided key.
+            /// </summary>
+            /// <param name="keyName">The private key to decrypt with.</param>
+            /// <param name="data">The Base64 data to decrypt.</param>
+            /// <returns>A decrypted string.</returns>
+            public static string Decrypt(string keyName, string data)
+            {
+                RSAParameters? key = null;
+                // Only look for a private key. Because... well.. public keys don't decrypt.
+                // .......................At least I hope not.
+                if(rsaPrivKeys.ContainsKey(keyName))
+                {
+                    key = rsaPubKeys[keyName];
+                }
+
+                if(key == null)
+                {
+                    throw new Exception($"Failed to find a key that matched '{keyName}'");
+                }
+
+                RSACryptoServiceProvider csp = new RSACryptoServiceProvider();
+                csp.ImportParameters((RSAParameters)key);
+
+                byte[] dataBytes = csp.Decrypt(Convert.FromBase64String(data), false);
+
+                return Encoding.Unicode.GetString(dataBytes);
+            }
         }
     }
 }
