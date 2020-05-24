@@ -38,7 +38,7 @@ namespace Sustenet.Master
 
         public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
         {
-            Security.Keys.GetKey("TestName");
+            Security.Keys.LoadPubKeys();
 
             InitializeData();
 
