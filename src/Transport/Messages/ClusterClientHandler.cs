@@ -55,7 +55,9 @@ namespace Sustenet.Transport.Messages
         {
             using(Packet packet = new Packet((int)ClientPackets.answerPassphrase))
             {
+                packet.Write(answer);
 
+                client.SendData(packet);
             }
         }
     }
