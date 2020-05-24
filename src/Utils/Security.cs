@@ -114,6 +114,19 @@ namespace Sustenet.Utils
                 }
             }
 
+            static Keys()
+            {
+                string privPath = Path.Combine(Utilities.GetAppPath(), @$"cfg\keys\priv");
+
+                if(!Directory.Exists(privPath))
+                    Directory.CreateDirectory(privPath);
+
+                string pubPath = Path.Combine(Utilities.GetAppPath(), @$"cfg\keys\pub");
+
+                if(!Directory.Exists(pubPath))
+                    Directory.CreateDirectory(pubPath);
+            }
+
             /// <summary>
             /// Generates an RSA public and private key pair.
             /// </summary>
@@ -213,7 +226,7 @@ namespace Sustenet.Utils
                     if(serializer == null)
                         serializer = new XmlSerializer(typeof(RSAParameters));
 
-                    string file = Path.Join(directory, keyName);
+                    string file = Path.Combine(directory, keyName);
 
                     if(!File.Exists(file))
                     {
