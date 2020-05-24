@@ -76,6 +76,7 @@ namespace Sustenet.Transport.Messages
         {
             string keyName = packet.ReadString();
 
+            client.name = keyName;
 
             client.tcp.onDebug.RaiseEvent($"Welcome, {keyName}!");
         }
