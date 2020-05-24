@@ -31,6 +31,14 @@ namespace Sustenet.Transport.Messages
     /// </summary>
     static class MasterSend
     {
+        /// <summary>
+        /// Generates a 128-156 character passphrase, encrypts it using an RSA key,
+        /// stores the passphrase in the potential Cluster Client's name, and then
+        /// sends it to the potential Cluster Client.
+        /// </summary>
+        /// <param name="server">The server to run this on.</param>
+        /// <param name="toClient">The client to send the passphrase to.</param>
+        /// <param name="keyName">The name of the key to use.</param>
         internal static void Passphrase(this MasterServer server, int toClient, string keyName)
         {
             string passphrase = Security.GeneratePassphrase();
