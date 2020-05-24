@@ -94,8 +94,8 @@ namespace Sustenet.Transport.Messages
         /// </summary>
         /// <param name="server">The Master Server to run this on.</param>
         /// <param name="toClient">The client to send this to.</param>
-        /// <param name="keyName">The name to send to the client.</param>
-        internal static void InitializeCluster(this MasterServer server, int toClient, string keyName)
+        /// <param name="clusterName">The name the client requested and to send back to them.</param>
+        internal static void InitializeCluster(this MasterServer server, int toClient, string clusterName)
         {
             int id;
 
