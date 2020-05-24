@@ -19,6 +19,7 @@ namespace Sustenet.Transport.Messages
 {
     using Network;
     using Clients;
+    using Utils;
 
     /// <summary>
     /// The core all Cluster Client messages.
@@ -81,10 +82,12 @@ namespace Sustenet.Transport.Messages
             client.tcp.onDebug.RaiseEvent($"Welcome, {keyName}!");
         }
 
-        internal static void Passphrase(this Client client, Packet packet)
         internal static void Passphrase(this ClusterClient client, Packet packet)
         {
+            string keyName = packet.ReadString();
             string passphrase = packet.ReadString();
+
+            client.AnswerPassphrase(Security.Keys.Decrypt(keyName, passphrase));
         }
     }
 }
