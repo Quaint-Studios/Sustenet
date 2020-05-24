@@ -19,6 +19,7 @@ namespace Sustenet.Transport.Messages
 {
     using Master;
     using Network;
+    using Utils;
 
     /// <summary>
     /// The core for all Master Server messages.
@@ -30,6 +31,21 @@ namespace Sustenet.Transport.Messages
     /// </summary>
     static class MasterSend
     {
+        internal static void Passphrase(this MasterServer server, int toClient, string keyName)
+        {
+            string passphrase = Security.GeneratePassphrase();
+            string cypher = Security.Keys.Encrypt(keyName, passphrase);
+
+            server.clients[toClient].name = cypher; // Set the client name to the cipher to store it.
+
+            using(Packet packet = new Packet((int)ServerPackets.passphrase))
+            {
+                packet.Write(cypher);
+
+                server.SendTcpData(toClient, packet);
+            }
+        }
+
         /// <summary>
         /// Sends a Client their validated login information.
         /// </summary>
