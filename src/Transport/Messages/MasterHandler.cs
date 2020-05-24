@@ -125,14 +125,10 @@ namespace Sustenet.Transport.Messages
             // If the username's length is less than 3, disconnect the client and warn them.
             if(username.Length < 3)
             {
-                using(Packet packetResponse = new Packet((int)ServerPackets.message))
-                {
-                    packetResponse.Write("Please enter a username longer than 2 characters. Disconnecting.");
+                server.Message(fromClient, "Please enter a username longer than 2 characters. Disconnecting.");
+                server.DisconnectClient(fromClient);
 
-                    server.SendTcpData(fromClient, packet);
-                    server.DisconnectClient(fromClient);
-                }
-                server.onDebug.RaiseEvent($"Disconnecting Client#{fromClient} for having the username \"{username}\" which is too short.");
+                server.onDebug.RaiseEvent($"Disconnecting Client#{fromClient} for having the username '{username}' which is too short.");
 
                 return;
             }
