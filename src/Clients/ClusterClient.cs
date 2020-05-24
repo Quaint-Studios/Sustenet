@@ -25,8 +25,9 @@ namespace Sustenet.Clients
     {
         public ClusterClient(string _ip = "127.0.0.1", ushort _port = 6256, bool debug = true) : base(_ip, _port, debug)
         {
-            // TODO: Load a private key from config.
-            string keyName = "TestName";// TODO: Replace with Config name.
+            name = "Test Name"; // TODO: Load from config.
+
+            string keyName = name.Replace(" ", "");// TODO: Replace with config name.
             if(!Security.Keys.KeyExists(keyName))
             {
                 Security.Keys.GenerateKeyPair(keyName);
