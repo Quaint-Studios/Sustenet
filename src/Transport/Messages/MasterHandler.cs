@@ -164,6 +164,32 @@ namespace Sustenet.Transport.Messages
 
             server.Passphrase(fromClient, keyName);
         }
+
+        /// <summary>
+        /// Handles the client's answer. If it matches the client's name
+        /// then initialize them as a Cluster Client.
+        /// </summary>
+        /// <param name="server">The Master Server to run this on.</param>
+        /// <param name="fromClient">The client sending this packet.</param>
+        /// <param name="packet">The packet containing the answer and extra data.</param>
+        internal static void AnswerPassphrase(this MasterServer server, int fromClient, Packet packet)
+        {
+            string answer = packet.ReadString();
+            string clusterName = packet.ReadString(); // The requested name for this cluster.
+
+            if(answer == server.clients[fromClient].name)
+            {
+                server.InitializeCluster(fromClient, clusterName);
+            }
+            else
+            {
+                server.Message(fromClient, "Incorrect passphrase. Disconnecting.");
+                server.DisconnectClient(fromClient);
+
+                server.onDebug.RaiseEvent($"Disconnecting Client#{fromClient} for answering their passphrase incorrectly.");
+
+                return;
+            }
         }
     }
 }
