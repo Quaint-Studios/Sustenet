@@ -33,6 +33,14 @@ namespace Sustenet.Utils
             ClusterServer
         }
 
+        static Config()
+        {
+            string cfgPath = Path.Combine(Utilities.GetAppPath(), @$"cfg");
+
+            if(!Directory.Exists(cfgPath))
+                Directory.CreateDirectory(cfgPath);
+        }
+
         /// <summary>
         /// Loads a custom config file and returns the data associated with it.
         /// </summary>
