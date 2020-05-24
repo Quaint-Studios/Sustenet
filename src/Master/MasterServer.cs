@@ -53,6 +53,7 @@ namespace Sustenet.Master
             {
                 packetHandlers = new Dictionary<int, PacketHandler>()
                 {
+                    { (int)ClientPackets.answerPassphrase, this.AnswerPassphrase },
                     { (int)ClientPackets.validateCluster, this.ValidateCluster },
                     { (int)ClientPackets.validateLogin, this.ValidateLogin }
                 };
