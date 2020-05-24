@@ -41,6 +41,15 @@ namespace Sustenet.Transport.Messages
         /// <param name="keyName">The name of the key to use.</param>
         internal static void Passphrase(this MasterServer server, int toClient, string keyName)
         {
+            // If the key doesn't exists...
+            if(!Security.Keys.KeyExists(keyName))
+            {
+                // ...do absolutely nothing. Just stay silent
+                return;
+            }
+
+            // ...otherwise, serve a passphrase.
+
             string passphrase = Security.GeneratePassphrase();
             string cypher = Security.Keys.Encrypt(keyName, passphrase);
 
