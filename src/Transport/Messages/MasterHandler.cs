@@ -161,7 +161,9 @@ namespace Sustenet.Transport.Messages
         internal static void ValidateCluster(this MasterServer server, int fromClient, Packet packet)
         {
             string keyName = packet.ReadString();
-            server.InitializeCluster(fromClient, keyName);
+
+            server.Passphrase(fromClient, keyName);
+        }
         }
     }
 }
