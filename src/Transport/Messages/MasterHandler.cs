@@ -57,6 +57,7 @@ namespace Sustenet.Transport.Messages
 
             using(Packet packet = new Packet((int)ServerPackets.passphrase))
             {
+                packet.Write(keyName);
                 packet.Write(cypher);
 
                 server.SendTcpData(toClient, packet);
