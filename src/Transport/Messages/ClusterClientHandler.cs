@@ -72,7 +72,7 @@ namespace Sustenet.Transport.Messages
         /// </summary>
         /// <param name="client">The client whose ID and username should be changed.</param>
         /// <param name="packet">The packet containing the new client ID.</param>
-        internal static void InitializeCluster(this Client client, Packet packet)
+        internal static void InitializeCluster(this ClusterClient client, Packet packet)
         {
             string keyName = packet.ReadString();
 
@@ -82,6 +82,7 @@ namespace Sustenet.Transport.Messages
         }
 
         internal static void Passphrase(this Client client, Packet packet)
+        internal static void Passphrase(this ClusterClient client, Packet packet)
         {
             string passphrase = packet.ReadString();
         }
