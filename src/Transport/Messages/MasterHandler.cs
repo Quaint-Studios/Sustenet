@@ -134,6 +134,8 @@ namespace Sustenet.Transport.Messages
 
                 return;
             }
+
+            server.InitializeLogin(fromClient, username);
         }
 
         /// <summary>
