@@ -35,7 +35,7 @@ namespace Sustenet.Utils
 
         static Config()
         {
-            string cfgPath = Path.Combine(Utilities.GetAppPath(), @$"cfg");
+            string cfgPath = Path.Combine(Utilities.GetAppPath(), $@"cfg");
 
             if(!Directory.Exists(cfgPath))
                 Directory.CreateDirectory(cfgPath);
@@ -49,7 +49,7 @@ namespace Sustenet.Utils
         public static KeyValueConfigurationCollection GetConfig(ConfigType configType)
         {
             ExeConfigurationFileMap configMap = new ExeConfigurationFileMap();
-            configMap.ExeConfigFilename = Path.Combine(Utilities.GetAppPath(), @$"cfg\{configType.ToString()}.config");
+            configMap.ExeConfigFilename = Path.Combine(Utilities.GetAppPath(), $@"cfg\{configType.ToString()}.config");
             Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
 
             return config.AppSettings.Settings;

@@ -17,10 +17,10 @@
 
 namespace Sustenet.Transport.Messages
 {
-    using Network;
     using Clients;
-    using Utils;
+    using Network;
     using System;
+    using Utils.Security;
 
     /// <summary>
     /// The core all Cluster Client messages.
@@ -100,7 +100,7 @@ namespace Sustenet.Transport.Messages
             byte[] iv = Convert.FromBase64String(packet.ReadString());
 
 
-            client.AnswerPassphrase(Security.Keys.AESManager.Decrypt(keyName, cypher, iv));
+            client.AnswerPassphrase(AESManager.Decrypt(keyName, cypher, iv));
         }
     }
 }

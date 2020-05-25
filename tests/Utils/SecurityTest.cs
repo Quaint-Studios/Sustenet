@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Tests.Utils
+namespace Sustenet.Tests.Utils.Security
 {
-    using global::Sustenet.Utils;
+    using global::Sustenet.Utils.Security;
     using NUnit.Framework;
     using System.Diagnostics;
 
@@ -27,7 +27,7 @@ namespace Sustenet.Tests.Utils
         [Test]
         public void GetPassphrase()
         {
-            string passphrase = Security.GeneratePassphrase();
+            string passphrase = PassphraseGenerator.GeneratePassphrase();
 
             Debug.WriteLine(passphrase);
 

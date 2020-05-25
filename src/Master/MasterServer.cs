@@ -21,7 +21,7 @@ namespace Sustenet.Master
     using System.Collections.Generic;
     using Transport;
     using Transport.Messages;
-    using Utils;
+    using Utils.Security;
 
     /// <summary>
     /// The Master Server keeps track of all Cluster Servers. It also allocates
@@ -37,8 +37,8 @@ namespace Sustenet.Master
 
         public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
         {
-            Security.Keys.RSAManager.LoadPubKeys();
-            Security.Keys.AESManager.LoadKeys();
+            RSAManager.LoadPubKeys();
+            AESManager.LoadKeys();
 
             InitializeData();
 

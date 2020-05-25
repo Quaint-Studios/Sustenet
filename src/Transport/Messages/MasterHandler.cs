@@ -20,7 +20,7 @@ namespace Sustenet.Transport.Messages
     using Master;
     using Network;
     using System;
-    using Utils;
+    using Utils.Security;
 
     /// <summary>
     /// The core for all Master Server messages.
@@ -43,7 +43,7 @@ namespace Sustenet.Transport.Messages
         internal static void Passphrase(this MasterServer server, int toClient, string keyName)
         {
             // If the key doesn't exists...
-            if(!Security.Keys.RSAManager.KeyExists(keyName))
+            if(!RSAManager.KeyExists(keyName))
             {
                 // ...do absolutely nothing. Just stay silent
                 return;
@@ -51,8 +51,8 @@ namespace Sustenet.Transport.Messages
 
             // ...otherwise, serve a passphrase.
 
-            string passphrase = Security.GeneratePassphrase();
-            Security.Keys.AESManager.EncryptedData data = Security.Keys.AESManager.Encrypt(keyName, passphrase);
+            string passphrase = PassphraseGenerator.GeneratePassphrase();
+            AESManager.EncryptedData data = AESManager.Encrypt(keyName, passphrase);
 
 
             server.clients[toClient].name = passphrase; // Set the client name to the passphrase to store it.

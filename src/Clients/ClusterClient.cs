@@ -19,7 +19,7 @@ namespace Sustenet.Clients
 {
     using Network;
     using Transport.Messages;
-    using Utils;
+    using Utils.Security;
 
     class ClusterClient : Client
     {
@@ -30,22 +30,22 @@ namespace Sustenet.Clients
             string keyName = name.Replace(" ", "");// TODO: Replace with config name.
 
             #region RSA Loading & Generation
-            Security.Keys.RSAManager.LoadKey(keyName, Security.Keys.RSAManager.KeyType.PrivateKey); // Load all private keys.
+            RSAManager.LoadKey(keyName, RSAManager.KeyType.PrivateKey); // Load all private keys.
 
             // If the requested key doesn't exist, create it.
-            if(!Security.Keys.RSAManager.KeyExists(keyName, Security.Keys.RSAManager.KeyType.PrivateKey))
+            if(!RSAManager.KeyExists(keyName, RSAManager.KeyType.PrivateKey))
             {
-                Security.Keys.RSAManager.GenerateKeyPair(keyName);
+                RSAManager.GenerateKeyPair(keyName);
             }
             #endregion
 
             #region AES Loading & Generation
-            Security.Keys.AESManager.LoadKey(keyName);
+            AESManager.LoadKey(keyName);
 
             // If the requested key doesn't exist, create it.
-            if(!Security.Keys.AESManager.KeyExists(keyName))
+            if(!AESManager.KeyExists(keyName))
             {
-                Security.Keys.AESManager.GenerateKey(keyName);
+                AESManager.GenerateKey(keyName);
             }
             #endregion
 
