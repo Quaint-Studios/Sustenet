@@ -174,6 +174,60 @@ namespace Sustenet.Utils
                         serializer.Serialize(writer, aesKey);
                     }
                 }
+
+                /// <summary>
+                /// Loads all AES keys in ./cfg/keys/aes
+                /// </summary>
+                public static void LoadKeys()
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(RSAParameters));
+
+                    string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}");
+
+                    // Public Key
+                    foreach(string keyName in Directory.GetFiles(path, $"*{fileSuffix}"))
+                    {
+                        KeyData data = GetKey(path, Path.GetFileName(keyName), serializer);
+
+                        if(!aesKeys.ContainsKey(data.name))
+                            aesKeys.Add(data.name, data.key);
+                    }
+                }
+
+                /// <summary>
+                /// Loads a key from a file.
+                /// </summary>
+                /// <param name="directory">The directory containing the file.</param>
+                /// <param name="keyName">The file name without the suffix.</param>
+                /// <param name="keyType">The type of key to load.</param>
+                /// <param name="serializer">An optional serializer to use.</param>
+                /// <returns>The formatted name of the key without any suffixes and the key itself.</returns>
+                public static KeyData GetKey(string directory, string keyName, XmlSerializer serializer = null)
+                {
+                    try
+                    {
+                        if(serializer == null)
+                            serializer = new XmlSerializer(typeof(RSAParameters));
+
+                        string file = Path.Combine(directory, keyName);
+
+                        if(!File.Exists(file))
+                        {
+                            throw new Exception($"{file} does not exist.");
+                        }
+
+                        using(StreamReader reader = new StreamReader(file))
+                        {
+                            string formattedName = keyName.Substring(0, keyName.Length - fileSuffix.Length);
+
+                            return new KeyData(formattedName, Convert.FromBase64String((string)serializer.Deserialize(reader)));
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        throw new Exception($"Failed to get the key {keyName}: {e}");
+                    }
+                }
                 #endregion
             }
 
