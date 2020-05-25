@@ -44,7 +44,7 @@ namespace Sustenet.Transport.Messages
             {
                 packet.Write(keyName);
 
-                client.SendData(packet);
+                client.SendTcpData(packet);
             }
         }
 
@@ -58,8 +58,9 @@ namespace Sustenet.Transport.Messages
             using(Packet packet = new Packet((int)ClientPackets.answerPassphrase))
             {
                 packet.Write(answer);
+                packet.Write(client.name);
 
-                client.SendData(packet);
+                client.SendTcpData(packet);
             }
         }
     }
@@ -96,7 +97,7 @@ namespace Sustenet.Transport.Messages
             string keyName = packet.ReadString();
             string passphrase = packet.ReadString();
 
-            client.AnswerPassphrase(Security.Keys.Decrypt(keyName, passphrase));
+            client.AnswerPassphrase(Security.Keys.RSAManager.Decrypt(keyName, passphrase));
         }
     }
 }

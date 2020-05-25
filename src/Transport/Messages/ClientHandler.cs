@@ -39,7 +39,7 @@ namespace Sustenet.Transport.Messages
                 {
                     packet.Write(username);
 
-                    client.SendData(packet);
+                    client.SendTcpData(packet);
                 }
             }
             else
