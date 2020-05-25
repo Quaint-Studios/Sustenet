@@ -74,10 +74,10 @@ namespace Sustenet.Transport
                 {
                     if(stream != null)
                     {
-                        stream.Dispose();
+                        stream.Close();
                     }
 
-                    socket.Dispose();
+                    socket.Close();
                 }
 
                 socket = _socket;
@@ -202,7 +202,7 @@ namespace Sustenet.Transport
                 if(disposing)
                 {
                     if(tcp.socket != null)
-                        tcp.socket.Dispose();
+                        tcp.socket.Close();
                 }
 
                 disposed = true;
