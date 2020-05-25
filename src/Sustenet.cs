@@ -19,6 +19,7 @@ namespace Sustenet
 {
     using System;
     using System.Collections.Generic;
+    using System.Timers;
     using NDesk.Options;
     using Utils;
     using Transport;
@@ -98,6 +99,7 @@ namespace Sustenet
         public static World.ClusterServer cluster;
         public static Master.MasterServer master;
 
+        public static Timer appTimer;
 
         static void Main(string[] args)
         {
@@ -141,9 +143,20 @@ namespace Sustenet
                 master = new Master.MasterServer(maxConnections ?? 0, port ?? 6256);
             }
 
+            appTimer = new Timer(20);
+            // Hook up the Elapsed event for the timer.
+            appTimer.Elapsed += UpdateMain;
+            appTimer.AutoReset = true;
+            appTimer.Enabled = true;
+
             // Wait for the user to respond before closing.
             Console.WriteLine("Press any key to close Sustenet...");
             Console.ReadKey();
+        }
+
+        public static void UpdateMain(object source, ElapsedEventArgs e)
+        {
+            ThreadManager.UpdateMain();
         }
     }
 }

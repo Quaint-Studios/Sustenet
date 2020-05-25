@@ -17,7 +17,6 @@
 
 namespace Sustenet.World
 {
-    using System.Timers;
     using Transport;
     using Clients;
 
@@ -28,7 +27,6 @@ namespace Sustenet.World
     class ClusterServer : BaseServer
     {
         internal ClusterClient masterConn = new ClusterClient();
-        private readonly Timer timer; // TODO: Only make this active if the server is command-line and not in Unity.
 
         /// <summary>
         /// Creates a Cluster Server that creates Fragment Servers to be used.
@@ -36,20 +34,9 @@ namespace Sustenet.World
         /// </summary>
         public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(_maxConnections, _port)
         {
-            timer = new Timer(20);
-            // Hook up the Elapsed event for the timer.
-            timer.Elapsed += UpdateMain;
-            timer.AutoReset = true;
-            timer.Enabled = true;
-
             Start(ServerType.ClusterServer);
 
             masterConn.Connect();
-        }
-
-        public void UpdateMain(object source, ElapsedEventArgs e)
-        {
-            ThreadManager.UpdateMain();
         }
     }
 }
