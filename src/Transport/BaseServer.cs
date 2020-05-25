@@ -144,7 +144,6 @@ namespace Sustenet.Transport
         /// <param name="clientId">The client id to kick and clear.</param>
         internal virtual void DisconnectClient(int clientId)
         {
-            clients[clientId].tcp.socket.Dispose();
             ClearClient(clientId);
         }
 
