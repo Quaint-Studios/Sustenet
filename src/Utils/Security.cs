@@ -53,7 +53,7 @@ namespace Sustenet.Utils
                     RequiredUniqueChars = 10
                 };
 
-            string[] randomChars = new[] {
+            string[] randomChars = new string[] {
                 "ABCDEFGHJKLMNOPQRSTUVWXYZ",    // uppercase 
                 "abcdefghijkmnopqrstuvwxyz",    // lowercase
                 "0123456789",                   // digits
@@ -63,13 +63,11 @@ namespace Sustenet.Utils
 
             // Uppercase
             if(opts.RequireUppercase)
-                chars.Insert(RandomNumberGenerator.GetInt32(chars.Count),
                 chars.Insert(RandomNumberGenerator.GetInt32(Math.Max(chars.Count, 1)),
                 randomChars[0][RandomNumberGenerator.GetInt32(randomChars[0].Length)]);
 
             // Lowercase
             if(opts.RequireLowercase)
-                chars.Insert(RandomNumberGenerator.GetInt32(chars.Count),
                 chars.Insert(RandomNumberGenerator.GetInt32(Math.Max(chars.Count, 1)),
                 randomChars[1][RandomNumberGenerator.GetInt32(randomChars[1].Length)]);
 
@@ -80,7 +78,6 @@ namespace Sustenet.Utils
 
             // Symbols
             if(opts.RequireNonAlphanumeric)
-                chars.Insert(RandomNumberGenerator.GetInt32(chars.Count),
                 chars.Insert(RandomNumberGenerator.GetInt32(Math.Max(chars.Count, 1)),
                 randomChars[3][RandomNumberGenerator.GetInt32(randomChars[3].Length)]);
 
