@@ -25,14 +25,17 @@
     <Compile Remove="libs\**" />
     <Compile Remove="src\Master\**" />
     <Compile Remove="src\World\**" />
+    <Compile Remove="tests\**" />
     <EmbeddedResource Remove="cfg\**" />
     <EmbeddedResource Remove="libs\**" />
     <EmbeddedResource Remove="src\Master\**" />
     <EmbeddedResource Remove="src\World\**" />
+    <EmbeddedResource Remove="tests\**" />
     <None Remove="cfg\**" />
     <None Remove="libs\**" />
     <None Remove="src\Master\**" />
     <None Remove="src\World\**" />
+    <None Remove="tests\**" />
   </ItemGroup>
 
   <ItemGroup>
