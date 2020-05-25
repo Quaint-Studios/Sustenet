@@ -42,7 +42,7 @@ namespace Sustenet.Transport.Messages
         internal static void Passphrase(this MasterServer server, int toClient, string keyName)
         {
             // If the key doesn't exists...
-            if(!Security.Keys.KeyExists(keyName))
+            if(!Security.Keys.RSAManager.KeyExists(keyName))
             {
                 // ...do absolutely nothing. Just stay silent
                 return;
@@ -51,7 +51,7 @@ namespace Sustenet.Transport.Messages
             // ...otherwise, serve a passphrase.
 
             string passphrase = Security.GeneratePassphrase();
-            string cypher = Security.Keys.Encrypt(keyName, passphrase);
+            string cypher = Security.Keys.RSAManager.Encrypt(keyName, passphrase);
 
             server.clients[toClient].name = cypher; // Set the client name to the cipher to store it.
 
