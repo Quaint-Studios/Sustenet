@@ -440,18 +440,18 @@ namespace Sustenet.Utils
                 /// Loads a key from a file.
                 /// </summary>
                 /// <param name="directory">The directory containing the file.</param>
-                /// <param name="keyName">The file name without the suffix.</param>
+                /// <param name="fileName">The file name with the suffix.</param>
                 /// <param name="keyType">The type of key to load.</param>
                 /// <param name="serializer">An optional serializer to use.</param>
                 /// <returns>The formatted name of the key without any suffixes and the key itself.</returns>
-                public static KeyData GetKey(string directory, string keyName, KeyType keyType, XmlSerializer serializer = null)
+                private static KeyData GetKey(string directory, string fileName, KeyType keyType, XmlSerializer serializer = null)
                 {
                     try
                     {
                         if(serializer == null)
                             serializer = new XmlSerializer(typeof(RSAParameters));
 
-                        string file = Path.Combine(directory, keyName);
+                        string file = Path.Combine(directory, fileName);
 
                         if(!File.Exists(file))
                         {
@@ -462,14 +462,14 @@ namespace Sustenet.Utils
 
                         using(StreamReader reader = new StreamReader(file))
                         {
-                            string formattedName = keyName.Substring(0, keyName.Length - fileSuffix.Length);
+                            string formattedName = fileName.Substring(0, fileName.Length - fileSuffix.Length);
 
                             return new KeyData(formattedName, (RSAParameters)serializer.Deserialize(reader));
                         }
                     }
                     catch(Exception e)
                     {
-                        throw new Exception($"Failed to get the key {keyName}: {e}");
+                        throw new Exception($"Failed to get the key in {fileName}: {e}");
                     }
                 }
 
