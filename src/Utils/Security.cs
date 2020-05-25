@@ -106,6 +106,35 @@ namespace Sustenet.Utils
                         Directory.CreateDirectory(keyPath);
                 }
                 private static Dictionary<string, byte[]> aesKeys = new Dictionary<string, byte[]>();
+                public struct KeyData
+                {
+                    public readonly string name;
+                    public readonly byte[] key;
+
+                    public KeyData(string _name, byte[] _key)
+                    {
+                        name = _name;
+                        key = _key;
+                    }
+                }
+
+                public struct EncryptedData
+                {
+                    /// <summary>
+                    /// The encrypted string of data as a byte array.
+                    /// </summary>
+                    public readonly byte[] cypher;
+                    /// <summary>
+                    /// The IV.
+                    /// </summary>
+                    public readonly byte[] iv;
+
+                    public EncryptedData(byte[] _cypher, byte[] _iv)
+                    {
+                        cypher = _cypher;
+                        iv = _iv;
+                    }
+                }
             }
 
             public static class RSAManager
