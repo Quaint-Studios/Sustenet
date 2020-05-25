@@ -166,7 +166,7 @@ namespace Sustenet.Utils
                 /// <param name="aesKey">The AES key in Base64 format.</param>
                 public static void SaveAesKey(string keyName, string aesKey)
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(RSAParameters));
+                    XmlSerializer serializer = new XmlSerializer(typeof(string));
 
                     // AES Key
                     using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{keyName}{fileSuffix}")))
@@ -180,16 +180,23 @@ namespace Sustenet.Utils
                 /// </summary>
                 public static void LoadKeys()
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(RSAParameters));
-
-                    string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}");
-
-                    // Public Key
-                    foreach(string keyName in Directory.GetFiles(path, $"*{fileSuffix}"))
+                    try
                     {
-                        KeyData data = GetKey(path, Path.GetFileName(keyName), serializer);
+                        XmlSerializer serializer = new XmlSerializer(typeof(string));
 
-                        AddKey(data.name, data.key);
+                        string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}");
+
+                        // Public Key
+                        foreach(string keyName in Directory.GetFiles(path, $"*{fileSuffix}"))
+                        {
+                            KeyData data = GetKey(path, Path.GetFileName(keyName), serializer);
+
+                            AddKey(data.name, data.key);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e);
                     }
                 }
 
@@ -201,20 +208,25 @@ namespace Sustenet.Utils
                 /// <param name="serializer">The serializer to use, if any.</param>
                 public static void LoadKey(string keyName, XmlSerializer serializer = null)
                 {
-
-                    string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}");
-                    KeyData data = GetKey(path, $"{keyName}{fileSuffix}", serializer);
-
-                    if(aesKeys.ContainsKey(data.name))
+                    try
                     {
-                        aesKeys[data.name] = data.key;
-                    }
-                    else
-                    {
+                        string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}");
+                        KeyData data = GetKey(path, $"{keyName}{fileSuffix}", serializer);
+
                         AddKey(data.name, data.key);
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e);
                     }
                 }
 
+
+                /// <summary>
+                /// Adds a key to the AES dictionary.
+                /// </summary>
+                /// <param name="name">The name of the key to add.</param>
+                /// <param name="key">The key to add.</param>
                 public static void AddKey(string name, byte[] key)
                 {
                     if(aesKeys.ContainsKey(name))
@@ -228,7 +240,7 @@ namespace Sustenet.Utils
                 }
 
                 /// <summary>
-                /// Loads a key from a file.
+                /// Loads a AES key from a file.
                 /// </summary>
                 /// <param name="directory">The directory containing the file.</param>
                 /// <param name="keyName">The file name without the suffix.</param>
@@ -240,7 +252,7 @@ namespace Sustenet.Utils
                     try
                     {
                         if(serializer == null)
-                            serializer = new XmlSerializer(typeof(RSAParameters));
+                            serializer = new XmlSerializer(typeof(string));
 
                         string file = Path.Combine(directory, keyName);
 
@@ -253,7 +265,9 @@ namespace Sustenet.Utils
                         {
                             string formattedName = keyName.Substring(0, keyName.Length - fileSuffix.Length);
 
-                            return new KeyData(formattedName, Convert.FromBase64String((string)serializer.Deserialize(reader)));
+                            object key = serializer.Deserialize(reader);
+
+                            return new KeyData(formattedName, Convert.FromBase64String((string)key));
                         }
                     }
                     catch(Exception e)
@@ -279,7 +293,9 @@ namespace Sustenet.Utils
                 /// <returns>An encrypted base64 string with the IV attached.</returns>
                 public static EncryptedData Encrypt(string keyName, string data)
                 {
+#nullable enable
                     byte[]? key = null;
+#nullable disable
                     if(aesKeys.ContainsKey(keyName))
                     {
                         key = aesKeys[keyName];
@@ -294,14 +310,23 @@ namespace Sustenet.Utils
                     aes.Key = key;
                     aes.GenerateIV(); // Generate a unique IV that can be shared but should "never" be reused.
 
+                    byte[] encrypted;
+
                     // Encrypt the data
                     ICryptoTransform encryptor = aes.CreateEncryptor();
-                    MemoryStream ms = new MemoryStream();
-                    CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
-                    StreamWriter sw = new StreamWriter(cs);
-                    sw.Write(data);
+                    using(MemoryStream ms = new MemoryStream())
+                    {
+                        using(CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                        {
+                            using(StreamWriter sw = new StreamWriter(cs))
+                            {
+                                sw.Write(data);
+                            }
+                            encrypted = ms.ToArray();
+                        }
+                    }
 
-                    return new EncryptedData(ms.ToArray(), aes.IV);
+                    return new EncryptedData(encrypted, aes.IV);
                 }
 
                 /// <summary>
@@ -312,7 +337,9 @@ namespace Sustenet.Utils
                 /// <returns>A decrypted string.</returns>
                 public static string Decrypt(string keyName, byte[] data, byte[] iv)
                 {
+#nullable enable
                     byte[]? key = null;
+#nullable disable
                     if(aesKeys.ContainsKey(keyName))
                     {
                         key = aesKeys[keyName];
@@ -439,14 +466,21 @@ namespace Sustenet.Utils
                 /// <param name="serializer">An optional serializer to use.</param>
                 public static void LoadPubKeys(XmlSerializer serializer = null)
                 {
-                    string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{pubFolder}");
-
-                    // Public Key
-                    foreach(string pubKeyName in Directory.GetFiles(path, $"*{pubSuffix}"))
+                    try
                     {
-                        KeyData data = GetKey(path, Path.GetFileName(pubKeyName), KeyType.PublicKey, serializer);
+                        string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{pubFolder}");
 
-                        AddKey(data.name, data.key, KeyType.PublicKey);
+                        // Public Key
+                        foreach(string pubKeyName in Directory.GetFiles(path, $"*{pubSuffix}"))
+                        {
+                            KeyData data = GetKey(path, Path.GetFileName(pubKeyName), KeyType.PublicKey, serializer);
+
+                            AddKey(data.name, data.key, KeyType.PublicKey);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e);
                     }
                 }
 
@@ -456,14 +490,21 @@ namespace Sustenet.Utils
                 /// <param name="serializer">An optional serializer to use.</param>
                 public static void LoadPrivKeys(XmlSerializer serializer = null)
                 {
-                    string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{privFolder}");
-
-                    // Private Key
-                    foreach(string privKeyName in Directory.GetFiles(path, $"*{privSuffix}"))
+                    try
                     {
-                        KeyData data = GetKey(path, Path.GetFileName(privKeyName), KeyType.PrivateKey, serializer);
+                        string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{privFolder}");
 
-                        AddKey(data.name, data.key, KeyType.PrivateKey);
+                        // Private Key
+                        foreach(string privKeyName in Directory.GetFiles(path, $"*{privSuffix}"))
+                        {
+                            KeyData data = GetKey(path, Path.GetFileName(privKeyName), KeyType.PrivateKey, serializer);
+
+                            AddKey(data.name, data.key, KeyType.PrivateKey);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e);
                     }
                 }
 
@@ -475,21 +516,28 @@ namespace Sustenet.Utils
                 /// <param name="serializer">The serializer to use, if any.</param>
                 public static void LoadKey(string keyName, KeyType keyType, XmlSerializer serializer = null)
                 {
-                    // Public Key
-                    if(keyType == KeyType.PublicKey)
+                    try
                     {
-                        string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{pubFolder}");
-                        KeyData data = GetKey(path, $"{keyName}{pubSuffix}", keyType, serializer);
-                        AddKey(data.name, data.key, KeyType.PublicKey);
-                        return;
-                    }
+                        // Public Key
+                        if(keyType == KeyType.PublicKey)
+                        {
+                            string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{pubFolder}");
+                            KeyData data = GetKey(path, $"{keyName}{pubSuffix}", keyType, serializer);
+                            AddKey(data.name, data.key, KeyType.PublicKey);
+                            return;
+                        }
 
-                    // Private Key
-                    if(keyType == KeyType.PrivateKey)
+                        // Private Key
+                        if(keyType == KeyType.PrivateKey)
+                        {
+                            string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{privFolder}");
+                            KeyData data = GetKey(path, $"{keyName}{privSuffix}", keyType, serializer);
+                            AddKey(data.name, data.key, KeyType.PrivateKey);
+                        }
+                    }
+                    catch(Exception e)
                     {
-                        string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{privFolder}");
-                        KeyData data = GetKey(path, $"{keyName}{privSuffix}", keyType, serializer);
-                        AddKey(data.name, data.key, KeyType.PrivateKey);
+                        Console.WriteLine(e);
                     }
                 }
 
