@@ -154,7 +154,7 @@ namespace Sustenet.Utils
 
                     string aesKeyB64 = Convert.ToBase64String(aesKey);
 
-                    aesKeys.Add(keyName, aesKey);
+                    AddKey(data.name, data.key);
 
                     SaveAesKey(keyName, aesKeyB64);
                 }
@@ -189,8 +189,10 @@ namespace Sustenet.Utils
                     {
                         KeyData data = GetKey(path, Path.GetFileName(keyName), serializer);
 
-                        if(!aesKeys.ContainsKey(data.name))
-                            aesKeys.Add(data.name, data.key);
+                        AddKey(data.name, data.key);
+                    }
+                }
+
                 /// <summary>
                 /// Loads a single AES key.
                 /// </summary>
@@ -391,8 +393,8 @@ namespace Sustenet.Utils
                     RSAParameters privKey = csp.ExportParameters(true);
                     RSAParameters pubKey = csp.ExportParameters(false);
 
-                    rsaPrivKeys.Add(keyName, privKey);
-                    rsaPubKeys.Add(keyName, pubKey);
+                    AddKey(keyName, pubKey, KeyType.PublicKey);
+                    AddKey(keyName, privKey, KeyType.PrivateKey);
 
                     SaveKeyPair(keyName, privKey, pubKey);
                 }
@@ -444,8 +446,7 @@ namespace Sustenet.Utils
                     {
                         KeyData data = GetKey(path, Path.GetFileName(pubKeyName), KeyType.PublicKey, serializer);
 
-                        if(!rsaPubKeys.ContainsKey(data.name))
-                            rsaPubKeys.Add(data.name, data.key);
+                        AddKey(data.name, data.key, KeyType.PublicKey);
                     }
                 }
 
@@ -462,8 +463,10 @@ namespace Sustenet.Utils
                     {
                         KeyData data = GetKey(path, Path.GetFileName(privKeyName), KeyType.PrivateKey, serializer);
 
-                        if(!rsaPrivKeys.ContainsKey(data.name))
-                            rsaPrivKeys.Add(data.name, data.key);
+                        AddKey(data.name, data.key, KeyType.PrivateKey);
+                    }
+                }
+
                 /// <summary>
                 /// Loads a single RSA key.
                 /// </summary>
