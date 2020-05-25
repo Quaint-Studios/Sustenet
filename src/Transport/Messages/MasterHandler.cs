@@ -19,6 +19,7 @@ namespace Sustenet.Transport.Messages
 {
     using Master;
     using Network;
+    using System;
     using Utils;
 
     /// <summary>
@@ -51,14 +52,16 @@ namespace Sustenet.Transport.Messages
             // ...otherwise, serve a passphrase.
 
             string passphrase = Security.GeneratePassphrase();
-            string cypher = Security.Keys.RSAManager.Encrypt(keyName, passphrase);
+            Security.Keys.AESManager.EncryptedData data = Security.Keys.AESManager.Encrypt(keyName, passphrase);
 
-            server.clients[toClient].name = cypher; // Set the client name to the cipher to store it.
+
+            server.clients[toClient].name = passphrase; // Set the client name to the passphrase to store it.
 
             using(Packet packet = new Packet((int)ServerPackets.passphrase))
             {
                 packet.Write(keyName);
-                packet.Write(cypher);
+                packet.Write(Convert.ToBase64String(data.cypher));
+                packet.Write(Convert.ToBase64String(data.iv));
 
                 server.SendTcpData(toClient, packet);
             }
