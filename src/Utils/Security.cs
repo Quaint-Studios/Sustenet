@@ -154,7 +154,7 @@ namespace Sustenet.Utils
 
                     string aesKeyB64 = Convert.ToBase64String(aesKey);
 
-                    AddKey(data.name, data.key);
+                    AddKey(keyName, aesKey);
 
                     SaveAesKey(keyName, aesKeyB64);
                 }
