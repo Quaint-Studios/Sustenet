@@ -26,6 +26,17 @@ namespace Sustenet.Transport.Messages
     static class BaseClientCore
     {
         /// <summary>
+        /// Send data to the server.
+        /// </summary>
+        /// <param name="client">The client to run this on.</param>
+        /// <param name="packet">The packet to send.</param>
+        internal static void SendTcpData(this BaseClient client, Packet packet)
+        {
+            packet.WriteLength();
+            client.SendData(packet);
+        }
+
+        /// <summary>
         /// Sends a packet through the current stream.
         /// </summary>
         /// <param name="packet">The packet to be sent.</param>
