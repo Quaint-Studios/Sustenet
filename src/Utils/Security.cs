@@ -228,6 +228,15 @@ namespace Sustenet.Utils
                         throw new Exception($"Failed to get the key {keyName}: {e}");
                     }
                 }
+
+                /// <summary>
+                /// Checks if an AES key exists in the AES folder.
+                /// </summary>
+                /// <param name="keyName">The name of the AES key to check for.</param>
+                public static bool KeyExists(string keyName)
+                {
+                    return aesKeys.ContainsKey(keyName);
+                }
                 #endregion
             }
 
