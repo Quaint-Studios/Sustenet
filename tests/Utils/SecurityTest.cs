@@ -28,7 +28,10 @@ namespace Sustenet.Tests.Utils
         public void GetPassphrase()
         {
             string passphrase = Security.GeneratePassphrase();
+
             Debug.WriteLine(passphrase);
+
+            Assert.IsTrue(passphrase.Length > 0, $"Passphrase: {passphrase}");
         }
     }
 }
