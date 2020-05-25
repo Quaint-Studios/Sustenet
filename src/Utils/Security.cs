@@ -237,6 +237,39 @@ namespace Sustenet.Utils
                 {
                     return aesKeys.ContainsKey(keyName);
                 }
+
+                /// <summary>
+                /// Encrypts a string of data and converts it to Base64.
+                /// </summary>
+                /// <param name="keyName">The AES key to use to encrypt data.</param>
+                /// <param name="data">The string to encrypt.</param>
+                /// <returns>An encrypted base64 string with the IV attached.</returns>
+                public static EncryptedData Encrypt(string keyName, string data)
+                {
+                    byte[]? key = null;
+                    if(aesKeys.ContainsKey(keyName))
+                    {
+                        key = aesKeys[keyName];
+                    }
+
+                    if(key == null)
+                    {
+                        throw new Exception($"Failed to find a key that matched '{keyName}'");
+                    }
+
+                    AesManaged aes = new AesManaged();
+                    aes.Key = key;
+                    aes.GenerateIV(); // Generate a unique IV that can be shared but should "never" be reused.
+
+                    // Encrypt the data
+                    ICryptoTransform encryptor = aes.CreateEncryptor();
+                    MemoryStream ms = new MemoryStream();
+                    CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write);
+                    StreamWriter sw = new StreamWriter(cs);
+                    sw.Write(data);
+
+                    return new EncryptedData(ms.ToArray(), aes.IV);
+                }
                 #endregion
             }
 
