@@ -191,6 +191,28 @@ namespace Sustenet.Utils
 
                         if(!aesKeys.ContainsKey(data.name))
                             aesKeys.Add(data.name, data.key);
+                /// <summary>
+                /// Loads a single AES key.
+                /// </summary>
+                /// <param name="keyName">The name of the key to load.</param>
+                /// <param name="keyType">The type of key to load.</param>
+                /// <param name="serializer">The serializer to use, if any.</param>
+                public static void LoadKey(string keyName, XmlSerializer serializer = null)
+                {
+
+                    string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}");
+                    KeyData data = GetKey(path, $"{keyName}{fileSuffix}", serializer);
+
+                    if(aesKeys.ContainsKey(data.name))
+                    {
+                        aesKeys[data.name] = data.key;
+                    }
+                    else
+                    {
+                        AddKey(data.name, data.key);
+                    }
+                }
+
                 public static void AddKey(string name, byte[] key)
                 {
                     if(aesKeys.ContainsKey(name))
@@ -442,6 +464,32 @@ namespace Sustenet.Utils
 
                         if(!rsaPrivKeys.ContainsKey(data.name))
                             rsaPrivKeys.Add(data.name, data.key);
+                /// <summary>
+                /// Loads a single RSA key.
+                /// </summary>
+                /// <param name="keyName">The name of the key to load.</param>
+                /// <param name="keyType">The type of key to load.</param>
+                /// <param name="serializer">The serializer to use, if any.</param>
+                public static void LoadKey(string keyName, KeyType keyType, XmlSerializer serializer = null)
+                {
+                    // Public Key
+                    if(keyType == KeyType.PublicKey)
+                    {
+                        string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{pubFolder}");
+                        KeyData data = GetKey(path, $"{keyName}{pubSuffix}", keyType, serializer);
+                        AddKey(data.name, data.key, KeyType.PublicKey);
+                        return;
+                    }
+
+                    // Private Key
+                    if(keyType == KeyType.PrivateKey)
+                    {
+                        string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{privFolder}");
+                        KeyData data = GetKey(path, $"{keyName}{privSuffix}", keyType, serializer);
+                        AddKey(data.name, data.key, KeyType.PrivateKey);
+                    }
+                }
+
                 private static void AddKey(string name, RSAParameters key, KeyType keyType)
                 {
                     switch(keyType)
