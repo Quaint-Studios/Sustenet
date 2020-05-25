@@ -22,6 +22,7 @@ namespace Sustenet.Transport
     using System.Net;
     using System.Net.Sockets;
     using Events;
+    using Network;
     using Utils;
 
     /// <summary>
@@ -44,6 +45,13 @@ namespace Sustenet.Transport
         public Dictionary<int, BaseClient> clients = new Dictionary<int, BaseClient>();
         public List<int> releasedIds = new List<int>();
 
+        protected delegate void PacketHandler(int fromClient, Packet packet);
+
+        /// <summary>
+        /// A dictionary on how packets should be handled.
+        /// </summary>
+        protected static Dictionary<int, PacketHandler> packetHandlers;
+
         public BaseEvent<int> onConnection = new BaseEvent<int>();
         public BaseEvent<int> onDisconnection = new BaseEvent<int>();
         public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
@@ -55,6 +63,7 @@ namespace Sustenet.Transport
             port = _port == 0 ? (ushort)6256 : _port;
         }
 
+        #region Connection Functions
         /// <summary>
         /// Starts a server.
         /// </summary>
@@ -110,6 +119,13 @@ namespace Sustenet.Transport
 
                 server.clients[id] = new BaseClient(id);
 
+                server.clients[id].receivedData = new Packet();
+
+                server.clients[id].tcp.onReceived.Run += (data) => {
+                    // Convert the BaseClient to work for the server.
+                    server.clients[id].receivedData.Reset(server.HandleData(server.clients[id], data));
+                };
+
                 server.clients[id].tcp.Receive(client);
 
                 server.onConnection.RaiseEvent(id);
@@ -128,7 +144,7 @@ namespace Sustenet.Transport
         /// <param name="clientId">The client id to kick and clear.</param>
         internal virtual void DisconnectClient(int clientId)
         {
-            clients[clientId].tcp.socket.Close();
+            clients[clientId].tcp.socket.Dispose();
             ClearClient(clientId);
         }
 
@@ -138,10 +154,62 @@ namespace Sustenet.Transport
         /// <param name="clientId">The client id to free up.</param>
         internal void ClearClient(int clientId)
         {
+            clients[clientId].Dispose();
             clients.Remove(clientId);
             releasedIds.Add(clientId);
             onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
         }
+        #endregion
+
+        #region Data Functions
+        private bool HandleData(BaseClient client, byte[] data)
+        {
+
+            int packetLength = 0;
+
+            client.receivedData.SetBytes(data);
+
+            if(client.receivedData.UnreadLength() >= 4)
+            {
+                packetLength = client.receivedData.ReadInt();
+                if(packetLength <= 0)
+                {
+                    return true;
+                }
+            }
+
+            while(packetLength > 0 && packetLength <= client.receivedData.UnreadLength())
+            {
+                byte[] packetBytes = client.receivedData.ReadBytes(packetLength);
+
+                ThreadManager.ExecuteOnMainThread(() => {
+                    using(Packet packet = new Packet(packetBytes))
+                    {
+                        int packetId = packet.ReadInt();
+                        packetHandlers[packetId](client.id, packet);
+                    }
+                });
+
+                packetLength = 0;
+
+                if(client.receivedData.UnreadLength() >= 4)
+                {
+                    packetLength = client.receivedData.ReadInt();
+                    if(packetLength <= 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            if(packetLength <= 1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
 
         private static void DebugServer(string serverTypeName, string msg)
         {

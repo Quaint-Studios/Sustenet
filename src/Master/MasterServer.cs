@@ -30,9 +30,6 @@ namespace Sustenet.Master
     /// </summary>
     class MasterServer : BaseServer
     {
-        private delegate void PacketHandler(int fromClient, Packet packet);
-        private static Dictionary<int, PacketHandler> packetHandlers;
-
         /// <summary>
         /// A list of clients that have been registered as cluster clients.
         /// </summary>
