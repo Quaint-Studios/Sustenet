@@ -191,6 +191,15 @@ namespace Sustenet.Utils
 
                         if(!aesKeys.ContainsKey(data.name))
                             aesKeys.Add(data.name, data.key);
+                public static void AddKey(string name, byte[] key)
+                {
+                    if(aesKeys.ContainsKey(name))
+                    {
+                        aesKeys[name] = key;
+                    }
+                    else
+                    {
+                        aesKeys.Add(name, key);
                     }
                 }
 
@@ -433,6 +442,31 @@ namespace Sustenet.Utils
 
                         if(!rsaPrivKeys.ContainsKey(data.name))
                             rsaPrivKeys.Add(data.name, data.key);
+                private static void AddKey(string name, RSAParameters key, KeyType keyType)
+                {
+                    switch(keyType)
+                    {
+                        case KeyType.PublicKey:
+                            if(rsaPubKeys.ContainsKey(name))
+                            {
+                                rsaPubKeys[name] = key;
+                            }
+                            else
+                            {
+                                rsaPubKeys.Add(name, key);
+                            }
+                            return;
+
+                        case KeyType.PrivateKey:
+                            if(rsaPrivKeys.ContainsKey(name))
+                            {
+                                rsaPrivKeys[name] = key;
+                            }
+                            else
+                            {
+                                rsaPrivKeys.Add(name, key);
+                            }
+                            return;
                     }
                 }
 
