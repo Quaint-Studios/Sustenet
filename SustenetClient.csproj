@@ -47,6 +47,7 @@
     <Compile Remove="src\Transport\Messages\ClusterHandler.cs" />
     <Compile Remove="src\Transport\Messages\MasterHandler.cs" />
     <Compile Remove="src\Utils\Config.cs" />
+    <Compile Remove="src\Utils\Security\PassphraseGenerator.cs" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
