@@ -544,7 +544,7 @@ namespace Sustenet.Utils
 
                     byte[] passphrase = csp.Decrypt(dataBytes, false);
 
-                    return Encoding.Unicode.GetString(dataBytes);
+                    return Encoding.Unicode.GetString(passphrase);
                 }
                 #endregion
             }
