@@ -27,13 +27,15 @@ namespace Sustenet.Transport
     /// The core for all clients. Handles basic functionality like sending
     /// and receiving data. Also handles the core for connecting to servers.
     /// </summary>
-    public class BaseClient
+    public class BaseClient : IDisposable
     {
         public int id;
         public TcpHandler tcp;
         public static int bufferSize = 4096;
 
         public string name;
+
+        internal Packet receivedData;
 
         public BaseClient(int _id, bool debug = true)
         {
@@ -114,6 +116,8 @@ namespace Sustenet.Transport
 
                     Array.Copy(receiveBuffer, data, byteLength);
 
+                    onDebug.RaiseEvent("Received");
+
                     onReceived.RaiseEvent(data);
 
                     stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
@@ -187,6 +191,28 @@ namespace Sustenet.Transport
         private static void DebugClient(int id, string msg)
         {
             Console.WriteLine($"(Client#{id}) {msg}");
+        }
+
+        private bool disposed = true;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(!disposed)
+            {
+                if(disposing)
+                {
+                    if(tcp.socket != null)
+                        tcp.socket.Dispose();
+                }
+
+                disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

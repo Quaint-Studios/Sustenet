@@ -70,8 +70,6 @@ namespace Sustenet.Clients
         private Connection masterConnection;
         private Connection clusterConnection;
 
-        private Packet receivedData;
-
         protected delegate void PacketHandler(Packet packet);
 
         /// <summary>
