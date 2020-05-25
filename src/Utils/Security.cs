@@ -98,6 +98,13 @@ namespace Sustenet.Utils
                 private static string rootPath = @"cfg\keys\aes";
                 private static string fileSuffix = "_aes.xml";
 
+                static AESManager()
+                {
+                    string keyPath = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}");
+
+                    if(!Directory.Exists(keyPath))
+                        Directory.CreateDirectory(keyPath);
+                }
             }
 
             public static class RSAManager
