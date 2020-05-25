@@ -61,8 +61,6 @@ namespace Sustenet.Transport
         {
             maxConnections = _maxConnections;
             port = _port == 0 ? (ushort)6256 : _port;
-
-            Security.Keys.AESManager.LoadKeys();
         }
 
         #region Connection Functions

@@ -29,6 +29,7 @@ namespace Sustenet.Clients
 
             string keyName = name.Replace(" ", "");// TODO: Replace with config name.
 
+            #region RSA Loading & Generation
             Security.Keys.RSAManager.LoadKey(keyName, Security.Keys.RSAManager.KeyType.PrivateKey); // Load all private keys.
 
             // If the requested key doesn't exist, create it.
@@ -36,6 +37,17 @@ namespace Sustenet.Clients
             {
                 Security.Keys.RSAManager.GenerateKeyPair(keyName);
             }
+            #endregion
+
+            #region AES Loading & Generation
+            Security.Keys.AESManager.LoadKey(keyName);
+
+            // If the requested key doesn't exist, create it.
+            if(!Security.Keys.AESManager.KeyExists(keyName))
+            {
+                Security.Keys.AESManager.GenerateKey(keyName);
+            }
+            #endregion
 
             tcp.onConnected.Run += () => this.ValidateCluster(keyName);
         }
