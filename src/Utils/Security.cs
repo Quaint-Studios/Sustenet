@@ -310,6 +310,8 @@ namespace Sustenet.Utils
                 private static string rootPath = @"cfg\keys\rsa";
                 private static string privFolder = "priv";
                 private static string pubFolder = "pub";
+                private static string pubSuffix = "_pub.xml";
+                private static string privSuffix = "_priv.xml";
 
                 static RSAManager()
                 {
@@ -375,13 +377,13 @@ namespace Sustenet.Utils
                     XmlSerializer serializer = new XmlSerializer(typeof(RSAParameters));
 
                     // Private Key
-                    using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{privFolder}\{keyName}_priv.xml")))
+                    using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{privFolder}\{keyName}{privSuffix}")))
                     {
                         serializer.Serialize(writer, privKey);
                     }
 
                     // Public Key
-                    using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{pubFolder}\{keyName}_pub.xml")))
+                    using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{pubFolder}\{keyName}{pubSuffix}")))
                     {
                         serializer.Serialize(writer, pubKey);
                     }
@@ -407,7 +409,7 @@ namespace Sustenet.Utils
                     string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{pubFolder}");
 
                     // Public Key
-                    foreach(string pubKeyName in Directory.GetFiles(path, "*_pub.xml"))
+                    foreach(string pubKeyName in Directory.GetFiles(path, $"*{pubSuffix}"))
                     {
                         KeyData data = GetKey(path, Path.GetFileName(pubKeyName), KeyType.PublicKey, serializer);
 
@@ -425,7 +427,7 @@ namespace Sustenet.Utils
                     string path = Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{privFolder}");
 
                     // Private Key
-                    foreach(string privKeyName in Directory.GetFiles(path, "*_priv.xml"))
+                    foreach(string privKeyName in Directory.GetFiles(path, $"*{privSuffix}"))
                     {
                         KeyData data = GetKey(path, Path.GetFileName(privKeyName), KeyType.PrivateKey, serializer);
 
@@ -456,7 +458,7 @@ namespace Sustenet.Utils
                             throw new Exception($"{file} does not exist.");
                         }
 
-                        string fileSuffix = keyType == KeyType.PublicKey ? "_pub.xml" : "_priv.xml";
+                        string fileSuffix = keyType == KeyType.PublicKey ? pubSuffix : privSuffix;
 
                         using(StreamReader reader = new StreamReader(file))
                         {
