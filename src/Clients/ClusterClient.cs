@@ -28,13 +28,13 @@ namespace Sustenet.Clients
             name = "Test Name"; // TODO: Load from config.
 
             string keyName = name.Replace(" ", "");// TODO: Replace with config name.
-            if(!Security.Keys.RSAManager.KeyExists(keyName))
+
+            Security.Keys.RSAManager.LoadKey(keyName, Security.Keys.RSAManager.KeyType.PrivateKey); // Load all private keys.
+
+            // If the requested key doesn't exist, create it.
+            if(!Security.Keys.RSAManager.KeyExists(keyName, Security.Keys.RSAManager.KeyType.PrivateKey))
             {
                 Security.Keys.RSAManager.GenerateKeyPair(keyName);
-            }
-            else
-            {
-                Security.Keys.RSAManager.LoadPrivKeys();
             }
 
             tcp.onConnected.Run += () => this.ValidateCluster(keyName);
