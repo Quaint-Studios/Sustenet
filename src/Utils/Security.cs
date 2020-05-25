@@ -95,6 +95,8 @@ namespace Sustenet.Utils
         {
             public static class AESManager
             {
+                private static string rootPath = @"cfg\keys\aes";
+                private static string fileSuffix = "_aes.xml";
 
             }
 
