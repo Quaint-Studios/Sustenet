@@ -105,7 +105,10 @@ namespace Sustenet.Utils
                     if(!Directory.Exists(keyPath))
                         Directory.CreateDirectory(keyPath);
                 }
+
+                #region AES Setup
                 private static Dictionary<string, byte[]> aesKeys = new Dictionary<string, byte[]>();
+
                 public struct KeyData
                 {
                     public readonly string name;
@@ -135,6 +138,43 @@ namespace Sustenet.Utils
                         iv = _iv;
                     }
                 }
+
+                /// <summary>
+                /// Generates an AES key.
+                /// </summary>
+                /// <param name="keyName">The name to save the key as.</param>
+                /// <param name="bit">The bit encryption.</param>
+                public static void GenerateKey(string keyName, int bit = 128)
+                {
+                    AesManaged aes = new AesManaged();
+
+                    aes.GenerateKey();
+
+                    byte[] aesKey = aes.Key;
+
+                    string aesKeyB64 = Convert.ToBase64String(aesKey);
+
+                    aesKeys.Add(keyName, aesKey);
+
+                    SaveAesKey(keyName, aesKeyB64);
+                }
+
+                /// <summary>
+                /// Saves an AES key.
+                /// </summary>
+                /// <param name="keyName">The name of the key.</param>
+                /// <param name="aesKey">The AES key in Base64 format.</param>
+                public static void SaveAesKey(string keyName, string aesKey)
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(RSAParameters));
+
+                    // AES Key
+                    using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), @$"{rootPath}\{keyName}{fileSuffix}")))
+                    {
+                        serializer.Serialize(writer, aesKey);
+                    }
+                }
+                #endregion
             }
 
             public static class RSAManager
