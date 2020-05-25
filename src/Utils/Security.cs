@@ -270,6 +270,38 @@ namespace Sustenet.Utils
 
                     return new EncryptedData(ms.ToArray(), aes.IV);
                 }
+
+                /// <summary>
+                /// Decrypts an encrypted string with the provided AES key.
+                /// </summary>
+                /// <param name="keyName">The AES key to decrypt with.</param>
+                /// <param name="data">The byte array data to decrypt.</param>
+                /// <returns>A decrypted string.</returns>
+                public static string Decrypt(string keyName, byte[] data, byte[] iv)
+                {
+                    byte[]? key = null;
+                    if(aesKeys.ContainsKey(keyName))
+                    {
+                        key = aesKeys[keyName];
+                    }
+
+                    if(key == null)
+                    {
+                        throw new Exception($"Failed to find a key that matched '{keyName}'");
+                    }
+
+                    AesManaged aes = new AesManaged();
+                    aes.Key = key;
+                    aes.IV = iv;
+
+                    // Decrypt the data
+                    ICryptoTransform decryptor = aes.CreateDecryptor();
+                    MemoryStream ms = new MemoryStream(data);
+                    CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read);
+                    StreamReader sr = new StreamReader(cs);
+
+                    return sr.ReadToEnd(); // Return the decrypted string.
+                }
                 #endregion
             }
 
