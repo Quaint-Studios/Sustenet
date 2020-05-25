@@ -105,6 +105,7 @@ namespace Sustenet.Utils
                     if(!Directory.Exists(keyPath))
                         Directory.CreateDirectory(keyPath);
                 }
+                private static Dictionary<string, byte[]> aesKeys = new Dictionary<string, byte[]>();
             }
 
             public static class RSAManager
