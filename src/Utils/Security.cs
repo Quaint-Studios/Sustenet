@@ -64,27 +64,30 @@ namespace Sustenet.Utils
             // Uppercase
             if(opts.RequireUppercase)
                 chars.Insert(RandomNumberGenerator.GetInt32(chars.Count),
+                chars.Insert(RandomNumberGenerator.GetInt32(Math.Max(chars.Count, 1)),
                 randomChars[0][RandomNumberGenerator.GetInt32(randomChars[0].Length)]);
 
             // Lowercase
             if(opts.RequireLowercase)
                 chars.Insert(RandomNumberGenerator.GetInt32(chars.Count),
+                chars.Insert(RandomNumberGenerator.GetInt32(Math.Max(chars.Count, 1)),
                 randomChars[1][RandomNumberGenerator.GetInt32(randomChars[1].Length)]);
 
             // Numerical
             if(opts.RequireDigit)
-                chars.Insert(RandomNumberGenerator.GetInt32(chars.Count),
+                chars.Insert(RandomNumberGenerator.GetInt32(Math.Max(chars.Count, 1)),
                 randomChars[2][RandomNumberGenerator.GetInt32(randomChars[2].Length)]);
 
             // Symbols
             if(opts.RequireNonAlphanumeric)
                 chars.Insert(RandomNumberGenerator.GetInt32(chars.Count),
+                chars.Insert(RandomNumberGenerator.GetInt32(Math.Max(chars.Count, 1)),
                 randomChars[3][RandomNumberGenerator.GetInt32(randomChars[3].Length)]);
 
             for(int i = chars.Count; i < opts.RequiredLength || chars.Distinct().Count() < opts.RequiredUniqueChars; i++)
             {
                 string rcs = randomChars[RandomNumberGenerator.GetInt32(randomChars.Length)];
-                chars.Insert(RandomNumberGenerator.GetInt32(chars.Count),
+                chars.Insert(RandomNumberGenerator.GetInt32(Math.Max(chars.Count, 1)),
                     rcs[RandomNumberGenerator.GetInt32(rcs.Length)]);
             }
 
@@ -133,6 +136,7 @@ namespace Sustenet.Utils
             /// <param name="keyName">The name to save the key as.</param>
             /// <param name="bit">The bit encryption.</param>
             public static void GenerateKeyPair(string keyName, int bit = 2048)
+            public static void GenerateKeyPair(string keyName, int bit = 4096)
             {
                 RSACryptoServiceProvider csp = new RSACryptoServiceProvider(bit);
 
@@ -192,6 +196,10 @@ namespace Sustenet.Utils
                 {
                     KeyData data = GetKey(path, pubKeyName, KeyType.PublicKey, serializer);
                     rsaPrivKeys.Add(data.name, data.key);
+                    KeyData data = GetKey(path, Path.GetFileName(pubKeyName), KeyType.PublicKey, serializer);
+
+                    if(!rsaPubKeys.ContainsKey(data.name))
+                        rsaPubKeys.Add(data.name, data.key);
                 }
             }
 
@@ -208,6 +216,10 @@ namespace Sustenet.Utils
                 {
                     KeyData data = GetKey(path, privKeyName, KeyType.PrivateKey, serializer);
                     rsaPrivKeys.Add(data.name, data.key);
+                    KeyData data = GetKey(path, Path.GetFileName(privKeyName), KeyType.PrivateKey, serializer);
+
+                    if(!rsaPrivKeys.ContainsKey(data.name))
+                        rsaPrivKeys.Add(data.name, data.key);
                 }
             }
 
@@ -291,6 +303,9 @@ namespace Sustenet.Utils
                 byte[] dataBytes = Encoding.Unicode.GetBytes(data);
 
                 return Convert.ToBase64String(csp.Encrypt(dataBytes, false));
+                byte[] cypher = csp.Encrypt(dataBytes, false);
+
+                return Convert.ToBase64String(cypher);
             }
 
             /// <summary>
@@ -318,6 +333,9 @@ namespace Sustenet.Utils
                 csp.ImportParameters((RSAParameters)key);
 
                 byte[] dataBytes = csp.Decrypt(Convert.FromBase64String(data), false);
+                byte[] dataBytes = Convert.FromBase64String(data);
+
+                byte[] passphrase = csp.Decrypt(dataBytes, false);
 
                 return Encoding.Unicode.GetString(dataBytes);
             }
