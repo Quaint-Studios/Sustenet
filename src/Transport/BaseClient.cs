@@ -116,8 +116,6 @@ namespace Sustenet.Transport
 
                     Array.Copy(receiveBuffer, data, byteLength);
 
-                    onDebug.RaiseEvent("Received");
-
                     onReceived.RaiseEvent(data);
 
                     stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
