@@ -122,9 +122,9 @@ namespace Sustenet.Transport
 
                     stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
                 }
-                catch(Exception e)
+                catch
                 {
-                    onDebug.RaiseEvent($"Error with receiving TCP data...: {e}");
+                    // onDebug.RaiseEvent($"Error with receiving TCP data...: {e}");
                     onDisconnected.RaiseEvent();
                 }
             }
