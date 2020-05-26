@@ -286,19 +286,17 @@ namespace Sustenet.Utils.Security
         /// <returns>An encrypted base64 string.</returns>
         public static string Encrypt(string keyName, string data)
         {
-            RSAParameters? key = null;
+            RSAParameters key;
             if(rsaPubKeys.ContainsKey(keyName))
             {
                 key = rsaPubKeys[keyName];
             }
-
             // If no public key is found, try to find a private key.
-            if(key == null && rsaPrivKeys.ContainsKey(keyName))
+            else if(rsaPrivKeys.ContainsKey(keyName))
             {
                 key = rsaPrivKeys[keyName];
             }
-
-            if(key == null)
+            else
             {
                 throw new Exception($"Failed to find a key that matched '{keyName}'");
             }
@@ -321,15 +319,14 @@ namespace Sustenet.Utils.Security
         /// <returns>A decrypted string.</returns>
         public static string Decrypt(string keyName, string data)
         {
-            RSAParameters? key = null;
+            RSAParameters key;
             // Only look for a private key. Because... well.. public keys don't decrypt.
             // .......................At least I hope not.
             if(rsaPrivKeys.ContainsKey(keyName))
             {
                 key = rsaPubKeys[keyName];
             }
-
-            if(key == null)
+            else
             {
                 throw new Exception($"Failed to find a key that matched '{keyName}'");
             }

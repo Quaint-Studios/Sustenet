@@ -223,9 +223,7 @@ namespace Sustenet.Utils.Security
         /// <returns>An encrypted base64 string with the IV attached.</returns>
         public static EncryptedData Encrypt(string keyName, string data)
         {
-#nullable enable
-            byte[]? key = null;
-#nullable disable
+            byte[] key = null;
             if(aesKeys.ContainsKey(keyName))
             {
                 key = aesKeys[keyName];
@@ -267,15 +265,12 @@ namespace Sustenet.Utils.Security
         /// <returns>A decrypted string.</returns>
         public static string Decrypt(string keyName, byte[] data, byte[] iv)
         {
-#nullable enable
-            byte[]? key = null;
-#nullable disable
+            byte[] key;
             if(aesKeys.ContainsKey(keyName))
             {
                 key = aesKeys[keyName];
             }
-
-            if(key == null)
+            else
             {
                 throw new Exception($"Failed to find a key that matched '{keyName}'");
             }
