@@ -96,6 +96,13 @@ namespace Sustenet.Clients
             InitializeClientData();
         }
 
+        public void Login(string username)
+        {
+            // If the user currently doesn't have a username, let them attempt to login.
+            if(name.Length <= 0)
+                this.ValidateLogin(username);
+        }
+
         /// <summary>
         /// Connects to the currently assigned IP and port.
         /// </summary>
