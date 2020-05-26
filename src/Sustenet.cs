@@ -23,6 +23,7 @@ namespace Sustenet
     using NDesk.Options;
     using Utils;
     using Transport;
+    using System.Threading;
 
     class Options
     {
@@ -95,11 +96,11 @@ namespace Sustenet
 
     class Sustenet
     {
+        private static bool isRunning = false;
+
         public static Clients.Client[] clients;
         public static World.ClusterServer cluster;
         public static Master.MasterServer master;
-
-        public static Timer appTimer;
 
         static void Main(string[] args)
         {
@@ -143,20 +144,34 @@ namespace Sustenet
                 master = new Master.MasterServer(maxConnections ?? 0, port ?? 6256);
             }
 
-            appTimer = new Timer(20);
-            // Hook up the Elapsed event for the timer.
-            appTimer.Elapsed += UpdateMain;
-            appTimer.AutoReset = true;
-            appTimer.Enabled = true;
+            isRunning = true;
+            Thread logicThread = new Thread(new ThreadStart(UpdateMain));
+            logicThread.Name = "Logic Thread";
+            logicThread.Start();
 
             // Wait for the user to respond before closing.
             Console.WriteLine("Press any key to close Sustenet...");
             Console.ReadKey();
         }
 
-        public static void UpdateMain(object source, ElapsedEventArgs e)
+        private static void UpdateMain()
         {
-            ThreadManager.UpdateMain();
+            DateTime next = DateTime.Now;
+
+            while(isRunning)
+            {
+                while(next < DateTime.Now)
+                {
+                    ThreadManager.UpdateMain();
+
+                    next = next.AddMilliseconds(Constants.MS_PER_TICK);
+
+                    if(next > DateTime.Now)
+                    {
+                        Thread.Sleep(next - DateTime.Now);
+                    }
+                }
+            }
         }
     }
 }
