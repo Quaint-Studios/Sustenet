@@ -56,8 +56,7 @@ namespace Sustenet.Transport
         /// </summary>
         public class TcpHandler
         {
-
-            public TcpClient socket;
+            internal TcpClient socket;
             internal NetworkStream stream;
             private byte[] receiveBuffer;
 
@@ -74,31 +73,38 @@ namespace Sustenet.Transport
             /// <param name="_socket">The socket to replace the current socket with.</param>
             public void Receive(TcpClient _socket)
             {
-                if(socket != null)
+                try
                 {
-                    if(stream != null)
+                    if(socket != null)
                     {
-                        stream.Close();
+                        if(stream != null)
+                        {
+                            stream.Close();
+                        }
+
+                        socket.Close();
                     }
 
-                    socket.Close();
+                    socket = _socket;
+                    socket.ReceiveBufferSize = bufferSize;
+                    socket.SendBufferSize = bufferSize;
+
+                    if(stream == null)
+                    {
+                        stream = socket.GetStream();
+                    }
+
+                    if(receiveBuffer == null)
+                    {
+                        receiveBuffer = new byte[bufferSize];
+                    }
+
+                    stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
                 }
-
-                socket = _socket;
-                socket.ReceiveBufferSize = bufferSize;
-                socket.SendBufferSize = bufferSize;
-
-                if(stream == null)
+                catch
                 {
-                    stream = socket.GetStream();
+                    onDisconnected.RaiseEvent();
                 }
-
-                if(receiveBuffer == null)
-                {
-                    receiveBuffer = new byte[bufferSize];
-                }
-
-                stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
             }
 
             /// <summary>
