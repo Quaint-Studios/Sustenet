@@ -31,6 +31,7 @@ namespace Sustenet.Transport
     {
         public int id;
         public TcpHandler tcp;
+        public UdpHandler udp;
         public static int bufferSize = 4096;
 
         public string name;
@@ -41,9 +42,12 @@ namespace Sustenet.Transport
         {
             id = _id;
             tcp = new TcpHandler();
+            udp = new UdpHandler();
 
             if(debug)
                 tcp.onDebug.Run += (msg) => DebugClient(id, msg);
+
+            udp.onDebug = tcp.onDebug;
         }
 
         /// <summary>
@@ -184,6 +188,52 @@ namespace Sustenet.Transport
                 }
             }
             #endregion
+        }
+
+        public class UdpHandler
+        {
+            public UdpClient socket;
+            public IPEndPoint endPoint;
+
+            public BaseEvent onConnected = new BaseEvent();
+            public BaseEvent onDisconnected = new BaseEvent();
+            public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
+            public BaseEvent<string> onDebug;
+
+            /// <summary>
+            /// Prepares for a UDP connection to a server.
+            /// </summary>
+            /// <param name="ip">The IP Address to set the endpoint to.</param>
+            /// <param name="port">The port to set the endpoint to.</param>
+            /// <param name="localPort">The local port.</param>
+            public void Connect(IPAddress ip, ushort port, ushort localPort)
+            {
+                endPoint = new IPEndPoint(ip, port);
+
+                socket = new UdpClient(localPort);
+
+                socket.Connect(endPoint);
+                socket.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+            }
+
+            private void ReceiveCallback(IAsyncResult ar)
+            {
+                try
+                {
+                    byte[] data = socket.EndReceive(ar, ref endPoint);
+                    socket.BeginReceive(ReceiveCallback, null);
+
+                    if(data.Length < 4)
+                    {
+                        onDisconnected.RaiseEvent();
+                        return;
+                    }
+                }
+                catch
+                {
+
+                }
+            }
         }
 
         private static void DebugClient(int id, string msg)
