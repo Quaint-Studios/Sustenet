@@ -1,7 +1,7 @@
 # Sustenet
 A C# networking solution for Unity3D that has a primary focus on scaling by allowing multiple servers to work together.
 
-![.NET Core](https://github.com/Quaint-Studios/Sustenet/workflows/.NET%20Core/badge.svg)
+![.NET Core](https://github.com/Quaint-Studios/Sustenet/workflows/.NET%20Core/badge.svg) [![CodeFactor](https://www.codefactor.io/repository/github/quaint-studios/sustenet/badge)](https://www.codefactor.io/repository/github/quaint-studios/sustenet)
 
 ## Vision
 
