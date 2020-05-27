@@ -119,6 +119,7 @@ namespace Sustenet.Transport
                     if(byteLength <= 0)
                     {
                         // disconnect
+                        onDisconnected.RaiseEvent();
                         return;
                     }
 
