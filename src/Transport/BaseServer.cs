@@ -68,7 +68,6 @@ namespace Sustenet.Transport
         /// Starts a server.
         /// </summary>
         /// <param name="serverType">The type of server to notify in the console.</param>
-        protected void Start(ServerType _serverType)
         protected void Start(ServerType _serverType, bool debug = true)
         {
             serverType = _serverType;
@@ -98,48 +97,75 @@ namespace Sustenet.Transport
         /// <param name="ar">Async Result, the state contains this instance.</param>
         private static void OnConnectCallback(IAsyncResult ar)
         {
+            int id = -1;
             BaseServer server = (BaseServer)ar.AsyncState;
-            TcpListener listener = server.tcpListener;
 
-            TcpClient client = listener.EndAcceptTcpClient(ar);
-            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
-
-            if(server.maxConnections == 0 || server.clients.Count < server.maxConnections)
+            try
             {
-                int id;
+                TcpListener listener = server.tcpListener;
 
-                if(server.releasedIds.Count > 0)
+                TcpClient client = listener.EndAcceptTcpClient(ar);
+                listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
+
+                if(server.maxConnections == 0 || server.clients.Count < server.maxConnections)
                 {
-                    id = server.releasedIds[0];
-                    server.clients.Add(id, null); // Reserve this spot instantly.
+                    while(true)
+                    {
+                        // Keep trying to assign an ID until successful.
+                        try
+                        {
+                            if(server.releasedIds.Count > 0)
+                            {
+                                id = server.releasedIds[0];
+                                server.clients.Add(id, null); // Reserve this spot instantly.
 
-                    server.releasedIds.RemoveAt(0);
+                                server.releasedIds.Remove(id);
+                            }
+                            else
+                            {
+                                id = server.clients.Count;
+                                server.clients.Add(id, null); // Reserve this spot instantly here too.
+                            }
+                            break;
+                        }
+                        catch
+                        {
+                            id = -1;
+                            // ID existed.
+                            continue;
+                        }
+                    }
+
+                    server.clients[id] = new BaseClient(id, debug: Constants.DEBUGGING);
+
+                    server.clients[id].receivedData = new Packet();
+
+                    server.clients[id].tcp.onReceived.Run += (data) => {
+                        // Convert the BaseClient to work for the server.
+                        server.clients[id].receivedData.Reset(server.HandleData(server.clients[id], data));
+                    };
+                    // Clear the entry from the server.
+                    server.clients[id].tcp.onDisconnected.Run += () => { server.ClearClient(id); };
+
+                    server.clients[id].tcp.Receive(client);
+
+                    server.onConnection.RaiseEvent(id);
+
+                    return;
                 }
-                else
-                {
-                    id = server.clients.Count;
-                    server.clients.Add(id, null); // Reserve this spot instantly here too.
-                }
 
-                server.clients[id] = new BaseClient(id);
-
-                server.clients[id].receivedData = new Packet();
-
-                server.clients[id].tcp.onReceived.Run += (data) => {
-                    // Convert the BaseClient to work for the server.
-                    server.clients[id].receivedData.Reset(server.HandleData(server.clients[id], data));
-                };
-
-                server.clients[id].tcp.Receive(client);
-
-                server.onConnection.RaiseEvent(id);
-
-                server.clients[id].tcp.onDisconnected.Run += () => server.ClearClient(id);
-
-                return;
+                server.onDebug.RaiseEvent($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
             }
-
-            server.onDebug.RaiseEvent($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
+            catch
+            {
+                // If the id was never reset.
+                // That means that a client may still exist.
+                // Cleanup.
+                if(id != -1)
+                {
+                    server.ClearClient(id);
+                }
+            }
         }
 
         /// <summary>
