@@ -69,13 +69,17 @@ namespace Sustenet.Transport
         /// </summary>
         /// <param name="serverType">The type of server to notify in the console.</param>
         protected void Start(ServerType _serverType)
+        protected void Start(ServerType _serverType, bool debug = true)
         {
             serverType = _serverType;
 
             string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
 
-            onConnection.Run += (id) => DebugServer(serverTypeName, $"Client#{id} has connected.");
-            onDebug.Run += (msg) => DebugServer(serverTypeName, msg);
+            if(debug)
+            {
+                onConnection.Run += (id) => DebugServer(serverTypeName, $"Client#{id} has connected.");
+                onDebug.Run += (msg) => DebugServer(serverTypeName, msg);
+            }
 
             Utilities.ConsoleHeader($"Starting {serverTypeName} on Port {port}");
 

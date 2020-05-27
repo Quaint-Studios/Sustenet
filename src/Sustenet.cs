@@ -114,7 +114,7 @@ namespace Sustenet
                 clients = new Clients.Client[options.maxClients];
                 for(int i = 0; i < options.maxClients; i++)
                 {
-                    clients[i] = new Clients.Client();
+                    clients[i] = new Clients.Client(debug: Constants.DEBUGGING);
                     clients[i].Connect();
                 }
             }
