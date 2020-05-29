@@ -167,9 +167,9 @@ namespace Sustenet
 
                     next = next.AddMilliseconds(Constants.MS_PER_TICK);
 
-                    if(next > DateTime.Now)
+                    if(DateTime.Compare(next, DateTime.Now) > 0)
                     {
-                        Thread.Sleep(next - DateTime.Now);
+                        Thread.Sleep((int)(next - DateTime.Now).TotalMilliseconds);
                     }
                 }
             }
