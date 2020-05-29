@@ -97,7 +97,6 @@ namespace Sustenet.Transport
         /// <param name="ar">Async Result, the state contains this instance.</param>
         private static void OnConnectCallback(IAsyncResult ar)
         {
-            int id = -1;
             BaseServer server = (BaseServer)ar.AsyncState;
 
             try
@@ -107,54 +106,79 @@ namespace Sustenet.Transport
                 TcpClient client = listener.EndAcceptTcpClient(ar);
                 listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
 
-                if(server.maxConnections == 0 || server.clients.Count < server.maxConnections)
+                ThreadManager.ExecuteOnMainThread(() => {
+                    server.AddClient(client);
+                });
+            }
+            catch(Exception e)
+            {
+                server.onDebug.RaiseEvent($"Failed to create a client: {e}");
+            }
+        }
+
+        private void AddClient(TcpClient client)
+        {
+            int id = -1;
+            try
+            {
+                if(maxConnections == 0 || clients.Count < maxConnections)
                 {
-                    while(true)
-                    {
-                        // Keep trying to assign an ID until successful.
-                        try
+                    lock(clients)
+                        lock(releasedIds)
                         {
-                            if(server.releasedIds.Count > 0)
+                            // Loop until an ID is found.
+                            while(id == -1)
                             {
-                                id = server.releasedIds[0];
-                                server.clients.Add(id, null); // Reserve this spot instantly.
+                                // If there are released IDs, use one.
+                                if(releasedIds.Count > 0)
+                                {
+                                    id = releasedIds[0];
+                                    if(!clients.ContainsKey(id))
+                                    {
+                                        clients.Add(id, new BaseClient(id, debug: Constants.DEBUGGING)); // Reserve this spot.
+                                        releasedIds.Remove(id);
+                                    }
+                                    else
+                                    {
+                                        id = -1;
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    // Assign the next highest client ID if there's no released IDs.
+                                    id = clients.Count;
 
-                                server.releasedIds.Remove(id);
+                                    if(!clients.ContainsKey(id))
+                                    {
+                                        clients.Add(id, new BaseClient(id, debug: Constants.DEBUGGING)); // Reserve this spot here too.
+                                    }
+                                    else
+                                    {
+                                        id = -1;
+                                        continue;
+                                    }
+                                }
                             }
-                            else
-                            {
-                                id = server.clients.Count;
-                                server.clients.Add(id, null); // Reserve this spot instantly here too.
-                            }
-                            break;
                         }
-                        catch
-                        {
-                            id = -1;
-                            // ID existed.
-                            continue;
-                        }
-                    }
 
-                    server.clients[id] = new BaseClient(id, debug: Constants.DEBUGGING);
+                    clients[id].receivedData = new Packet();
 
-                    server.clients[id].receivedData = new Packet();
-
-                    server.clients[id].tcp.onReceived.Run += (data) => {
+                    clients[id].tcp.onReceived.Run += (data) => {
                         // Convert the BaseClient to work for the server.
-                        server.clients[id].receivedData.Reset(server.HandleData(server.clients[id], data));
+                        clients[id].receivedData.Reset(HandleData(clients[id], data));
                     };
                     // Clear the entry from the server.
-                    server.clients[id].tcp.onDisconnected.Run += () => { server.ClearClient(id); };
+                    clients[id].tcp.onDisconnected.Run += () => { ClearClient(id); };
 
-                    server.clients[id].tcp.Receive(client);
+                    clients[id].tcp.Receive(client);
 
-                    server.onConnection.RaiseEvent(id);
+                    onConnection.RaiseEvent(id);
 
                     return;
                 }
 
-                server.onDebug.RaiseEvent($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
+                onDebug.RaiseEvent($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {maxConnections} reached.");
             }
             catch
             {
@@ -163,7 +187,7 @@ namespace Sustenet.Transport
                 // Cleanup.
                 if(id != -1)
                 {
-                    server.ClearClient(id);
+                    ClearClient(id);
                 }
             }
         }
@@ -183,10 +207,31 @@ namespace Sustenet.Transport
         /// <param name="clientId">The client id to free up.</param>
         internal void ClearClient(int clientId)
         {
-            clients[clientId].Dispose();
-            clients.Remove(clientId);
-            releasedIds.Add(clientId);
-            onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
+            try
+            {
+                lock(clients)
+                {
+                    lock(releasedIds)
+                    {
+                        clients[clientId].Dispose();
+                        clients.Remove(clientId);
+                        releasedIds.Add(clientId);
+                    }
+                }
+                onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
+            }
+            catch(Exception e)
+            {
+                if(clients.ContainsKey(clientId))
+                {
+                    lock(clients)
+                    {
+                        clients.Remove(clientId);
+                        releasedIds.Add(clientId);
+                    }
+                    onDebug.RaiseEvent($"Disconnected Client#{clientId} but with issues: {e}");
+                }
+            }
         }
         #endregion
 
