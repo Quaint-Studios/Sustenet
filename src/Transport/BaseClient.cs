@@ -54,7 +54,7 @@ namespace Sustenet.Transport
         /// Handles events for connecting, receiving, and debugging.
         /// Also controls the socket connection.
         /// </summary>
-        public class TcpHandler
+        public class TcpHandler : IDisposable
         {
             internal TcpClient socket;
             internal NetworkStream stream;
@@ -79,10 +79,10 @@ namespace Sustenet.Transport
                     {
                         if(stream != null)
                         {
-                            stream.Close();
+                            stream.Dispose();
                         }
 
-                        socket.Close();
+                        socket.Dispose();
                     }
 
                     socket = _socket;
@@ -99,7 +99,7 @@ namespace Sustenet.Transport
                         receiveBuffer = new byte[bufferSize];
                     }
 
-                    stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
+                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
                 }
                 catch
                 {
@@ -115,7 +115,15 @@ namespace Sustenet.Transport
             {
                 try
                 {
-                    int byteLength = stream.EndRead(ar);
+                    int byteLength;
+                    lock(stream)
+                    {
+                        if(stream == null)
+                            return;
+
+                        byteLength = stream.EndRead(ar);
+                    }
+
                     if(byteLength <= 0)
                     {
                         // disconnect
@@ -129,10 +137,15 @@ namespace Sustenet.Transport
 
                     onReceived.RaiseEvent(data);
 
-                    stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
+                    lock(stream)
+                    {
+                        if(stream != null)
+                            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
+                    }
                 }
-                catch
+                catch(Exception e)
                 {
+                    Console.WriteLine(e);
                     // onDebug.RaiseEvent($"Error with receiving TCP data...: {e}");
                     onDisconnected.RaiseEvent();
                 }
@@ -145,21 +158,28 @@ namespace Sustenet.Transport
             /// <param name="port">The port number.</param>
             public void Connect(IPAddress ip, ushort port)
             {
-                if(socket == null)
+                try
                 {
-                    socket = new TcpClient
+                    if(socket == null)
                     {
-                        ReceiveBufferSize = bufferSize,
-                        SendBufferSize = bufferSize
-                    };
-                }
+                        socket = new TcpClient
+                        {
+                            ReceiveBufferSize = bufferSize,
+                            SendBufferSize = bufferSize
+                        };
+                    }
 
-                if(receiveBuffer == null)
+                    if(receiveBuffer == null)
+                    {
+                        receiveBuffer = new byte[bufferSize];
+                    }
+
+                    socket.BeginConnect(ip, port, ConnectCallback, null);
+                }
+                catch
                 {
-                    receiveBuffer = new byte[bufferSize];
+                    onDisconnected.RaiseEvent();
                 }
-
-                socket.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), null);
             }
 
             /// <summary>
@@ -170,34 +190,79 @@ namespace Sustenet.Transport
             {
                 try
                 {
-                    socket.EndConnect(ar);
-
-                    if(!socket.Connected)
+                    lock(socket)
                     {
-                        onDebug.RaiseEvent($"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
-                        return;
+                        if(socket != null)
+                            socket.EndConnect(ar);
+
+                        if(!socket.Connected)
+                        {
+                            onDebug.RaiseEvent($"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
+                            return;
+                        }
                     }
 
                     onDebug.RaiseEvent($"Connected to server at {socket.Client.RemoteEndPoint}.");
 
-                    if(stream == null)
+                    lock(stream)
                     {
-                        stream = socket.GetStream();
+                        if(stream == null)
+                        {
+                            stream = socket.GetStream();
+                        }
+
+                        onConnected.RaiseEvent();
+
+                        stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
                     }
-
-                    onConnected.RaiseEvent();
-
-                    stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
                 }
-                catch
+                catch(Exception e)
                 {
+                    Console.WriteLine(e);
                     onDebug.RaiseEvent("Error while trying to connect.");
                 }
             }
             #endregion
+
+            private bool disposed = true;
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if(!disposed)
+                {
+                    if(disposing)
+                    {
+                        if(socket != null)
+                            socket.Dispose();
+
+                        if(stream != null)
+                            stream.Dispose();
+
+                        /* if(onConnected != null)
+                            onConnected.Dispose();
+
+                        if(onDisconnected != null)
+                            onDisconnected.Dispose();
+
+                        if(onReceived != null)
+                            onReceived.Dispose();
+
+                        if(onDebug != null)
+                            onDebug.Dispose(); */
+                    }
+
+                    disposed = true;
+                }
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
-        public class UdpHandler
+        public class UdpHandler : IDisposable
         {
             public UdpClient socket;
             public IPEndPoint endPoint;
@@ -215,12 +280,19 @@ namespace Sustenet.Transport
             /// <param name="localPort">The local port.</param>
             public void Connect(IPAddress ip, ushort port, ushort localPort)
             {
-                endPoint = new IPEndPoint(ip, port);
+                try
+                {
+                    endPoint = new IPEndPoint(ip, port);
 
-                socket = new UdpClient(localPort);
+                    socket = new UdpClient(localPort);
 
-                socket.Connect(endPoint);
-                socket.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+                    socket.Connect(endPoint);
+                    socket.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+                }
+                catch
+                {
+                    onDisconnected.RaiseEvent();
+                }
             }
 
             private void ReceiveCallback(IAsyncResult ar)
@@ -238,8 +310,45 @@ namespace Sustenet.Transport
                 }
                 catch
                 {
-
+                    onDisconnected.RaiseEvent();
                 }
+            }
+
+            private bool disposed = true;
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if(!disposed)
+                {
+                    if(disposing)
+                    {
+                        if(socket != null)
+                            socket.Dispose();
+
+                        if(endPoint != null)
+                            endPoint = null;
+
+                        /* if(onConnected != null)
+                            onConnected.Dispose();
+
+                        if(onDisconnected != null)
+                            onDisconnected.Dispose();
+
+                        if(onReceived != null)
+                            onReceived.Dispose();
+
+                        if(onDebug != null)
+                            onDebug.Dispose(); */
+                    }
+
+                    disposed = true;
+                }
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
             }
         }
 
@@ -256,8 +365,14 @@ namespace Sustenet.Transport
             {
                 if(disposing)
                 {
-                    if(tcp.socket != null)
-                        tcp.socket.Close();
+                    if(tcp != null)
+                        tcp.Dispose();
+
+                    if(udp != null)
+                        udp.Dispose();
+
+                    if(receivedData != null)
+                        receivedData.Dispose();
                 }
 
                 disposed = true;
