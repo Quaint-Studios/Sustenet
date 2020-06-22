@@ -38,6 +38,11 @@ namespace Sustenet.Transport
 
         internal Packet receivedData;
 
+        public BaseEvent onConnected = new BaseEvent();
+        public BaseEvent onDisconnected = new BaseEvent();
+        public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
+        public BaseEvent<string> onDebug = new BaseEvent<string>();
+
         public BaseClient(int _id, bool debug = true)
         {
             id = _id;
@@ -45,9 +50,9 @@ namespace Sustenet.Transport
             udp = new UdpHandler();
 
             if(debug)
-                tcp.onDebug.Run += (msg) => DebugClient(id, msg);
+                onDebug.Run += (msg) => DebugClient(id, msg);
 
-            udp.onDebug = tcp.onDebug;
+            udp.onDebug = onDebug;
         }
 
         /// <summary>
@@ -60,18 +65,13 @@ namespace Sustenet.Transport
             internal NetworkStream stream;
             private byte[] receiveBuffer;
 
-            public BaseEvent onConnected = new BaseEvent();
-            public BaseEvent onDisconnected = new BaseEvent();
-            public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
-            public BaseEvent<string> onDebug = new BaseEvent<string>();
-
             #region Connection Functions
             /// <summary>
             /// Used for servers that create local records of clients.
             /// It will wipe any existing connections and start a new one.
             /// </summary>
             /// <param name="_socket">The socket to replace the current socket with.</param>
-            public void Receive(TcpClient _socket)
+            public void Receive(BaseClient client, TcpClient _socket)
             {
                 try
                 {
@@ -99,11 +99,11 @@ namespace Sustenet.Transport
                         receiveBuffer = new byte[bufferSize];
                     }
 
-                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
+                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                 }
                 catch
                 {
-                    onDisconnected.RaiseEvent();
+                    client.onDisconnected.RaiseEvent();
                 }
             }
 
@@ -113,6 +113,8 @@ namespace Sustenet.Transport
             /// <param name="ar">The result of BeginRead().</param>
             public void ReceiveCallback(IAsyncResult ar)
             {
+                BaseClient client = (BaseClient)ar.AsyncState;
+
                 try
                 {
                     int byteLength;
@@ -127,7 +129,7 @@ namespace Sustenet.Transport
                     if(byteLength <= 0)
                     {
                         // disconnect
-                        onDisconnected.RaiseEvent();
+                        client.onDisconnected.RaiseEvent();
                         return;
                     }
 
@@ -135,7 +137,7 @@ namespace Sustenet.Transport
 
                     Array.Copy(receiveBuffer, data, byteLength);
 
-                    onReceived.RaiseEvent(data);
+                    client.onReceived.RaiseEvent(data);
 
                     lock(stream)
                     {
@@ -147,7 +149,7 @@ namespace Sustenet.Transport
                 {
                     Console.WriteLine(e);
                     // onDebug.RaiseEvent($"Error with receiving TCP data...: {e}");
-                    onDisconnected.RaiseEvent();
+                    client.onDisconnected.RaiseEvent();
                 }
             }
 
@@ -156,7 +158,7 @@ namespace Sustenet.Transport
             /// </summary>
             /// <param name="ip">The IP address.</param>
             /// <param name="port">The port number.</param>
-            public void Connect(IPAddress ip, ushort port)
+            public void Connect(BaseClient client, IPAddress ip, ushort port)
             {
                 try
                 {
@@ -178,7 +180,7 @@ namespace Sustenet.Transport
                 }
                 catch
                 {
-                    onDisconnected.RaiseEvent();
+                    client.onDisconnected.RaiseEvent();
                 }
             }
 
@@ -188,6 +190,8 @@ namespace Sustenet.Transport
             /// <param name="ar">Result from BeginConnect().</param>
             public void ConnectCallback(IAsyncResult ar)
             {
+                BaseClient client = (BaseClient)ar.AsyncState;
+
                 try
                 {
                     lock(socket)
@@ -197,12 +201,12 @@ namespace Sustenet.Transport
 
                         if(!socket.Connected)
                         {
-                            onDebug.RaiseEvent($"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
+                            client.onDebug.RaiseEvent($"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
                             return;
                         }
                     }
 
-                    onDebug.RaiseEvent($"Connected to server at {socket.Client.RemoteEndPoint}.");
+                    client.onDebug.RaiseEvent($"Connected to server at {socket.Client.RemoteEndPoint}.");
 
                     lock(stream)
                     {
@@ -211,7 +215,7 @@ namespace Sustenet.Transport
                             stream = socket.GetStream();
                         }
 
-                        onConnected.RaiseEvent();
+                        client.onConnected.RaiseEvent();
 
                         stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
                     }
@@ -219,7 +223,7 @@ namespace Sustenet.Transport
                 catch(Exception e)
                 {
                     Console.WriteLine(e);
-                    onDebug.RaiseEvent("Error while trying to connect.");
+                    client.onDebug.RaiseEvent("Error while trying to connect.");
                 }
             }
             #endregion

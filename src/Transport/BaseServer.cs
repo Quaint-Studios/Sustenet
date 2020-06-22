@@ -106,7 +106,8 @@ namespace Sustenet.Transport
                 TcpClient client = listener.EndAcceptTcpClient(ar);
                 listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
 
-                ThreadManager.ExecuteOnMainThread(() => {
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
                     server.AddClient(client);
                 });
             }
@@ -164,14 +165,15 @@ namespace Sustenet.Transport
 
                     clients[id].receivedData = new Packet();
 
-                    clients[id].tcp.onReceived.Run += (data) => {
+                    clients[id].onReceived.Run += (data) =>
+                    {
                         // Convert the BaseClient to work for the server.
                         clients[id].receivedData.Reset(HandleData(clients[id], data));
                     };
                     // Clear the entry from the server.
-                    clients[id].tcp.onDisconnected.Run += () => { ClearClient(id); };
+                    clients[id].onDisconnected.Run += () => { ClearClient(id); };
 
-                    clients[id].tcp.Receive(client);
+                    clients[id].tcp.Receive(clients[id], client);
 
                     onConnection.RaiseEvent(id);
 
@@ -256,7 +258,8 @@ namespace Sustenet.Transport
             {
                 byte[] packetBytes = client.receivedData.ReadBytes(packetLength);
 
-                ThreadManager.ExecuteOnMainThread(() => {
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
                     using(Packet packet = new Packet(packetBytes))
                     {
                         int packetId = packet.ReadInt();

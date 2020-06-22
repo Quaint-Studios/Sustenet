@@ -85,11 +85,13 @@ namespace Sustenet.Clients
                 Port = _port
             };
 
-            tcp.onConnected.Run += () => {
+            onConnected.Run += () =>
+            {
                 receivedData = new Packet();
             };
 
-            tcp.onReceived.Run += (data) => {
+            onReceived.Run += (data) =>
+            {
                 receivedData.Reset(HandleData(data));
             };
 
@@ -112,12 +114,12 @@ namespace Sustenet.Clients
             {
                 case ConnectionType.MasterServer:
                     activeConnection = connectType;
-                    tcp.Connect(IPAddress.Parse(masterConnection.Ip), masterConnection.Port);
+                    tcp.Connect(this, IPAddress.Parse(masterConnection.Ip), masterConnection.Port);
                     break;
 
                 case ConnectionType.ClusterServer:
                     activeConnection = connectType;
-                    tcp.Connect(IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port);
+                    tcp.Connect(this, IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port);
                     break;
             }
         }
@@ -142,7 +144,8 @@ namespace Sustenet.Clients
             {
                 byte[] packetBytes = receivedData.ReadBytes(packetLength);
 
-                ThreadManager.ExecuteOnMainThread(() => {
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
                     using(Packet packet = new Packet(packetBytes))
                     {
                         int packetId = packet.ReadInt();
