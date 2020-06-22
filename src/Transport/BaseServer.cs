@@ -215,7 +215,7 @@ namespace Sustenet.Transport
                     {
                         clients[clientId].Dispose();
                         clients.Remove(clientId);
-                        releasedIds.Add(clientId);
+                        // releasedIds.Add(clientId);
                     }
                 }
                 onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
@@ -227,7 +227,7 @@ namespace Sustenet.Transport
                     lock(clients)
                     {
                         clients.Remove(clientId);
-                        releasedIds.Add(clientId);
+                        // releasedIds.Add(clientId);
                     }
                     onDebug.RaiseEvent($"Disconnected Client#{clientId} but with issues: {e}");
                 }
