@@ -217,7 +217,7 @@ namespace Sustenet.Transport
                     {
                         clients[clientId].Dispose();
                         clients.Remove(clientId);
-                        // releasedIds.Add(clientId);
+                        releasedIds.Add(clientId); // TODO: Change this to only keep Ids of a certain reusable range.
                     }
                 }
                 onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
