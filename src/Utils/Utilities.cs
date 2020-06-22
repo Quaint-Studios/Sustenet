@@ -66,5 +66,18 @@ namespace Sustenet.Utils
             return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
         }
         #endregion
+
+
+        #region Debugging
+        public static void WriteLine(string msg)
+        {
+            if(Constants.DEBUGGING)
+            {
+#pragma warning disable CS0162 // Unreachable code detected
+                Console.WriteLine(msg);
+#pragma warning restore CS0162 // Unreachable code detected
+            }
+        }
+        #endregion
     }
 }
