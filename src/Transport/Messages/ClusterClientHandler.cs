@@ -85,7 +85,7 @@ namespace Sustenet.Transport.Messages
 
             client.name = keyName;
 
-            client.tcp.onDebug.RaiseEvent($"Welcome, {keyName}!");
+            client.onDebug.RaiseEvent($"Welcome, {keyName}!");
         }
 
         /// <summary>

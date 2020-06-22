@@ -49,7 +49,7 @@ namespace Sustenet.Clients
             }
             #endregion
 
-            tcp.onConnected.Run += () => this.ValidateCluster(keyName);
+            onConnected.Run += () => this.ValidateCluster(keyName);
         }
 
         protected override void InitializeClientData()
