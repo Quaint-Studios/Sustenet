@@ -240,18 +240,6 @@ namespace Sustenet.Transport
 
                         if(stream != null)
                             stream.Dispose();
-
-                        /* if(onConnected != null)
-                            onConnected.Dispose();
-
-                        if(onDisconnected != null)
-                            onDisconnected.Dispose();
-
-                        if(onReceived != null)
-                            onReceived.Dispose();
-
-                        if(onDebug != null)
-                            onDebug.Dispose(); */
                     }
 
                     disposed = true;
@@ -324,10 +312,10 @@ namespace Sustenet.Transport
                     {
                         if(socket != null)
                             socket.Dispose();
-
-                        if(endPoint != null)
-                            endPoint = null;
                     }
+
+                    if(endPoint != null)
+                        endPoint = null;
 
                     disposed = true;
                 }
