@@ -51,8 +51,6 @@ namespace Sustenet.Transport
 
             if(debug)
                 onDebug.Run += (msg) => DebugClient(id, msg);
-
-            udp.onDebug = onDebug;
         }
 
         /// <summary>
@@ -271,18 +269,13 @@ namespace Sustenet.Transport
             public UdpClient socket;
             public IPEndPoint endPoint;
 
-            public BaseEvent onConnected = new BaseEvent();
-            public BaseEvent onDisconnected = new BaseEvent();
-            public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
-            public BaseEvent<string> onDebug;
-
             /// <summary>
             /// Prepares for a UDP connection to a server.
             /// </summary>
             /// <param name="ip">The IP Address to set the endpoint to.</param>
             /// <param name="port">The port to set the endpoint to.</param>
             /// <param name="localPort">The local port.</param>
-            public void Connect(IPAddress ip, ushort port, ushort localPort)
+            public void Connect(BaseClient client, IPAddress ip, ushort port, ushort localPort)
             {
                 try
                 {
@@ -291,16 +284,18 @@ namespace Sustenet.Transport
                     socket = new UdpClient(localPort);
 
                     socket.Connect(endPoint);
-                    socket.BeginReceive(new AsyncCallback(ReceiveCallback), null);
+                    socket.BeginReceive(new AsyncCallback(ReceiveCallback), client);
                 }
                 catch
                 {
-                    onDisconnected.RaiseEvent();
+                    client.onDisconnected.RaiseEvent(); // TODO: Pass a TypeEnum.UDP enum to differentiate instructions?
                 }
             }
 
             private void ReceiveCallback(IAsyncResult ar)
             {
+                BaseClient client = (BaseClient)ar.AsyncState;
+
                 try
                 {
                     byte[] data = socket.EndReceive(ar, ref endPoint);
@@ -308,13 +303,13 @@ namespace Sustenet.Transport
 
                     if(data.Length < 4)
                     {
-                        onDisconnected.RaiseEvent();
+                        client.onDisconnected.RaiseEvent();
                         return;
                     }
                 }
                 catch
                 {
-                    onDisconnected.RaiseEvent();
+                    client.onDisconnected.RaiseEvent();
                 }
             }
 
@@ -331,18 +326,6 @@ namespace Sustenet.Transport
 
                         if(endPoint != null)
                             endPoint = null;
-
-                        /* if(onConnected != null)
-                            onConnected.Dispose();
-
-                        if(onDisconnected != null)
-                            onDisconnected.Dispose();
-
-                        if(onReceived != null)
-                            onReceived.Dispose();
-
-                        if(onDebug != null)
-                            onDebug.Dispose(); */
                     }
 
                     disposed = true;
