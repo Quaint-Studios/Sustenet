@@ -22,6 +22,7 @@ namespace Sustenet.Transport
     using System.Net.Sockets;
     using Network;
     using Events;
+    using Utils;
 
     /// <summary>
     /// The core for all clients. Handles basic functionality like sending
@@ -145,7 +146,7 @@ namespace Sustenet.Transport
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine(e);
+                    Utilities.WriteLine(e);
                     // onDebug.RaiseEvent($"Error with receiving TCP data...: {e}");
                     client.onDisconnected.RaiseEvent();
                 }
@@ -220,7 +221,7 @@ namespace Sustenet.Transport
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine(e);
+                    Utilities.WriteLine(e);
                     client.onDebug.RaiseEvent("Error while trying to connect.");
                 }
             }
