@@ -227,7 +227,7 @@ namespace Sustenet.Transport
             }
             #endregion
 
-            private bool disposed = true;
+            private bool disposed;
 
             protected virtual void Dispose(bool disposing)
             {
@@ -314,7 +314,7 @@ namespace Sustenet.Transport
                 }
             }
 
-            private bool disposed = true;
+            private bool disposed;
 
             protected virtual void Dispose(bool disposing)
             {
@@ -345,7 +345,7 @@ namespace Sustenet.Transport
             Console.WriteLine($"(Client#{id}) {msg}");
         }
 
-        private bool disposed = true;
+        private bool disposed;
 
         protected virtual void Dispose(bool disposing)
         {
