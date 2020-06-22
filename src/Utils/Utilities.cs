@@ -78,6 +78,16 @@ namespace Sustenet.Utils
 #pragma warning restore CS0162 // Unreachable code detected
             }
         }
+
+        public static void WriteLine(Exception e)
+        {
+            if(Constants.DEBUGGING)
+            {
+#pragma warning disable CS0162 // Unreachable code detected
+                Console.WriteLine(e);
+#pragma warning restore CS0162 // Unreachable code detected
+            }
+        }
         #endregion
     }
 }
