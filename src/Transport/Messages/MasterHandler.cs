@@ -75,7 +75,7 @@ namespace Sustenet.Transport.Messages
         /// <param name="username">The client's username.</param>
         internal static void InitializeLogin(this MasterServer server, int toClient, string username)
         {
-            server.onDebug.RaiseEvent($"Setting Client#{toClient}'s username to {username}.");
+            MasterServer.DebugServer(server.serverType, $"Setting Client#{toClient}'s username to {username}.");
 
             /**
              * TODO:
@@ -133,7 +133,7 @@ namespace Sustenet.Transport.Messages
                 server.Message(fromClient, "Please enter a username longer than 2 characters. Disconnecting.");
                 server.DisconnectClient(fromClient);
 
-                server.onDebug.RaiseEvent($"Disconnecting Client#{fromClient} for having the username '{username}' which is too short.");
+                MasterServer.DebugServer(server.serverType, $"Disconnecting Client#{fromClient} for having the username '{username}' which is too short.");
 
                 return;
             }
@@ -175,7 +175,7 @@ namespace Sustenet.Transport.Messages
                 server.Message(fromClient, "Incorrect passphrase. Disconnecting.");
                 server.DisconnectClient(fromClient);
 
-                server.onDebug.RaiseEvent($"Disconnecting Client#{fromClient} for answering their passphrase incorrectly.");
+                MasterServer.DebugServer(server.serverType, $"Disconnecting Client#{fromClient} for answering their passphrase incorrectly.");
 
                 return;
             }

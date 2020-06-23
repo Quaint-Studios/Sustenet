@@ -56,7 +56,6 @@ namespace Sustenet.Transport
         public BaseEvent<int> onConnection = new BaseEvent<int>();
         public BaseEvent<int> onDisconnection = new BaseEvent<int>();
         public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
-        public BaseEvent<string> onDebug = new BaseEvent<string>();
 
         protected BaseServer(int _maxConnections = 0, ushort _port = 6256)
         {
@@ -79,7 +78,6 @@ namespace Sustenet.Transport
             {
 #pragma warning disable CS0162 // Unreachable code detected
                 onConnection.Run += (id) => DebugServer(serverTypeName, $"Client#{id} has connected.");
-                onDebug.Run += (msg) => DebugServer(serverTypeName, msg);
 #pragma warning restore CS0162 // Unreachable code detected
             }
 
@@ -116,7 +114,7 @@ namespace Sustenet.Transport
             }
             catch(Exception e)
             {
-                server.onDebug.RaiseEvent($"Failed to create a client: {e}");
+                DebugServer(server.serverType, $"Failed to create a client: {e}");
             }
         }
 
@@ -183,7 +181,7 @@ namespace Sustenet.Transport
                     return;
                 }
 
-                onDebug.RaiseEvent($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {maxConnections} reached.");
+                DebugServer(serverType, $"{client.Client.RemoteEndPoint} failed to connect. Max connections of {maxConnections} reached.");
             }
             catch
             {
@@ -221,7 +219,7 @@ namespace Sustenet.Transport
                     clients.Remove(clientId);
                     releasedIds.Add(clientId); // TODO: Change this to only keep Ids of a certain reusable range.
 
-                    onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
+                    DebugServer(serverType, $"Disconnected Client#{clientId}.");
                 }
                 catch(Exception e)
                 {
@@ -237,7 +235,7 @@ namespace Sustenet.Transport
                             clients.Remove(clientId);
                             releasedIds.Add(clientId);
                         }
-                        onDebug.RaiseEvent($"Disconnected Client#{clientId} but with issues: {e}");
+                        DebugServer(serverType, $"Disconnected Client#{clientId} but with issues: {e}");
                     }
                 }
             });
@@ -295,8 +293,14 @@ namespace Sustenet.Transport
         }
         #endregion
 
-        private static void DebugServer(string serverTypeName, string msg)
+        public static void DebugServer(string serverTypeName, string msg)
         {
+            Console.WriteLine($"({serverTypeName}) {msg}");
+        }
+
+        public static void DebugServer(ServerType serverType, string msg)
+        {
+            string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
             Console.WriteLine($"({serverTypeName}) {msg}");
         }
     }
