@@ -72,12 +72,7 @@ namespace Sustenet.Transport
                 {
                     if(socket != null)
                     {
-                        if(stream != null)
-                        {
-                            stream.Dispose();
-                        }
-
-                        socket.Dispose();
+                        socket.Close();
                     }
 
                     socket = _socket;
@@ -232,10 +227,7 @@ namespace Sustenet.Transport
                     if(disposing)
                     {
                         if(socket != null)
-                            socket.Dispose();
-
-                        if(stream != null)
-                            stream.Dispose();
+                            socket.Close();
                     }
 
                     disposed = true;
@@ -307,7 +299,7 @@ namespace Sustenet.Transport
                     if(disposing)
                     {
                         if(socket != null)
-                            socket.Dispose();
+                            socket.Close();
                     }
 
                     if(endPoint != null)
