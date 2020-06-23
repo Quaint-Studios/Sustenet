@@ -15,56 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport.Messages
+namespace Sustenet.Transport.Messages.ClusterClientHandlers
 {
     using Clients;
     using Network;
     using System;
     using Utils.Security;
-
-    /// <summary>
-    /// The core all Cluster Client messages.
-    /// </summary>
-    static class ClusterClientCore { }
-
-    /// <summary>
-    /// Any message that is outbound from the Cluster Client.
-    /// </summary>
-    static class ClusterClientSend
-    {
-        /// <summary>
-        /// Sends a packet to the master server that requests a string of text that must be
-        /// decrypted and sent back.
-        /// </summary>
-        /// <param name="client">The Cluster Client to run this from.</param>
-        /// <param name="keyName">The name of the SSH key stored on the master server. These are
-        /// preloaded so there's no need to sanitize directory requests.</param>
-        internal static void ValidateCluster(this ClusterClient client, string keyName)
-        {
-            using(Packet packet = new Packet((int)ClientPackets.validateCluster))
-            {
-                packet.Write(keyName);
-
-                client.SendTcpData(packet);
-            }
-        }
-
-        /// <summary>
-        /// Placeholder for answering the passphrase the server may send to the cluster.
-        /// </summary>
-        /// <param name="client">The cluster client</param>
-        /// <param name="answer"></param>
-        internal static void AnswerPassphrase(this ClusterClient client, string answer)
-        {
-            using(Packet packet = new Packet((int)ClientPackets.answerPassphrase))
-            {
-                packet.Write(answer);
-                packet.Write(client.name);
-
-                client.SendTcpData(packet);
-            }
-        }
-    }
 
     /// <summary>
     /// Any message the Cluster Client receives.
@@ -85,7 +41,7 @@ namespace Sustenet.Transport.Messages
 
             client.name = keyName;
 
-            client.tcp.onDebug.RaiseEvent($"Welcome, {keyName}!");
+            BaseClient.DebugClient(client.id, $"Welcome, {keyName}!");
         }
 
         /// <summary>
@@ -98,7 +54,6 @@ namespace Sustenet.Transport.Messages
             string keyName = packet.ReadString();
             byte[] cypher = Convert.FromBase64String(packet.ReadString());
             byte[] iv = Convert.FromBase64String(packet.ReadString());
-
 
             client.AnswerPassphrase(AESManager.Decrypt(keyName, cypher, iv));
         }

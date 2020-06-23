@@ -15,39 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport.Messages
+namespace Sustenet.Transport.Messages.ClientHandlers
 {
     using Network;
     using Clients;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    static class ClientSend
-    {
-        /// <summary>
-        /// Sends a request to the server to login.
-        /// TODO: Authentication and persistent sessions.
-        /// </summary>
-        /// <param name="client">The client requesting to login.</param>
-        /// <param name="username">The username to login as.</param>
-        internal static void ValidateLogin(this Client client, string username)
-        {
-            if(client.activeConnection == Client.ConnectionType.MasterServer)
-            {
-                using(Packet packet = new Packet((int)ClientPackets.validateLogin))
-                {
-                    packet.Write(username);
-
-                    client.SendTcpData(packet);
-                }
-            }
-            else
-            {
-                client.tcp.onDebug.RaiseEvent("Cannot login unless connected to a Master Server.");
-            }
-        }
-    }
 
     /// <summary>
     /// Messages that the Client would receive from a server.
@@ -63,7 +34,7 @@ namespace Sustenet.Transport.Messages
         {
             string msg = packet.ReadString();
 
-            client.tcp.onDebug.RaiseEvent($"(Server Message) {msg}");
+            BaseClient.DebugClient(client.id, $"(Server Message) {msg}");
         }
 
         /// <summary>
@@ -82,7 +53,7 @@ namespace Sustenet.Transport.Messages
             client.name = username;
             client.id = id;
 
-            client.tcp.onDebug.RaiseEvent($"Welcome, {username}!");
+            BaseClient.DebugClient(client.id, $"Welcome, {username}!");
         }
     }
 }

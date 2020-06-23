@@ -15,8 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-
 namespace Sustenet.Events
 {
     using System;
@@ -50,6 +48,22 @@ namespace Sustenet.Events
         public void RaiseEvent(T args)
         {
             Run(args);
+        }
+    }
+
+    public class BaseEvent<T1, T2>
+    {
+        public event Action<T1, T2> Run = delegate { };
+
+        internal void ClearEvents()
+        {
+            Run = delegate
+            { };
+        }
+
+        public void RaiseEvent(T1 args1, T2 args2)
+        {
+            Run(args1, args2);
         }
     }
 }

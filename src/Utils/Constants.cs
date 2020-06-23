@@ -6,6 +6,8 @@ namespace Sustenet.Utils
 {
     class Constants
     {
+        public const bool DEBUGGING = false;
+
         /// <summary>
         /// How many ticks are in a second.
         /// </summary>

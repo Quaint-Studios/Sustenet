@@ -15,15 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport.Messages
+namespace Sustenet.Transport.Messages.ClusterHandlers
 {
     using Network;
     using World;
-
-    /// <summary>
-    /// The core all Cluster messages.
-    /// </summary>
-    static class ClusterCore { }
+    using BaseServerHandlers;
 
     /// <summary>
     /// Any message that is outbound from the Cluster or goes through the cluster to
@@ -53,13 +49,5 @@ namespace Sustenet.Transport.Messages
                 server.SendTcpData(toClient, packet);
             }
         }
-    }
-
-    /// <summary>
-    /// Any message the Cluster receives.
-    /// </summary>
-    static class ClusterReceive
-    {
-
     }
 }

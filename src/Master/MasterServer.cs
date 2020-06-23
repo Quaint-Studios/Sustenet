@@ -20,7 +20,7 @@ namespace Sustenet.Master
     using Network;
     using System.Collections.Generic;
     using Transport;
-    using Transport.Messages;
+    using Transport.Messages.MasterHandlers;
     using Utils.Security;
 
     /// <summary>

@@ -21,6 +21,7 @@ namespace Sustenet.Transport
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading.Tasks;
     using Events;
     using Network;
     using Utils;
@@ -55,7 +56,6 @@ namespace Sustenet.Transport
         public BaseEvent<int> onConnection = new BaseEvent<int>();
         public BaseEvent<int> onDisconnection = new BaseEvent<int>();
         public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
-        public BaseEvent<string> onDebug = new BaseEvent<string>();
 
         protected BaseServer(int _maxConnections = 0, ushort _port = 6256)
         {
@@ -74,8 +74,12 @@ namespace Sustenet.Transport
 
             string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
 
-            onConnection.Run += (id) => DebugServer(serverTypeName, $"Client#{id} has connected.");
-            onDebug.Run += (msg) => DebugServer(serverTypeName, msg);
+            if(Constants.DEBUGGING)
+            {
+#pragma warning disable CS0162 // Unreachable code detected
+                onConnection.Run += (id) => DebugServer(serverTypeName, $"Client#{id} has connected.");
+#pragma warning restore CS0162 // Unreachable code detected
+            }
 
             Utilities.ConsoleHeader($"Starting {serverTypeName} on Port {port}");
 
@@ -95,47 +99,100 @@ namespace Sustenet.Transport
         private static void OnConnectCallback(IAsyncResult ar)
         {
             BaseServer server = (BaseServer)ar.AsyncState;
-            TcpListener listener = server.tcpListener;
 
-            TcpClient client = listener.EndAcceptTcpClient(ar);
-            listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
-
-            if(server.maxConnections == 0 || server.clients.Count < server.maxConnections)
+            try
             {
-                int id;
+                TcpListener listener = server.tcpListener;
 
-                if(server.releasedIds.Count > 0)
+                TcpClient client = listener.EndAcceptTcpClient(ar);
+                listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
+
+                ThreadManager.ExecuteOnMainThread(() =>
                 {
-                    id = server.releasedIds[0];
-                    server.clients.Add(id, null); // Reserve this spot instantly.
-
-                    server.releasedIds.RemoveAt(0);
-                }
-                else
-                {
-                    id = server.clients.Count;
-                    server.clients.Add(id, null); // Reserve this spot instantly here too.
-                }
-
-                server.clients[id] = new BaseClient(id);
-
-                server.clients[id].receivedData = new Packet();
-
-                server.clients[id].tcp.onReceived.Run += (data) => {
-                    // Convert the BaseClient to work for the server.
-                    server.clients[id].receivedData.Reset(server.HandleData(server.clients[id], data));
-                };
-
-                server.clients[id].tcp.Receive(client);
-
-                server.onConnection.RaiseEvent(id);
-
-                server.clients[id].tcp.onDisconnected.Run += () => server.ClearClient(id);
-
-                return;
+                    server.AddClient(client);
+                });
             }
+            catch(Exception e)
+            {
+                DebugServer(server.serverType, $"Failed to create a client: {e}");
+            }
+        }
 
-            server.onDebug.RaiseEvent($"{client.Client.RemoteEndPoint} failed to connect. Max connections of {server.maxConnections} reached.");
+        private void AddClient(TcpClient client)
+        {
+            int id = -1;
+            try
+            {
+                if(maxConnections == 0 || clients.Count < maxConnections)
+                {
+                    lock(clients)
+                        lock(releasedIds)
+                        {
+                            // Loop until an ID is found.
+                            while(id == -1)
+                            {
+                                // If there are released IDs, use one.
+                                if(releasedIds.Count > 0)
+                                {
+                                    id = releasedIds[0];
+                                    if(!clients.ContainsKey(id))
+                                    {
+                                        clients.Add(id, new BaseClient(id)); // Reserve this spot.
+                                        releasedIds.Remove(id);
+                                    }
+                                    else
+                                    {
+                                        id = -1;
+                                        continue;
+                                    }
+                                }
+                                else
+                                {
+                                    // Assign the next highest client ID if there's no released IDs.
+                                    id = clients.Count;
+
+                                    if(!clients.ContainsKey(id))
+                                    {
+                                        clients.Add(id, new BaseClient(id)); // Reserve this spot here too.
+                                    }
+                                    else
+                                    {
+                                        id = -1;
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+
+                    clients[id].receivedData = new Packet();
+
+                    clients[id].onReceived.Run += (data) =>
+                    {
+                        // Convert the BaseClient to work for the server.
+                        clients[id].receivedData.Reset(HandleData(clients[id], data));
+                    };
+                    // Clear the entry from the server.
+                    clients[id].onDisconnected.Run += () => { ClearClient(id); };
+
+                    clients[id].tcp.Receive(clients[id], client);
+
+                    onConnection.RaiseEvent(id);
+
+                    return;
+                }
+
+                DebugServer(serverType, $"{client.Client.RemoteEndPoint} failed to connect. Max connections of {maxConnections} reached.");
+            }
+            catch
+            {
+                // If the id was never reset.
+                // That means that a client may still exist.
+                // Cleanup.
+                if(id != -1)
+                {
+                    ClearClient(id);
+                }
+            }
         }
 
         /// <summary>
@@ -151,19 +208,43 @@ namespace Sustenet.Transport
         /// Frees up a client ID by wiping them from the server list.
         /// </summary>
         /// <param name="clientId">The client id to free up.</param>
-        internal void ClearClient(int clientId)
+        internal async void ClearClient(int clientId)
         {
-            clients[clientId].Dispose();
-            clients.Remove(clientId);
-            releasedIds.Add(clientId);
-            onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
+            // TODO: Check if this increases performance at all.
+            await Task.Run(() =>
+            {
+                try
+                {
+                    clients[clientId].Dispose();
+                    clients.Remove(clientId);
+                    releasedIds.Add(clientId); // TODO: Change this to only keep Ids of a certain reusable range.
+
+                    DebugServer(serverType, $"Disconnected Client#{clientId}.");
+                }
+                catch(Exception e)
+                {
+                    lock(clients)
+                    {
+                        if(clients.ContainsKey(clientId))
+                        {
+                            if(clients[clientId] != null)
+                            {
+                                clients[clientId].Dispose();
+                            }
+
+                            clients.Remove(clientId);
+                            releasedIds.Add(clientId);
+                        }
+                        DebugServer(serverType, $"Disconnected Client#{clientId} but with issues: {e}");
+                    }
+                }
+            });
         }
         #endregion
 
         #region Data Functions
         private bool HandleData(BaseClient client, byte[] data)
         {
-
             int packetLength = 0;
 
             client.receivedData.SetBytes(data);
@@ -181,7 +262,8 @@ namespace Sustenet.Transport
             {
                 byte[] packetBytes = client.receivedData.ReadBytes(packetLength);
 
-                ThreadManager.ExecuteOnMainThread(() => {
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
                     using(Packet packet = new Packet(packetBytes))
                     {
                         int packetId = packet.ReadInt();
@@ -210,9 +292,15 @@ namespace Sustenet.Transport
         }
         #endregion
 
-        private static void DebugServer(string serverTypeName, string msg)
+        public static void DebugServer(string serverTypeName, string msg)
         {
             Console.WriteLine($"({serverTypeName}) {msg}");
+        }
+
+        public static void DebugServer(ServerType serverType, string msg)
+        {
+            string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
+            Utilities.WriteLine($"({serverTypeName}) {msg}");
         }
     }
 }
