@@ -301,7 +301,7 @@ namespace Sustenet.Transport
         public static void DebugServer(ServerType serverType, string msg)
         {
             string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
-            Console.WriteLine($"({serverTypeName}) {msg}");
+            Utilities.WriteLine($"({serverTypeName}) {msg}");
         }
     }
 }

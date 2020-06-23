@@ -326,7 +326,7 @@ namespace Sustenet.Transport
 
         public static void DebugClient(int id, string msg)
         {
-            Console.WriteLine($"(Client#{id}) {msg}");
+            Utilities.WriteLine($"(Client#{id}) {msg}");
         }
 
         private bool disposed;
