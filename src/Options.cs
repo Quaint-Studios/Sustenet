@@ -26,7 +26,7 @@ namespace Sustenet
         public class OptionsData
         {
             public bool client = false;
-            public int maxClients = 5000;
+            public int maxClients = 1;
             public bool cluster = false;
             public bool master = false;
         }
