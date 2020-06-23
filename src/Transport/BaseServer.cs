@@ -245,7 +245,6 @@ namespace Sustenet.Transport
         #region Data Functions
         private bool HandleData(BaseClient client, byte[] data)
         {
-
             int packetLength = 0;
 
             client.receivedData.SetBytes(data);
