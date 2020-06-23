@@ -15,17 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport.Messages
+namespace Sustenet.Transport.Messages.ClusterClientHandlers
 {
     using Clients;
     using Network;
-    using System;
-    using Utils.Security;
-
-    /// <summary>
-    /// The core all Cluster Client messages.
-    /// </summary>
-    static class ClusterClientCore { }
+    using BaseClientHandlers;
 
     /// <summary>
     /// Any message that is outbound from the Cluster Client.
@@ -63,44 +57,6 @@ namespace Sustenet.Transport.Messages
 
                 client.SendTcpData(packet);
             }
-        }
-    }
-
-    /// <summary>
-    /// Any message the Cluster Client receives.
-    /// </summary>
-    static class ClusterClientReceive
-    {
-        /// <summary>
-        /// Initializes the client's ID and username.
-        /// If the client is a Cluster, the username is the key.
-        /// 
-        /// TODO: Change to the cluster config name in the future.
-        /// </summary>
-        /// <param name="client">The client whose ID and username should be changed.</param>
-        /// <param name="packet">The packet containing the new client ID.</param>
-        internal static void InitializeCluster(this ClusterClient client, Packet packet)
-        {
-            string keyName = packet.ReadString();
-
-            client.name = keyName;
-
-            BaseClient.DebugClient(client.id, $"Welcome, {keyName}!");
-        }
-
-        /// <summary>
-        /// Reads a keyName and passphrase from the server and attempts to answer it.
-        /// </summary>
-        /// <param name="client"></param>
-        /// <param name="packet"></param>
-        internal static void Passphrase(this ClusterClient client, Packet packet)
-        {
-            string keyName = packet.ReadString();
-            byte[] cypher = Convert.FromBase64String(packet.ReadString());
-            byte[] iv = Convert.FromBase64String(packet.ReadString());
-
-
-            client.AnswerPassphrase(AESManager.Decrypt(keyName, cypher, iv));
         }
     }
 }
