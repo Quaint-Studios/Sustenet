@@ -108,13 +108,11 @@ namespace Sustenet.Transport
                 try
                 {
                     int byteLength;
-                    lock(stream)
-                    {
-                        if(stream == null)
-                            return;
 
-                        byteLength = stream.EndRead(ar);
-                    }
+                    if(stream == null)
+                        return;
+
+                    byteLength = stream.EndRead(ar);
 
                     if(byteLength <= 0)
                     {
@@ -129,11 +127,8 @@ namespace Sustenet.Transport
 
                     client.onReceived.RaiseEvent(data);
 
-                    lock(stream)
-                    {
-                        if(stream != null)
-                            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
-                    }
+                    if(stream != null)
+                        stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                 }
                 catch(Exception e)
                 {
@@ -184,31 +179,25 @@ namespace Sustenet.Transport
 
                 try
                 {
-                    lock(socket)
-                    {
-                        if(socket != null)
-                            socket.EndConnect(ar);
+                    if(socket != null)
+                        socket.EndConnect(ar);
 
-                        if(!socket.Connected)
-                        {
-                            DebugClient(client.id, $"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
-                            return;
-                        }
+                    if(!socket.Connected)
+                    {
+                        DebugClient(client.id, $"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
+                        return;
                     }
 
                     DebugClient(client.id, $"Connected to server at {socket.Client.RemoteEndPoint}.");
 
-                    lock(stream)
+                    if(stream == null)
                     {
-                        if(stream == null)
-                        {
-                            stream = socket.GetStream();
-                        }
-
-                        client.onConnected.RaiseEvent();
-
-                        stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
+                        stream = socket.GetStream();
                     }
+
+                    client.onConnected.RaiseEvent();
+
+                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                 }
                 catch(Exception e)
                 {
