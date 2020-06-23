@@ -117,6 +117,7 @@ namespace Sustenet
                     clients[i] = new Clients.Client();
                     clients[i].Connect();
                 }
+                Utilities.WriteLine($"Finished connecting {options.maxClients} clients to the server.");
             }
 
             if(options.cluster)
