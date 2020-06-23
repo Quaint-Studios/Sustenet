@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport.Messages
+namespace Sustenet.Transport.Messages.BaseClientHandlers
 {
     using System;
     using Network;
@@ -56,21 +56,5 @@ namespace Sustenet.Transport.Messages
                 BaseClient.DebugClient(client.id, $"Error sending data via TCP to Client#{client.id}...: {e}");
             }
         }
-    }
-
-    /// <summary>
-    /// Messages that are sent from the Base Client.
-    /// </summary>
-    static class BaseClientSend
-    {
-
-    }
-
-    /// <summary>
-    /// Messages that are received by the Base Client.
-    /// </summary>
-    static class BaseClientReceive
-    {
-
     }
 }
