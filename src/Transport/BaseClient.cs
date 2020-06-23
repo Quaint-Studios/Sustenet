@@ -132,7 +132,7 @@ namespace Sustenet.Transport
                     lock(stream)
                     {
                         if(stream != null)
-                            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
+                            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                     }
                 }
                 catch(Exception e)
@@ -166,7 +166,7 @@ namespace Sustenet.Transport
                         receiveBuffer = new byte[bufferSize];
                     }
 
-                    socket.BeginConnect(ip, port, ConnectCallback, null);
+                    socket.BeginConnect(ip, port, ConnectCallback, client);
                 }
                 catch
                 {
@@ -207,7 +207,7 @@ namespace Sustenet.Transport
 
                         client.onConnected.RaiseEvent();
 
-                        stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
+                        stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                     }
                 }
                 catch(Exception e)
@@ -276,7 +276,7 @@ namespace Sustenet.Transport
                 try
                 {
                     byte[] data = socket.EndReceive(ar, ref endPoint);
-                    socket.BeginReceive(ReceiveCallback, null);
+                    socket.BeginReceive(ReceiveCallback, client);
 
                     if(data.Length < 4)
                     {
