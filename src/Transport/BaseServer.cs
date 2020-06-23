@@ -21,6 +21,7 @@ namespace Sustenet.Transport
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading.Tasks;
     using Events;
     using Network;
     using Utils;
@@ -207,33 +208,37 @@ namespace Sustenet.Transport
         /// Frees up a client ID by wiping them from the server list.
         /// </summary>
         /// <param name="clientId">The client id to free up.</param>
-        internal void ClearClient(int clientId)
+        internal async void ClearClient(int clientId)
         {
-            try
+            // TODO: Check if this increases performance at all.
+            await Task.Run(() =>
             {
-                lock(clients)
+                try
                 {
-                    lock(releasedIds)
-                    {
-                        clients[clientId].Dispose();
-                        clients.Remove(clientId);
-                        releasedIds.Add(clientId); // TODO: Change this to only keep Ids of a certain reusable range.
-                    }
+                    clients[clientId].Dispose();
+                    clients.Remove(clientId);
+                    releasedIds.Add(clientId); // TODO: Change this to only keep Ids of a certain reusable range.
+
+                    onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
                 }
-                onDebug.RaiseEvent($"Disconnected Client#{clientId}.");
-            }
-            catch(Exception e)
-            {
-                if(clients.ContainsKey(clientId))
+                catch(Exception e)
                 {
                     lock(clients)
                     {
-                        clients.Remove(clientId);
-                        // releasedIds.Add(clientId);
+                        if(clients.ContainsKey(clientId))
+                        {
+                            if(clients[clientId] != null)
+                            {
+                                clients[clientId].Dispose();
+                            }
+
+                            clients.Remove(clientId);
+                            releasedIds.Add(clientId);
+                        }
+                        onDebug.RaiseEvent($"Disconnected Client#{clientId} but with issues: {e}");
                     }
-                    onDebug.RaiseEvent($"Disconnected Client#{clientId} but with issues: {e}");
                 }
-            }
+            });
         }
         #endregion
 
