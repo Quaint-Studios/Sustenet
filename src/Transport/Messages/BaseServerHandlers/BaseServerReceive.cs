@@ -20,8 +20,5 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
     /// <summary>
     /// Messages that the Base Server receives from a Client.
     /// </summary>
-    static class BaseServerReceive
-    {
-
-    }
+    static class BaseServerReceive { }
 }

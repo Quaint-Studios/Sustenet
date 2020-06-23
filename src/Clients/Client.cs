@@ -24,7 +24,6 @@ namespace Sustenet.Clients
     using Transport.Messages.ClientHandlers;
     using Network;
 
-
     /// <summary>
     /// A standard client that connects to a server.
     /// </summary>

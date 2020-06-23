@@ -20,8 +20,5 @@ namespace Sustenet.Transport.Messages.BaseClientHandlers
     /// <summary>
     /// Messages that are sent from the Base Client.
     /// </summary>
-    static class BaseClientSend
-    {
-
-    }
+    static class BaseClientSend { }
 }

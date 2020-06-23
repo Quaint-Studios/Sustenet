@@ -20,8 +20,5 @@ namespace Sustenet.Transport.Messages.ClientHandlers
     /// <summary>
     /// The core of the client's messaging system. Unused currently.
     /// </summary>
-    static class ClientCore
-    {
-
-    }
+    static class ClientCore { }
 }

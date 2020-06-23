@@ -20,8 +20,5 @@ namespace Sustenet.Transport.Messages.ClusterHandlers
     /// <summary>
     /// Any message the Cluster receives.
     /// </summary>
-    static class ClusterReceive
-    {
-
-    }
+    static class ClusterReceive { }
 }

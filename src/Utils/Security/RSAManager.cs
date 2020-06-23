@@ -1,14 +1,4 @@
-﻿
-
-using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-using System.Xml.Serialization;
-
-
-using System;
-/**
+﻿/**
  * Copyright (C) 2020 Quaint Studios, Kristopher Ali (Makosai) <kristopher.ali.dev@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,6 +17,13 @@ using System;
 
 namespace Sustenet.Utils.Security
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Xml.Serialization;
+
     public static class RSAManager
     {
         private static string rootPath = @"cfg\keys\rsa";
