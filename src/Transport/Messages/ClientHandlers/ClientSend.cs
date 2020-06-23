@@ -19,6 +19,7 @@ namespace Sustenet.Transport.Messages.ClientHandlers
 {
     using Network;
     using Clients;
+    using BaseClientHandlers;
 
     /// <summary>
     /// TODO: Documentation

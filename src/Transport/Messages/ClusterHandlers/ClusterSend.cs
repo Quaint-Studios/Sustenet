@@ -19,6 +19,7 @@ namespace Sustenet.Transport.Messages.ClusterHandlers
 {
     using Network;
     using World;
+    using BaseServerHandlers;
 
     /// <summary>
     /// Any message that is outbound from the Cluster or goes through the cluster to

@@ -19,6 +19,7 @@ namespace Sustenet.Transport.Messages.MasterHandlers
 {
     using Master;
     using Network;
+    using BaseServerHandlers;
 
     /// <summary>
     /// Handles data the master server may receive.

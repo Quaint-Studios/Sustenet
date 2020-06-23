@@ -18,7 +18,7 @@
 namespace Sustenet.Clients
 {
     using Network;
-    using Transport.Messages;
+    using Transport.Messages.ClusterClientHandlers;
     using Utils.Security;
 
     class ClusterClient : Client
