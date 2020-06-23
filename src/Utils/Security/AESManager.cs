@@ -151,7 +151,6 @@ namespace Sustenet.Utils.Security
             }
         }
 
-
         /// <summary>
         /// Adds a key to the AES dictionary.
         /// </summary>

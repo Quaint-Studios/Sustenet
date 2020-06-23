@@ -15,9 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Transport.Messages
+namespace Sustenet.Transport.Messages.BaseServerHandlers
 {
     using Network;
+    using BaseClientHandlers;
 
     /// <summary>
     /// The core for the Base Server's message system.
@@ -67,35 +68,5 @@ namespace Sustenet.Transport.Messages
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// All the messages that the Base Server might send.
-    /// </summary>
-    static class BaseServerSend
-    {
-        /// <summary>
-        /// Sends a basic message to a client.
-        /// </summary>
-        /// <param name="server">The server to send from.</param>
-        /// <param name="toClient">The client to send to.</param>
-        /// <param name="msg">The message to send.</param>
-        internal static void Message(this BaseServer server, int toClient, string msg)
-        {
-            using(Packet packet = new Packet((int)ServerPackets.message))
-            {
-                packet.Write(msg);
-
-                server.SendTcpData(toClient, packet);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Messages that the Base Server receives from a Client.
-    /// </summary>
-    static class BaseServerReceive
-    {
-
     }
 }

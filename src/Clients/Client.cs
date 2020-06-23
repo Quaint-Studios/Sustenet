@@ -21,9 +21,8 @@ namespace Sustenet.Clients
     using System.Net;
     using System.Collections.Generic;
     using Transport;
-    using Transport.Messages;
+    using Transport.Messages.ClientHandlers;
     using Network;
-
 
     /// <summary>
     /// A standard client that connects to a server.
@@ -77,7 +76,7 @@ namespace Sustenet.Clients
         /// </summary>
         protected static Dictionary<int, PacketHandler> packetHandlers;
 
-        public Client(string _ip = "127.0.0.1", ushort _port = 6256, bool debug = true) : base(0, debug)
+        public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(0)
         {
             masterConnection = new Connection
             {
@@ -85,11 +84,13 @@ namespace Sustenet.Clients
                 Port = _port
             };
 
-            tcp.onConnected.Run += () => {
+            onConnected.Run += () =>
+            {
                 receivedData = new Packet();
             };
 
-            tcp.onReceived.Run += (data) => {
+            onReceived.Run += (data) =>
+            {
                 receivedData.Reset(HandleData(data));
             };
 
@@ -112,12 +113,12 @@ namespace Sustenet.Clients
             {
                 case ConnectionType.MasterServer:
                     activeConnection = connectType;
-                    tcp.Connect(IPAddress.Parse(masterConnection.Ip), masterConnection.Port);
+                    tcp.Connect(this, IPAddress.Parse(masterConnection.Ip), masterConnection.Port);
                     break;
 
                 case ConnectionType.ClusterServer:
                     activeConnection = connectType;
-                    tcp.Connect(IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port);
+                    tcp.Connect(this, IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port);
                     break;
             }
         }
@@ -142,7 +143,8 @@ namespace Sustenet.Clients
             {
                 byte[] packetBytes = receivedData.ReadBytes(packetLength);
 
-                ThreadManager.ExecuteOnMainThread(() => {
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
                     using(Packet packet = new Packet(packetBytes))
                     {
                         int packetId = packet.ReadInt();

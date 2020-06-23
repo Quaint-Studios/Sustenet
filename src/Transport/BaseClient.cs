@@ -22,6 +22,7 @@ namespace Sustenet.Transport
     using System.Net.Sockets;
     using Network;
     using Events;
+    using Utils;
 
     /// <summary>
     /// The core for all clients. Handles basic functionality like sending
@@ -31,36 +32,33 @@ namespace Sustenet.Transport
     {
         public int id;
         public TcpHandler tcp;
+        public UdpHandler udp;
         public static int bufferSize = 4096;
 
         public string name;
 
         internal Packet receivedData;
 
-        public BaseClient(int _id, bool debug = true)
+        public BaseEvent onConnected = new BaseEvent();
+        public BaseEvent onDisconnected = new BaseEvent();
+        public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
+
+        public BaseClient(int _id)
         {
             id = _id;
             tcp = new TcpHandler();
-
-            if(debug)
-                tcp.onDebug.Run += (msg) => DebugClient(id, msg);
+            udp = new UdpHandler();
         }
 
         /// <summary>
         /// Handles events for connecting, receiving, and debugging.
         /// Also controls the socket connection.
         /// </summary>
-        public class TcpHandler
+        public class TcpHandler : IDisposable
         {
-
-            public TcpClient socket;
+            internal TcpClient socket;
             internal NetworkStream stream;
             private byte[] receiveBuffer;
-
-            public BaseEvent onConnected = new BaseEvent();
-            public BaseEvent onDisconnected = new BaseEvent();
-            public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
-            public BaseEvent<string> onDebug = new BaseEvent<string>();
 
             #region Connection Functions
             /// <summary>
@@ -68,33 +66,40 @@ namespace Sustenet.Transport
             /// It will wipe any existing connections and start a new one.
             /// </summary>
             /// <param name="_socket">The socket to replace the current socket with.</param>
-            public void Receive(TcpClient _socket)
+            public void Receive(BaseClient client, TcpClient _socket)
             {
-                if(socket != null)
+                try
                 {
-                    if(stream != null)
+                    if(socket != null)
                     {
-                        stream.Close();
+                        if(stream != null)
+                        {
+                            stream.Dispose();
+                        }
+
+                        socket.Dispose();
                     }
 
-                    socket.Close();
+                    socket = _socket;
+                    socket.ReceiveBufferSize = bufferSize;
+                    socket.SendBufferSize = bufferSize;
+
+                    if(stream == null)
+                    {
+                        stream = socket.GetStream();
+                    }
+
+                    if(receiveBuffer == null)
+                    {
+                        receiveBuffer = new byte[bufferSize];
+                    }
+
+                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                 }
-
-                socket = _socket;
-                socket.ReceiveBufferSize = bufferSize;
-                socket.SendBufferSize = bufferSize;
-
-                if(stream == null)
+                catch
                 {
-                    stream = socket.GetStream();
+                    client.onDisconnected.RaiseEvent();
                 }
-
-                if(receiveBuffer == null)
-                {
-                    receiveBuffer = new byte[bufferSize];
-                }
-
-                stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
             }
 
             /// <summary>
@@ -103,12 +108,23 @@ namespace Sustenet.Transport
             /// <param name="ar">The result of BeginRead().</param>
             public void ReceiveCallback(IAsyncResult ar)
             {
+                BaseClient client = (BaseClient)ar.AsyncState;
+
                 try
                 {
-                    int byteLength = stream.EndRead(ar);
+                    int byteLength;
+                    lock(stream)
+                    {
+                        if(stream == null)
+                            return;
+
+                        byteLength = stream.EndRead(ar);
+                    }
+
                     if(byteLength <= 0)
                     {
                         // disconnect
+                        client.onDisconnected.RaiseEvent();
                         return;
                     }
 
@@ -116,14 +132,19 @@ namespace Sustenet.Transport
 
                     Array.Copy(receiveBuffer, data, byteLength);
 
-                    onReceived.RaiseEvent(data);
+                    client.onReceived.RaiseEvent(data);
 
-                    stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
+                    lock(stream)
+                    {
+                        if(stream != null)
+                            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
+                    }
                 }
-                catch
+                catch(Exception e)
                 {
+                    Utilities.WriteLine(e);
                     // onDebug.RaiseEvent($"Error with receiving TCP data...: {e}");
-                    onDisconnected.RaiseEvent();
+                    client.onDisconnected.RaiseEvent();
                 }
             }
 
@@ -132,23 +153,30 @@ namespace Sustenet.Transport
             /// </summary>
             /// <param name="ip">The IP address.</param>
             /// <param name="port">The port number.</param>
-            public void Connect(IPAddress ip, ushort port)
+            public void Connect(BaseClient client, IPAddress ip, ushort port)
             {
-                if(socket == null)
+                try
                 {
-                    socket = new TcpClient
+                    if(socket == null)
                     {
-                        ReceiveBufferSize = bufferSize,
-                        SendBufferSize = bufferSize
-                    };
-                }
+                        socket = new TcpClient
+                        {
+                            ReceiveBufferSize = bufferSize,
+                            SendBufferSize = bufferSize
+                        };
+                    }
 
-                if(receiveBuffer == null)
+                    if(receiveBuffer == null)
+                    {
+                        receiveBuffer = new byte[bufferSize];
+                    }
+
+                    socket.BeginConnect(ip, port, ConnectCallback, null);
+                }
+                catch
                 {
-                    receiveBuffer = new byte[bufferSize];
+                    client.onDisconnected.RaiseEvent();
                 }
-
-                socket.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), null);
             }
 
             /// <summary>
@@ -157,41 +185,151 @@ namespace Sustenet.Transport
             /// <param name="ar">Result from BeginConnect().</param>
             public void ConnectCallback(IAsyncResult ar)
             {
+                BaseClient client = (BaseClient)ar.AsyncState;
+
                 try
                 {
-                    socket.EndConnect(ar);
-
-                    if(!socket.Connected)
+                    lock(socket)
                     {
-                        onDebug.RaiseEvent($"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
-                        return;
+                        if(socket != null)
+                            socket.EndConnect(ar);
+
+                        if(!socket.Connected)
+                        {
+                            DebugClient(client.id, $"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
+                            return;
+                        }
                     }
 
-                    onDebug.RaiseEvent($"Connected to server at {socket.Client.RemoteEndPoint}.");
+                    DebugClient(client.id, $"Connected to server at {socket.Client.RemoteEndPoint}.");
 
-                    if(stream == null)
+                    lock(stream)
                     {
-                        stream = socket.GetStream();
+                        if(stream == null)
+                        {
+                            stream = socket.GetStream();
+                        }
+
+                        client.onConnected.RaiseEvent();
+
+                        stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
                     }
-
-                    onConnected.RaiseEvent();
-
-                    stream.BeginRead(receiveBuffer, 0, bufferSize, new AsyncCallback(ReceiveCallback), null);
                 }
-                catch
+                catch(Exception e)
                 {
-                    onDebug.RaiseEvent("Error while trying to connect.");
+                    Utilities.WriteLine(e);
+                    DebugClient(client.id, "Error while trying to connect.");
                 }
             }
             #endregion
+
+            private bool disposed;
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if(!disposed)
+                {
+                    if(disposing)
+                    {
+                        if(socket != null)
+                            socket.Dispose();
+
+                        if(stream != null)
+                            stream.Dispose();
+                    }
+
+                    disposed = true;
+                }
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
-        private static void DebugClient(int id, string msg)
+        public class UdpHandler : IDisposable
         {
-            Console.WriteLine($"(Client#{id}) {msg}");
+            public UdpClient socket;
+            public IPEndPoint endPoint;
+
+            /// <summary>
+            /// Prepares for a UDP connection to a server.
+            /// </summary>
+            /// <param name="ip">The IP Address to set the endpoint to.</param>
+            /// <param name="port">The port to set the endpoint to.</param>
+            /// <param name="localPort">The local port.</param>
+            public void Connect(BaseClient client, IPAddress ip, ushort port, ushort localPort)
+            {
+                try
+                {
+                    endPoint = new IPEndPoint(ip, port);
+
+                    socket = new UdpClient(localPort);
+
+                    socket.Connect(endPoint);
+                    socket.BeginReceive(new AsyncCallback(ReceiveCallback), client);
+                }
+                catch
+                {
+                    client.onDisconnected.RaiseEvent(); // TODO: Pass a TypeEnum.UDP enum to differentiate instructions?
+                }
+            }
+
+            private void ReceiveCallback(IAsyncResult ar)
+            {
+                BaseClient client = (BaseClient)ar.AsyncState;
+
+                try
+                {
+                    byte[] data = socket.EndReceive(ar, ref endPoint);
+                    socket.BeginReceive(ReceiveCallback, null);
+
+                    if(data.Length < 4)
+                    {
+                        client.onDisconnected.RaiseEvent();
+                        return;
+                    }
+                }
+                catch
+                {
+                    client.onDisconnected.RaiseEvent();
+                }
+            }
+
+            private bool disposed;
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if(!disposed)
+                {
+                    if(disposing)
+                    {
+                        if(socket != null)
+                            socket.Dispose();
+                    }
+
+                    if(endPoint != null)
+                        endPoint = null;
+
+                    disposed = true;
+                }
+            }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
-        private bool disposed = true;
+        public static void DebugClient(int id, string msg)
+        {
+            Utilities.WriteLine($"(Client#{id}) {msg}");
+        }
+
+        private bool disposed;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -199,8 +337,14 @@ namespace Sustenet.Transport
             {
                 if(disposing)
                 {
-                    if(tcp.socket != null)
-                        tcp.socket.Close();
+                    if(tcp != null)
+                        tcp.Dispose();
+
+                    if(udp != null)
+                        udp.Dispose();
+
+                    if(receivedData != null)
+                        receivedData.Dispose();
                 }
 
                 disposed = true;
