@@ -42,16 +42,12 @@ namespace Sustenet.Transport
         public BaseEvent onConnected = new BaseEvent();
         public BaseEvent onDisconnected = new BaseEvent();
         public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
-        public BaseEvent<string> onDebug = new BaseEvent<string>();
 
-        public BaseClient(int _id, bool debug = true)
+        public BaseClient(int _id)
         {
             id = _id;
             tcp = new TcpHandler();
             udp = new UdpHandler();
-
-            if(debug)
-                onDebug.Run += (msg) => DebugClient(id, msg);
         }
 
         /// <summary>
@@ -200,12 +196,12 @@ namespace Sustenet.Transport
 
                         if(!socket.Connected)
                         {
-                            client.onDebug.RaiseEvent($"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
+                            DebugClient(client.id, $"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
                             return;
                         }
                     }
 
-                    client.onDebug.RaiseEvent($"Connected to server at {socket.Client.RemoteEndPoint}.");
+                    DebugClient(client.id, $"Connected to server at {socket.Client.RemoteEndPoint}.");
 
                     lock(stream)
                     {
@@ -222,7 +218,7 @@ namespace Sustenet.Transport
                 catch(Exception e)
                 {
                     Utilities.WriteLine(e);
-                    client.onDebug.RaiseEvent("Error while trying to connect.");
+                    DebugClient(client.id, "Error while trying to connect.");
                 }
             }
             #endregion
@@ -328,7 +324,7 @@ namespace Sustenet.Transport
             }
         }
 
-        private static void DebugClient(int id, string msg)
+        public static void DebugClient(int id, string msg)
         {
             Console.WriteLine($"(Client#{id}) {msg}");
         }

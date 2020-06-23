@@ -69,16 +69,18 @@ namespace Sustenet.Transport
         /// Starts a server.
         /// </summary>
         /// <param name="serverType">The type of server to notify in the console.</param>
-        protected void Start(ServerType _serverType, bool debug = true)
+        protected void Start(ServerType _serverType)
         {
             serverType = _serverType;
 
             string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
 
-            if(debug)
+            if(Constants.DEBUGGING)
             {
+#pragma warning disable CS0162 // Unreachable code detected
                 onConnection.Run += (id) => DebugServer(serverTypeName, $"Client#{id} has connected.");
                 onDebug.Run += (msg) => DebugServer(serverTypeName, msg);
+#pragma warning restore CS0162 // Unreachable code detected
             }
 
             Utilities.ConsoleHeader($"Starting {serverTypeName} on Port {port}");
@@ -137,7 +139,7 @@ namespace Sustenet.Transport
                                     id = releasedIds[0];
                                     if(!clients.ContainsKey(id))
                                     {
-                                        clients.Add(id, new BaseClient(id, debug: Constants.DEBUGGING)); // Reserve this spot.
+                                        clients.Add(id, new BaseClient(id)); // Reserve this spot.
                                         releasedIds.Remove(id);
                                     }
                                     else
@@ -153,7 +155,7 @@ namespace Sustenet.Transport
 
                                     if(!clients.ContainsKey(id))
                                     {
-                                        clients.Add(id, new BaseClient(id, debug: Constants.DEBUGGING)); // Reserve this spot here too.
+                                        clients.Add(id, new BaseClient(id)); // Reserve this spot here too.
                                     }
                                     else
                                     {

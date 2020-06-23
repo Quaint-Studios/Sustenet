@@ -44,7 +44,7 @@ namespace Sustenet.Transport.Messages
             }
             else
             {
-                client.onDebug.RaiseEvent("Cannot login unless connected to a Master Server.");
+                BaseClient.DebugClient(client.id, "Cannot login unless connected to a Master Server.");
             }
         }
     }
@@ -63,7 +63,7 @@ namespace Sustenet.Transport.Messages
         {
             string msg = packet.ReadString();
 
-            client.onDebug.RaiseEvent($"(Server Message) {msg}");
+            BaseClient.DebugClient(client.id, $"(Server Message) {msg}");
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Sustenet.Transport.Messages
             client.name = username;
             client.id = id;
 
-            client.onDebug.RaiseEvent($"Welcome, {username}!");
+            BaseClient.DebugClient(client.id, $"Welcome, {username}!");
         }
     }
 }

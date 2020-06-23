@@ -23,7 +23,7 @@ namespace Sustenet.Clients
 
     class ClusterClient : Client
     {
-        public ClusterClient(string _ip = "127.0.0.1", ushort _port = 6256, bool debug = true) : base(_ip, _port, debug)
+        public ClusterClient(string _ip = "127.0.0.1", ushort _port = 6256) : base(_ip, _port)
         {
             name = "Test Name"; // TODO: Load from config.
 

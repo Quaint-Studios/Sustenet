@@ -53,7 +53,7 @@ namespace Sustenet.Transport.Messages
             }
             catch(Exception e)
             {
-                client.onDebug.RaiseEvent($"Error sending data via TCP to Client#{client.id}...: {e}");
+                BaseClient.DebugClient(client.id, $"Error sending data via TCP to Client#{client.id}...: {e}");
             }
         }
     }

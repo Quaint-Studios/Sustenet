@@ -42,7 +42,7 @@ namespace Sustenet.Master
 
             InitializeData();
 
-            Start(ServerType.MasterServer, debug: Utils.Constants.DEBUGGING);
+            Start(ServerType.MasterServer);
         }
 
         private void InitializeData()
