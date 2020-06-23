@@ -27,7 +27,7 @@ namespace Sustenet.Clients
         {
             name = "Test Name"; // TODO: Load from config.
 
-            string keyName = name.Replace(" ", "");// TODO: Replace with config name.
+            string keyName = name.Replace(" ", ""); // TODO: Replace with config name.
 
             #region RSA Loading & Generation
             RSAManager.LoadKey(keyName, RSAManager.KeyType.PrivateKey); // Load all private keys.

@@ -55,7 +55,6 @@ namespace Sustenet.Transport.Messages.ClusterClientHandlers
             byte[] cypher = Convert.FromBase64String(packet.ReadString());
             byte[] iv = Convert.FromBase64String(packet.ReadString());
 
-
             client.AnswerPassphrase(AESManager.Decrypt(keyName, cypher, iv));
         }
     }

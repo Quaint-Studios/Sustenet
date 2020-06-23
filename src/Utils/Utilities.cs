@@ -67,7 +67,6 @@ namespace Sustenet.Utils
         }
         #endregion
 
-
         #region Debugging
         public static void WriteLine(string msg)
         {

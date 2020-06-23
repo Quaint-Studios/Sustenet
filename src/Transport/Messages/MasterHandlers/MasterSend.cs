@@ -50,7 +50,6 @@ namespace Sustenet.Transport.Messages.MasterHandlers
             string passphrase = PassphraseGenerator.GeneratePassphrase();
             AESManager.EncryptedData data = AESManager.Encrypt(keyName, passphrase);
 
-
             server.clients[toClient].name = passphrase; // Set the client name to the passphrase to store it.
 
             using(Packet packet = new Packet((int)ServerPackets.passphrase))
@@ -96,7 +95,6 @@ namespace Sustenet.Transport.Messages.MasterHandlers
         /// <param name="clusterName">The name the client requested and to send back to them.</param>
         internal static void InitializeCluster(this MasterServer server, int toClient, string clusterName)
         {
-
             server.clusterIds.Add(toClient); // Store the ID as a cluster since they've been verified.
 
             using(Packet packet = new Packet((int)ServerPackets.initializeCluster))
