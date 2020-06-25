@@ -220,8 +220,14 @@ namespace Sustenet.Clients
             {
                 packetHandlers = new Dictionary<int, PacketHandler>()
                 {
+                    #region Initialization Section
                     { (int)ServerPackets.message, this.Message },
-                    { (int)ServerPackets.initializeLogin, this.InitializeClient }
+                    { (int)ServerPackets.initializeLogin, this.InitializeClient },
+                    #endregion
+
+                    #region Movement Section
+                    { (int)ServerPackets.updatePosition, this.UpdatePosition }
+                    #endregion
                 };
             }
         }

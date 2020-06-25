@@ -51,9 +51,15 @@ namespace Sustenet.Master
             {
                 packetHandlers = new Dictionary<int, PacketHandler>()
                 {
+                    #region Initialization Section
                     { (int)ClientPackets.answerPassphrase, this.AnswerPassphrase },
                     { (int)ClientPackets.validateCluster, this.ValidateCluster },
-                    { (int)ClientPackets.validateLogin, this.ValidateLogin }
+                    { (int)ClientPackets.validateLogin, this.ValidateLogin },
+                    #endregion
+
+                    #region Movement Section
+                    { (int)ClientPackets.moveTo, this.ValidateMoveTo }
+                    #endregion
                 };
             }
         }
