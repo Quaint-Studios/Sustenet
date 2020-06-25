@@ -55,5 +55,18 @@ namespace Sustenet.Transport.Messages.ClientHandlers
 
             BaseClient.DebugClient(client.id, $"Welcome, {username}!");
         }
+
+        /// <summary>
+        /// Updates the client's position. Some prediction should be included to smooth things out.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="packet"></param>
+        internal static void UpdatePosition(this Client client, Packet packet)
+        {
+            float xPos = packet.ReadFloat();
+            float yPos = packet.ReadFloat();
+            float zPos = packet.ReadFloat();
+            BaseClient.DebugClient(client.id, $"Moved to ({xPos}, {yPos}, {zPos})");
+        }
     }
 }
