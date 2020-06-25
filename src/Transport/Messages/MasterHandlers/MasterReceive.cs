@@ -42,7 +42,7 @@ namespace Sustenet.Transport.Messages.MasterHandlers
                 server.Message(fromClient, "Please enter a username longer than 2 characters. Disconnecting.");
                 server.DisconnectClient(fromClient);
 
-                MasterServer.DebugServer(server.serverType, $"Disconnecting Client#{fromClient} for having the username '{username}' which is too short.");
+                MasterServer.DebugServer(server.serverTypeName, $"Disconnecting Client#{fromClient} for having the username '{username}' which is too short.");
 
                 return;
             }
@@ -84,7 +84,7 @@ namespace Sustenet.Transport.Messages.MasterHandlers
                 server.Message(fromClient, "Incorrect passphrase. Disconnecting.");
                 server.DisconnectClient(fromClient);
 
-                MasterServer.DebugServer(server.serverType, $"Disconnecting Client#{fromClient} for answering their passphrase incorrectly.");
+                MasterServer.DebugServer(server.serverTypeName, $"Disconnecting Client#{fromClient} for answering their passphrase incorrectly.");
 
                 return;
             }

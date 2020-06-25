@@ -70,7 +70,7 @@ namespace Sustenet.Transport.Messages.MasterHandlers
         /// <param name="username">The client's username.</param>
         internal static void InitializeLogin(this MasterServer server, int toClient, string username)
         {
-            MasterServer.DebugServer(server.serverType, $"Setting Client#{toClient}'s username to {username}.");
+            MasterServer.DebugServer(server.serverTypeName, $"Setting Client#{toClient}'s username to {username}.");
 
             /**
              * TODO:

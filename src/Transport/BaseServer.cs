@@ -113,7 +113,7 @@ namespace Sustenet.Transport
             }
             catch(Exception e)
             {
-                DebugServer(server.serverType, $"Failed to create a client: {e}");
+                DebugServer(server.serverTypeName, $"Failed to create a client: {e}");
             }
         }
 
@@ -180,7 +180,7 @@ namespace Sustenet.Transport
                     return;
                 }
 
-                DebugServer(serverType, $"{client.Client.RemoteEndPoint} failed to connect. Max connections of {maxConnections} reached.");
+                DebugServer(serverTypeName, $"{client.Client.RemoteEndPoint} failed to connect. Max connections of {maxConnections} reached.");
             }
             catch
             {
@@ -218,7 +218,7 @@ namespace Sustenet.Transport
                     clients.Remove(clientId);
                     releasedIds.Add(clientId); // TODO: Change this to only keep Ids of a certain reusable range.
 
-                    DebugServer(serverType, $"Disconnected Client#{clientId}.");
+                    DebugServer(serverTypeName, $"Disconnected Client#{clientId}.");
                 }
                 catch(Exception e)
                 {
@@ -234,7 +234,7 @@ namespace Sustenet.Transport
                             clients.Remove(clientId);
                             releasedIds.Add(clientId);
                         }
-                        DebugServer(serverType, $"Disconnected Client#{clientId} but with issues: {e}");
+                        DebugServer(serverTypeName, $"Disconnected Client#{clientId} but with issues: {e}");
                     }
                 }
             });
@@ -289,17 +289,14 @@ namespace Sustenet.Transport
 
             return false;
         }
-        #endregion
 
-        public static void DebugServer(string serverTypeName, string msg)
         {
             Console.WriteLine($"({serverTypeName}) {msg}");
         }
 
-        public static void DebugServer(ServerType serverType, string msg)
+        public static void DebugServer(string serverTypeName, string msg)
         {
-            string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
-            Utilities.WriteLine($"({serverTypeName}) {msg}");
+            Console.WriteLine($"({serverTypeName}) {msg}");
         }
     }
 }
