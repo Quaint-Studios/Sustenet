@@ -242,7 +242,7 @@ namespace Sustenet.Transport
         #endregion
 
         #region Data Functions
-        private bool HandleData(BaseClient client, byte[] data)
+        private bool HandleTcpData(BaseClient client, byte[] data)
         {
             int packetLength = 0;
 
@@ -290,9 +290,24 @@ namespace Sustenet.Transport
             return false;
         }
 
+        private bool HandleUdpData(int clientId, Packet packet)
         {
-            Console.WriteLine($"({serverTypeName}) {msg}");
+
+            int packetLength = packet.ReadInt();
+            byte[] packetBytes = packet.ReadBytes(packetLength);
+
+            ThreadManager.ExecuteOnMainThread(() =>
+            {
+                using(Packet packet = new Packet(packetBytes))
+                {
+                    int packetId = packet.ReadInt();
+                    packetHandlers[packetId](clientId, packet);
+                }
+            });
+
+            return false;
         }
+        #endregion
 
         public static void DebugServer(string serverTypeName, string msg)
         {

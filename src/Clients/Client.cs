@@ -132,7 +132,7 @@ namespace Sustenet.Clients
         }
 
         #region Data Functions
-        private bool HandleData(byte[] data)
+        private bool HandleTcpData(byte[] data)
         {
             int packetLength = 0;
 
@@ -178,6 +178,25 @@ namespace Sustenet.Clients
                 return true;
             }
 
+            return false;
+        }
+
+        private bool HandleUdpData(byte[] data)
+        {
+            using(Packet packet = new Packet(data))
+            {
+                int packetLength = packet.ReadInt();
+                data = packet.ReadBytes(packetLength);
+            }
+
+            ThreadManager.ExecuteOnMainThread(() =>
+            {
+                using(Packet packet = new Packet(data))
+                {
+                    int packetId = packet.ReadInt();
+                    packetHandlers[packetId](packet);
+                }
+            });
             return false;
         }
 
