@@ -40,7 +40,11 @@ namespace Sustenet.Network
         /// If ran on a Cluster Server, asks the Master Server if they're actual
         /// a valid user.
         /// </summary>
-        initializeLogin = 1
+        initializeLogin = 1,
+
+        #region Movement (2000-2999)
+        updatePosition = 2000 // TODO: Move to Cluster once clusters are being used.
+        #endregion
     }
 
     /// <summary>
@@ -72,6 +76,10 @@ namespace Sustenet.Network
         /// <summary>
         /// Logs in with a username.
         /// </summary>
-        validateLogin = 1
+        validateLogin = 1,
+
+        #region Movement (2000,2999)
+        moveTo = 2000
+        #endregion
     }
 }
