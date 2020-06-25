@@ -87,6 +87,12 @@ namespace Sustenet.Transport
             tcpListener.Start();
             tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnTcpConnectCallback), this);
 
+            if(BaseClient.UdpHandler.socket == null)
+            {
+                BaseClient.UdpHandler.socket = new UdpClient(port);
+            }
+
+            BaseClient.UdpHandler.socket.BeginReceive(OnUdpReceiveCallback, this);
 
             string maxConnectionsValue = (maxConnections == 0 ? "Until it breaks" : Utilities.SplitByPascalCase(maxConnections.ToString()));
 
@@ -116,6 +122,52 @@ namespace Sustenet.Transport
             catch(Exception e)
             {
                 DebugServer(server.serverTypeName, $"Failed to create a client: {e}");
+            }
+        }
+
+        private static void OnUdpReceiveCallback(IAsyncResult ar)
+        {
+            BaseServer server = (BaseServer)ar.AsyncState;
+
+            try
+            {
+                IPEndPoint endpoint = new IPEndPoint(IPAddress.Any, 0);
+                byte[] data = BaseClient.UdpHandler.socket.EndReceive(ar, ref endpoint);
+                BaseClient.UdpHandler.socket.BeginReceive(OnUdpReceiveCallback, server);
+
+                if(data.Length <= 4)
+                {
+                    // no ID
+                    return;
+                }
+
+                using(Packet packet = new Packet(data))
+                {
+                    int clientId = packet.ReadInt();
+
+                    if(!server.clients.ContainsKey(clientId))
+                    {
+                        return;
+                    }
+
+                    // If this is a new client, set their endpoint and return.
+                    if(server.clients[clientId].udp.endPoint == null)
+                    {
+                        server.clients[clientId].udp.endPoint = endpoint;
+                        return;
+                    }
+
+                    // Validate that the endpoints match to verify that the user is who they say they are.
+                    if(server.clients[clientId].udp.endPoint.ToString() == endpoint.ToString())
+                    {
+                        server.clients[clientId].onReceived.RaiseEvent(Protocols.UDP, null);
+                        server.HandleUdpData(server.clients[clientId].id, packet);
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Utilities.WriteLine(e);
             }
         }
 
