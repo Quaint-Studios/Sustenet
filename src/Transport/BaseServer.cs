@@ -85,7 +85,8 @@ namespace Sustenet.Transport
 
             tcpListener = new TcpListener(IPAddress.Any, port);
             tcpListener.Start();
-            tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), this);
+            tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnTcpConnectCallback), this);
+
 
             string maxConnectionsValue = (maxConnections == 0 ? "Until it breaks" : Utilities.SplitByPascalCase(maxConnections.ToString()));
 
@@ -96,7 +97,7 @@ namespace Sustenet.Transport
         /// Handles new connections.
         /// </summary>
         /// <param name="ar">Async Result, the state contains this instance.</param>
-        private static void OnConnectCallback(IAsyncResult ar)
+        private static void OnTcpConnectCallback(IAsyncResult ar)
         {
             BaseServer server = (BaseServer)ar.AsyncState;
 
@@ -105,7 +106,7 @@ namespace Sustenet.Transport
                 TcpListener listener = server.tcpListener;
 
                 TcpClient client = listener.EndAcceptTcpClient(ar);
-                listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
+                listener.BeginAcceptTcpClient(new AsyncCallback(OnTcpConnectCallback), server);
 
                 ThreadManager.ExecuteOnMainThread(() =>
                 {
