@@ -38,6 +38,7 @@ namespace Sustenet.Transport
         }
 
         private TcpListener tcpListener;
+        // UDP equivalent is in BaseClient.UdpHandler.socket
 
         public readonly ServerType serverType;
         public readonly string serverTypeName;
