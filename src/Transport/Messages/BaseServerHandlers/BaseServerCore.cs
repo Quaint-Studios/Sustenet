@@ -33,8 +33,7 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
         /// <param name="packet">The packet to send.</param>
         internal static void SendTcpData(this BaseServer server, int toClient, Packet packet)
         {
-            packet.WriteLength();
-            server.clients[toClient].SendData(packet);
+            server.clients[toClient].SendTcpData(packet);
         }
 
         /// <summary>
@@ -44,10 +43,9 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
         /// <param name="packet">The packet to send.</param>
         internal static void SendTcpDataToAll(this BaseServer server, Packet packet)
         {
-            packet.WriteLength();
             foreach(BaseClient client in server.clients.Values)
             {
-                client.SendData(packet);
+                client.SendTcpData(packet);
             }
         }
 
@@ -59,12 +57,11 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
         /// <param name="packet">The packet to send.</param>
         internal static void SendTcpDataToAll(this BaseServer server, int exceptClient, Packet packet)
         {
-            packet.WriteLength();
             foreach(BaseClient client in server.clients.Values)
             {
                 if(client.id != exceptClient)
                 {
-                    client.SendData(packet);
+                    client.SendTcpData(packet);
                 }
             }
         }

@@ -33,15 +33,6 @@ namespace Sustenet.Transport.Messages.BaseClientHandlers
         internal static void SendTcpData(this BaseClient client, Packet packet)
         {
             packet.WriteLength();
-            client.SendData(packet);
-        }
-
-        /// <summary>
-        /// Sends a packet through the current stream.
-        /// </summary>
-        /// <param name="packet">The packet to be sent.</param>
-        internal static void SendData(this BaseClient client, Packet packet)
-        {
             try
             {
                 if(client.tcp.socket == null)
