@@ -23,6 +23,7 @@ namespace Sustenet.Transport
     using Network;
     using Events;
     using Utils;
+    using Messages.BaseClientHandlers;
 
     /// <summary>
     /// The core for all clients. Handles basic functionality like sending
@@ -41,7 +42,7 @@ namespace Sustenet.Transport
 
         public BaseEvent onConnected = new BaseEvent();
         public BaseEvent onDisconnected = new BaseEvent();
-        public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
+        public BaseEvent<Protocols, byte[]> onReceived = new BaseEvent<Protocols, byte[]>();
 
         public BaseClient(int _id)
         {
@@ -125,7 +126,7 @@ namespace Sustenet.Transport
 
                     Array.Copy(receiveBuffer, data, byteLength);
 
-                    client.onReceived.RaiseEvent(data);
+                    client.onReceived.RaiseEvent(Protocols.TCP, data);
 
                     if(stream != null)
                         stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
@@ -252,6 +253,11 @@ namespace Sustenet.Transport
 
                     socket.Connect(endPoint);
                     socket.BeginReceive(new AsyncCallback(ReceiveCallback), client);
+
+                    using(Packet packet = new Packet())
+                    {
+                        client.SendUdpData(packet);
+                    }
                 }
                 catch
                 {
@@ -273,6 +279,8 @@ namespace Sustenet.Transport
                         client.onDisconnected.RaiseEvent();
                         return;
                     }
+
+                    client.onReceived.RaiseEvent(Protocols.UDP, data);
                 }
                 catch
                 {

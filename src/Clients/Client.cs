@@ -97,9 +97,19 @@ namespace Sustenet.Clients
                 receivedData = new Packet();
             };
 
-            onReceived.Run += (data) =>
+            onReceived.Run += (protocol, data) =>
             {
-                receivedData.Reset(HandleData(data));
+                switch(protocol)
+                {
+                    case Protocols.TCP:
+                        receivedData.Reset(HandleTcpData(data));
+                        return;
+
+                    case Protocols.UDP:
+                        HandleUdpData(data);
+                        return;
+                }
+
             };
 
             InitializeClientData();

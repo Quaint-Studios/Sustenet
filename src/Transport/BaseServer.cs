@@ -165,10 +165,19 @@ namespace Sustenet.Transport
 
                     clients[id].receivedData = new Packet();
 
-                    clients[id].onReceived.Run += (data) =>
+                    clients[id].onReceived.Run += (protocol, data) =>
                     {
                         // Convert the BaseClient to work for the server.
-                        clients[id].receivedData.Reset(HandleData(clients[id], data));
+                        switch(protocol)
+                        {
+                            case Protocols.TCP:
+                                clients[id].receivedData.Reset(HandleTcpData(clients[id], data));
+                                return;
+
+                            case Protocols.UDP:
+                                // Extra things to do goes here.
+                                return;
+                        }
                     };
                     // Clear the entry from the server.
                     clients[id].onDisconnected.Run += () => { ClearClient(id); };
