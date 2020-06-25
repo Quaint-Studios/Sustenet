@@ -32,9 +32,9 @@ namespace Sustenet.Transport.Messages.BaseClientHandlers
         /// <param name="packet">The packet to send.</param>
         internal static void SendTcpData(this BaseClient client, Packet packet)
         {
-            packet.WriteLength();
             try
             {
+                packet.WriteLength();
                 if(client.tcp.socket == null)
                 {
                     throw new Exception("TCPHandler socket is null.");
