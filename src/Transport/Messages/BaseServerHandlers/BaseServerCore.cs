@@ -17,6 +17,7 @@
 
 namespace Sustenet.Transport.Messages.BaseServerHandlers
 {
+    using System;
     using Network;
     using BaseClientHandlers;
 
@@ -26,18 +27,48 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
     static class BaseServerCore
     {
         /// <summary>
-        /// Send data to a single client.
+        /// Send TCP data to a single client.
         /// </summary>
         /// <param name="server">The server to send from.</param>
         /// <param name="toClient">The client to send data to.</param>
         /// <param name="packet">The packet to send.</param>
         internal static void SendTcpData(this BaseServer server, int toClient, Packet packet)
         {
-            server.clients[toClient].SendTcpData(packet);
+            try
+            {
+                server.clients[toClient].SendTcpData(packet);
+            }
+            catch(Exception e)
+            {
+                BaseClient.DebugClient(toClient, $"Error sending data via TCP from Client #{toClient}...: {e}");
+            }
         }
 
         /// <summary>
-        /// Send data to all clients.
+        /// Send UDP data to a single client.
+        /// </summary>
+        /// <param name="server">The server to send from.</param>
+        /// <param name="toClient">The client to send data to.</param>
+        /// <param name="packet">The packet to send.</param>
+        internal static void SendUdpData(this BaseServer server, int toClient, Packet packet)
+        {
+            try
+            {
+                BaseClient client = server.clients[toClient];
+
+                if(client.udp.endPoint != null)
+                {
+                    BaseClient.UdpHandler.socket.BeginSend(packet.ToArray(), packet.Length(), client.udp.endPoint, null, null);
+                }
+            }
+            catch(Exception e)
+            {
+                BaseClient.DebugClient(toClient, $"Error sending data via UDP from Client #{toClient}...: {e}");
+            }
+        }
+
+        /// <summary>
+        /// Send TCP data to all clients.
         /// </summary>
         /// <param name="server">The server to send from.</param>
         /// <param name="packet">The packet to send.</param>
@@ -50,7 +81,20 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
         }
 
         /// <summary>
-        /// Send data to all clients except one.
+        /// Send UDP data to all clients.
+        /// </summary>
+        /// <param name="server">The server to send from.</param>
+        /// <param name="packet">The packet to send.</param>
+        internal static void SendUdpDataToAll(this BaseServer server, Packet packet)
+        {
+            foreach(BaseClient client in server.clients.Values)
+            {
+                client.SendTcpData(packet);
+            }
+        }
+
+        /// <summary>
+        /// Send TCP data to all clients except one.
         /// </summary>
         /// <param name="server">The server to send from.</param>
         /// <param name="exceptClient">The client to exclude from the mass send.</param>
@@ -61,7 +105,24 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
             {
                 if(client.id != exceptClient)
                 {
-                    client.SendTcpData(packet);
+                    client.SendUdpData(packet);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Send UDP data to all clients except one.
+        /// </summary>
+        /// <param name="server">The server to send from.</param>
+        /// <param name="exceptClient">The client to exclude from the mass send.</param>
+        /// <param name="packet">The packet to send.</param>
+        internal static void SendUdpDataToAll(this BaseServer server, int exceptClient, Packet packet)
+        {
+            foreach(BaseClient client in server.clients.Values)
+            {
+                if(client.id != exceptClient)
+                {
+                    client.SendUdpData(packet);
                 }
             }
         }
