@@ -35,7 +35,7 @@ namespace Sustenet.Master
         /// </summary>
         public List<int> clusterIds = new List<int>();
 
-        public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
+        public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(ServerType.MasterServer, _maxConnections, _port)
         {
             RSAManager.LoadPubKeys();
             AESManager.LoadKeys();

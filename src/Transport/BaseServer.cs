@@ -39,9 +39,10 @@ namespace Sustenet.Transport
 
         private TcpListener tcpListener;
 
-        public ServerType serverType;
-        public int maxConnections;
-        public ushort port;
+        public readonly ServerType serverType;
+        public readonly string serverTypeName;
+        public readonly int maxConnections;
+        public readonly ushort port;
 
         public Dictionary<int, BaseClient> clients = new Dictionary<int, BaseClient>();
         public List<int> releasedIds = new List<int>();
@@ -57,8 +58,10 @@ namespace Sustenet.Transport
         public BaseEvent<int> onDisconnection = new BaseEvent<int>();
         public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
 
-        protected BaseServer(int _maxConnections = 0, ushort _port = 6256)
+        protected BaseServer(ServerType _serverType, int _maxConnections = 0, ushort _port = 6256)
         {
+            serverType = _serverType;
+            serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
             maxConnections = _maxConnections;
             port = _port == 0 ? (ushort)6256 : _port;
         }
@@ -70,10 +73,6 @@ namespace Sustenet.Transport
         /// <param name="serverType">The type of server to notify in the console.</param>
         protected void Start(ServerType _serverType)
         {
-            serverType = _serverType;
-
-            string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
-
             if(Constants.DEBUGGING)
             {
 #pragma warning disable CS0162 // Unreachable code detected
