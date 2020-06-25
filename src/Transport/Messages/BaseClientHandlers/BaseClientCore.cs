@@ -47,5 +47,21 @@ namespace Sustenet.Transport.Messages.BaseClientHandlers
                 BaseClient.DebugClient(client.id, $"Error sending data via TCP to Client#{client.id}...: {e}");
             }
         }
+
+        internal static void SendUdpData(this BaseClient client, Packet packet)
+        {
+            try
+            {
+                packet.InsertInt(client.id);
+                if(BaseClient.UdpHandler.socket != null)
+                {
+                    BaseClient.UdpHandler.socket.BeginSend(packet.ToArray(), packet.Length(), null, null);
+                }
+            }
+            catch(Exception e)
+            {
+                BaseClient.DebugClient(client.id, $"Error sending data via UDP to Client #{client.id}...: {e}");
+            }
+        }
     }
 }
