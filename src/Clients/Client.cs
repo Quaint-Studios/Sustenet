@@ -115,6 +115,7 @@ namespace Sustenet.Clients
             InitializeClientData();
         }
 
+        #region Connection Functions
         public void Login(string username)
         {
             // If the user currently doesn't have a username, let them attempt to login.
@@ -132,14 +133,17 @@ namespace Sustenet.Clients
                 case ConnectionType.MasterServer:
                     activeConnection = connectType;
                     tcp.Connect(this, IPAddress.Parse(masterConnection.Ip), masterConnection.Port);
+                    udp.Connect(this, IPAddress.Parse(masterConnection.Ip), masterConnection.Port, masterConnection.LocalPort);
                     break;
 
                 case ConnectionType.ClusterServer:
                     activeConnection = connectType;
                     tcp.Connect(this, IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port);
+                    udp.Connect(this, IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port, clusterConnection.LocalPort);
                     break;
             }
         }
+        #endregion
 
         #region Data Functions
         private bool HandleTcpData(byte[] data)
