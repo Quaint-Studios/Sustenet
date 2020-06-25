@@ -232,7 +232,7 @@ namespace Sustenet.Transport
 
         public class UdpHandler : IDisposable
         {
-            public UdpClient socket;
+            public static UdpClient socket;
             public IPEndPoint endPoint;
 
             /// <summary>
@@ -247,7 +247,8 @@ namespace Sustenet.Transport
                 {
                     endPoint = new IPEndPoint(ip, port);
 
-                    socket = new UdpClient(localPort);
+                    if(socket == null)
+                        socket = new UdpClient(localPort);
 
                     socket.Connect(endPoint);
                     socket.BeginReceive(new AsyncCallback(ReceiveCallback), client);
