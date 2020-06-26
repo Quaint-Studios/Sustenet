@@ -22,8 +22,9 @@ namespace Sustenet.Clients
     using System.Collections.Generic;
     using Transport;
     using Transport.Messages.ClientHandlers;
+    using Transport.Messages.BaseClientHandlers;
     using Network;
-    using Utils;
+    using Events;
 
     /// <summary>
     /// A standard client that connects to a server.
