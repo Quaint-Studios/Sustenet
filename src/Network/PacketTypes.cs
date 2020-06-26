@@ -41,6 +41,10 @@ namespace Sustenet.Network
         /// a valid user.
         /// </summary>
         initializeLogin = 1,
+        /// <summary>
+        /// Tells a client that the UDP connection is ready.
+        /// </summary>
+        udpReady = 2,
 
         #region Movement (2000-2999)
         updatePosition = 2000 // TODO: Move to Cluster once clusters are being used.
@@ -77,6 +81,10 @@ namespace Sustenet.Network
         /// Logs in with a username.
         /// </summary>
         validateLogin = 1,
+        /// <summary>
+        /// Sends an ID to a server to start a UDP connection.
+        /// </summary>
+        startUdp = 2,
 
         #region Movement (2000,2999)
         moveTo = 2000
