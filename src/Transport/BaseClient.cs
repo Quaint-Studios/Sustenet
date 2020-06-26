@@ -175,7 +175,7 @@ namespace Sustenet.Transport
             /// Triggered after BeginConnect().
             /// </summary>
             /// <param name="ar">Result from BeginConnect().</param>
-            public void ConnectCallback(IAsyncResult ar)
+            public void ConnectCallback(IAsyncResult ar, IPAddress ip)
             {
                 BaseClient client = (BaseClient)ar.AsyncState;
 
