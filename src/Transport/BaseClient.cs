@@ -282,8 +282,9 @@ namespace Sustenet.Transport
 
                     client.onReceived.RaiseEvent(Protocols.UDP, data);
                 }
-                catch
+                catch(Exception e)
                 {
+                    Utilities.WriteLine(e);
                     client.onDisconnected.RaiseEvent();
                 }
             }
