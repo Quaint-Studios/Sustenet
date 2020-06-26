@@ -233,6 +233,10 @@ namespace Sustenet.Transport
                                 return;
                         }
                     };
+                    clients[id].onConnected.Run += () =>
+                    {
+                        this.UdpReady(id);
+                    };
                     // Clear the entry from the server.
                     clients[id].onDisconnected.Run += () => { ClearClient(id); };
 
@@ -355,7 +359,6 @@ namespace Sustenet.Transport
 
         private bool HandleUdpData(int clientId, Packet packet)
         {
-
             int packetLength = packet.ReadInt();
             byte[] packetBytes = packet.ReadBytes(packetLength);
 
