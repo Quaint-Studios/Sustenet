@@ -231,6 +231,7 @@ namespace Sustenet.Clients
                     #region Initialization Section
                     { (int)ServerPackets.message, this.Message },
                     { (int)ServerPackets.initializeLogin, this.InitializeClient },
+                    { (int)ServerPackets.udpReady, this.UdpConnected },
                     #endregion
 
                     #region Movement Section
