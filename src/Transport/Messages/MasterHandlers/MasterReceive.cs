@@ -116,7 +116,7 @@ namespace Sustenet.Transport.Messages.MasterHandlers
 
             // TODO: Update server-side velocity, send new position back and sync on the client-side.
 
-            server.UpdatePosition(fromClient, new float[] { 1.0005f, 2.512f, 3.245f });
+            server.SendUpdatedPosition(fromClient, new float[] { 1.0005f, 2.512f, 3.245f });
         }
         #endregion
     }

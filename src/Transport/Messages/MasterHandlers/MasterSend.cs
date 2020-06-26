@@ -108,7 +108,7 @@ namespace Sustenet.Transport.Messages.MasterHandlers
         #endregion
 
         #region Movement Section
-        internal static void UpdatePosition(this MasterServer server, int toClient, float[] newPos)
+        internal static void SendUpdatedPosition(this MasterServer server, int toClient, float[] newPos)
         {
             if(newPos == null || newPos.Length < 3)
             {
