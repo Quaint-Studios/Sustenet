@@ -135,7 +135,7 @@ namespace Sustenet.Transport
                 byte[] data = BaseClient.UdpHandler.socket.EndReceive(ar, ref endpoint);
                 BaseClient.UdpHandler.socket.BeginReceive(OnUdpReceiveCallback, server);
 
-                if(data.Length <= 4)
+                if(data.Length < 4)
                 {
                     // no ID
                     return;
