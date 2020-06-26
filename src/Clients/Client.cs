@@ -115,7 +115,11 @@ namespace Sustenet.Clients
                         HandleUdpData(data);
                         return;
                 }
+            };
 
+            onInitialized.Run += () =>
+            {
+                this.MoveTo(new float[] { 1, 2, 3 }); // TEST: Remove later.
             };
 
             InitializeClientData();
