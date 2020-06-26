@@ -42,7 +42,13 @@ namespace Sustenet
                 clients = new Clients.Client[options.maxClients];
                 for(int i = 0; i < options.maxClients; i++)
                 {
-                    clients[i] = new Clients.Client();
+                    Clients.Client client = new Clients.Client();
+                    clients[i] = client;
+                    clients[i].onConnected.Run += () =>
+                    {
+                        client.Login("Mako");
+                    };
+
                     clients[i].Connect();
                 }
                 Utilities.WriteLine($"Finished connecting {options.maxClients} clients to the server.");
