@@ -37,6 +37,7 @@ namespace Sustenet.Transport.Messages.ClientHandlers
             BaseClient.DebugClient(client.id, $"(Server Message) {msg}");
         }
 
+        #region Initialization Section
         /// <summary>
         /// Initializes the client's ID and username.
         /// If the client is a Cluster, the username is the key.
@@ -54,8 +55,23 @@ namespace Sustenet.Transport.Messages.ClientHandlers
             client.id = id;
 
             BaseClient.DebugClient(client.id, $"Welcome, {username}!");
+
+            client.StartUdp();
         }
 
+        /// <summary>
+        /// This is received when the server has successfully setup the udp connection.
+        /// </summary>
+        /// <param name="client">The client whose ID and username should be changed.</param>
+        /// <param name="packet">The packet containing the new client ID.</param>
+        internal static void UdpConnected(this Client client, Packet packet)
+        {
+            BaseClient.DebugClient(client.id, $"A UDP has been successfully made.");
+            client.onInitialized.RaiseEvent();
+        }
+        #endregion
+
+        #region Movement Section
         /// <summary>
         /// Updates the client's position. Some prediction should be included to smooth things out.
         /// </summary>
@@ -68,5 +84,6 @@ namespace Sustenet.Transport.Messages.ClientHandlers
             float zPos = packet.ReadFloat();
             BaseClient.DebugClient(client.id, $"Moved to ({xPos}, {yPos}, {zPos})");
         }
+        #endregion
     }
 }
