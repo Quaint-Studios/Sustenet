@@ -154,6 +154,7 @@ namespace Sustenet.Transport
                     if(server.clients[clientId].udp.endpoint == null)
                     {
                         server.clients[clientId].udp.endpoint = endpoint;
+                        server.clients[clientId].onConnected.RaiseEvent();
                         return;
                     }
 
