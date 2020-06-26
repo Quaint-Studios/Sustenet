@@ -256,11 +256,6 @@ namespace Sustenet.Transport
                     socket.Connect(endpoint);
                     socket.BeginReceive(ReceiveCallback, client);
 
-                    using(Packet packet = new Packet())
-                    {
-                        client.SendUdpData(packet);
-                    }
-
                     client.onConnected.RaiseEvent();
                 }
                 catch(Exception e)

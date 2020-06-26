@@ -51,6 +51,19 @@ namespace Sustenet.Transport.Messages.ClientHandlers
                 BaseClient.DebugClient(client.id, "Cannot login unless connected to a Master Server.");
             }
         }
+
+        /// <summary>
+        /// Sends a packet with only the client ID to start a UDP connection.
+        /// </summary>
+        /// <param name="client">The client requesting for a UDP connection.</param>
+        internal static void StartUdp(this Client client)
+        {
+            // Tell the server to create an endpoint with this client
+            using(Packet packet = new Packet((int)ClientPackets.startUdp))
+            {
+                client.SendUdpData(packet);
+            }
+        }
         #endregion
 
         #region Movement Section
