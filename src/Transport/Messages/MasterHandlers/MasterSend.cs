@@ -30,40 +30,6 @@ namespace Sustenet.Transport.Messages.MasterHandlers
     {
         #region Initialization Section
         /// <summary>
-        /// Generates a 128-156 character passphrase, encrypts it using an RSA key,
-        /// stores the passphrase in the potential Cluster Client's name, and then
-        /// sends it to the potential Cluster Client.
-        /// </summary>
-        /// <param name="server">The server to run this on.</param>
-        /// <param name="toClient">The client to send the passphrase to.</param>
-        /// <param name="keyName">The name of the key to use.</param>
-        internal static void Passphrase(this MasterServer server, int toClient, string keyName)
-        {
-            // If the key doesn't exists...
-            if(!RSAManager.KeyExists(keyName))
-            {
-                // ...do absolutely nothing. Just stay silent
-                return;
-            }
-
-            // ...otherwise, serve a passphrase.
-
-            string passphrase = PassphraseGenerator.GeneratePassphrase();
-            AESManager.EncryptedData data = AESManager.Encrypt(keyName, passphrase);
-
-            server.clients[toClient].name = passphrase; // Set the client name to the passphrase to store it.
-
-            using(Packet packet = new Packet((int)ServerPackets.passphrase))
-            {
-                packet.Write(keyName);
-                packet.Write(Convert.ToBase64String(data.cypher));
-                packet.Write(Convert.ToBase64String(data.iv));
-
-                server.SendTcpData(toClient, packet);
-            }
-        }
-
-        /// <summary>
         /// Sends a Client their validated login information.
         /// </summary>
         /// <param name="server">The Master Server to run this on.</param>
@@ -101,6 +67,40 @@ namespace Sustenet.Transport.Messages.MasterHandlers
             using(Packet packet = new Packet((int)ServerPackets.initializeCluster))
             {
                 packet.Write(clusterName);
+
+                server.SendTcpData(toClient, packet);
+            }
+        }
+
+        /// <summary>
+        /// Generates a 128-156 character passphrase, encrypts it using an RSA key,
+        /// stores the passphrase in the potential Cluster Client's name, and then
+        /// sends it to the potential Cluster Client.
+        /// </summary>
+        /// <param name="server">The server to run this on.</param>
+        /// <param name="toClient">The client to send the passphrase to.</param>
+        /// <param name="keyName">The name of the key to use.</param>
+        internal static void Passphrase(this MasterServer server, int toClient, string keyName)
+        {
+            // If the key doesn't exists...
+            if(!RSAManager.KeyExists(keyName))
+            {
+                // ...do absolutely nothing. Just stay silent
+                return;
+            }
+
+            // ...otherwise, serve a passphrase.
+
+            string passphrase = PassphraseGenerator.GeneratePassphrase();
+            AESManager.EncryptedData data = AESManager.Encrypt(keyName, passphrase);
+
+            server.clients[toClient].name = passphrase; // Set the client name to the passphrase to store it.
+
+            using(Packet packet = new Packet((int)ServerPackets.passphrase))
+            {
+                packet.Write(keyName);
+                packet.Write(Convert.ToBase64String(data.cypher));
+                packet.Write(Convert.ToBase64String(data.iv));
 
                 server.SendTcpData(toClient, packet);
             }
