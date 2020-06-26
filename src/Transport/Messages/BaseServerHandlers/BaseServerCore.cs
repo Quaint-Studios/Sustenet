@@ -54,6 +54,7 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
         {
             try
             {
+                packet.WriteLength();
                 BaseClient client = server.clients[toClient];
 
                 if(client.udp.endpoint != null)

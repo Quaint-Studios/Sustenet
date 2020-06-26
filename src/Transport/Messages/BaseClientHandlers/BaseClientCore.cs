@@ -52,6 +52,13 @@ namespace Sustenet.Transport.Messages.BaseClientHandlers
         {
             try
             {
+                if(client.id <= -1)
+                {
+                    BaseClient.DebugClient(client.id, "This client hasn't finished being setup by the server.");
+                    return;
+                }
+
+                packet.WriteLength();
                 packet.InsertInt(client.id);
                 if(BaseClient.UdpHandler.socket != null)
                 {
