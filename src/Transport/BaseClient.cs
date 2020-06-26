@@ -206,7 +206,7 @@ namespace Sustenet.Transport
                 catch(Exception e)
                 {
                     Utilities.WriteLine(e);
-                    DebugClient(client.id, "Error while trying to connect.");
+                    DebugClient(client.id, "Error while trying to connect via TCP.");
                 }
             }
             #endregion
