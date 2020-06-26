@@ -297,12 +297,10 @@ namespace Sustenet.Transport
                 {
                     if(disposing)
                     {
-                        if(socket != null)
-                            socket.Close();
+                        // Managed resources
                     }
 
-                    if(endpoint != null)
-                        endpoint = null;
+                    // Unmanaged resources
 
                     disposed = true;
                 }
