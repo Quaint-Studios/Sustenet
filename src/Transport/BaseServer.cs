@@ -377,7 +377,7 @@ namespace Sustenet.Transport
 
         public static void DebugServer(string serverTypeName, string msg)
         {
-            Console.WriteLine($"({serverTypeName}) {msg}");
+            Utilities.WriteLine($"({serverTypeName}) {msg}");
         }
     }
 }
