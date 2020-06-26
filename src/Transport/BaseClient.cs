@@ -23,7 +23,6 @@ namespace Sustenet.Transport
     using Network;
     using Events;
     using Utils;
-    using Messages.BaseClientHandlers;
 
     /// <summary>
     /// The core for all clients. Handles basic functionality like sending
@@ -240,7 +239,7 @@ namespace Sustenet.Transport
             public IPEndPoint endpoint;
 
             /// <summary>
-            /// Prepares for a UDP connection to a server.
+            /// Prepares a client for a UDP connection to a server.
             /// </summary>
             /// <param name="ip">The IP Address to set the endpoint to.</param>
             /// <param name="port">The port to set the endpoint to.</param>
