@@ -85,7 +85,12 @@ namespace Sustenet.Clients
         /// </summary>
         protected static Dictionary<int, PacketHandler> packetHandlers;
 
-        public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(0)
+        /// <summary>
+        /// After a client logs in successful and gets their username & id back.
+        /// </summary>
+        public BaseEvent onInitialized = new BaseEvent();
+
+        public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(-1)
         {
             masterConnection = new Connection
             {
