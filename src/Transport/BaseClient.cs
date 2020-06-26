@@ -47,6 +47,7 @@ namespace Sustenet.Transport
         public BaseClient(int _id)
         {
             id = _id;
+
             tcp = new TcpHandler();
             udp = new UdpHandler();
         }
@@ -162,7 +163,7 @@ namespace Sustenet.Transport
                         receiveBuffer = new byte[bufferSize];
                     }
 
-                    socket.BeginConnect(ip, port, ConnectCallback, client);
+                    socket.BeginConnect(ip, port, ar => ConnectCallback(ar, ip), client);
                 }
                 catch
                 {
@@ -196,7 +197,9 @@ namespace Sustenet.Transport
                         stream = socket.GetStream();
                     }
 
-                    client.onConnected.RaiseEvent();
+                    IPEndPoint endpoint = ((IPEndPoint)socket.Client.RemoteEndPoint);
+
+                    client.udp.Connect(client, ip, (ushort)((IPEndPoint)socket.Client.RemoteEndPoint).Port, (ushort)((IPEndPoint)socket.Client.LocalEndPoint).Port);
 
                     stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                 }
@@ -234,7 +237,7 @@ namespace Sustenet.Transport
         public class UdpHandler : IDisposable
         {
             public static UdpClient socket;
-            public IPEndPoint endPoint;
+            public IPEndPoint endpoint;
 
             /// <summary>
             /// Prepares for a UDP connection to a server.
@@ -246,18 +249,20 @@ namespace Sustenet.Transport
             {
                 try
                 {
-                    endPoint = new IPEndPoint(ip, port);
+                    endpoint = new IPEndPoint(ip, port);
 
                     if(socket == null)
                         socket = new UdpClient(localPort);
 
-                    socket.Connect(endPoint);
-                    socket.BeginReceive(new AsyncCallback(ReceiveCallback), client);
+                    socket.Connect(endpoint);
+                    socket.BeginReceive(ReceiveCallback, client);
 
                     using(Packet packet = new Packet())
                     {
                         client.SendUdpData(packet);
                     }
+
+                    client.onConnected.RaiseEvent();
                 }
                 catch
                 {

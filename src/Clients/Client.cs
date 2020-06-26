@@ -133,13 +133,11 @@ namespace Sustenet.Clients
                 case ConnectionType.MasterServer:
                     activeConnection = connectType;
                     tcp.Connect(this, IPAddress.Parse(masterConnection.Ip), masterConnection.Port);
-                    udp.Connect(this, IPAddress.Parse(masterConnection.Ip), masterConnection.Port, masterConnection.LocalPort);
                     break;
 
                 case ConnectionType.ClusterServer:
                     activeConnection = connectType;
                     tcp.Connect(this, IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port);
-                    udp.Connect(this, IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port, clusterConnection.LocalPort);
                     break;
             }
         }
