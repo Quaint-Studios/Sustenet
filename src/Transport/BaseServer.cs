@@ -25,6 +25,7 @@ namespace Sustenet.Transport
     using Events;
     using Network;
     using Utils;
+    using Messages.BaseServerHandlers;
 
     /// <summary>
     /// Base class of all server types. Takes in clients.
@@ -100,7 +101,7 @@ namespace Sustenet.Transport
         }
 
         /// <summary>
-        /// Handles new connections.
+        /// Handles new TCP connections.
         /// </summary>
         /// <param name="ar">Async Result, the state contains this instance.</param>
         private static void OnTcpConnectCallback(IAsyncResult ar)
@@ -125,6 +126,10 @@ namespace Sustenet.Transport
             }
         }
 
+        /// <summary>
+        /// Handles new UDP connections.
+        /// </summary>
+        /// <param name="ar">Asyn Result, the state contains this instance.</param>
         private static void OnUdpReceiveCallback(IAsyncResult ar)
         {
             BaseServer server = (BaseServer)ar.AsyncState;
