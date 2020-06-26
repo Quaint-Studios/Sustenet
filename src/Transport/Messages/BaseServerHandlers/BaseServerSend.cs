@@ -39,5 +39,20 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
                 server.SendTcpData(toClient, packet);
             }
         }
+
+        #region Initialization Section
+        /// <summary>
+        /// Tells a client that a UDP connnection is ready.
+        /// </summary>
+        /// <param name="server">The server to run this on.</param>
+        /// <param name="toClient">The client to notify that the connection is ready.</param>
+        internal static void UdpReady(this BaseServer server, int toClient)
+        {
+            using(Packet packet = new Packet((int)ServerPackets.udpReady))
+            {
+                server.SendUdpData(toClient, packet);
+            }
+        }
+        #endregion
     }
 }
