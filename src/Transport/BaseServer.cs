@@ -151,14 +151,14 @@ namespace Sustenet.Transport
                     }
 
                     // If this is a new client, set their endpoint and return.
-                    if(server.clients[clientId].udp.endPoint == null)
+                    if(server.clients[clientId].udp.endpoint == null)
                     {
-                        server.clients[clientId].udp.endPoint = endpoint;
+                        server.clients[clientId].udp.endpoint = endpoint;
                         return;
                     }
 
                     // Validate that the endpoints match to verify that the user is who they say they are.
-                    if(server.clients[clientId].udp.endPoint.ToString() == endpoint.ToString())
+                    if(server.clients[clientId].udp.endpoint.ToString() == endpoint.ToString())
                     {
                         server.clients[clientId].onReceived.RaiseEvent(Protocols.UDP, null);
                         server.HandleUdpData(server.clients[clientId].id, packet);

@@ -277,7 +277,7 @@ namespace Sustenet.Transport
 
                 try
                 {
-                    byte[] data = socket.EndReceive(ar, ref endPoint);
+                    byte[] data = socket.EndReceive(ar, ref endpoint);
                     socket.BeginReceive(ReceiveCallback, client);
 
                     if(data.Length < 4)
@@ -306,8 +306,8 @@ namespace Sustenet.Transport
                             socket.Close();
                     }
 
-                    if(endPoint != null)
-                        endPoint = null;
+                    if(endpoint != null)
+                        endpoint = null;
 
                     disposed = true;
                 }

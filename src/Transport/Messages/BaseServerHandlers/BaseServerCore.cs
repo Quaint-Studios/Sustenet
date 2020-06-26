@@ -56,9 +56,9 @@ namespace Sustenet.Transport.Messages.BaseServerHandlers
             {
                 BaseClient client = server.clients[toClient];
 
-                if(client.udp.endPoint != null)
+                if(client.udp.endpoint != null)
                 {
-                    BaseClient.UdpHandler.socket.BeginSend(packet.ToArray(), packet.Length(), client.udp.endPoint, null, null);
+                    BaseClient.UdpHandler.socket.BeginSend(packet.ToArray(), packet.Length(), client.udp.endpoint, null, null);
                 }
             }
             catch(Exception e)
