@@ -264,8 +264,9 @@ namespace Sustenet.Transport
 
                     client.onConnected.RaiseEvent();
                 }
-                catch
+                catch(Exception e)
                 {
+                    Utilities.WriteLine(e);
                     client.onDisconnected.RaiseEvent(); // TODO: Pass a TypeEnum.UDP enum to differentiate instructions?
                 }
             }
