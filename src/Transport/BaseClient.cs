@@ -17,11 +17,11 @@
 
 namespace Sustenet.Transport
 {
+    using Events;
+    using Network;
     using System;
     using System.Net;
     using System.Net.Sockets;
-    using Network;
-    using Events;
     using Utils;
 
     /// <summary>

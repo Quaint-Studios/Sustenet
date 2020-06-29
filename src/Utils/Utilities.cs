@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Text.RegularExpressions;
-
 namespace Sustenet.Utils
 {
+    using System;
+    using System.Text.RegularExpressions;
+
     public static class Utilities
     {
         #region TryParseNullable

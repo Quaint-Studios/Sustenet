@@ -17,8 +17,8 @@
 
 namespace Sustenet.Transport.Messages.BaseClientHandlers
 {
-    using System;
     using Network;
+    using System;
 
     /// <summary>
     /// The core for the Base Client's message system.

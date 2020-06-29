@@ -17,9 +17,9 @@
 
 namespace Sustenet.Transport.Messages.ClusterClientHandlers
 {
+    using BaseClientHandlers;
     using Clients;
     using Network;
-    using BaseClientHandlers;
 
     /// <summary>
     /// Any message that is outbound from the Cluster Client.

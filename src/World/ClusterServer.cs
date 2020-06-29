@@ -17,8 +17,8 @@
 
 namespace Sustenet.World
 {
-    using Transport;
     using Clients;
+    using Transport;
 
     /// <summary>
     /// A regionally hosted server that controls and allocates users to

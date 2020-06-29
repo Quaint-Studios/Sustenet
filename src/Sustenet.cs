@@ -18,9 +18,9 @@
 namespace Sustenet
 {
     using System;
-    using Utils;
-    using Transport;
     using System.Threading;
+    using Transport;
+    using Utils;
 
     class Sustenet
     {

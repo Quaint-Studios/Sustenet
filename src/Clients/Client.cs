@@ -17,14 +17,13 @@
 
 namespace Sustenet.Clients
 {
+    using Events;
+    using Network;
     using System;
-    using System.Net;
     using System.Collections.Generic;
+    using System.Net;
     using Transport;
     using Transport.Messages.ClientHandlers;
-    using Transport.Messages.BaseClientHandlers;
-    using Network;
-    using Events;
 
     /// <summary>
     /// A standard client that connects to a server.

@@ -17,11 +17,11 @@
 
 namespace Sustenet.Transport.Messages.MasterHandlers
 {
+    using BaseServerHandlers;
     using Master;
     using Network;
     using System;
     using Utils.Security;
-    using BaseServerHandlers;
 
     /// <summary>
     /// Handles sending data to a client or cluster client from a server.

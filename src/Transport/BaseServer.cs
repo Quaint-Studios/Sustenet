@@ -17,15 +17,15 @@
 
 namespace Sustenet.Transport
 {
+    using Events;
+    using Messages.BaseServerHandlers;
+    using Network;
     using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
     using System.Threading.Tasks;
-    using Events;
-    using Network;
     using Utils;
-    using Messages.BaseServerHandlers;
 
     /// <summary>
     /// Base class of all server types. Takes in clients.

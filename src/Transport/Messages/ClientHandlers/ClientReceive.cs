@@ -17,8 +17,8 @@
 
 namespace Sustenet.Transport.Messages.ClientHandlers
 {
-    using Network;
     using Clients;
+    using Network;
 
     /// <summary>
     /// Messages that the Client would receive from a server.

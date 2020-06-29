@@ -15,13 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.IO;
-using System.Configuration;
-using System.Reflection;
-
 namespace Sustenet.Utils
 {
+    using System.Configuration;
+    using System.IO;
+
     /// <summary>
     /// Loads configurations.
     /// </summary>

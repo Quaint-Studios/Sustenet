@@ -17,9 +17,9 @@
 
 namespace Sustenet.Transport.Messages.MasterHandlers
 {
+    using BaseServerHandlers;
     using Master;
     using Network;
-    using BaseServerHandlers;
     using Utils.Mathematics;
 
     /// <summary>
