@@ -15,16 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Sustenet.Utils
+namespace Sustenet.Utils.Mathematics
 {
-    class Constants
+    /// <summary>
+    /// The Math Utility class.
+    /// </summary>
+    public static class UMath
     {
-        public const bool DEBUGGING = true;
+        #region InRange
+        // TODO: Expand on this, adding more overloads and types.
 
         /// <summary>
-        /// How many ticks are in a second.
+        /// Determines if a number is in range of min and max (inclusive).
         /// </summary>
-        public const int TICK_RATE = 30;
-        public const int MS_PER_TICK = 1000 / TICK_RATE;
+        public static bool InRange(this int num, int min, int max)
+        {
+            return num >= min && num <= max;
+        }
+
+        /// <summary>
+        /// Determines if a number is in range of min and max (inclusive).
+        /// </summary>
+        public static bool InRange(this float num, float min, float max)
+        {
+            return num >= min && num <= max;
+        }
+        #endregion
     }
 }

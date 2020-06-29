@@ -31,9 +31,9 @@ namespace Sustenet.Network
     /// </summary>
     public class Packet : IDisposable
     {
-        private List<byte> buffer;
+        private List<byte> buffer = new List<byte>();
         private byte[] readableBuffer;
-        private int readPos;
+        private int readPos = 0;
 
         /// <summary>
         /// Creates an empty packet without an ID.
@@ -44,13 +44,13 @@ namespace Sustenet.Network
         /// Creates an empty packet with an ID. Used for sending data.
         /// </summary>
         /// <param name="_id">The packet ID.</param>
-        public Packet(int _id) { buffer = new List<byte>(); readPos = 0; Write(_id); }
+        public Packet(int _id) { Write(_id); }
 
         /// <summary>
         /// Creates a packet and sets data to prepare it for reading. Used for receiving data.
         /// </summary>
         /// <param name="data">The bytes to add to the packet.</param>
-        public Packet(byte[] data) { buffer = new List<byte>(); readPos = 0; SetBytes(data); }
+        public Packet(byte[] data) { SetBytes(data); }
 
         #region Packet Functions
         /// <summary>

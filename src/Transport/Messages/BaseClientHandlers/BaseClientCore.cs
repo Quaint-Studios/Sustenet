@@ -32,18 +32,9 @@ namespace Sustenet.Transport.Messages.BaseClientHandlers
         /// <param name="packet">The packet to send.</param>
         internal static void SendTcpData(this BaseClient client, Packet packet)
         {
-            packet.WriteLength();
-            client.SendData(packet);
-        }
-
-        /// <summary>
-        /// Sends a packet through the current stream.
-        /// </summary>
-        /// <param name="packet">The packet to be sent.</param>
-        internal static void SendData(this BaseClient client, Packet packet)
-        {
             try
             {
+                packet.WriteLength();
                 if(client.tcp.socket == null)
                 {
                     throw new Exception("TCPHandler socket is null.");
@@ -54,6 +45,29 @@ namespace Sustenet.Transport.Messages.BaseClientHandlers
             catch(Exception e)
             {
                 BaseClient.DebugClient(client.id, $"Error sending data via TCP to Client#{client.id}...: {e}");
+            }
+        }
+
+        internal static void SendUdpData(this BaseClient client, Packet packet)
+        {
+            try
+            {
+                if(client.id <= -1)
+                {
+                    BaseClient.DebugClient(client.id, "This client hasn't finished being setup by the server.");
+                    return;
+                }
+
+                packet.WriteLength();
+                packet.InsertInt(client.id);
+                if(BaseClient.UdpHandler.socket != null)
+                {
+                    BaseClient.UdpHandler.socket.BeginSend(packet.ToArray(), packet.Length(), null, null);
+                }
+            }
+            catch(Exception e)
+            {
+                BaseClient.DebugClient(client.id, $"Error sending data via UDP to Client #{client.id}...: {e}");
             }
         }
     }

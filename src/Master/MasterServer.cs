@@ -35,7 +35,7 @@ namespace Sustenet.Master
         /// </summary>
         public List<int> clusterIds = new List<int>();
 
-        public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(_maxConnections, _port)
+        public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(ServerType.MasterServer, _maxConnections, _port)
         {
             RSAManager.LoadPubKeys();
             AESManager.LoadKeys();
@@ -51,9 +51,15 @@ namespace Sustenet.Master
             {
                 packetHandlers = new Dictionary<int, PacketHandler>()
                 {
+                    #region Initialization Section
                     { (int)ClientPackets.answerPassphrase, this.AnswerPassphrase },
                     { (int)ClientPackets.validateCluster, this.ValidateCluster },
-                    { (int)ClientPackets.validateLogin, this.ValidateLogin }
+                    { (int)ClientPackets.validateLogin, this.ValidateLogin },
+                    #endregion
+
+                    #region Movement Section
+                    { (int)ClientPackets.moveTo, this.ValidateMoveTo }
+                    #endregion
                 };
             }
         }

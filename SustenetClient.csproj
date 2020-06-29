@@ -24,28 +24,37 @@
     <Compile Remove="cfg\**" />
     <Compile Remove="libs\**" />
     <Compile Remove="src\Master\**" />
+    <Compile Remove="src\Transport\Messages\BaseServerHandlers\**" />
+    <Compile Remove="src\Transport\Messages\ClusterClientHandlers\**" />
+    <Compile Remove="src\Transport\Messages\ClusterHandlers\**" />
+    <Compile Remove="src\Transport\Messages\MasterHandlers\**" />
     <Compile Remove="src\World\**" />
     <Compile Remove="tests\**" />
     <EmbeddedResource Remove="cfg\**" />
     <EmbeddedResource Remove="libs\**" />
     <EmbeddedResource Remove="src\Master\**" />
+    <EmbeddedResource Remove="src\Transport\Messages\BaseServerHandlers\**" />
+    <EmbeddedResource Remove="src\Transport\Messages\ClusterClientHandlers\**" />
+    <EmbeddedResource Remove="src\Transport\Messages\ClusterHandlers\**" />
+    <EmbeddedResource Remove="src\Transport\Messages\MasterHandlers\**" />
     <EmbeddedResource Remove="src\World\**" />
     <EmbeddedResource Remove="tests\**" />
     <None Remove="cfg\**" />
     <None Remove="libs\**" />
     <None Remove="src\Master\**" />
+    <None Remove="src\Transport\Messages\BaseServerHandlers\**" />
+    <None Remove="src\Transport\Messages\ClusterClientHandlers\**" />
+    <None Remove="src\Transport\Messages\ClusterHandlers\**" />
+    <None Remove="src\Transport\Messages\MasterHandlers\**" />
     <None Remove="src\World\**" />
     <None Remove="tests\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="src\Clients\ClusterClient.cs" />
+    <Compile Remove="src\Options.cs" />
     <Compile Remove="src\Sustenet.cs" />
     <Compile Remove="src\Transport\BaseServer.cs" />
-    <Compile Remove="src\Transport\Messages\BaseServerHandler.cs" />
-    <Compile Remove="src\Transport\Messages\ClusterClientHandler.cs" />
-    <Compile Remove="src\Transport\Messages\ClusterHandler.cs" />
-    <Compile Remove="src\Transport\Messages\MasterHandler.cs" />
     <Compile Remove="src\Utils\Config.cs" />
     <Compile Remove="src\Utils\Security\PassphraseGenerator.cs" />
   </ItemGroup>

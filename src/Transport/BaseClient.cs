@@ -41,11 +41,12 @@ namespace Sustenet.Transport
 
         public BaseEvent onConnected = new BaseEvent();
         public BaseEvent onDisconnected = new BaseEvent();
-        public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
+        public BaseEvent<Protocols, byte[]> onReceived = new BaseEvent<Protocols, byte[]>();
 
         public BaseClient(int _id)
         {
             id = _id;
+
             tcp = new TcpHandler();
             udp = new UdpHandler();
         }
@@ -72,12 +73,7 @@ namespace Sustenet.Transport
                 {
                     if(socket != null)
                     {
-                        if(stream != null)
-                        {
-                            stream.Dispose();
-                        }
-
-                        socket.Dispose();
+                        socket.Close();
                     }
 
                     socket = _socket;
@@ -113,13 +109,11 @@ namespace Sustenet.Transport
                 try
                 {
                     int byteLength;
-                    lock(stream)
-                    {
-                        if(stream == null)
-                            return;
 
-                        byteLength = stream.EndRead(ar);
-                    }
+                    if(stream == null)
+                        return;
+
+                    byteLength = stream.EndRead(ar);
 
                     if(byteLength <= 0)
                     {
@@ -132,13 +126,10 @@ namespace Sustenet.Transport
 
                     Array.Copy(receiveBuffer, data, byteLength);
 
-                    client.onReceived.RaiseEvent(data);
+                    client.onReceived.RaiseEvent(Protocols.TCP, data);
 
-                    lock(stream)
-                    {
-                        if(stream != null)
-                            stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
-                    }
+                    if(stream != null)
+                        stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                 }
                 catch(Exception e)
                 {
@@ -171,7 +162,7 @@ namespace Sustenet.Transport
                         receiveBuffer = new byte[bufferSize];
                     }
 
-                    socket.BeginConnect(ip, port, ConnectCallback, null);
+                    socket.BeginConnect(ip, port, ar => ConnectCallback(ar, ip), client);
                 }
                 catch
                 {
@@ -183,42 +174,38 @@ namespace Sustenet.Transport
             /// Triggered after BeginConnect().
             /// </summary>
             /// <param name="ar">Result from BeginConnect().</param>
-            public void ConnectCallback(IAsyncResult ar)
+            public void ConnectCallback(IAsyncResult ar, IPAddress ip)
             {
                 BaseClient client = (BaseClient)ar.AsyncState;
 
                 try
                 {
-                    lock(socket)
-                    {
-                        if(socket != null)
-                            socket.EndConnect(ar);
+                    if(socket != null)
+                        socket.EndConnect(ar);
 
-                        if(!socket.Connected)
-                        {
-                            DebugClient(client.id, $"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
-                            return;
-                        }
+                    if(!socket.Connected)
+                    {
+                        DebugClient(client.id, $"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
+                        return;
                     }
 
                     DebugClient(client.id, $"Connected to server at {socket.Client.RemoteEndPoint}.");
 
-                    lock(stream)
+                    if(stream == null)
                     {
-                        if(stream == null)
-                        {
-                            stream = socket.GetStream();
-                        }
-
-                        client.onConnected.RaiseEvent();
-
-                        stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, null);
+                        stream = socket.GetStream();
                     }
+
+                    IPEndPoint endpoint = ((IPEndPoint)socket.Client.RemoteEndPoint);
+
+                    client.udp.Connect(client, ip, (ushort)((IPEndPoint)socket.Client.RemoteEndPoint).Port, (ushort)((IPEndPoint)socket.Client.LocalEndPoint).Port);
+
+                    stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                 }
                 catch(Exception e)
                 {
                     Utilities.WriteLine(e);
-                    DebugClient(client.id, "Error while trying to connect.");
+                    DebugClient(client.id, "Error while trying to connect via TCP.");
                 }
             }
             #endregion
@@ -232,10 +219,7 @@ namespace Sustenet.Transport
                     if(disposing)
                     {
                         if(socket != null)
-                            socket.Dispose();
-
-                        if(stream != null)
-                            stream.Dispose();
+                            socket.Close();
                     }
 
                     disposed = true;
@@ -251,11 +235,11 @@ namespace Sustenet.Transport
 
         public class UdpHandler : IDisposable
         {
-            public UdpClient socket;
-            public IPEndPoint endPoint;
+            public static UdpClient socket;
+            public IPEndPoint endpoint;
 
             /// <summary>
-            /// Prepares for a UDP connection to a server.
+            /// Prepares a client for a UDP connection to a server.
             /// </summary>
             /// <param name="ip">The IP Address to set the endpoint to.</param>
             /// <param name="port">The port to set the endpoint to.</param>
@@ -264,15 +248,19 @@ namespace Sustenet.Transport
             {
                 try
                 {
-                    endPoint = new IPEndPoint(ip, port);
+                    endpoint = new IPEndPoint(ip, port);
 
-                    socket = new UdpClient(localPort);
+                    if(socket == null)
+                        socket = new UdpClient(localPort);
 
-                    socket.Connect(endPoint);
-                    socket.BeginReceive(new AsyncCallback(ReceiveCallback), client);
+                    socket.Connect(endpoint);
+                    socket.BeginReceive(ReceiveCallback, client);
+
+                    client.onConnected.RaiseEvent();
                 }
-                catch
+                catch(Exception e)
                 {
+                    Utilities.WriteLine(e);
                     client.onDisconnected.RaiseEvent(); // TODO: Pass a TypeEnum.UDP enum to differentiate instructions?
                 }
             }
@@ -283,17 +271,20 @@ namespace Sustenet.Transport
 
                 try
                 {
-                    byte[] data = socket.EndReceive(ar, ref endPoint);
-                    socket.BeginReceive(ReceiveCallback, null);
+                    byte[] data = socket.EndReceive(ar, ref endpoint);
+                    socket.BeginReceive(ReceiveCallback, client);
 
                     if(data.Length < 4)
                     {
                         client.onDisconnected.RaiseEvent();
                         return;
                     }
+
+                    client.onReceived.RaiseEvent(Protocols.UDP, data);
                 }
-                catch
+                catch(Exception e)
                 {
+                    Utilities.WriteLine(e);
                     client.onDisconnected.RaiseEvent();
                 }
             }
@@ -306,12 +297,10 @@ namespace Sustenet.Transport
                 {
                     if(disposing)
                     {
-                        if(socket != null)
-                            socket.Dispose();
+                        // Managed resources
                     }
 
-                    if(endPoint != null)
-                        endPoint = null;
+                    // Unmanaged resources
 
                     disposed = true;
                 }

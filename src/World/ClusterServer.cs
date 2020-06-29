@@ -32,7 +32,7 @@ namespace Sustenet.World
         /// Creates a Cluster Server that creates Fragment Servers to be used.
         /// TODO: Will currently only create a single server for itself.
         /// </summary>
-        public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(_maxConnections, _port)
+        public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(ServerType.ClusterServer, _maxConnections, _port)
         {
             Start(ServerType.ClusterServer);
 

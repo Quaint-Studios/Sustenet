@@ -20,12 +20,14 @@ namespace Sustenet.Transport.Messages.MasterHandlers
     using Master;
     using Network;
     using BaseServerHandlers;
+    using Utils.Mathematics;
 
     /// <summary>
     /// Handles data the master server may receive.
     /// </summary>
     static class MasterReceive
     {
+        #region Initialization Section
         /// <summary>
         /// Gives the client an ID and checks if the current username belongs to them.
         /// </summary>
@@ -42,7 +44,7 @@ namespace Sustenet.Transport.Messages.MasterHandlers
                 server.Message(fromClient, "Please enter a username longer than 2 characters. Disconnecting.");
                 server.DisconnectClient(fromClient);
 
-                MasterServer.DebugServer(server.serverType, $"Disconnecting Client#{fromClient} for having the username '{username}' which is too short.");
+                MasterServer.DebugServer(server.serverTypeName, $"Disconnecting Client#{fromClient} for having the username '{username}' which is too short.");
 
                 return;
             }
@@ -84,10 +86,38 @@ namespace Sustenet.Transport.Messages.MasterHandlers
                 server.Message(fromClient, "Incorrect passphrase. Disconnecting.");
                 server.DisconnectClient(fromClient);
 
-                MasterServer.DebugServer(server.serverType, $"Disconnecting Client#{fromClient} for answering their passphrase incorrectly.");
+                MasterServer.DebugServer(server.serverTypeName, $"Disconnecting Client#{fromClient} for answering their passphrase incorrectly.");
 
                 return;
             }
         }
+        #endregion
+
+        #region Movement Section
+        /// <summary>
+        /// Verifies that a player has a legal velocity.
+        /// </summary>
+        /// <param name="server">The Cluster Server to run this on.</param>
+        /// <param name="fromClient">The client sending this packet.</param>
+        /// <param name="packet">The packet containing the 3 float positions.</param>
+        internal static void ValidateMoveTo(this MasterServer server, int fromClient, Packet packet)
+        {
+            float xPos = packet.ReadFloat();
+            float yPos = packet.ReadFloat();
+            float zPos = packet.ReadFloat();
+
+            // Validations
+            if(!xPos.InRange(-5, 5) || !yPos.InRange(-5, 5) || !zPos.InRange(-5, 5))
+            {
+                return;
+            }
+
+            // TODO: PSEUDO => if zPos != 0 && !grounded, cancel the operation.
+
+            // TODO: Update server-side velocity, send new position back and sync on the client-side.
+
+            server.SendUpdatedPosition(fromClient, new float[] { 1.0005f, 2.512f, 3.245f });
+        }
+        #endregion
     }
 }

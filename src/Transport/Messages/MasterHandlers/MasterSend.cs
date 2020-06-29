@@ -28,40 +28,7 @@ namespace Sustenet.Transport.Messages.MasterHandlers
     /// </summary>
     static class MasterSend
     {
-        /// <summary>
-        /// Generates a 128-156 character passphrase, encrypts it using an RSA key,
-        /// stores the passphrase in the potential Cluster Client's name, and then
-        /// sends it to the potential Cluster Client.
-        /// </summary>
-        /// <param name="server">The server to run this on.</param>
-        /// <param name="toClient">The client to send the passphrase to.</param>
-        /// <param name="keyName">The name of the key to use.</param>
-        internal static void Passphrase(this MasterServer server, int toClient, string keyName)
-        {
-            // If the key doesn't exists...
-            if(!RSAManager.KeyExists(keyName))
-            {
-                // ...do absolutely nothing. Just stay silent
-                return;
-            }
-
-            // ...otherwise, serve a passphrase.
-
-            string passphrase = PassphraseGenerator.GeneratePassphrase();
-            AESManager.EncryptedData data = AESManager.Encrypt(keyName, passphrase);
-
-            server.clients[toClient].name = passphrase; // Set the client name to the passphrase to store it.
-
-            using(Packet packet = new Packet((int)ServerPackets.passphrase))
-            {
-                packet.Write(keyName);
-                packet.Write(Convert.ToBase64String(data.cypher));
-                packet.Write(Convert.ToBase64String(data.iv));
-
-                server.SendTcpData(toClient, packet);
-            }
-        }
-
+        #region Initialization Section
         /// <summary>
         /// Sends a Client their validated login information.
         /// </summary>
@@ -70,7 +37,7 @@ namespace Sustenet.Transport.Messages.MasterHandlers
         /// <param name="username">The client's username.</param>
         internal static void InitializeLogin(this MasterServer server, int toClient, string username)
         {
-            MasterServer.DebugServer(server.serverType, $"Setting Client#{toClient}'s username to {username}.");
+            MasterServer.DebugServer(server.serverTypeName, $"Setting Client#{toClient}'s username to {username}.");
 
             /**
              * TODO:
@@ -104,5 +71,60 @@ namespace Sustenet.Transport.Messages.MasterHandlers
                 server.SendTcpData(toClient, packet);
             }
         }
+
+        /// <summary>
+        /// Generates a 128-156 character passphrase, encrypts it using an RSA key,
+        /// stores the passphrase in the potential Cluster Client's name, and then
+        /// sends it to the potential Cluster Client.
+        /// </summary>
+        /// <param name="server">The server to run this on.</param>
+        /// <param name="toClient">The client to send the passphrase to.</param>
+        /// <param name="keyName">The name of the key to use.</param>
+        internal static void Passphrase(this MasterServer server, int toClient, string keyName)
+        {
+            // If the key doesn't exists...
+            if(!RSAManager.KeyExists(keyName))
+            {
+                // ...do absolutely nothing. Just stay silent
+                return;
+            }
+
+            // ...otherwise, serve a passphrase.
+
+            string passphrase = PassphraseGenerator.GeneratePassphrase();
+            AESManager.EncryptedData data = AESManager.Encrypt(keyName, passphrase);
+
+            server.clients[toClient].name = passphrase; // Set the client name to the passphrase to store it.
+
+            using(Packet packet = new Packet((int)ServerPackets.passphrase))
+            {
+                packet.Write(keyName);
+                packet.Write(Convert.ToBase64String(data.cypher));
+                packet.Write(Convert.ToBase64String(data.iv));
+
+                server.SendTcpData(toClient, packet);
+            }
+        }
+        #endregion
+
+        #region Movement Section
+        internal static void SendUpdatedPosition(this MasterServer server, int toClient, float[] newPos)
+        {
+            if(newPos == null || newPos.Length < 3)
+            {
+                MasterServer.DebugServer(server.serverTypeName, "The new position is either null or doesn't have an x, y, and z.");
+                return;
+            }
+
+            using(Packet packet = new Packet((int)ServerPackets.updatePosition))
+            {
+                packet.Write(newPos[0]);
+                packet.Write(newPos[1]);
+                packet.Write(newPos[2]);
+
+                server.SendUdpData(toClient, packet);
+            }
+        }
+        #endregion
     }
 }

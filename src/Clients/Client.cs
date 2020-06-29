@@ -22,7 +22,9 @@ namespace Sustenet.Clients
     using System.Collections.Generic;
     using Transport;
     using Transport.Messages.ClientHandlers;
+    using Transport.Messages.BaseClientHandlers;
     using Network;
+    using Events;
 
     /// <summary>
     /// A standard client that connects to a server.
@@ -39,6 +41,7 @@ namespace Sustenet.Clients
         {
             private IPAddress ip;
             private ushort port;
+            private ushort localPort;
             public string Ip
             {
                 get
@@ -63,6 +66,12 @@ namespace Sustenet.Clients
                 get { return port; }
                 set { port = value; }
             }
+
+            public ushort LocalPort
+            {
+                get { return localPort; }
+                set { localPort = value; }
+            }
         }
 
         internal ConnectionType activeConnection;
@@ -76,7 +85,12 @@ namespace Sustenet.Clients
         /// </summary>
         protected static Dictionary<int, PacketHandler> packetHandlers;
 
-        public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(0)
+        /// <summary>
+        /// After a client logs in successful and gets their username & id back.
+        /// </summary>
+        public BaseEvent onInitialized = new BaseEvent();
+
+        public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(-1)
         {
             masterConnection = new Connection
             {
@@ -89,14 +103,29 @@ namespace Sustenet.Clients
                 receivedData = new Packet();
             };
 
-            onReceived.Run += (data) =>
+            onReceived.Run += (protocol, data) =>
             {
-                receivedData.Reset(HandleData(data));
+                switch(protocol)
+                {
+                    case Protocols.TCP:
+                        receivedData.Reset(HandleTcpData(data));
+                        return;
+
+                    case Protocols.UDP:
+                        HandleUdpData(data);
+                        return;
+                }
+            };
+
+            onInitialized.Run += () =>
+            {
+                this.MoveTo(new float[] { 1, 2, 3 }); // TEST: Remove later.
             };
 
             InitializeClientData();
         }
 
+        #region Connection Functions
         public void Login(string username)
         {
             // If the user currently doesn't have a username, let them attempt to login.
@@ -122,9 +151,10 @@ namespace Sustenet.Clients
                     break;
             }
         }
+        #endregion
 
         #region Data Functions
-        private bool HandleData(byte[] data)
+        private bool HandleTcpData(byte[] data)
         {
             int packetLength = 0;
 
@@ -173,14 +203,40 @@ namespace Sustenet.Clients
             return false;
         }
 
+        private bool HandleUdpData(byte[] data)
+        {
+            using(Packet packet = new Packet(data))
+            {
+                int packetLength = packet.ReadInt();
+                data = packet.ReadBytes(packetLength);
+            }
+
+            ThreadManager.ExecuteOnMainThread(() =>
+            {
+                using(Packet packet = new Packet(data))
+                {
+                    int packetId = packet.ReadInt();
+                    packetHandlers[packetId](packet);
+                }
+            });
+            return false;
+        }
+
         protected virtual void InitializeClientData()
         {
             if(packetHandlers == null)
             {
                 packetHandlers = new Dictionary<int, PacketHandler>()
                 {
+                    #region Initialization Section
                     { (int)ServerPackets.message, this.Message },
-                    { (int)ServerPackets.initializeLogin, this.InitializeClient }
+                    { (int)ServerPackets.initializeLogin, this.InitializeClient },
+                    { (int)ServerPackets.udpReady, this.UdpConnected },
+                    #endregion
+
+                    #region Movement Section
+                    { (int)ServerPackets.updatePosition, this.UpdatePosition }
+                    #endregion
                 };
             }
         }

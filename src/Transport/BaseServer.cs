@@ -25,6 +25,7 @@ namespace Sustenet.Transport
     using Events;
     using Network;
     using Utils;
+    using Messages.BaseServerHandlers;
 
     /// <summary>
     /// Base class of all server types. Takes in clients.
@@ -38,10 +39,12 @@ namespace Sustenet.Transport
         }
 
         private TcpListener tcpListener;
+        // UDP equivalent is in BaseClient.UdpHandler.socket
 
-        public ServerType serverType;
-        public int maxConnections;
-        public ushort port;
+        public readonly ServerType serverType;
+        public readonly string serverTypeName;
+        public readonly int maxConnections;
+        public readonly ushort port;
 
         public Dictionary<int, BaseClient> clients = new Dictionary<int, BaseClient>();
         public List<int> releasedIds = new List<int>();
@@ -57,8 +60,10 @@ namespace Sustenet.Transport
         public BaseEvent<int> onDisconnection = new BaseEvent<int>();
         public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
 
-        protected BaseServer(int _maxConnections = 0, ushort _port = 6256)
+        protected BaseServer(ServerType _serverType, int _maxConnections = 0, ushort _port = 6256)
         {
+            serverType = _serverType;
+            serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
             maxConnections = _maxConnections;
             port = _port == 0 ? (ushort)6256 : _port;
         }
@@ -70,10 +75,6 @@ namespace Sustenet.Transport
         /// <param name="serverType">The type of server to notify in the console.</param>
         protected void Start(ServerType _serverType)
         {
-            serverType = _serverType;
-
-            string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
-
             if(Constants.DEBUGGING)
             {
 #pragma warning disable CS0162 // Unreachable code detected
@@ -85,7 +86,14 @@ namespace Sustenet.Transport
 
             tcpListener = new TcpListener(IPAddress.Any, port);
             tcpListener.Start();
-            tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), this);
+            tcpListener.BeginAcceptTcpClient(new AsyncCallback(OnTcpConnectCallback), this);
+
+            if(BaseClient.UdpHandler.socket == null)
+            {
+                BaseClient.UdpHandler.socket = new UdpClient(port);
+            }
+
+            BaseClient.UdpHandler.socket.BeginReceive(OnUdpReceiveCallback, this);
 
             string maxConnectionsValue = (maxConnections == 0 ? "Until it breaks" : Utilities.SplitByPascalCase(maxConnections.ToString()));
 
@@ -93,10 +101,10 @@ namespace Sustenet.Transport
         }
 
         /// <summary>
-        /// Handles new connections.
+        /// Handles new TCP connections.
         /// </summary>
         /// <param name="ar">Async Result, the state contains this instance.</param>
-        private static void OnConnectCallback(IAsyncResult ar)
+        private static void OnTcpConnectCallback(IAsyncResult ar)
         {
             BaseServer server = (BaseServer)ar.AsyncState;
 
@@ -105,7 +113,7 @@ namespace Sustenet.Transport
                 TcpListener listener = server.tcpListener;
 
                 TcpClient client = listener.EndAcceptTcpClient(ar);
-                listener.BeginAcceptTcpClient(new AsyncCallback(OnConnectCallback), server);
+                listener.BeginAcceptTcpClient(new AsyncCallback(OnTcpConnectCallback), server);
 
                 ThreadManager.ExecuteOnMainThread(() =>
                 {
@@ -114,7 +122,58 @@ namespace Sustenet.Transport
             }
             catch(Exception e)
             {
-                DebugServer(server.serverType, $"Failed to create a client: {e}");
+                DebugServer(server.serverTypeName, $"Failed to create a client: {e}");
+            }
+        }
+
+        /// <summary>
+        /// Handles new UDP connections.
+        /// </summary>
+        /// <param name="ar">Asyn Result, the state contains this instance.</param>
+        private static void OnUdpReceiveCallback(IAsyncResult ar)
+        {
+            BaseServer server = (BaseServer)ar.AsyncState;
+
+            try
+            {
+                IPEndPoint endpoint = new IPEndPoint(IPAddress.Any, 0);
+                byte[] data = BaseClient.UdpHandler.socket.EndReceive(ar, ref endpoint);
+                BaseClient.UdpHandler.socket.BeginReceive(OnUdpReceiveCallback, server);
+
+                if(data.Length < 4)
+                {
+                    // no ID
+                    return;
+                }
+
+                using(Packet packet = new Packet(data))
+                {
+                    int clientId = packet.ReadInt();
+
+                    if(!server.clients.ContainsKey(clientId))
+                    {
+                        return;
+                    }
+
+                    // If this is a new client, set their endpoint and return.
+                    if(server.clients[clientId].udp.endpoint == null)
+                    {
+                        server.clients[clientId].udp.endpoint = endpoint;
+                        server.clients[clientId].onConnected.RaiseEvent();
+                        return;
+                    }
+
+                    // Validate that the endpoints match to verify that the user is who they say they are.
+                    if(server.clients[clientId].udp.endpoint.ToString() == endpoint.ToString())
+                    {
+                        server.clients[clientId].onReceived.RaiseEvent(Protocols.UDP, null);
+                        server.HandleUdpData(server.clients[clientId].id, packet);
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Utilities.WriteLine(e);
             }
         }
 
@@ -166,10 +225,23 @@ namespace Sustenet.Transport
 
                     clients[id].receivedData = new Packet();
 
-                    clients[id].onReceived.Run += (data) =>
+                    clients[id].onReceived.Run += (protocol, data) =>
                     {
                         // Convert the BaseClient to work for the server.
-                        clients[id].receivedData.Reset(HandleData(clients[id], data));
+                        switch(protocol)
+                        {
+                            case Protocols.TCP:
+                                clients[id].receivedData.Reset(HandleTcpData(clients[id], data));
+                                return;
+
+                            case Protocols.UDP:
+                                // Extra things to do goes here.
+                                return;
+                        }
+                    };
+                    clients[id].onConnected.Run += () =>
+                    {
+                        this.UdpReady(id);
                     };
                     // Clear the entry from the server.
                     clients[id].onDisconnected.Run += () => { ClearClient(id); };
@@ -181,7 +253,7 @@ namespace Sustenet.Transport
                     return;
                 }
 
-                DebugServer(serverType, $"{client.Client.RemoteEndPoint} failed to connect. Max connections of {maxConnections} reached.");
+                DebugServer(serverTypeName, $"{client.Client.RemoteEndPoint} failed to connect. Max connections of {maxConnections} reached.");
             }
             catch
             {
@@ -219,7 +291,7 @@ namespace Sustenet.Transport
                     clients.Remove(clientId);
                     releasedIds.Add(clientId); // TODO: Change this to only keep Ids of a certain reusable range.
 
-                    DebugServer(serverType, $"Disconnected Client#{clientId}.");
+                    DebugServer(serverTypeName, $"Disconnected Client#{clientId}.");
                 }
                 catch(Exception e)
                 {
@@ -235,7 +307,7 @@ namespace Sustenet.Transport
                             clients.Remove(clientId);
                             releasedIds.Add(clientId);
                         }
-                        DebugServer(serverType, $"Disconnected Client#{clientId} but with issues: {e}");
+                        DebugServer(serverTypeName, $"Disconnected Client#{clientId} but with issues: {e}");
                     }
                 }
             });
@@ -243,7 +315,7 @@ namespace Sustenet.Transport
         #endregion
 
         #region Data Functions
-        private bool HandleData(BaseClient client, byte[] data)
+        private bool HandleTcpData(BaseClient client, byte[] data)
         {
             int packetLength = 0;
 
@@ -290,16 +362,27 @@ namespace Sustenet.Transport
 
             return false;
         }
+
+        private bool HandleUdpData(int clientId, Packet packet)
+        {
+            int packetLength = packet.ReadInt();
+            byte[] packetBytes = packet.ReadBytes(packetLength);
+
+            ThreadManager.ExecuteOnMainThread(() =>
+            {
+                using(Packet packet = new Packet(packetBytes))
+                {
+                    int packetId = packet.ReadInt();
+                    packetHandlers[packetId](clientId, packet);
+                }
+            });
+
+            return false;
+        }
         #endregion
 
         public static void DebugServer(string serverTypeName, string msg)
         {
-            Console.WriteLine($"({serverTypeName}) {msg}");
-        }
-
-        public static void DebugServer(ServerType serverType, string msg)
-        {
-            string serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
             Utilities.WriteLine($"({serverTypeName}) {msg}");
         }
     }
