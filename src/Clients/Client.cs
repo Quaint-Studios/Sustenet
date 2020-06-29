@@ -41,7 +41,6 @@ namespace Sustenet.Clients
         {
             private IPAddress ip;
             private ushort port;
-            private ushort localPort;
             public string Ip
             {
                 get
@@ -65,12 +64,6 @@ namespace Sustenet.Clients
             {
                 get { return port; }
                 set { port = value; }
-            }
-
-            public ushort LocalPort
-            {
-                get { return localPort; }
-                set { localPort = value; }
             }
         }
 
