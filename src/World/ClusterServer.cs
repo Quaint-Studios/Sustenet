@@ -18,15 +18,17 @@
 namespace Sustenet.World
 {
     using Clients;
+    using System.Collections.Generic;
     using Transport;
+    using Utils;
 
     /// <summary>
     /// A regionally hosted server that controls and allocates users to
     /// smaller fragmented servers.
     /// </summary>
-    class ClusterServer : BaseServer
+    public class ClusterServer : BaseServer
     {
-        internal ClusterClient masterConn = new ClusterClient();
+        public ClusterClient masterConn = new ClusterClient();
 
         /// <summary>
         /// Creates a Cluster Server that creates Fragment Servers to be used.
@@ -34,9 +36,24 @@ namespace Sustenet.World
         /// </summary>
         public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(ServerType.ClusterServer, _maxConnections, _port)
         {
+            Config.settings = Config.GetConfig(Config.ConfigType.ClusterServer);
+
+            InitializeData();
+
             Start(ServerType.ClusterServer);
 
             masterConn.Connect();
+        }
+
+        protected virtual void InitializeData()
+        {
+            if(packetHandlers == null)
+            {
+                packetHandlers = new Dictionary<int, PacketHandler>()
+                {
+
+                };
+            }
         }
     }
 }
