@@ -39,12 +39,15 @@
   <ItemGroup>
     <Compile Remove="src\Options.cs" />
     <Compile Remove="src\Sustenet.cs" />
-    <Compile Remove="src\Utils\Config.cs" />
     <Compile Remove="src\Utils\Security\PassphraseGenerator.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="cfg\MasterServer.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
