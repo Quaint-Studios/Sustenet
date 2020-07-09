@@ -19,15 +19,16 @@ namespace Sustenet.Clients
 {
     using Network;
     using Transport.Messages.ClusterClientHandlers;
+    using Utils;
     using Utils.Security;
 
-    class ClusterClient : Client
+    public class ClusterClient : Client
     {
         public ClusterClient(string _ip = "127.0.0.1", ushort _port = 6256) : base(_ip, _port)
         {
-            name = "Test Name"; // TODO: Load from config.
+            name = Config.settings["name"] != null ? Config.settings["name"].Value : "Test Name";
 
-            string keyName = name.Replace(" ", ""); // TODO: Replace with config name.
+            string keyName = Config.settings["keyName"] != null ? Config.settings["keyName"].Value : name.Replace(" ", "");
 
             #region RSA Loading & Generation
             RSAManager.LoadKey(keyName, RSAManager.KeyType.PrivateKey); // Load all private keys.
