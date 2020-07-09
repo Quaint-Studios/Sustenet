@@ -31,6 +31,8 @@ namespace Sustenet.Utils
             ClusterServer
         }
 
+        public static KeyValueConfigurationCollection settings;
+
         static Config()
         {
             string cfgPath = Path.Combine(Utilities.GetAppPath(), $@"cfg");
