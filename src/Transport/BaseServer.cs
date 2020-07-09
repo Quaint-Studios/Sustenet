@@ -370,9 +370,9 @@ namespace Sustenet.Transport
 
             ThreadManager.ExecuteOnMainThread(() =>
             {
-                using(Packet packet = new Packet(packetBytes))
+                using(Packet packetData = new Packet(packetBytes))
                 {
-                    int packetId = packet.ReadInt();
+                    int packetId = packetData.ReadInt();
                     packetHandlers[packetId](clientId, packet);
                 }
             });
