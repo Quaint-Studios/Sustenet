@@ -62,18 +62,18 @@ namespace Sustenet
 
             if(options.master)
             {
-                var masterConfig = Config.GetConfig(Config.ConfigType.MasterServer);
+                Config.settings = Config.GetConfig(Config.ConfigType.MasterServer);
 
                 int? maxConnections = null;
-                if(masterConfig["maxConnections"] != null)
+                if(Config.settings["maxConnections"] != null)
                 {
-                    Utilities.TryParseNullable(masterConfig["maxConnections"].Value, out maxConnections);
+                    Utilities.TryParseNullable(Config.settings["maxConnections"].Value, out maxConnections);
                 }
 
                 ushort? port = null;
-                if(masterConfig["port"] != null)
+                if(Config.settings["port"] != null)
                 {
-                    Utilities.TryParseNullable(masterConfig["port"].Value, out port);
+                    Utilities.TryParseNullable(Config.settings["port"].Value, out port);
                 }
 
                 master = new Master.MasterServer(maxConnections ?? 0, port ?? 6256);
