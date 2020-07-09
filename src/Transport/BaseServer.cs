@@ -30,7 +30,7 @@ namespace Sustenet.Transport
     /// <summary>
     /// Base class of all server types. Takes in clients.
     /// </summary>
-    class BaseServer
+    public class BaseServer
     {
         public enum ServerType
         {
@@ -373,7 +373,7 @@ namespace Sustenet.Transport
                 using(Packet packetData = new Packet(packetBytes))
                 {
                     int packetId = packetData.ReadInt();
-                    packetHandlers[packetId](clientId, packet);
+                    packetHandlers[packetId](clientId, packetData);
                 }
             });
 
