@@ -25,5 +25,13 @@ The goal for Sustenet is to develop a connetion of servers. There are four major
 
 Sustenet is aiming to improve this methodology over time. It's a learning experience. The structure may change over time. This will be the route taken for now though.
 
+# Building & Testing
+Here's a little context on the structure. There are two solutions. `Sustenet` and `SustenetUnity`. The former generates an executable while the latter generates a library. `SustenetUnity` also excludes all files related to the master server.
+
+Inside of the SustenetUnity.csproj file under PostBuild is a line that says `ImplementationPath`. That is the path you want the library to be automatically exported to. It's advised to change it to something valid. Other than that, everything should work as is.
+
+## Testing with no GUI
+You can run the Sustenet.exe by itself with the parameter --master (this is the default options, so you don't actually have to provide it) and --client in two separate programs. This will show you an example connection.
+
 # Collaboration
 While I am still in the process of designing the structure of this project, I will not be actively accepting any collaborative efforts via pull requests. I am, however, open to being pointed in certain directions. Articles and documentation on specific issues are greatly appreciated. Even discussing it directly is welcome. If you're interested in that, feel free to join my [Discord](https://discord.makosai.com). You can discuss more about it in the #sustenet channel.
