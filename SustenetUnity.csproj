@@ -1,8 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>9c26d147-0609-4eba-b7a6-076ef78b10eb</ProjectGuid>
+  </PropertyGroup>
+
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <Copyright />
     <ApplicationIcon />
@@ -47,11 +51,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Configuration" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="SET &quot;ImplementationPath=G:\Workspace\Unity\Reia\Assets\Plugins\Sustenet&quot;&#xD;&#xA;&#xD;&#xA;IF $(ConfigurationName)==Release (&#xD;&#xA;  IF EXIST %25ImplementationPath%25 (&#xD;&#xA;    ECHO F| XCOPY $(TargetDir)*.dll %25ImplementationPath%25\* /D /Y&#xD;&#xA;  ) ELSE (&#xD;&#xA;    ECHO The implementation path to copy the DLL to does not exist. Change it or create it in the Project's post-build settings.&#xD;&#xA;  )&#xD;&#xA;) ELSE (&#xD;&#xA;  ECHO Skipping post-build.&#xD;&#xA;)" />
+    <Exec Command="SET &quot;ImplementationPath=I:\Workspace\Unity\Reia\Assets\Plugins\Sustenet&quot;&#xD;&#xA;&#xD;&#xA;IF $(ConfigurationName)==Release (&#xD;&#xA;  IF EXIST %25ImplementationPath%25 (&#xD;&#xA;    ECHO F| XCOPY $(TargetDir)*.dll %25ImplementationPath%25\* /D /Y&#xD;&#xA;  ) ELSE (&#xD;&#xA;    ECHO The implementation path to copy the DLL to does not exist. Change it or create it in the Project's post-build settings.&#xD;&#xA;  )&#xD;&#xA;) ELSE (&#xD;&#xA;  ECHO Skipping post-build.&#xD;&#xA;)" />
   </Target>
 
 </Project>

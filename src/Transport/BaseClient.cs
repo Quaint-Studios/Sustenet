@@ -22,6 +22,7 @@ namespace Sustenet.Transport
     using System;
     using System.Net;
     using System.Net.Sockets;
+    using Transport.Core.Spawning;
     using Utils;
 
     /// <summary>
@@ -42,6 +43,8 @@ namespace Sustenet.Transport
         public BaseEvent onConnected = new BaseEvent();
         public BaseEvent onDisconnected = new BaseEvent();
         public BaseEvent<Protocols, byte[]> onReceived = new BaseEvent<Protocols, byte[]>();
+
+        public Player player;
 
         public BaseClient(int _id)
         {
@@ -71,7 +74,7 @@ namespace Sustenet.Transport
             {
                 try
                 {
-                    if(socket != null)
+                    if (socket != null)
                     {
                         socket.Close();
                     }
@@ -80,12 +83,12 @@ namespace Sustenet.Transport
                     socket.ReceiveBufferSize = bufferSize;
                     socket.SendBufferSize = bufferSize;
 
-                    if(stream == null)
+                    if (stream == null)
                     {
                         stream = socket.GetStream();
                     }
 
-                    if(receiveBuffer == null)
+                    if (receiveBuffer == null)
                     {
                         receiveBuffer = new byte[bufferSize];
                     }
@@ -110,12 +113,12 @@ namespace Sustenet.Transport
                 {
                     int byteLength;
 
-                    if(stream == null)
+                    if (stream == null)
                         return;
 
                     byteLength = stream.EndRead(ar);
 
-                    if(byteLength <= 0)
+                    if (byteLength <= 0)
                     {
                         // disconnect
                         client.onDisconnected.RaiseEvent();
@@ -128,10 +131,10 @@ namespace Sustenet.Transport
 
                     client.onReceived.RaiseEvent(Protocols.TCP, data);
 
-                    if(stream != null)
+                    if (stream != null)
                         stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Utilities.WriteLine(e);
                     // onDebug.RaiseEvent($"Error with receiving TCP data...: {e}");
@@ -148,7 +151,7 @@ namespace Sustenet.Transport
             {
                 try
                 {
-                    if(socket == null)
+                    if (socket == null)
                     {
                         socket = new TcpClient
                         {
@@ -157,7 +160,7 @@ namespace Sustenet.Transport
                         };
                     }
 
-                    if(receiveBuffer == null)
+                    if (receiveBuffer == null)
                     {
                         receiveBuffer = new byte[bufferSize];
                     }
@@ -180,10 +183,10 @@ namespace Sustenet.Transport
 
                 try
                 {
-                    if(socket != null)
+                    if (socket != null)
                         socket.EndConnect(ar);
 
-                    if(!socket.Connected)
+                    if (!socket.Connected)
                     {
                         DebugClient(client.id, $"Failed to connect to the server at {socket.Client.RemoteEndPoint}.");
                         return;
@@ -191,7 +194,7 @@ namespace Sustenet.Transport
 
                     DebugClient(client.id, $"Connected to server at {socket.Client.RemoteEndPoint}.");
 
-                    if(stream == null)
+                    if (stream == null)
                     {
                         stream = socket.GetStream();
                     }
@@ -202,7 +205,7 @@ namespace Sustenet.Transport
 
                     stream.BeginRead(receiveBuffer, 0, bufferSize, ReceiveCallback, client);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Utilities.WriteLine(e);
                     DebugClient(client.id, "Error while trying to connect via TCP.");
@@ -214,11 +217,11 @@ namespace Sustenet.Transport
 
             protected virtual void Dispose(bool disposing)
             {
-                if(!disposed)
+                if (!disposed)
                 {
-                    if(disposing)
+                    if (disposing)
                     {
-                        if(socket != null)
+                        if (socket != null)
                             socket.Close();
                     }
 
@@ -250,7 +253,7 @@ namespace Sustenet.Transport
                 {
                     endpoint = new IPEndPoint(ip, port);
 
-                    if(socket == null)
+                    if (socket == null)
                         socket = new UdpClient(localPort);
 
                     socket.Connect(endpoint);
@@ -258,7 +261,7 @@ namespace Sustenet.Transport
 
                     client.onConnected.RaiseEvent();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Utilities.WriteLine(e);
                     client.onDisconnected.RaiseEvent(); // TODO: Pass a TypeEnum.UDP enum to differentiate instructions?
@@ -274,7 +277,7 @@ namespace Sustenet.Transport
                     byte[] data = socket.EndReceive(ar, ref endpoint);
                     socket.BeginReceive(ReceiveCallback, client);
 
-                    if(data.Length < 4)
+                    if (data.Length < 4)
                     {
                         client.onDisconnected.RaiseEvent();
                         return;
@@ -282,7 +285,7 @@ namespace Sustenet.Transport
 
                     client.onReceived.RaiseEvent(Protocols.UDP, data);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Utilities.WriteLine(e);
                     client.onDisconnected.RaiseEvent();
@@ -293,9 +296,9 @@ namespace Sustenet.Transport
 
             protected virtual void Dispose(bool disposing)
             {
-                if(!disposed)
+                if (!disposed)
                 {
-                    if(disposing)
+                    if (disposing)
                     {
                         // Managed resources
                     }
@@ -322,17 +325,17 @@ namespace Sustenet.Transport
 
         protected virtual void Dispose(bool disposing)
         {
-            if(!disposed)
+            if (!disposed)
             {
-                if(disposing)
+                if (disposing)
                 {
-                    if(tcp != null)
+                    if (tcp != null)
                         tcp.Dispose();
 
-                    if(udp != null)
+                    if (udp != null)
                         udp.Dispose();
 
-                    if(receivedData != null)
+                    if (receivedData != null)
                         receivedData.Dispose();
                 }
 

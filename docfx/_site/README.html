@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Sustenet </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Sustenet ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="sustenet">Sustenet</h1>
+
+<p>A C# networking solution for Unity3D that has a primary focus on scaling by allowing multiple servers to work together.</p>
+<p><img src="https://github.com/Quaint-Studios/Sustenet/workflows/.NET%20Core/badge.svg" alt=".NET Core"> <a href="https://www.codefactor.io/repository/github/quaint-studios/sustenet"><img src="https://www.codefactor.io/repository/github/quaint-studios/sustenet/badge" alt="CodeFactor"></a></p>
+<h2 id="vision">Vision</h2>
+<p><em>This is a rough vision of where this project is headed, a more detailed layout will eventually be added.</em></p>
+<p>The goal for Sustenet is to develop a connetion of servers. There are four major components in Sustenet.</p>
+<ul>
+<li><p>The <code>Master</code> server is where all clusters go to be registered. There should really only be one Master Server. But I can't stop you if you want to do something more with it.</p>
+</li>
+<li><p>The <code>Cluster</code> would be considered your traditional server. You load Sustenet as a Cluster and it contains some configurations:</p>
+<ul>
+<li><code>Key</code> - The Cluster has a key in it, much like the SSH key you place on a server. Each Cluster should have a unique key. But, like I said, I can't stop you. You can reuse keys if you'd like. Just be aware that if one key is compromised, they all are. I will need some more research on how much security is required in an instance like this. Or what other approaches are an option.</li>
+<li><code>Master Server IP</code> - This is just telling the Cluster what IP to register to.</li>
+<li><code>[Master Server Port = 6256]</code> - Again, just some information to properly connect to the Master Server.</li>
+<li><code>[Connection Limit = 0]</code> - This is an optional property. Since it's set to 0, no connection limit is being enforced.</li>
+<li><em>more soon...</em></li>
+</ul>
+</li>
+<li><p>The <code>Fragment</code> is used to give different settings to certain areas in a Cluster. This includes the size of the Fragment in-game, the amount of players in it before the settings might change, keeping track of which players are in this Fragment, and update-rates.</p>
+</li>
+<li><p>The <code>Client</code> is simply a Client. They'll connect to the Master server and have two options:</p>
+<ul>
+<li>Login immediately, joining whatever Cluster they've been automatically allocated to, based on how much traffic the other Clusters are experiencing or based on their ping.</li>
+<li>Manaully select a cluster, browsing their names and other information. If there's a connection limit, then lock access to join that server.</li>
+</ul>
+<p>That's it. After that, they'll just send and receive messages from their Cluster and the Cluster will handle swapping the player between Fragments based on their position.</p>
+</li>
+</ul>
+<p>Sustenet is aiming to improve this methodology over time. It's a learning experience. The structure may change over time. This will be the route taken for now though.</p>
+<h1 id="building--testing">Building &amp; Testing</h1>
+<p>Here's a little context on the structure. There are two solutions. <code>Sustenet</code> and <code>SustenetUnity</code>. The former generates an executable while the latter generates a library. <code>SustenetUnity</code> also excludes all files related to the master server.</p>
+<p>Inside of the SustenetUnity.csproj file under PostBuild is a line that says <code>ImplementationPath</code>. That is the path you want the library to be automatically exported to. It's advised to change it to something valid. Other than that, everything should work as is.</p>
+<h2 id="testing-with-no-gui">Testing with no GUI</h2>
+<p>You can run the Sustenet.exe by itself with the parameter --master (this is the default options, so you don't actually have to provide it) and --client in two separate programs. This will show you an example connection.</p>
+<h1 id="collaboration">Collaboration</h1>
+<p>While I am still in the process of designing the structure of this project, I will not be actively accepting any collaborative efforts via pull requests. I am, however, open to being pointed in certain directions. Articles and documentation on specific issues are greatly appreciated. Even discussing it directly is welcome. If you're interested in that, feel free to join my <a href="https://discord.makosai.com">Discord</a>. You can discuss more about it in the #sustenet channel.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/README.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>

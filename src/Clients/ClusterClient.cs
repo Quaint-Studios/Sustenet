@@ -34,7 +34,7 @@ namespace Sustenet.Clients
             RSAManager.LoadKey(keyName, RSAManager.KeyType.PrivateKey); // Load all private keys.
 
             // If the requested key doesn't exist, create it.
-            if(!RSAManager.KeyExists(keyName, RSAManager.KeyType.PrivateKey))
+            if (!RSAManager.KeyExists(keyName, RSAManager.KeyType.PrivateKey))
             {
                 RSAManager.GenerateKeyPair(keyName);
             }
@@ -44,7 +44,7 @@ namespace Sustenet.Clients
             AESManager.LoadKey(keyName);
 
             // If the requested key doesn't exist, create it.
-            if(!AESManager.KeyExists(keyName))
+            if (!AESManager.KeyExists(keyName))
             {
                 AESManager.GenerateKey(keyName);
             }

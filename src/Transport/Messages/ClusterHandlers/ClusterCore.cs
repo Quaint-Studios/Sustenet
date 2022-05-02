@@ -17,8 +17,38 @@
 
 namespace Sustenet.Transport.Messages.ClusterHandlers
 {
+    using Transport.Core.Spawning;
+    using World;
+
     /// <summary>
     /// The core all Cluster messages.
     /// </summary>
-    static class ClusterCore { }
+    static class ClusterCore
+    {
+        public static void SpawnPlayer(this ClusterServer cluster, int toClient, Player player)
+        {
+            BaseClient client = cluster.clients[toClient];
+            client.player = player;
+
+            // TODO: Split the cluster's clients into fragments so updates are only sent to those within a certain fragmented group and at a reduced rate to neighboring groups.
+            foreach (BaseClient otherClient in cluster.clients.Values)
+            {
+                if (otherClient.player != null)
+                {
+                    if (otherClient.id != client.id)
+                    {
+                        // Spawn
+                    }
+                }
+            }
+
+            foreach(BaseClient otherClient in cluster.clients.Values)
+            {
+                if(otherClient.player != null)
+                {
+                    // Spawn
+                }
+            }
+        }
+    }
 }
