@@ -44,7 +44,7 @@ namespace Sustenet.Clients
             {
                 get
                 {
-                    if (ip == null)
+                    if(ip == null)
                     {
                         throw new Exception("Failed to get the IP address because it's not set.");
                     }
@@ -52,7 +52,7 @@ namespace Sustenet.Clients
                 }
                 set
                 {
-                    if (!IPAddress.TryParse(value, out ip))
+                    if(!IPAddress.TryParse(value, out ip))
                     {
                         throw new Exception("Failed to set the IP address because of an invalid format.");
                     }
@@ -97,7 +97,7 @@ namespace Sustenet.Clients
 
             onReceived.Run += (protocol, data) =>
             {
-                switch (protocol)
+                switch(protocol)
                 {
                     case Protocols.TCP:
                         receivedData.Reset(HandleTcpData(data));
@@ -121,7 +121,7 @@ namespace Sustenet.Clients
         public void Login(string username)
         {
             // If the user currently doesn't have a username, let them attempt to login.
-            if (username.Length > 2)
+            if(username.Length > 2)
                 this.ValidateLogin(username);
         }
 
@@ -130,7 +130,7 @@ namespace Sustenet.Clients
         /// </summary>
         public void Connect(ConnectionType connectType = ConnectionType.MasterServer)
         {
-            switch (connectType)
+            switch(connectType)
             {
                 case ConnectionType.MasterServer:
                     activeConnection = connectType;
@@ -152,22 +152,22 @@ namespace Sustenet.Clients
 
             receivedData.SetBytes(data);
 
-            if (receivedData.UnreadLength() >= 4)
+            if(receivedData.UnreadLength() >= 4)
             {
                 packetLength = receivedData.ReadInt();
-                if (packetLength <= 0)
+                if(packetLength <= 0)
                 {
                     return true;
                 }
             }
 
-            while (packetLength > 0 && packetLength <= receivedData.UnreadLength())
+            while(packetLength > 0 && packetLength <= receivedData.UnreadLength())
             {
                 byte[] packetBytes = receivedData.ReadBytes(packetLength);
 
                 ThreadManager.ExecuteOnMainThread(() =>
                 {
-                    using (Packet packet = new Packet(packetBytes))
+                    using(Packet packet = new Packet(packetBytes))
                     {
                         int packetId = packet.ReadInt();
 
@@ -177,17 +177,17 @@ namespace Sustenet.Clients
 
                 packetLength = 0;
 
-                if (receivedData.UnreadLength() >= 4)
+                if(receivedData.UnreadLength() >= 4)
                 {
                     packetLength = receivedData.ReadInt();
-                    if (packetLength <= 0)
+                    if(packetLength <= 0)
                     {
                         return true;
                     }
                 }
             }
 
-            if (packetLength <= 1)
+            if(packetLength <= 1)
             {
                 return true;
             }
@@ -197,7 +197,7 @@ namespace Sustenet.Clients
 
         private bool HandleUdpData(byte[] data)
         {
-            using (Packet packet = new Packet(data))
+            using(Packet packet = new Packet(data))
             {
                 int packetLength = packet.ReadInt();
                 data = packet.ReadBytes(packetLength);
@@ -205,7 +205,7 @@ namespace Sustenet.Clients
 
             ThreadManager.ExecuteOnMainThread(() =>
             {
-                using (Packet packet = new Packet(data))
+                using(Packet packet = new Packet(data))
                 {
                     int packetId = packet.ReadInt();
                     packetHandlers[packetId](packet);
@@ -216,7 +216,7 @@ namespace Sustenet.Clients
 
         protected virtual void InitializeClientData()
         {
-            if (packetHandlers == null)
+            if(packetHandlers == null)
             {
                 packetHandlers = new Dictionary<int, PacketHandler>()
                 {

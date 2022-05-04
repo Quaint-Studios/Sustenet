@@ -24,9 +24,9 @@ namespace Sustenet.Clients
 
     public class ClusterClient : Client
     {
-        public ClusterClient(string _ip = "127.0.0.1", ushort _port = 6256) : base(_ip, _port)
+        public ClusterClient(string _ip = "127.0.0.1", ushort _port = 6256) : base(_ip, _port == 0 ? (ushort)6256 : _port)
         {
-            name = Config.settings["name"] != null ? Config.settings["name"].Value : "Test Name";
+            name = Config.settings["serverName"] != null ? Config.settings["serverName"].Value : "Test Name";
 
             string keyName = Config.settings["keyName"] != null ? Config.settings["keyName"].Value : name.Replace(" ", "");
 
@@ -34,7 +34,7 @@ namespace Sustenet.Clients
             RSAManager.LoadKey(keyName, RSAManager.KeyType.PrivateKey); // Load all private keys.
 
             // If the requested key doesn't exist, create it.
-            if (!RSAManager.KeyExists(keyName, RSAManager.KeyType.PrivateKey))
+            if(!RSAManager.KeyExists(keyName, RSAManager.KeyType.PrivateKey))
             {
                 RSAManager.GenerateKeyPair(keyName);
             }
@@ -44,7 +44,7 @@ namespace Sustenet.Clients
             AESManager.LoadKey(keyName);
 
             // If the requested key doesn't exist, create it.
-            if (!AESManager.KeyExists(keyName))
+            if(!AESManager.KeyExists(keyName))
             {
                 AESManager.GenerateKey(keyName);
             }

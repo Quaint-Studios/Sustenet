@@ -28,7 +28,7 @@ namespace Sustenet.World
     /// </summary>
     public class ClusterServer : BaseServer
     {
-        public ClusterClient masterConn = new ClusterClient();
+        public ClusterClient masterConn = new ClusterClient(Config.settings["masterIp"].Value, ushort.TryParse(Config.settings["port"].Value, out ushort port) ? port : (ushort)6256);
 
         /// <summary>
         /// Creates a Cluster Server that creates Fragment Servers to be used.
@@ -36,8 +36,6 @@ namespace Sustenet.World
         /// </summary>
         public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(ServerType.ClusterServer, _maxConnections, _port)
         {
-            Config.settings = Config.GetConfig(Config.ConfigType.ClusterServer);
-
             InitializeData();
 
             Start(ServerType.ClusterServer);

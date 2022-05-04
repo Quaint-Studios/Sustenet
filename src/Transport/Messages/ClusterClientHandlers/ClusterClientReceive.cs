@@ -41,7 +41,7 @@ namespace Sustenet.Transport.Messages.ClusterClientHandlers
 
             client.name = keyName;
 
-            BaseClient.DebugClient(client.id, $"Welcome, {keyName}!");
+            BaseClient.DebugClient(client.id, $"Welcome, Cluster {keyName}!");
         }
 
         /// <summary>

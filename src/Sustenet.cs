@@ -56,7 +56,8 @@ namespace Sustenet
 
             if(options.cluster)
             {
-                // TODO: var config = Utils.Config.GetConfig("ClusterServer");
+                Config.settings = Config.GetConfig(Config.ConfigType.ClusterServer);
+
                 cluster = new World.ClusterServer();
             }
 
