@@ -84,7 +84,7 @@ namespace Sustenet
             {
                 Console.Write("Sustenet: ");
                 Console.WriteLine(e.Message);
-                Console.WriteLine("Try `sustenet --help' for more information.");
+                Console.WriteLine("Try `sustenet --help` for more information.");
                 throw;
             }
         }
