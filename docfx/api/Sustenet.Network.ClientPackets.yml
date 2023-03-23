@@ -1,0 +1,221 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Network.ClientPackets
+  commentId: T:Sustenet.Network.ClientPackets
+  id: ClientPackets
+  parent: Sustenet.Network
+  children:
+  - Sustenet.Network.ClientPackets.answerPassphrase
+  - Sustenet.Network.ClientPackets.moveTo
+  - Sustenet.Network.ClientPackets.startUdp
+  - Sustenet.Network.ClientPackets.validateCluster
+  - Sustenet.Network.ClientPackets.validateLogin
+  langs:
+  - csharp
+  - vb
+  name: ClientPackets
+  nameWithType: ClientPackets
+  fullName: Sustenet.Network.ClientPackets
+  type: Enum
+  source:
+    remote:
+      path: src/Network/PacketTypes.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ClientPackets
+    path: src/Network/PacketTypes.cs
+    startLine: 67
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nWhat a client sends. What a server receives.\n"
+  example: []
+  syntax:
+    content: public enum ClientPackets
+    content.vb: Public Enum ClientPackets
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: Sustenet.Network.ClientPackets.answerPassphrase
+  commentId: F:Sustenet.Network.ClientPackets.answerPassphrase
+  id: answerPassphrase
+  parent: Sustenet.Network.ClientPackets
+  langs:
+  - csharp
+  - vb
+  name: answerPassphrase
+  nameWithType: ClientPackets.answerPassphrase
+  fullName: Sustenet.Network.ClientPackets.answerPassphrase
+  type: Field
+  source:
+    remote:
+      path: src/Network/PacketTypes.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: answerPassphrase
+    path: src/Network/PacketTypes.cs
+    startLine: 72
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nSends an answer to a passphrase to the server.\n"
+  example: []
+  syntax:
+    content: answerPassphrase = -2
+    return:
+      type: Sustenet.Network.ClientPackets
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: Sustenet.Network.ClientPackets.validateCluster
+  commentId: F:Sustenet.Network.ClientPackets.validateCluster
+  id: validateCluster
+  parent: Sustenet.Network.ClientPackets
+  langs:
+  - csharp
+  - vb
+  name: validateCluster
+  nameWithType: ClientPackets.validateCluster
+  fullName: Sustenet.Network.ClientPackets.validateCluster
+  type: Field
+  source:
+    remote:
+      path: src/Network/PacketTypes.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: validateCluster
+    path: src/Network/PacketTypes.cs
+    startLine: 78
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nRequest to be a Cluster. If authenticated, the client\nwill get a new ID and will be moved to a server\ndictionary on the Master server.\n"
+  example: []
+  syntax:
+    content: validateCluster = -1
+    return:
+      type: Sustenet.Network.ClientPackets
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: Sustenet.Network.ClientPackets.validateLogin
+  commentId: F:Sustenet.Network.ClientPackets.validateLogin
+  id: validateLogin
+  parent: Sustenet.Network.ClientPackets
+  langs:
+  - csharp
+  - vb
+  name: validateLogin
+  nameWithType: ClientPackets.validateLogin
+  fullName: Sustenet.Network.ClientPackets.validateLogin
+  type: Field
+  source:
+    remote:
+      path: src/Network/PacketTypes.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: validateLogin
+    path: src/Network/PacketTypes.cs
+    startLine: 82
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nLogs in with a username.\n"
+  example: []
+  syntax:
+    content: validateLogin = 1
+    return:
+      type: Sustenet.Network.ClientPackets
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: Sustenet.Network.ClientPackets.startUdp
+  commentId: F:Sustenet.Network.ClientPackets.startUdp
+  id: startUdp
+  parent: Sustenet.Network.ClientPackets
+  langs:
+  - csharp
+  - vb
+  name: startUdp
+  nameWithType: ClientPackets.startUdp
+  fullName: Sustenet.Network.ClientPackets.startUdp
+  type: Field
+  source:
+    remote:
+      path: src/Network/PacketTypes.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: startUdp
+    path: src/Network/PacketTypes.cs
+    startLine: 86
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nSends an ID to a server to start a UDP connection.\n"
+  example: []
+  syntax:
+    content: startUdp = 2
+    return:
+      type: Sustenet.Network.ClientPackets
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: Sustenet.Network.ClientPackets.moveTo
+  commentId: F:Sustenet.Network.ClientPackets.moveTo
+  id: moveTo
+  parent: Sustenet.Network.ClientPackets
+  langs:
+  - csharp
+  - vb
+  name: moveTo
+  nameWithType: ClientPackets.moveTo
+  fullName: Sustenet.Network.ClientPackets.moveTo
+  type: Field
+  source:
+    remote:
+      path: src/Network/PacketTypes.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: moveTo
+    path: src/Network/PacketTypes.cs
+    startLine: 89
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: moveTo = 2000
+    return:
+      type: Sustenet.Network.ClientPackets
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: Sustenet.Network
+  commentId: N:Sustenet.Network
+  name: Sustenet.Network
+  nameWithType: Sustenet.Network
+  fullName: Sustenet.Network
+- uid: Sustenet.Network.ClientPackets
+  commentId: T:Sustenet.Network.ClientPackets
+  parent: Sustenet.Network
+  name: ClientPackets
+  nameWithType: ClientPackets
+  fullName: Sustenet.Network.ClientPackets

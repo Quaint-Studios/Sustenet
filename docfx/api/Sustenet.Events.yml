@@ -1,0 +1,114 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Events
+  commentId: N:Sustenet.Events
+  id: Sustenet.Events
+  children:
+  - Sustenet.Events.BaseEvent
+  - Sustenet.Events.BaseEvent`1
+  - Sustenet.Events.BaseEvent`2
+  langs:
+  - csharp
+  - vb
+  name: Sustenet.Events
+  nameWithType: Sustenet.Events
+  fullName: Sustenet.Events
+  type: Namespace
+  assemblies:
+  - Sustenet
+references:
+- uid: Sustenet.Events.BaseEvent
+  commentId: T:Sustenet.Events.BaseEvent
+  parent: Sustenet.Events
+  name: BaseEvent
+  nameWithType: BaseEvent
+  fullName: Sustenet.Events.BaseEvent
+- uid: Sustenet.Events.BaseEvent`1
+  commentId: T:Sustenet.Events.BaseEvent`1
+  name: BaseEvent<T>
+  nameWithType: BaseEvent<T>
+  fullName: Sustenet.Events.BaseEvent<T>
+  nameWithType.vb: BaseEvent(Of T)
+  fullName.vb: Sustenet.Events.BaseEvent(Of T)
+  name.vb: BaseEvent(Of T)
+  spec.csharp:
+  - uid: Sustenet.Events.BaseEvent`1
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Sustenet.Events.BaseEvent`1
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Sustenet.Events.BaseEvent`2
+  commentId: T:Sustenet.Events.BaseEvent`2
+  name: BaseEvent<T1, T2>
+  nameWithType: BaseEvent<T1, T2>
+  fullName: Sustenet.Events.BaseEvent<T1, T2>
+  nameWithType.vb: BaseEvent(Of T1, T2)
+  fullName.vb: Sustenet.Events.BaseEvent(Of T1, T2)
+  name.vb: BaseEvent(Of T1, T2)
+  spec.csharp:
+  - uid: Sustenet.Events.BaseEvent`2
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Sustenet.Events.BaseEvent`2
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T1
+    nameWithType: T1
+    fullName: T1
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T2
+    nameWithType: T2
+    fullName: T2
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Sustenet.Events
+  commentId: N:Sustenet.Events
+  name: Sustenet.Events
+  nameWithType: Sustenet.Events
+  fullName: Sustenet.Events

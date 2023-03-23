@@ -1,0 +1,60 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Utils.Security
+  commentId: N:Sustenet.Utils.Security
+  id: Sustenet.Utils.Security
+  children:
+  - Sustenet.Utils.Security.AESManager
+  - Sustenet.Utils.Security.AESManager.EncryptedData
+  - Sustenet.Utils.Security.AESManager.KeyData
+  - Sustenet.Utils.Security.RSAManager
+  - Sustenet.Utils.Security.RSAManager.KeyData
+  - Sustenet.Utils.Security.RSAManager.KeyType
+  langs:
+  - csharp
+  - vb
+  name: Sustenet.Utils.Security
+  nameWithType: Sustenet.Utils.Security
+  fullName: Sustenet.Utils.Security
+  type: Namespace
+  assemblies:
+  - Sustenet
+references:
+- uid: Sustenet.Utils.Security.AESManager
+  commentId: T:Sustenet.Utils.Security.AESManager
+  name: AESManager
+  nameWithType: AESManager
+  fullName: Sustenet.Utils.Security.AESManager
+- uid: Sustenet.Utils.Security.AESManager.KeyData
+  commentId: T:Sustenet.Utils.Security.AESManager.KeyData
+  parent: Sustenet.Utils.Security
+  name: AESManager.KeyData
+  nameWithType: AESManager.KeyData
+  fullName: Sustenet.Utils.Security.AESManager.KeyData
+- uid: Sustenet.Utils.Security.AESManager.EncryptedData
+  commentId: T:Sustenet.Utils.Security.AESManager.EncryptedData
+  parent: Sustenet.Utils.Security
+  name: AESManager.EncryptedData
+  nameWithType: AESManager.EncryptedData
+  fullName: Sustenet.Utils.Security.AESManager.EncryptedData
+- uid: Sustenet.Utils.Security.RSAManager
+  commentId: T:Sustenet.Utils.Security.RSAManager
+  name: RSAManager
+  nameWithType: RSAManager
+  fullName: Sustenet.Utils.Security.RSAManager
+- uid: Sustenet.Utils.Security.RSAManager.KeyType
+  commentId: T:Sustenet.Utils.Security.RSAManager.KeyType
+  parent: Sustenet.Utils.Security
+  name: RSAManager.KeyType
+  nameWithType: RSAManager.KeyType
+  fullName: Sustenet.Utils.Security.RSAManager.KeyType
+- uid: Sustenet.Utils.Security.RSAManager.KeyData
+  commentId: T:Sustenet.Utils.Security.RSAManager.KeyData
+  name: RSAManager.KeyData
+  nameWithType: RSAManager.KeyData
+  fullName: Sustenet.Utils.Security.RSAManager.KeyData
+- uid: Sustenet.Utils.Security
+  commentId: N:Sustenet.Utils.Security
+  name: Sustenet.Utils.Security
+  nameWithType: Sustenet.Utils.Security
+  fullName: Sustenet.Utils.Security

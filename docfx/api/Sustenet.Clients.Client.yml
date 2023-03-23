@@ -1,0 +1,931 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Clients.Client
+  commentId: T:Sustenet.Clients.Client
+  id: Client
+  parent: Sustenet.Clients
+  children:
+  - Sustenet.Clients.Client.#ctor(System.String,System.UInt16)
+  - Sustenet.Clients.Client.Connect(Sustenet.Clients.Client.ConnectionType)
+  - Sustenet.Clients.Client.InitializeClientData
+  - Sustenet.Clients.Client.Login(System.String)
+  - Sustenet.Clients.Client.onInitialized
+  - Sustenet.Clients.Client.packetHandlers
+  langs:
+  - csharp
+  - vb
+  name: Client
+  nameWithType: Client
+  fullName: Sustenet.Clients.Client
+  type: Class
+  source:
+    remote:
+      path: src/Clients/Client.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Client
+    path: src/Clients/Client.cs
+    startLine: 30
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Clients
+  summary: "\nA standard client that connects to a server.\n"
+  example: []
+  syntax:
+    content: 'public class Client : BaseClient, IDisposable'
+    content.vb: >-
+      Public Class Client
+          Inherits BaseClient
+          Implements IDisposable
+  inheritance:
+  - System.Object
+  - Sustenet.Transport.BaseClient
+  derivedClasses:
+  - Sustenet.Clients.ClusterClient
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - Sustenet.Transport.BaseClient.id
+  - Sustenet.Transport.BaseClient.tcp
+  - Sustenet.Transport.BaseClient.udp
+  - Sustenet.Transport.BaseClient.bufferSize
+  - Sustenet.Transport.BaseClient.name
+  - Sustenet.Transport.BaseClient.onConnected
+  - Sustenet.Transport.BaseClient.onDisconnected
+  - Sustenet.Transport.BaseClient.onReceived
+  - Sustenet.Transport.BaseClient.player
+  - Sustenet.Transport.BaseClient.DebugClient(System.Int32,System.String)
+  - Sustenet.Transport.BaseClient.Dispose(System.Boolean)
+  - Sustenet.Transport.BaseClient.Dispose
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: Sustenet.Clients.Client.packetHandlers
+  commentId: F:Sustenet.Clients.Client.packetHandlers
+  id: packetHandlers
+  parent: Sustenet.Clients.Client
+  langs:
+  - csharp
+  - vb
+  name: packetHandlers
+  nameWithType: Client.packetHandlers
+  fullName: Sustenet.Clients.Client.packetHandlers
+  type: Field
+  source:
+    remote:
+      path: src/Clients/Client.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: packetHandlers
+    path: src/Clients/Client.cs
+    startLine: 77
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Clients
+  summary: "\nA dictionary on how a packet should be handled.\n"
+  example: []
+  syntax:
+    content: protected static Dictionary<int, Client.PacketHandler> packetHandlers
+    return:
+      type: System.Collections.Generic.Dictionary{System.Int32,Sustenet.Clients.Client.PacketHandler}
+    content.vb: Protected Shared packetHandlers As Dictionary(Of Integer, Client.PacketHandler)
+  modifiers.csharp:
+  - protected
+  - static
+  modifiers.vb:
+  - Protected
+  - Shared
+- uid: Sustenet.Clients.Client.onInitialized
+  commentId: F:Sustenet.Clients.Client.onInitialized
+  id: onInitialized
+  parent: Sustenet.Clients.Client
+  langs:
+  - csharp
+  - vb
+  name: onInitialized
+  nameWithType: Client.onInitialized
+  fullName: Sustenet.Clients.Client.onInitialized
+  type: Field
+  source:
+    remote:
+      path: src/Clients/Client.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: onInitialized
+    path: src/Clients/Client.cs
+    startLine: 82
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Clients
+  syntax:
+    content: public BaseEvent onInitialized
+    return:
+      type: Sustenet.Events.BaseEvent
+    content.vb: Public onInitialized As BaseEvent
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Clients.Client.#ctor(System.String,System.UInt16)
+  commentId: M:Sustenet.Clients.Client.#ctor(System.String,System.UInt16)
+  id: '#ctor(System.String,System.UInt16)'
+  parent: Sustenet.Clients.Client
+  langs:
+  - csharp
+  - vb
+  name: Client(String, UInt16)
+  nameWithType: Client.Client(String, UInt16)
+  fullName: Sustenet.Clients.Client.Client(System.String, System.UInt16)
+  type: Constructor
+  source:
+    remote:
+      path: src/Clients/Client.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: .ctor
+    path: src/Clients/Client.cs
+    startLine: 84
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Clients
+  syntax:
+    content: public Client(string _ip = "127.0.0.1", ushort _port = 6256)
+    parameters:
+    - id: _ip
+      type: System.String
+    - id: _port
+      type: System.UInt16
+    content.vb: Public Sub New(_ip As String = "127.0.0.1", _port As UShort = 6256)
+  overload: Sustenet.Clients.Client.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Clients.Client.Login(System.String)
+  commentId: M:Sustenet.Clients.Client.Login(System.String)
+  id: Login(System.String)
+  parent: Sustenet.Clients.Client
+  langs:
+  - csharp
+  - vb
+  name: Login(String)
+  nameWithType: Client.Login(String)
+  fullName: Sustenet.Clients.Client.Login(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Clients/Client.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Login
+    path: src/Clients/Client.cs
+    startLine: 120
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Clients
+  syntax:
+    content: public void Login(string username)
+    parameters:
+    - id: username
+      type: System.String
+    content.vb: Public Sub Login(username As String)
+  overload: Sustenet.Clients.Client.Login*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Clients.Client.Connect(Sustenet.Clients.Client.ConnectionType)
+  commentId: M:Sustenet.Clients.Client.Connect(Sustenet.Clients.Client.ConnectionType)
+  id: Connect(Sustenet.Clients.Client.ConnectionType)
+  parent: Sustenet.Clients.Client
+  langs:
+  - csharp
+  - vb
+  name: Connect(Client.ConnectionType)
+  nameWithType: Client.Connect(Client.ConnectionType)
+  fullName: Sustenet.Clients.Client.Connect(Sustenet.Clients.Client.ConnectionType)
+  type: Method
+  source:
+    remote:
+      path: src/Clients/Client.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Connect
+    path: src/Clients/Client.cs
+    startLine: 130
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Clients
+  summary: "\nConnects to the currently assigned IP and port.\n"
+  example: []
+  syntax:
+    content: public void Connect(Client.ConnectionType connectType = Client.ConnectionType.MasterServer)
+    parameters:
+    - id: connectType
+      type: Sustenet.Clients.Client.ConnectionType
+    content.vb: Public Sub Connect(connectType As Client.ConnectionType = Client.ConnectionType.MasterServer)
+  overload: Sustenet.Clients.Client.Connect*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Clients.Client.InitializeClientData
+  commentId: M:Sustenet.Clients.Client.InitializeClientData
+  id: InitializeClientData
+  parent: Sustenet.Clients.Client
+  langs:
+  - csharp
+  - vb
+  name: InitializeClientData()
+  nameWithType: Client.InitializeClientData()
+  fullName: Sustenet.Clients.Client.InitializeClientData()
+  type: Method
+  source:
+    remote:
+      path: src/Clients/Client.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: InitializeClientData
+    path: src/Clients/Client.cs
+    startLine: 216
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Clients
+  syntax:
+    content: protected virtual void InitializeClientData()
+    content.vb: Protected Overridable Sub InitializeClientData
+  overload: Sustenet.Clients.Client.InitializeClientData*
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+references:
+- uid: Sustenet.Clients
+  commentId: N:Sustenet.Clients
+  name: Sustenet.Clients
+  nameWithType: Sustenet.Clients
+  fullName: Sustenet.Clients
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: Sustenet.Transport.BaseClient
+  commentId: T:Sustenet.Transport.BaseClient
+  parent: Sustenet.Transport
+  name: BaseClient
+  nameWithType: BaseClient
+  fullName: Sustenet.Transport.BaseClient
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: Sustenet.Transport.BaseClient.id
+  commentId: F:Sustenet.Transport.BaseClient.id
+  parent: Sustenet.Transport.BaseClient
+  name: id
+  nameWithType: BaseClient.id
+  fullName: Sustenet.Transport.BaseClient.id
+- uid: Sustenet.Transport.BaseClient.tcp
+  commentId: F:Sustenet.Transport.BaseClient.tcp
+  parent: Sustenet.Transport.BaseClient
+  name: tcp
+  nameWithType: BaseClient.tcp
+  fullName: Sustenet.Transport.BaseClient.tcp
+- uid: Sustenet.Transport.BaseClient.udp
+  commentId: F:Sustenet.Transport.BaseClient.udp
+  parent: Sustenet.Transport.BaseClient
+  name: udp
+  nameWithType: BaseClient.udp
+  fullName: Sustenet.Transport.BaseClient.udp
+- uid: Sustenet.Transport.BaseClient.bufferSize
+  commentId: F:Sustenet.Transport.BaseClient.bufferSize
+  parent: Sustenet.Transport.BaseClient
+  name: bufferSize
+  nameWithType: BaseClient.bufferSize
+  fullName: Sustenet.Transport.BaseClient.bufferSize
+- uid: Sustenet.Transport.BaseClient.name
+  commentId: F:Sustenet.Transport.BaseClient.name
+  parent: Sustenet.Transport.BaseClient
+  name: name
+  nameWithType: BaseClient.name
+  fullName: Sustenet.Transport.BaseClient.name
+- uid: Sustenet.Transport.BaseClient.onConnected
+  commentId: F:Sustenet.Transport.BaseClient.onConnected
+  parent: Sustenet.Transport.BaseClient
+  name: onConnected
+  nameWithType: BaseClient.onConnected
+  fullName: Sustenet.Transport.BaseClient.onConnected
+- uid: Sustenet.Transport.BaseClient.onDisconnected
+  commentId: F:Sustenet.Transport.BaseClient.onDisconnected
+  parent: Sustenet.Transport.BaseClient
+  name: onDisconnected
+  nameWithType: BaseClient.onDisconnected
+  fullName: Sustenet.Transport.BaseClient.onDisconnected
+- uid: Sustenet.Transport.BaseClient.onReceived
+  commentId: F:Sustenet.Transport.BaseClient.onReceived
+  parent: Sustenet.Transport.BaseClient
+  name: onReceived
+  nameWithType: BaseClient.onReceived
+  fullName: Sustenet.Transport.BaseClient.onReceived
+- uid: Sustenet.Transport.BaseClient.player
+  commentId: F:Sustenet.Transport.BaseClient.player
+  parent: Sustenet.Transport.BaseClient
+  name: player
+  nameWithType: BaseClient.player
+  fullName: Sustenet.Transport.BaseClient.player
+- uid: Sustenet.Transport.BaseClient.DebugClient(System.Int32,System.String)
+  commentId: M:Sustenet.Transport.BaseClient.DebugClient(System.Int32,System.String)
+  parent: Sustenet.Transport.BaseClient
+  isExternal: true
+  name: DebugClient(Int32, String)
+  nameWithType: BaseClient.DebugClient(Int32, String)
+  fullName: Sustenet.Transport.BaseClient.DebugClient(System.Int32, System.String)
+  spec.csharp:
+  - uid: Sustenet.Transport.BaseClient.DebugClient(System.Int32,System.String)
+    name: DebugClient
+    nameWithType: BaseClient.DebugClient
+    fullName: Sustenet.Transport.BaseClient.DebugClient
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Sustenet.Transport.BaseClient.DebugClient(System.Int32,System.String)
+    name: DebugClient
+    nameWithType: BaseClient.DebugClient
+    fullName: Sustenet.Transport.BaseClient.DebugClient
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Sustenet.Transport.BaseClient.Dispose(System.Boolean)
+  commentId: M:Sustenet.Transport.BaseClient.Dispose(System.Boolean)
+  parent: Sustenet.Transport.BaseClient
+  isExternal: true
+  name: Dispose(Boolean)
+  nameWithType: BaseClient.Dispose(Boolean)
+  fullName: Sustenet.Transport.BaseClient.Dispose(System.Boolean)
+  spec.csharp:
+  - uid: Sustenet.Transport.BaseClient.Dispose(System.Boolean)
+    name: Dispose
+    nameWithType: BaseClient.Dispose
+    fullName: Sustenet.Transport.BaseClient.Dispose
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Sustenet.Transport.BaseClient.Dispose(System.Boolean)
+    name: Dispose
+    nameWithType: BaseClient.Dispose
+    fullName: Sustenet.Transport.BaseClient.Dispose
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Sustenet.Transport.BaseClient.Dispose
+  commentId: M:Sustenet.Transport.BaseClient.Dispose
+  parent: Sustenet.Transport.BaseClient
+  name: Dispose()
+  nameWithType: BaseClient.Dispose()
+  fullName: Sustenet.Transport.BaseClient.Dispose()
+  spec.csharp:
+  - uid: Sustenet.Transport.BaseClient.Dispose
+    name: Dispose
+    nameWithType: BaseClient.Dispose
+    fullName: Sustenet.Transport.BaseClient.Dispose
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Sustenet.Transport.BaseClient.Dispose
+    name: Dispose
+    nameWithType: BaseClient.Dispose
+    fullName: Sustenet.Transport.BaseClient.Dispose
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sustenet.Transport
+  commentId: N:Sustenet.Transport
+  name: Sustenet.Transport
+  nameWithType: Sustenet.Transport
+  fullName: Sustenet.Transport
+- uid: System.Collections.Generic.Dictionary{System.Int32,Sustenet.Clients.Client.PacketHandler}
+  commentId: T:System.Collections.Generic.Dictionary{System.Int32,Sustenet.Clients.Client.PacketHandler}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Int32, Client.PacketHandler>
+  nameWithType: Dictionary<Int32, Client.PacketHandler>
+  fullName: System.Collections.Generic.Dictionary<System.Int32, Sustenet.Clients.Client.PacketHandler>
+  nameWithType.vb: Dictionary(Of Int32, Client.PacketHandler)
+  fullName.vb: System.Collections.Generic.Dictionary(Of System.Int32, Sustenet.Clients.Client.PacketHandler)
+  name.vb: Dictionary(Of Int32, Client.PacketHandler)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Sustenet.Clients.Client.PacketHandler
+    name: Client.PacketHandler
+    nameWithType: Client.PacketHandler
+    fullName: Sustenet.Clients.Client.PacketHandler
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Sustenet.Clients.Client.PacketHandler
+    name: Client.PacketHandler
+    nameWithType: Client.PacketHandler
+    fullName: Sustenet.Clients.Client.PacketHandler
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: Sustenet.Events.BaseEvent
+  commentId: T:Sustenet.Events.BaseEvent
+  parent: Sustenet.Events
+  name: BaseEvent
+  nameWithType: BaseEvent
+  fullName: Sustenet.Events.BaseEvent
+- uid: Sustenet.Events
+  commentId: N:Sustenet.Events
+  name: Sustenet.Events
+  nameWithType: Sustenet.Events
+  fullName: Sustenet.Events
+- uid: Sustenet.Clients.Client.#ctor*
+  commentId: Overload:Sustenet.Clients.Client.#ctor
+  name: Client
+  nameWithType: Client.Client
+  fullName: Sustenet.Clients.Client.Client
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.UInt16
+  commentId: T:System.UInt16
+  parent: System
+  isExternal: true
+  name: UInt16
+  nameWithType: UInt16
+  fullName: System.UInt16
+- uid: Sustenet.Clients.Client.Login*
+  commentId: Overload:Sustenet.Clients.Client.Login
+  name: Login
+  nameWithType: Client.Login
+  fullName: Sustenet.Clients.Client.Login
+- uid: Sustenet.Clients.Client.Connect*
+  commentId: Overload:Sustenet.Clients.Client.Connect
+  name: Connect
+  nameWithType: Client.Connect
+  fullName: Sustenet.Clients.Client.Connect
+- uid: Sustenet.Clients.Client.ConnectionType
+  commentId: T:Sustenet.Clients.Client.ConnectionType
+  parent: Sustenet.Clients
+  name: Client.ConnectionType
+  nameWithType: Client.ConnectionType
+  fullName: Sustenet.Clients.Client.ConnectionType
+- uid: Sustenet.Clients.Client.InitializeClientData*
+  commentId: Overload:Sustenet.Clients.Client.InitializeClientData
+  name: InitializeClientData
+  nameWithType: Client.InitializeClientData
+  fullName: Sustenet.Clients.Client.InitializeClientData

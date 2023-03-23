@@ -1,0 +1,54 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Clients.Client.PacketHandler
+  commentId: T:Sustenet.Clients.Client.PacketHandler
+  id: Client.PacketHandler
+  parent: Sustenet.Clients
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: Client.PacketHandler
+  nameWithType: Client.PacketHandler
+  fullName: Sustenet.Clients.Client.PacketHandler
+  type: Delegate
+  source:
+    remote:
+      path: src/Clients/Client.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: PacketHandler
+    path: src/Clients/Client.cs
+    startLine: 72
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Clients
+  syntax:
+    content: protected delegate void PacketHandler(Packet packet);
+    parameters:
+    - id: packet
+      type: Sustenet.Network.Packet
+    content.vb: Protected Delegate Sub PacketHandler(packet As Packet)
+  modifiers.csharp:
+  - protected
+  - delegate
+  modifiers.vb:
+  - Protected
+  - Delegate
+references:
+- uid: Sustenet.Clients
+  commentId: N:Sustenet.Clients
+  name: Sustenet.Clients
+  nameWithType: Sustenet.Clients
+  fullName: Sustenet.Clients
+- uid: Sustenet.Network.Packet
+  commentId: T:Sustenet.Network.Packet
+  parent: Sustenet.Network
+  name: Packet
+  nameWithType: Packet
+  fullName: Sustenet.Network.Packet
+- uid: Sustenet.Network
+  commentId: N:Sustenet.Network
+  name: Sustenet.Network
+  nameWithType: Sustenet.Network
+  fullName: Sustenet.Network

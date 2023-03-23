@@ -1,0 +1,850 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Utils.Security.AESManager
+  commentId: T:Sustenet.Utils.Security.AESManager
+  id: AESManager
+  parent: Sustenet.Utils.Security
+  children:
+  - Sustenet.Utils.Security.AESManager.AddKey(System.String,System.Byte[])
+  - Sustenet.Utils.Security.AESManager.Decrypt(System.String,System.Byte[],System.Byte[])
+  - Sustenet.Utils.Security.AESManager.Encrypt(System.String,System.String)
+  - Sustenet.Utils.Security.AESManager.GenerateKey(System.String,System.Int32)
+  - Sustenet.Utils.Security.AESManager.GetKey(System.String,System.String,System.Xml.Serialization.XmlSerializer)
+  - Sustenet.Utils.Security.AESManager.KeyExists(System.String)
+  - Sustenet.Utils.Security.AESManager.LoadKey(System.String,System.Xml.Serialization.XmlSerializer)
+  - Sustenet.Utils.Security.AESManager.LoadKeys
+  - Sustenet.Utils.Security.AESManager.SaveAesKey(System.String,System.String)
+  langs:
+  - csharp
+  - vb
+  name: AESManager
+  nameWithType: AESManager
+  fullName: Sustenet.Utils.Security.AESManager
+  type: Class
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: AESManager
+    path: src/Utils/Security/AESManager.cs
+    startLine: 25
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  syntax:
+    content: public static class AESManager
+    content.vb: Public Module AESManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: Sustenet.Utils.Security.AESManager.GenerateKey(System.String,System.Int32)
+  commentId: M:Sustenet.Utils.Security.AESManager.GenerateKey(System.String,System.Int32)
+  id: GenerateKey(System.String,System.Int32)
+  parent: Sustenet.Utils.Security.AESManager
+  langs:
+  - csharp
+  - vb
+  name: GenerateKey(String, Int32)
+  nameWithType: AESManager.GenerateKey(String, Int32)
+  fullName: Sustenet.Utils.Security.AESManager.GenerateKey(System.String, System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: GenerateKey
+    path: src/Utils/Security/AESManager.cs
+    startLine: 76
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  summary: "\nGenerates an AES key.\n"
+  example: []
+  syntax:
+    content: public static void GenerateKey(string keyName, int bit = 128)
+    parameters:
+    - id: keyName
+      type: System.String
+      description: The name to save the key as.
+    - id: bit
+      type: System.Int32
+      description: The bit encryption.
+    content.vb: Public Shared Sub GenerateKey(keyName As String, bit As Integer = 128)
+  overload: Sustenet.Utils.Security.AESManager.GenerateKey*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Security.AESManager.SaveAesKey(System.String,System.String)
+  commentId: M:Sustenet.Utils.Security.AESManager.SaveAesKey(System.String,System.String)
+  id: SaveAesKey(System.String,System.String)
+  parent: Sustenet.Utils.Security.AESManager
+  langs:
+  - csharp
+  - vb
+  name: SaveAesKey(String, String)
+  nameWithType: AESManager.SaveAesKey(String, String)
+  fullName: Sustenet.Utils.Security.AESManager.SaveAesKey(System.String, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: SaveAesKey
+    path: src/Utils/Security/AESManager.cs
+    startLine: 96
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  summary: "\nSaves an AES key.\n"
+  example: []
+  syntax:
+    content: public static void SaveAesKey(string keyName, string aesKey)
+    parameters:
+    - id: keyName
+      type: System.String
+      description: The name of the key.
+    - id: aesKey
+      type: System.String
+      description: The AES key in Base64 format.
+    content.vb: Public Shared Sub SaveAesKey(keyName As String, aesKey As String)
+  overload: Sustenet.Utils.Security.AESManager.SaveAesKey*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Security.AESManager.LoadKeys
+  commentId: M:Sustenet.Utils.Security.AESManager.LoadKeys
+  id: LoadKeys
+  parent: Sustenet.Utils.Security.AESManager
+  langs:
+  - csharp
+  - vb
+  name: LoadKeys()
+  nameWithType: AESManager.LoadKeys()
+  fullName: Sustenet.Utils.Security.AESManager.LoadKeys()
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: LoadKeys
+    path: src/Utils/Security/AESManager.cs
+    startLine: 110
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  summary: "\nLoads all AES keys in ./cfg/keys/aes\n"
+  example: []
+  syntax:
+    content: public static void LoadKeys()
+    content.vb: Public Shared Sub LoadKeys
+  overload: Sustenet.Utils.Security.AESManager.LoadKeys*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Security.AESManager.LoadKey(System.String,System.Xml.Serialization.XmlSerializer)
+  commentId: M:Sustenet.Utils.Security.AESManager.LoadKey(System.String,System.Xml.Serialization.XmlSerializer)
+  id: LoadKey(System.String,System.Xml.Serialization.XmlSerializer)
+  parent: Sustenet.Utils.Security.AESManager
+  langs:
+  - csharp
+  - vb
+  name: LoadKey(String, XmlSerializer)
+  nameWithType: AESManager.LoadKey(String, XmlSerializer)
+  fullName: Sustenet.Utils.Security.AESManager.LoadKey(System.String, System.Xml.Serialization.XmlSerializer)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: LoadKey
+    path: src/Utils/Security/AESManager.cs
+    startLine: 138
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  summary: "\nLoads a single AES key.\n"
+  example: []
+  syntax:
+    content: public static void LoadKey(string keyName, XmlSerializer serializer = null)
+    parameters:
+    - id: keyName
+      type: System.String
+      description: The name of the key to load.
+    - id: serializer
+      type: System.Xml.Serialization.XmlSerializer
+      description: The serializer to use, if any.
+    content.vb: Public Shared Sub LoadKey(keyName As String, serializer As XmlSerializer = Nothing)
+  overload: Sustenet.Utils.Security.AESManager.LoadKey*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Security.AESManager.AddKey(System.String,System.Byte[])
+  commentId: M:Sustenet.Utils.Security.AESManager.AddKey(System.String,System.Byte[])
+  id: AddKey(System.String,System.Byte[])
+  parent: Sustenet.Utils.Security.AESManager
+  langs:
+  - csharp
+  - vb
+  name: AddKey(String, Byte[])
+  nameWithType: AESManager.AddKey(String, Byte[])
+  fullName: Sustenet.Utils.Security.AESManager.AddKey(System.String, System.Byte[])
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: AddKey
+    path: src/Utils/Security/AESManager.cs
+    startLine: 158
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  summary: "\nAdds a key to the AES dictionary.\n"
+  example: []
+  syntax:
+    content: public static void AddKey(string name, byte[] key)
+    parameters:
+    - id: name
+      type: System.String
+      description: The name of the key to add.
+    - id: key
+      type: System.Byte[]
+      description: The key to add.
+    content.vb: Public Shared Sub AddKey(name As String, key As Byte())
+  overload: Sustenet.Utils.Security.AESManager.AddKey*
+  nameWithType.vb: AESManager.AddKey(String, Byte())
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: Sustenet.Utils.Security.AESManager.AddKey(System.String, System.Byte())
+  name.vb: AddKey(String, Byte())
+- uid: Sustenet.Utils.Security.AESManager.GetKey(System.String,System.String,System.Xml.Serialization.XmlSerializer)
+  commentId: M:Sustenet.Utils.Security.AESManager.GetKey(System.String,System.String,System.Xml.Serialization.XmlSerializer)
+  id: GetKey(System.String,System.String,System.Xml.Serialization.XmlSerializer)
+  parent: Sustenet.Utils.Security.AESManager
+  langs:
+  - csharp
+  - vb
+  name: GetKey(String, String, XmlSerializer)
+  nameWithType: AESManager.GetKey(String, String, XmlSerializer)
+  fullName: Sustenet.Utils.Security.AESManager.GetKey(System.String, System.String, System.Xml.Serialization.XmlSerializer)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: GetKey
+    path: src/Utils/Security/AESManager.cs
+    startLine: 178
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  summary: "\nLoads a AES key from a file.\n"
+  example: []
+  syntax:
+    content: public static AESManager.KeyData GetKey(string directory, string keyName, XmlSerializer serializer = null)
+    parameters:
+    - id: directory
+      type: System.String
+      description: The directory containing the file.
+    - id: keyName
+      type: System.String
+      description: The file name without the suffix.
+    - id: serializer
+      type: System.Xml.Serialization.XmlSerializer
+      description: An optional serializer to use.
+    return:
+      type: Sustenet.Utils.Security.AESManager.KeyData
+      description: The formatted name of the key without any suffixes and the key itself.
+    content.vb: Public Shared Function GetKey(directory As String, keyName As String, serializer As XmlSerializer = Nothing) As AESManager.KeyData
+  overload: Sustenet.Utils.Security.AESManager.GetKey*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Security.AESManager.KeyExists(System.String)
+  commentId: M:Sustenet.Utils.Security.AESManager.KeyExists(System.String)
+  id: KeyExists(System.String)
+  parent: Sustenet.Utils.Security.AESManager
+  langs:
+  - csharp
+  - vb
+  name: KeyExists(String)
+  nameWithType: AESManager.KeyExists(String)
+  fullName: Sustenet.Utils.Security.AESManager.KeyExists(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: KeyExists
+    path: src/Utils/Security/AESManager.cs
+    startLine: 211
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  summary: "\nChecks if an AES key exists in the AES folder.\n"
+  example: []
+  syntax:
+    content: public static bool KeyExists(string keyName)
+    parameters:
+    - id: keyName
+      type: System.String
+      description: The name of the AES key to check for.
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function KeyExists(keyName As String) As Boolean
+  overload: Sustenet.Utils.Security.AESManager.KeyExists*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Security.AESManager.Encrypt(System.String,System.String)
+  commentId: M:Sustenet.Utils.Security.AESManager.Encrypt(System.String,System.String)
+  id: Encrypt(System.String,System.String)
+  parent: Sustenet.Utils.Security.AESManager
+  langs:
+  - csharp
+  - vb
+  name: Encrypt(String, String)
+  nameWithType: AESManager.Encrypt(String, String)
+  fullName: Sustenet.Utils.Security.AESManager.Encrypt(System.String, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Encrypt
+    path: src/Utils/Security/AESManager.cs
+    startLine: 222
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  summary: "\nEncrypts a string of data and converts it to Base64.\n"
+  example: []
+  syntax:
+    content: public static AESManager.EncryptedData Encrypt(string keyName, string data)
+    parameters:
+    - id: keyName
+      type: System.String
+      description: The AES key to use to encrypt data.
+    - id: data
+      type: System.String
+      description: The string to encrypt.
+    return:
+      type: Sustenet.Utils.Security.AESManager.EncryptedData
+      description: An encrypted base64 string with the IV attached.
+    content.vb: Public Shared Function Encrypt(keyName As String, data As String) As AESManager.EncryptedData
+  overload: Sustenet.Utils.Security.AESManager.Encrypt*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Security.AESManager.Decrypt(System.String,System.Byte[],System.Byte[])
+  commentId: M:Sustenet.Utils.Security.AESManager.Decrypt(System.String,System.Byte[],System.Byte[])
+  id: Decrypt(System.String,System.Byte[],System.Byte[])
+  parent: Sustenet.Utils.Security.AESManager
+  langs:
+  - csharp
+  - vb
+  name: Decrypt(String, Byte[], Byte[])
+  nameWithType: AESManager.Decrypt(String, Byte[], Byte[])
+  fullName: Sustenet.Utils.Security.AESManager.Decrypt(System.String, System.Byte[], System.Byte[])
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Security/AESManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Decrypt
+    path: src/Utils/Security/AESManager.cs
+    startLine: 264
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils.Security
+  summary: "\nDecrypts an encrypted string with the provided AES key.\n"
+  example: []
+  syntax:
+    content: public static string Decrypt(string keyName, byte[] data, byte[] iv)
+    parameters:
+    - id: keyName
+      type: System.String
+      description: The AES key to decrypt with.
+    - id: data
+      type: System.Byte[]
+      description: The byte array data to decrypt.
+    - id: iv
+      type: System.Byte[]
+    return:
+      type: System.String
+      description: A decrypted string.
+    content.vb: Public Shared Function Decrypt(keyName As String, data As Byte(), iv As Byte()) As String
+  overload: Sustenet.Utils.Security.AESManager.Decrypt*
+  nameWithType.vb: AESManager.Decrypt(String, Byte(), Byte())
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: Sustenet.Utils.Security.AESManager.Decrypt(System.String, System.Byte(), System.Byte())
+  name.vb: Decrypt(String, Byte(), Byte())
+references:
+- uid: Sustenet.Utils.Security
+  commentId: N:Sustenet.Utils.Security
+  name: Sustenet.Utils.Security
+  nameWithType: Sustenet.Utils.Security
+  fullName: Sustenet.Utils.Security
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sustenet.Utils.Security.AESManager.GenerateKey*
+  commentId: Overload:Sustenet.Utils.Security.AESManager.GenerateKey
+  name: GenerateKey
+  nameWithType: AESManager.GenerateKey
+  fullName: Sustenet.Utils.Security.AESManager.GenerateKey
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Sustenet.Utils.Security.AESManager.SaveAesKey*
+  commentId: Overload:Sustenet.Utils.Security.AESManager.SaveAesKey
+  name: SaveAesKey
+  nameWithType: AESManager.SaveAesKey
+  fullName: Sustenet.Utils.Security.AESManager.SaveAesKey
+- uid: Sustenet.Utils.Security.AESManager.LoadKeys*
+  commentId: Overload:Sustenet.Utils.Security.AESManager.LoadKeys
+  name: LoadKeys
+  nameWithType: AESManager.LoadKeys
+  fullName: Sustenet.Utils.Security.AESManager.LoadKeys
+- uid: Sustenet.Utils.Security.AESManager.LoadKey*
+  commentId: Overload:Sustenet.Utils.Security.AESManager.LoadKey
+  name: LoadKey
+  nameWithType: AESManager.LoadKey
+  fullName: Sustenet.Utils.Security.AESManager.LoadKey
+- uid: System.Xml.Serialization.XmlSerializer
+  commentId: T:System.Xml.Serialization.XmlSerializer
+  parent: System.Xml.Serialization
+  isExternal: true
+  name: XmlSerializer
+  nameWithType: XmlSerializer
+  fullName: System.Xml.Serialization.XmlSerializer
+- uid: System.Xml.Serialization
+  commentId: N:System.Xml.Serialization
+  isExternal: true
+  name: System.Xml.Serialization
+  nameWithType: System.Xml.Serialization
+  fullName: System.Xml.Serialization
+- uid: Sustenet.Utils.Security.AESManager.AddKey*
+  commentId: Overload:Sustenet.Utils.Security.AESManager.AddKey
+  name: AddKey
+  nameWithType: AESManager.AddKey
+  fullName: Sustenet.Utils.Security.AESManager.AddKey
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: Sustenet.Utils.Security.AESManager.GetKey*
+  commentId: Overload:Sustenet.Utils.Security.AESManager.GetKey
+  name: GetKey
+  nameWithType: AESManager.GetKey
+  fullName: Sustenet.Utils.Security.AESManager.GetKey
+- uid: Sustenet.Utils.Security.AESManager.KeyData
+  commentId: T:Sustenet.Utils.Security.AESManager.KeyData
+  parent: Sustenet.Utils.Security
+  name: AESManager.KeyData
+  nameWithType: AESManager.KeyData
+  fullName: Sustenet.Utils.Security.AESManager.KeyData
+- uid: Sustenet.Utils.Security.AESManager.KeyExists*
+  commentId: Overload:Sustenet.Utils.Security.AESManager.KeyExists
+  name: KeyExists
+  nameWithType: AESManager.KeyExists
+  fullName: Sustenet.Utils.Security.AESManager.KeyExists
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: Sustenet.Utils.Security.AESManager.Encrypt*
+  commentId: Overload:Sustenet.Utils.Security.AESManager.Encrypt
+  name: Encrypt
+  nameWithType: AESManager.Encrypt
+  fullName: Sustenet.Utils.Security.AESManager.Encrypt
+- uid: Sustenet.Utils.Security.AESManager.EncryptedData
+  commentId: T:Sustenet.Utils.Security.AESManager.EncryptedData
+  parent: Sustenet.Utils.Security
+  name: AESManager.EncryptedData
+  nameWithType: AESManager.EncryptedData
+  fullName: Sustenet.Utils.Security.AESManager.EncryptedData
+- uid: Sustenet.Utils.Security.AESManager.Decrypt*
+  commentId: Overload:Sustenet.Utils.Security.AESManager.Decrypt
+  name: Decrypt
+  nameWithType: AESManager.Decrypt
+  fullName: Sustenet.Utils.Security.AESManager.Decrypt

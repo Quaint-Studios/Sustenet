@@ -1,0 +1,69 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Transport.BaseServer.PacketHandler
+  commentId: T:Sustenet.Transport.BaseServer.PacketHandler
+  id: BaseServer.PacketHandler
+  parent: Sustenet.Transport
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: BaseServer.PacketHandler
+  nameWithType: BaseServer.PacketHandler
+  fullName: Sustenet.Transport.BaseServer.PacketHandler
+  type: Delegate
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: PacketHandler
+    path: src/Transport/BaseServer.cs
+    startLine: 51
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: protected delegate void PacketHandler(int fromClient, Packet packet);
+    parameters:
+    - id: fromClient
+      type: System.Int32
+    - id: packet
+      type: Sustenet.Network.Packet
+    content.vb: Protected Delegate Sub PacketHandler(fromClient As Integer, packet As Packet)
+  modifiers.csharp:
+  - protected
+  - delegate
+  modifiers.vb:
+  - Protected
+  - Delegate
+references:
+- uid: Sustenet.Transport
+  commentId: N:Sustenet.Transport
+  name: Sustenet.Transport
+  nameWithType: Sustenet.Transport
+  fullName: Sustenet.Transport
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: Sustenet.Network.Packet
+  commentId: T:Sustenet.Network.Packet
+  parent: Sustenet.Network
+  name: Packet
+  nameWithType: Packet
+  fullName: Sustenet.Network.Packet
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sustenet.Network
+  commentId: N:Sustenet.Network
+  name: Sustenet.Network
+  nameWithType: Sustenet.Network
+  fullName: Sustenet.Network

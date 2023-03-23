@@ -1,0 +1,513 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Transport.ThreadManager
+  commentId: T:Sustenet.Transport.ThreadManager
+  id: ThreadManager
+  parent: Sustenet.Transport
+  children:
+  - Sustenet.Transport.ThreadManager.#ctor
+  - Sustenet.Transport.ThreadManager.ExecuteOnMainThread(System.Action)
+  - Sustenet.Transport.ThreadManager.instance
+  - Sustenet.Transport.ThreadManager.UpdateMain
+  langs:
+  - csharp
+  - vb
+  name: ThreadManager
+  nameWithType: ThreadManager
+  fullName: Sustenet.Transport.ThreadManager
+  type: Class
+  source:
+    remote:
+      path: src/Transport/ThreadManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ThreadManager
+    path: src/Transport/ThreadManager.cs
+    startLine: 23
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public sealed class ThreadManager
+    content.vb: Public NotInheritable Class ThreadManager
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - sealed
+  - class
+  modifiers.vb:
+  - Public
+  - NotInheritable
+  - Class
+- uid: Sustenet.Transport.ThreadManager.instance
+  commentId: F:Sustenet.Transport.ThreadManager.instance
+  id: instance
+  parent: Sustenet.Transport.ThreadManager
+  langs:
+  - csharp
+  - vb
+  name: instance
+  nameWithType: ThreadManager.instance
+  fullName: Sustenet.Transport.ThreadManager.instance
+  type: Field
+  source:
+    remote:
+      path: src/Transport/ThreadManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: instance
+    path: src/Transport/ThreadManager.cs
+    startLine: 25
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public static readonly ThreadManager instance
+    return:
+      type: Sustenet.Transport.ThreadManager
+    content.vb: Public Shared ReadOnly instance As ThreadManager
+  modifiers.csharp:
+  - public
+  - static
+  - readonly
+  modifiers.vb:
+  - Public
+  - Shared
+  - ReadOnly
+- uid: Sustenet.Transport.ThreadManager.#ctor
+  commentId: M:Sustenet.Transport.ThreadManager.#ctor
+  id: '#ctor'
+  parent: Sustenet.Transport.ThreadManager
+  langs:
+  - csharp
+  - vb
+  name: ThreadManager()
+  nameWithType: ThreadManager.ThreadManager()
+  fullName: Sustenet.Transport.ThreadManager.ThreadManager()
+  type: Constructor
+  source:
+    remote:
+      path: src/Transport/ThreadManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: .ctor
+    path: src/Transport/ThreadManager.cs
+    startLine: 29
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public ThreadManager()
+    content.vb: Public Sub New
+  overload: Sustenet.Transport.ThreadManager.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Transport.ThreadManager.ExecuteOnMainThread(System.Action)
+  commentId: M:Sustenet.Transport.ThreadManager.ExecuteOnMainThread(System.Action)
+  id: ExecuteOnMainThread(System.Action)
+  parent: Sustenet.Transport.ThreadManager
+  langs:
+  - csharp
+  - vb
+  name: ExecuteOnMainThread(Action)
+  nameWithType: ThreadManager.ExecuteOnMainThread(Action)
+  fullName: Sustenet.Transport.ThreadManager.ExecuteOnMainThread(System.Action)
+  type: Method
+  source:
+    remote:
+      path: src/Transport/ThreadManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ExecuteOnMainThread
+    path: src/Transport/ThreadManager.cs
+    startLine: 39
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  summary: "\nSets an action to be executed on the main thread.\n"
+  example: []
+  syntax:
+    content: public static void ExecuteOnMainThread(Action action)
+    parameters:
+    - id: action
+      type: System.Action
+      description: The action to be executed on the main thread.
+    content.vb: Public Shared Sub ExecuteOnMainThread(action As Action)
+  overload: Sustenet.Transport.ThreadManager.ExecuteOnMainThread*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Transport.ThreadManager.UpdateMain
+  commentId: M:Sustenet.Transport.ThreadManager.UpdateMain
+  id: UpdateMain
+  parent: Sustenet.Transport.ThreadManager
+  langs:
+  - csharp
+  - vb
+  name: UpdateMain()
+  nameWithType: ThreadManager.UpdateMain()
+  fullName: Sustenet.Transport.ThreadManager.UpdateMain()
+  type: Method
+  source:
+    remote:
+      path: src/Transport/ThreadManager.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: UpdateMain
+    path: src/Transport/ThreadManager.cs
+    startLine: 57
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  summary: "\nExecute all code meant to run on the main thread. Should only be called from the main thread.\n"
+  example: []
+  syntax:
+    content: public static void UpdateMain()
+    content.vb: Public Shared Sub UpdateMain
+  overload: Sustenet.Transport.ThreadManager.UpdateMain*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: Sustenet.Transport
+  commentId: N:Sustenet.Transport
+  name: Sustenet.Transport
+  nameWithType: Sustenet.Transport
+  fullName: Sustenet.Transport
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sustenet.Transport.ThreadManager
+  commentId: T:Sustenet.Transport.ThreadManager
+  parent: Sustenet.Transport
+  name: ThreadManager
+  nameWithType: ThreadManager
+  fullName: Sustenet.Transport.ThreadManager
+- uid: Sustenet.Transport.ThreadManager.#ctor*
+  commentId: Overload:Sustenet.Transport.ThreadManager.#ctor
+  name: ThreadManager
+  nameWithType: ThreadManager.ThreadManager
+  fullName: Sustenet.Transport.ThreadManager.ThreadManager
+- uid: Sustenet.Transport.ThreadManager.ExecuteOnMainThread*
+  commentId: Overload:Sustenet.Transport.ThreadManager.ExecuteOnMainThread
+  name: ExecuteOnMainThread
+  nameWithType: ThreadManager.ExecuteOnMainThread
+  fullName: Sustenet.Transport.ThreadManager.ExecuteOnMainThread
+- uid: System.Action
+  commentId: T:System.Action
+  parent: System
+  isExternal: true
+  name: Action
+  nameWithType: Action
+  fullName: System.Action
+- uid: Sustenet.Transport.ThreadManager.UpdateMain*
+  commentId: Overload:Sustenet.Transport.ThreadManager.UpdateMain
+  name: UpdateMain
+  nameWithType: ThreadManager.UpdateMain
+  fullName: Sustenet.Transport.ThreadManager.UpdateMain

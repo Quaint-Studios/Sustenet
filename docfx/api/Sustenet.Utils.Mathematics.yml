@@ -1,0 +1,22 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Utils.Mathematics
+  commentId: N:Sustenet.Utils.Mathematics
+  id: Sustenet.Utils.Mathematics
+  children:
+  - Sustenet.Utils.Mathematics.UMath
+  langs:
+  - csharp
+  - vb
+  name: Sustenet.Utils.Mathematics
+  nameWithType: Sustenet.Utils.Mathematics
+  fullName: Sustenet.Utils.Mathematics
+  type: Namespace
+  assemblies:
+  - Sustenet
+references:
+- uid: Sustenet.Utils.Mathematics.UMath
+  commentId: T:Sustenet.Utils.Mathematics.UMath
+  name: UMath
+  nameWithType: UMath
+  fullName: Sustenet.Utils.Mathematics.UMath

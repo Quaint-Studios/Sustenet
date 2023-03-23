@@ -1,0 +1,3382 @@
+### YamlMime:ManagedReference
+items:
+- uid: NDesk.Options.OptionValueCollection
+  commentId: T:NDesk.Options.OptionValueCollection
+  id: OptionValueCollection
+  parent: NDesk.Options
+  children:
+  - NDesk.Options.OptionValueCollection.Add(System.String)
+  - NDesk.Options.OptionValueCollection.Clear
+  - NDesk.Options.OptionValueCollection.Contains(System.String)
+  - NDesk.Options.OptionValueCollection.CopyTo(System.String[],System.Int32)
+  - NDesk.Options.OptionValueCollection.Count
+  - NDesk.Options.OptionValueCollection.GetEnumerator
+  - NDesk.Options.OptionValueCollection.IndexOf(System.String)
+  - NDesk.Options.OptionValueCollection.Insert(System.Int32,System.String)
+  - NDesk.Options.OptionValueCollection.IsReadOnly
+  - NDesk.Options.OptionValueCollection.Item(System.Int32)
+  - NDesk.Options.OptionValueCollection.Remove(System.String)
+  - NDesk.Options.OptionValueCollection.RemoveAt(System.Int32)
+  - NDesk.Options.OptionValueCollection.System#Collections#ICollection#CopyTo(System.Array,System.Int32)
+  - NDesk.Options.OptionValueCollection.System#Collections#ICollection#IsSynchronized
+  - NDesk.Options.OptionValueCollection.System#Collections#ICollection#SyncRoot
+  - NDesk.Options.OptionValueCollection.System#Collections#IEnumerable#GetEnumerator
+  - NDesk.Options.OptionValueCollection.System#Collections#IList#Add(System.Object)
+  - NDesk.Options.OptionValueCollection.System#Collections#IList#Contains(System.Object)
+  - NDesk.Options.OptionValueCollection.System#Collections#IList#IndexOf(System.Object)
+  - NDesk.Options.OptionValueCollection.System#Collections#IList#Insert(System.Int32,System.Object)
+  - NDesk.Options.OptionValueCollection.System#Collections#IList#IsFixedSize
+  - NDesk.Options.OptionValueCollection.System#Collections#IList#Item(System.Int32)
+  - NDesk.Options.OptionValueCollection.System#Collections#IList#Remove(System.Object)
+  - NDesk.Options.OptionValueCollection.System#Collections#IList#RemoveAt(System.Int32)
+  - NDesk.Options.OptionValueCollection.ToArray
+  - NDesk.Options.OptionValueCollection.ToList
+  - NDesk.Options.OptionValueCollection.ToString
+  langs:
+  - csharp
+  - vb
+  name: OptionValueCollection
+  nameWithType: OptionValueCollection
+  fullName: NDesk.Options.OptionValueCollection
+  type: Class
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: OptionValueCollection
+    path: libs/NDesk/Options.cs
+    startLine: 147
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: 'public class OptionValueCollection : IList, ICollection, IList<string>, ICollection<string>, IEnumerable<string>, IEnumerable'
+    content.vb: >-
+      Public Class OptionValueCollection
+          Implements IList, ICollection, IList(Of String), ICollection(Of String), IEnumerable(Of String), IEnumerable
+  inheritance:
+  - System.Object
+  implements:
+  - System.Collections.IList
+  - System.Collections.ICollection
+  - System.Collections.Generic.IList{System.String}
+  - System.Collections.Generic.ICollection{System.String}
+  - System.Collections.Generic.IEnumerable{System.String}
+  - System.Collections.IEnumerable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: NDesk.Options.OptionValueCollection.System#Collections#ICollection#CopyTo(System.Array,System.Int32)
+  commentId: M:NDesk.Options.OptionValueCollection.System#Collections#ICollection#CopyTo(System.Array,System.Int32)
+  id: System#Collections#ICollection#CopyTo(System.Array,System.Int32)
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: ICollection.CopyTo(Array, Int32)
+  nameWithType: OptionValueCollection.ICollection.CopyTo(Array, Int32)
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.ICollection.CopyTo(System.Array, System.Int32)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.ICollection.CopyTo
+    path: libs/NDesk/Options.cs
+    startLine: 158
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: void ICollection.CopyTo(Array array, int index)
+    parameters:
+    - id: array
+      type: System.Array
+    - id: index
+      type: System.Int32
+    content.vb: Sub System.Collections.ICollection.CopyTo(array As Array, index As Integer) Implements ICollection.CopyTo
+  overload: NDesk.Options.OptionValueCollection.System#Collections#ICollection#CopyTo*
+  implements:
+  - System.Collections.ICollection.CopyTo(System.Array,System.Int32)
+  nameWithType.vb: OptionValueCollection.System.Collections.ICollection.CopyTo(Array, Int32)
+  name.vb: System.Collections.ICollection.CopyTo(Array, Int32)
+- uid: NDesk.Options.OptionValueCollection.System#Collections#ICollection#IsSynchronized
+  commentId: P:NDesk.Options.OptionValueCollection.System#Collections#ICollection#IsSynchronized
+  id: System#Collections#ICollection#IsSynchronized
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: ICollection.IsSynchronized
+  nameWithType: OptionValueCollection.ICollection.IsSynchronized
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.ICollection.IsSynchronized
+  type: Property
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.ICollection.IsSynchronized
+    path: libs/NDesk/Options.cs
+    startLine: 159
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: bool ICollection.IsSynchronized { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly WriteOnly Property System.Collections.ICollection.IsSynchronized As Boolean Implements ICollection.IsSynchronized
+  overload: NDesk.Options.OptionValueCollection.System#Collections#ICollection#IsSynchronized*
+  implements:
+  - System.Collections.ICollection.IsSynchronized
+  nameWithType.vb: OptionValueCollection.System.Collections.ICollection.IsSynchronized
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+  name.vb: System.Collections.ICollection.IsSynchronized
+- uid: NDesk.Options.OptionValueCollection.System#Collections#ICollection#SyncRoot
+  commentId: P:NDesk.Options.OptionValueCollection.System#Collections#ICollection#SyncRoot
+  id: System#Collections#ICollection#SyncRoot
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: ICollection.SyncRoot
+  nameWithType: OptionValueCollection.ICollection.SyncRoot
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.ICollection.SyncRoot
+  type: Property
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.ICollection.SyncRoot
+    path: libs/NDesk/Options.cs
+    startLine: 160
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: object ICollection.SyncRoot { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: ReadOnly WriteOnly Property System.Collections.ICollection.SyncRoot As Object Implements ICollection.SyncRoot
+  overload: NDesk.Options.OptionValueCollection.System#Collections#ICollection#SyncRoot*
+  implements:
+  - System.Collections.ICollection.SyncRoot
+  nameWithType.vb: OptionValueCollection.System.Collections.ICollection.SyncRoot
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+  name.vb: System.Collections.ICollection.SyncRoot
+- uid: NDesk.Options.OptionValueCollection.Add(System.String)
+  commentId: M:NDesk.Options.OptionValueCollection.Add(System.String)
+  id: Add(System.String)
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: Add(String)
+  nameWithType: OptionValueCollection.Add(String)
+  fullName: NDesk.Options.OptionValueCollection.Add(System.String)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Add
+    path: libs/NDesk/Options.cs
+    startLine: 164
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public void Add(string item)
+    parameters:
+    - id: item
+      type: System.String
+    content.vb: Public Sub Add(item As String)
+  overload: NDesk.Options.OptionValueCollection.Add*
+  implements:
+  - System.Collections.Generic.ICollection{System.String}.Add(System.String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.Clear
+  commentId: M:NDesk.Options.OptionValueCollection.Clear
+  id: Clear
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: OptionValueCollection.Clear()
+  fullName: NDesk.Options.OptionValueCollection.Clear()
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Clear
+    path: libs/NDesk/Options.cs
+    startLine: 165
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear
+  overload: NDesk.Options.OptionValueCollection.Clear*
+  implements:
+  - System.Collections.IList.Clear
+  - System.Collections.Generic.ICollection{System.String}.Clear
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.Contains(System.String)
+  commentId: M:NDesk.Options.OptionValueCollection.Contains(System.String)
+  id: Contains(System.String)
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: Contains(String)
+  nameWithType: OptionValueCollection.Contains(String)
+  fullName: NDesk.Options.OptionValueCollection.Contains(System.String)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Contains
+    path: libs/NDesk/Options.cs
+    startLine: 166
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public bool Contains(string item)
+    parameters:
+    - id: item
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function Contains(item As String) As Boolean
+  overload: NDesk.Options.OptionValueCollection.Contains*
+  implements:
+  - System.Collections.Generic.ICollection{System.String}.Contains(System.String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.CopyTo(System.String[],System.Int32)
+  commentId: M:NDesk.Options.OptionValueCollection.CopyTo(System.String[],System.Int32)
+  id: CopyTo(System.String[],System.Int32)
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: CopyTo(String[], Int32)
+  nameWithType: OptionValueCollection.CopyTo(String[], Int32)
+  fullName: NDesk.Options.OptionValueCollection.CopyTo(System.String[], System.Int32)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: CopyTo
+    path: libs/NDesk/Options.cs
+    startLine: 167
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public void CopyTo(string[] array, int arrayIndex)
+    parameters:
+    - id: array
+      type: System.String[]
+    - id: arrayIndex
+      type: System.Int32
+    content.vb: Public Sub CopyTo(array As String(), arrayIndex As Integer)
+  overload: NDesk.Options.OptionValueCollection.CopyTo*
+  implements:
+  - System.Collections.Generic.ICollection{System.String}.CopyTo(System.String[],System.Int32)
+  nameWithType.vb: OptionValueCollection.CopyTo(String(), Int32)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: NDesk.Options.OptionValueCollection.CopyTo(System.String(), System.Int32)
+  name.vb: CopyTo(String(), Int32)
+- uid: NDesk.Options.OptionValueCollection.Remove(System.String)
+  commentId: M:NDesk.Options.OptionValueCollection.Remove(System.String)
+  id: Remove(System.String)
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: Remove(String)
+  nameWithType: OptionValueCollection.Remove(String)
+  fullName: NDesk.Options.OptionValueCollection.Remove(System.String)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Remove
+    path: libs/NDesk/Options.cs
+    startLine: 168
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public bool Remove(string item)
+    parameters:
+    - id: item
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function Remove(item As String) As Boolean
+  overload: NDesk.Options.OptionValueCollection.Remove*
+  implements:
+  - System.Collections.Generic.ICollection{System.String}.Remove(System.String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.Count
+  commentId: P:NDesk.Options.OptionValueCollection.Count
+  id: Count
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: OptionValueCollection.Count
+  fullName: NDesk.Options.OptionValueCollection.Count
+  type: Property
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Count
+    path: libs/NDesk/Options.cs
+    startLine: 169
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public int Count { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: NDesk.Options.OptionValueCollection.Count*
+  implements:
+  - System.Collections.ICollection.Count
+  - System.Collections.Generic.ICollection{System.String}.Count
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: NDesk.Options.OptionValueCollection.IsReadOnly
+  commentId: P:NDesk.Options.OptionValueCollection.IsReadOnly
+  id: IsReadOnly
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IsReadOnly
+  nameWithType: OptionValueCollection.IsReadOnly
+  fullName: NDesk.Options.OptionValueCollection.IsReadOnly
+  type: Property
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: IsReadOnly
+    path: libs/NDesk/Options.cs
+    startLine: 170
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public bool IsReadOnly { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsReadOnly As Boolean
+  overload: NDesk.Options.OptionValueCollection.IsReadOnly*
+  implements:
+  - System.Collections.IList.IsReadOnly
+  - System.Collections.Generic.ICollection{System.String}.IsReadOnly
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IEnumerable#GetEnumerator
+  commentId: M:NDesk.Options.OptionValueCollection.System#Collections#IEnumerable#GetEnumerator
+  id: System#Collections#IEnumerable#GetEnumerator
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IEnumerable.GetEnumerator()
+  nameWithType: OptionValueCollection.IEnumerable.GetEnumerator()
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IEnumerable.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.IEnumerable.GetEnumerator
+    path: libs/NDesk/Options.cs
+    startLine: 174
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: IEnumerator IEnumerable.GetEnumerator()
+    return:
+      type: System.Collections.IEnumerator
+    content.vb: Function System.Collections.IEnumerable.GetEnumerator As IEnumerator Implements IEnumerable.GetEnumerator
+  overload: NDesk.Options.OptionValueCollection.System#Collections#IEnumerable#GetEnumerator*
+  implements:
+  - System.Collections.IEnumerable.GetEnumerator
+  nameWithType.vb: OptionValueCollection.System.Collections.IEnumerable.GetEnumerator()
+  name.vb: System.Collections.IEnumerable.GetEnumerator()
+- uid: NDesk.Options.OptionValueCollection.GetEnumerator
+  commentId: M:NDesk.Options.OptionValueCollection.GetEnumerator
+  id: GetEnumerator
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: GetEnumerator()
+  nameWithType: OptionValueCollection.GetEnumerator()
+  fullName: NDesk.Options.OptionValueCollection.GetEnumerator()
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: GetEnumerator
+    path: libs/NDesk/Options.cs
+    startLine: 178
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public IEnumerator<string> GetEnumerator()
+    return:
+      type: System.Collections.Generic.IEnumerator{System.String}
+    content.vb: Public Function GetEnumerator As IEnumerator(Of String)
+  overload: NDesk.Options.OptionValueCollection.GetEnumerator*
+  implements:
+  - System.Collections.Generic.IEnumerable{System.String}.GetEnumerator
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Add(System.Object)
+  commentId: M:NDesk.Options.OptionValueCollection.System#Collections#IList#Add(System.Object)
+  id: System#Collections#IList#Add(System.Object)
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IList.Add(Object)
+  nameWithType: OptionValueCollection.IList.Add(Object)
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Add(System.Object)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.IList.Add
+    path: libs/NDesk/Options.cs
+    startLine: 182
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: int IList.Add(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Int32
+    content.vb: Function System.Collections.IList.Add(value As Object) As Integer Implements IList.Add
+  overload: NDesk.Options.OptionValueCollection.System#Collections#IList#Add*
+  implements:
+  - System.Collections.IList.Add(System.Object)
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Add(Object)
+  name.vb: System.Collections.IList.Add(Object)
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Contains(System.Object)
+  commentId: M:NDesk.Options.OptionValueCollection.System#Collections#IList#Contains(System.Object)
+  id: System#Collections#IList#Contains(System.Object)
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IList.Contains(Object)
+  nameWithType: OptionValueCollection.IList.Contains(Object)
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Contains(System.Object)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.IList.Contains
+    path: libs/NDesk/Options.cs
+    startLine: 183
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: bool IList.Contains(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Boolean
+    content.vb: Function System.Collections.IList.Contains(value As Object) As Boolean Implements IList.Contains
+  overload: NDesk.Options.OptionValueCollection.System#Collections#IList#Contains*
+  implements:
+  - System.Collections.IList.Contains(System.Object)
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Contains(Object)
+  name.vb: System.Collections.IList.Contains(Object)
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#IndexOf(System.Object)
+  commentId: M:NDesk.Options.OptionValueCollection.System#Collections#IList#IndexOf(System.Object)
+  id: System#Collections#IList#IndexOf(System.Object)
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IList.IndexOf(Object)
+  nameWithType: OptionValueCollection.IList.IndexOf(Object)
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.IndexOf(System.Object)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.IList.IndexOf
+    path: libs/NDesk/Options.cs
+    startLine: 184
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: int IList.IndexOf(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    return:
+      type: System.Int32
+    content.vb: Function System.Collections.IList.IndexOf(value As Object) As Integer Implements IList.IndexOf
+  overload: NDesk.Options.OptionValueCollection.System#Collections#IList#IndexOf*
+  implements:
+  - System.Collections.IList.IndexOf(System.Object)
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.IndexOf(Object)
+  name.vb: System.Collections.IList.IndexOf(Object)
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Insert(System.Int32,System.Object)
+  commentId: M:NDesk.Options.OptionValueCollection.System#Collections#IList#Insert(System.Int32,System.Object)
+  id: System#Collections#IList#Insert(System.Int32,System.Object)
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IList.Insert(Int32, Object)
+  nameWithType: OptionValueCollection.IList.Insert(Int32, Object)
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Insert(System.Int32, System.Object)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.IList.Insert
+    path: libs/NDesk/Options.cs
+    startLine: 185
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: void IList.Insert(int index, object value)
+    parameters:
+    - id: index
+      type: System.Int32
+    - id: value
+      type: System.Object
+    content.vb: Sub System.Collections.IList.Insert(index As Integer, value As Object) Implements IList.Insert
+  overload: NDesk.Options.OptionValueCollection.System#Collections#IList#Insert*
+  implements:
+  - System.Collections.IList.Insert(System.Int32,System.Object)
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Insert(Int32, Object)
+  name.vb: System.Collections.IList.Insert(Int32, Object)
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Remove(System.Object)
+  commentId: M:NDesk.Options.OptionValueCollection.System#Collections#IList#Remove(System.Object)
+  id: System#Collections#IList#Remove(System.Object)
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IList.Remove(Object)
+  nameWithType: OptionValueCollection.IList.Remove(Object)
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Remove(System.Object)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.IList.Remove
+    path: libs/NDesk/Options.cs
+    startLine: 186
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: void IList.Remove(object value)
+    parameters:
+    - id: value
+      type: System.Object
+    content.vb: Sub System.Collections.IList.Remove(value As Object) Implements IList.Remove
+  overload: NDesk.Options.OptionValueCollection.System#Collections#IList#Remove*
+  implements:
+  - System.Collections.IList.Remove(System.Object)
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Remove(Object)
+  name.vb: System.Collections.IList.Remove(Object)
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#RemoveAt(System.Int32)
+  commentId: M:NDesk.Options.OptionValueCollection.System#Collections#IList#RemoveAt(System.Int32)
+  id: System#Collections#IList#RemoveAt(System.Int32)
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IList.RemoveAt(Int32)
+  nameWithType: OptionValueCollection.IList.RemoveAt(Int32)
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.RemoveAt(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.IList.RemoveAt
+    path: libs/NDesk/Options.cs
+    startLine: 187
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: void IList.RemoveAt(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    content.vb: Sub System.Collections.IList.RemoveAt(index As Integer) Implements IList.RemoveAt
+  overload: NDesk.Options.OptionValueCollection.System#Collections#IList#RemoveAt*
+  implements:
+  - System.Collections.IList.RemoveAt(System.Int32)
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.RemoveAt(Int32)
+  name.vb: System.Collections.IList.RemoveAt(Int32)
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#IsFixedSize
+  commentId: P:NDesk.Options.OptionValueCollection.System#Collections#IList#IsFixedSize
+  id: System#Collections#IList#IsFixedSize
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IList.IsFixedSize
+  nameWithType: OptionValueCollection.IList.IsFixedSize
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.IsFixedSize
+  type: Property
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.IList.IsFixedSize
+    path: libs/NDesk/Options.cs
+    startLine: 188
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: bool IList.IsFixedSize { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly WriteOnly Property System.Collections.IList.IsFixedSize As Boolean Implements IList.IsFixedSize
+  overload: NDesk.Options.OptionValueCollection.System#Collections#IList#IsFixedSize*
+  implements:
+  - System.Collections.IList.IsFixedSize
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.IsFixedSize
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+  name.vb: System.Collections.IList.IsFixedSize
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Item(System.Int32)
+  commentId: P:NDesk.Options.OptionValueCollection.System#Collections#IList#Item(System.Int32)
+  id: System#Collections#IList#Item(System.Int32)
+  isEii: true
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IList.Item[Int32]
+  nameWithType: OptionValueCollection.IList.Item[Int32]
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Item[System.Int32]
+  type: Property
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: System.Collections.IList.this[]
+    path: libs/NDesk/Options.cs
+    startLine: 189
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: object IList.this[int index] { get; set; }
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.Object
+    content.vb: ReadOnly WriteOnly Property System.Collections.IList.Item(index As Integer) As Object Implements IList.this[]
+  overload: NDesk.Options.OptionValueCollection.System#Collections#IList#Item*
+  implements:
+  - System.Collections.IList.Item(System.Int32)
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Item(Int32)
+  modifiers.csharp:
+  - get
+  - set
+  fullName.vb: NDesk.Options.OptionValueCollection.System.Collections.IList.Item(System.Int32)
+  name.vb: System.Collections.IList.Item(Int32)
+- uid: NDesk.Options.OptionValueCollection.IndexOf(System.String)
+  commentId: M:NDesk.Options.OptionValueCollection.IndexOf(System.String)
+  id: IndexOf(System.String)
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: IndexOf(String)
+  nameWithType: OptionValueCollection.IndexOf(String)
+  fullName: NDesk.Options.OptionValueCollection.IndexOf(System.String)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: IndexOf
+    path: libs/NDesk/Options.cs
+    startLine: 193
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public int IndexOf(string item)
+    parameters:
+    - id: item
+      type: System.String
+    return:
+      type: System.Int32
+    content.vb: Public Function IndexOf(item As String) As Integer
+  overload: NDesk.Options.OptionValueCollection.IndexOf*
+  implements:
+  - System.Collections.Generic.IList{System.String}.IndexOf(System.String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.Insert(System.Int32,System.String)
+  commentId: M:NDesk.Options.OptionValueCollection.Insert(System.Int32,System.String)
+  id: Insert(System.Int32,System.String)
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: Insert(Int32, String)
+  nameWithType: OptionValueCollection.Insert(Int32, String)
+  fullName: NDesk.Options.OptionValueCollection.Insert(System.Int32, System.String)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Insert
+    path: libs/NDesk/Options.cs
+    startLine: 194
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public void Insert(int index, string item)
+    parameters:
+    - id: index
+      type: System.Int32
+    - id: item
+      type: System.String
+    content.vb: Public Sub Insert(index As Integer, item As String)
+  overload: NDesk.Options.OptionValueCollection.Insert*
+  implements:
+  - System.Collections.Generic.IList{System.String}.Insert(System.Int32,System.String)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.RemoveAt(System.Int32)
+  commentId: M:NDesk.Options.OptionValueCollection.RemoveAt(System.Int32)
+  id: RemoveAt(System.Int32)
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: RemoveAt(Int32)
+  nameWithType: OptionValueCollection.RemoveAt(Int32)
+  fullName: NDesk.Options.OptionValueCollection.RemoveAt(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: RemoveAt
+    path: libs/NDesk/Options.cs
+    startLine: 195
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public void RemoveAt(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    content.vb: Public Sub RemoveAt(index As Integer)
+  overload: NDesk.Options.OptionValueCollection.RemoveAt*
+  implements:
+  - System.Collections.Generic.IList{System.String}.RemoveAt(System.Int32)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.Item(System.Int32)
+  commentId: P:NDesk.Options.OptionValueCollection.Item(System.Int32)
+  id: Item(System.Int32)
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: Item[Int32]
+  nameWithType: OptionValueCollection.Item[Int32]
+  fullName: NDesk.Options.OptionValueCollection.Item[System.Int32]
+  type: Property
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: this[]
+    path: libs/NDesk/Options.cs
+    startLine: 210
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public string this[int index] { get; set; }
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Public Property Item(index As Integer) As String
+  overload: NDesk.Options.OptionValueCollection.Item*
+  implements:
+  - System.Collections.Generic.IList{System.String}.Item(System.Int32)
+  nameWithType.vb: OptionValueCollection.Item(Int32)
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+  fullName.vb: NDesk.Options.OptionValueCollection.Item(System.Int32)
+  name.vb: Item(Int32)
+- uid: NDesk.Options.OptionValueCollection.ToList
+  commentId: M:NDesk.Options.OptionValueCollection.ToList
+  id: ToList
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: ToList()
+  nameWithType: OptionValueCollection.ToList()
+  fullName: NDesk.Options.OptionValueCollection.ToList()
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ToList
+    path: libs/NDesk/Options.cs
+    startLine: 221
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public List<string> ToList()
+    return:
+      type: System.Collections.Generic.List{System.String}
+    content.vb: Public Function ToList As List(Of String)
+  overload: NDesk.Options.OptionValueCollection.ToList*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.ToArray
+  commentId: M:NDesk.Options.OptionValueCollection.ToArray
+  id: ToArray
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: ToArray()
+  nameWithType: OptionValueCollection.ToArray()
+  fullName: NDesk.Options.OptionValueCollection.ToArray()
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ToArray
+    path: libs/NDesk/Options.cs
+    startLine: 226
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public string[] ToArray()
+    return:
+      type: System.String[]
+    content.vb: Public Function ToArray As String()
+  overload: NDesk.Options.OptionValueCollection.ToArray*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: NDesk.Options.OptionValueCollection.ToString
+  commentId: M:NDesk.Options.OptionValueCollection.ToString
+  id: ToString
+  parent: NDesk.Options.OptionValueCollection
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: OptionValueCollection.ToString()
+  fullName: NDesk.Options.OptionValueCollection.ToString()
+  type: Method
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ToString
+    path: libs/NDesk/Options.cs
+    startLine: 231
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString As String
+  overridden: System.Object.ToString
+  overload: NDesk.Options.OptionValueCollection.ToString*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+references:
+- uid: NDesk.Options
+  commentId: N:NDesk.Options
+  name: NDesk.Options
+  nameWithType: NDesk.Options
+  fullName: NDesk.Options
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Collections.IList
+  commentId: T:System.Collections.IList
+  parent: System.Collections
+  isExternal: true
+  name: IList
+  nameWithType: IList
+  fullName: System.Collections.IList
+- uid: System.Collections.ICollection
+  commentId: T:System.Collections.ICollection
+  parent: System.Collections
+  isExternal: true
+  name: ICollection
+  nameWithType: ICollection
+  fullName: System.Collections.ICollection
+- uid: System.Collections.Generic.IList{System.String}
+  commentId: T:System.Collections.Generic.IList{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IList`1
+  name: IList<String>
+  nameWithType: IList<String>
+  fullName: System.Collections.Generic.IList<System.String>
+  nameWithType.vb: IList(Of String)
+  fullName.vb: System.Collections.Generic.IList(Of System.String)
+  name.vb: IList(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.ICollection{System.String}
+  commentId: T:System.Collections.Generic.ICollection{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.ICollection`1
+  name: ICollection<String>
+  nameWithType: ICollection<String>
+  fullName: System.Collections.Generic.ICollection<System.String>
+  nameWithType.vb: ICollection(Of String)
+  fullName.vb: System.Collections.Generic.ICollection(Of System.String)
+  name.vb: ICollection(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<String>
+  nameWithType: IEnumerable<String>
+  fullName: System.Collections.Generic.IEnumerable<System.String>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.IEnumerable
+  commentId: T:System.Collections.IEnumerable
+  parent: System.Collections
+  isExternal: true
+  name: IEnumerable
+  nameWithType: IEnumerable
+  fullName: System.Collections.IEnumerable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+- uid: System.Collections.Generic.IList`1
+  commentId: T:System.Collections.Generic.IList`1
+  isExternal: true
+  name: IList<T>
+  nameWithType: IList<T>
+  fullName: System.Collections.Generic.IList<T>
+  nameWithType.vb: IList(Of T)
+  fullName.vb: System.Collections.Generic.IList(Of T)
+  name.vb: IList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: System.Collections.Generic.ICollection`1
+  commentId: T:System.Collections.Generic.ICollection`1
+  isExternal: true
+  name: ICollection<T>
+  nameWithType: ICollection<T>
+  fullName: System.Collections.Generic.ICollection<T>
+  nameWithType.vb: ICollection(Of T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T)
+  name.vb: ICollection(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1
+    name: ICollection
+    nameWithType: ICollection
+    fullName: System.Collections.Generic.ICollection
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.System#Collections#ICollection#CopyTo*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#ICollection#CopyTo
+  name: ICollection.CopyTo
+  nameWithType: OptionValueCollection.ICollection.CopyTo
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.ICollection.CopyTo
+  nameWithType.vb: OptionValueCollection.System.Collections.ICollection.CopyTo
+  name.vb: System.Collections.ICollection.CopyTo
+- uid: System.Collections.ICollection.CopyTo(System.Array,System.Int32)
+  commentId: M:System.Collections.ICollection.CopyTo(System.Array,System.Int32)
+  parent: System.Collections.ICollection
+  isExternal: true
+  name: CopyTo(Array, Int32)
+  nameWithType: ICollection.CopyTo(Array, Int32)
+  fullName: System.Collections.ICollection.CopyTo(System.Array, System.Int32)
+  spec.csharp:
+  - uid: System.Collections.ICollection.CopyTo(System.Array,System.Int32)
+    name: CopyTo
+    nameWithType: ICollection.CopyTo
+    fullName: System.Collections.ICollection.CopyTo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Array
+    name: Array
+    nameWithType: Array
+    fullName: System.Array
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.ICollection.CopyTo(System.Array,System.Int32)
+    name: CopyTo
+    nameWithType: ICollection.CopyTo
+    fullName: System.Collections.ICollection.CopyTo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Array
+    name: Array
+    nameWithType: Array
+    fullName: System.Array
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Array
+  commentId: T:System.Array
+  parent: System
+  isExternal: true
+  name: Array
+  nameWithType: Array
+  fullName: System.Array
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: NDesk.Options.OptionValueCollection.System#Collections#ICollection#IsSynchronized*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#ICollection#IsSynchronized
+  name: ICollection.IsSynchronized
+  nameWithType: OptionValueCollection.ICollection.IsSynchronized
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.ICollection.IsSynchronized
+  nameWithType.vb: OptionValueCollection.System.Collections.ICollection.IsSynchronized
+  name.vb: System.Collections.ICollection.IsSynchronized
+- uid: System.Collections.ICollection.IsSynchronized
+  commentId: P:System.Collections.ICollection.IsSynchronized
+  parent: System.Collections.ICollection
+  isExternal: true
+  name: IsSynchronized
+  nameWithType: ICollection.IsSynchronized
+  fullName: System.Collections.ICollection.IsSynchronized
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: NDesk.Options.OptionValueCollection.System#Collections#ICollection#SyncRoot*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#ICollection#SyncRoot
+  name: ICollection.SyncRoot
+  nameWithType: OptionValueCollection.ICollection.SyncRoot
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.ICollection.SyncRoot
+  nameWithType.vb: OptionValueCollection.System.Collections.ICollection.SyncRoot
+  name.vb: System.Collections.ICollection.SyncRoot
+- uid: System.Collections.ICollection.SyncRoot
+  commentId: P:System.Collections.ICollection.SyncRoot
+  parent: System.Collections.ICollection
+  isExternal: true
+  name: SyncRoot
+  nameWithType: ICollection.SyncRoot
+  fullName: System.Collections.ICollection.SyncRoot
+- uid: NDesk.Options.OptionValueCollection.Add*
+  commentId: Overload:NDesk.Options.OptionValueCollection.Add
+  name: Add
+  nameWithType: OptionValueCollection.Add
+  fullName: NDesk.Options.OptionValueCollection.Add
+- uid: System.Collections.Generic.ICollection{System.String}.Add(System.String)
+  commentId: M:System.Collections.Generic.ICollection{System.String}.Add(System.String)
+  parent: System.Collections.Generic.ICollection{System.String}
+  definition: System.Collections.Generic.ICollection`1.Add(`0)
+  name: Add(String)
+  nameWithType: ICollection<String>.Add(String)
+  fullName: System.Collections.Generic.ICollection<System.String>.Add(System.String)
+  nameWithType.vb: ICollection(Of String).Add(String)
+  fullName.vb: System.Collections.Generic.ICollection(Of System.String).Add(System.String)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Add(`0)
+    name: Add
+    nameWithType: ICollection<String>.Add
+    fullName: System.Collections.Generic.ICollection<System.String>.Add
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Add(`0)
+    name: Add
+    nameWithType: ICollection(Of String).Add
+    fullName: System.Collections.Generic.ICollection(Of System.String).Add
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Collections.Generic.ICollection`1.Add(`0)
+  commentId: M:System.Collections.Generic.ICollection`1.Add(`0)
+  isExternal: true
+  name: Add(T)
+  nameWithType: ICollection<T>.Add(T)
+  fullName: System.Collections.Generic.ICollection<T>.Add(T)
+  nameWithType.vb: ICollection(Of T).Add(T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Add(T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Add(`0)
+    name: Add
+    nameWithType: ICollection<T>.Add
+    fullName: System.Collections.Generic.ICollection<T>.Add
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Add(`0)
+    name: Add
+    nameWithType: ICollection(Of T).Add
+    fullName: System.Collections.Generic.ICollection(Of T).Add
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.Clear*
+  commentId: Overload:NDesk.Options.OptionValueCollection.Clear
+  name: Clear
+  nameWithType: OptionValueCollection.Clear
+  fullName: NDesk.Options.OptionValueCollection.Clear
+- uid: System.Collections.IList.Clear
+  commentId: M:System.Collections.IList.Clear
+  parent: System.Collections.IList
+  isExternal: true
+  name: Clear()
+  nameWithType: IList.Clear()
+  fullName: System.Collections.IList.Clear()
+  spec.csharp:
+  - uid: System.Collections.IList.Clear
+    name: Clear
+    nameWithType: IList.Clear
+    fullName: System.Collections.IList.Clear
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IList.Clear
+    name: Clear
+    nameWithType: IList.Clear
+    fullName: System.Collections.IList.Clear
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.ICollection{System.String}.Clear
+  commentId: M:System.Collections.Generic.ICollection{System.String}.Clear
+  parent: System.Collections.Generic.ICollection{System.String}
+  definition: System.Collections.Generic.ICollection`1.Clear
+  name: Clear()
+  nameWithType: ICollection<String>.Clear()
+  fullName: System.Collections.Generic.ICollection<System.String>.Clear()
+  nameWithType.vb: ICollection(Of String).Clear()
+  fullName.vb: System.Collections.Generic.ICollection(Of System.String).Clear()
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Clear
+    name: Clear
+    nameWithType: ICollection<String>.Clear
+    fullName: System.Collections.Generic.ICollection<System.String>.Clear
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Clear
+    name: Clear
+    nameWithType: ICollection(Of String).Clear
+    fullName: System.Collections.Generic.ICollection(Of System.String).Clear
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.ICollection`1.Clear
+  commentId: M:System.Collections.Generic.ICollection`1.Clear
+  isExternal: true
+  name: Clear()
+  nameWithType: ICollection<T>.Clear()
+  fullName: System.Collections.Generic.ICollection<T>.Clear()
+  nameWithType.vb: ICollection(Of T).Clear()
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Clear()
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Clear
+    name: Clear
+    nameWithType: ICollection<T>.Clear
+    fullName: System.Collections.Generic.ICollection<T>.Clear
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Clear
+    name: Clear
+    nameWithType: ICollection(Of T).Clear
+    fullName: System.Collections.Generic.ICollection(Of T).Clear
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.Contains*
+  commentId: Overload:NDesk.Options.OptionValueCollection.Contains
+  name: Contains
+  nameWithType: OptionValueCollection.Contains
+  fullName: NDesk.Options.OptionValueCollection.Contains
+- uid: System.Collections.Generic.ICollection{System.String}.Contains(System.String)
+  commentId: M:System.Collections.Generic.ICollection{System.String}.Contains(System.String)
+  parent: System.Collections.Generic.ICollection{System.String}
+  definition: System.Collections.Generic.ICollection`1.Contains(`0)
+  name: Contains(String)
+  nameWithType: ICollection<String>.Contains(String)
+  fullName: System.Collections.Generic.ICollection<System.String>.Contains(System.String)
+  nameWithType.vb: ICollection(Of String).Contains(String)
+  fullName.vb: System.Collections.Generic.ICollection(Of System.String).Contains(System.String)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Contains(`0)
+    name: Contains
+    nameWithType: ICollection<String>.Contains
+    fullName: System.Collections.Generic.ICollection<System.String>.Contains
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Contains(`0)
+    name: Contains
+    nameWithType: ICollection(Of String).Contains
+    fullName: System.Collections.Generic.ICollection(Of System.String).Contains
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.ICollection`1.Contains(`0)
+  commentId: M:System.Collections.Generic.ICollection`1.Contains(`0)
+  isExternal: true
+  name: Contains(T)
+  nameWithType: ICollection<T>.Contains(T)
+  fullName: System.Collections.Generic.ICollection<T>.Contains(T)
+  nameWithType.vb: ICollection(Of T).Contains(T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Contains(T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Contains(`0)
+    name: Contains
+    nameWithType: ICollection<T>.Contains
+    fullName: System.Collections.Generic.ICollection<T>.Contains
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Contains(`0)
+    name: Contains
+    nameWithType: ICollection(Of T).Contains
+    fullName: System.Collections.Generic.ICollection(Of T).Contains
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.CopyTo*
+  commentId: Overload:NDesk.Options.OptionValueCollection.CopyTo
+  name: CopyTo
+  nameWithType: OptionValueCollection.CopyTo
+  fullName: NDesk.Options.OptionValueCollection.CopyTo
+- uid: System.Collections.Generic.ICollection{System.String}.CopyTo(System.String[],System.Int32)
+  commentId: M:System.Collections.Generic.ICollection{System.String}.CopyTo(System.String[],System.Int32)
+  parent: System.Collections.Generic.ICollection{System.String}
+  definition: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+  name: CopyTo(String[], Int32)
+  nameWithType: ICollection<String>.CopyTo(String[], Int32)
+  fullName: System.Collections.Generic.ICollection<System.String>.CopyTo(System.String[], System.Int32)
+  nameWithType.vb: ICollection(Of String).CopyTo(String(), Int32)
+  fullName.vb: System.Collections.Generic.ICollection(Of System.String).CopyTo(System.String(), System.Int32)
+  name.vb: CopyTo(String(), Int32)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+    name: CopyTo
+    nameWithType: ICollection<String>.CopyTo
+    fullName: System.Collections.Generic.ICollection<System.String>.CopyTo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+    name: CopyTo
+    nameWithType: ICollection(Of String).CopyTo
+    fullName: System.Collections.Generic.ICollection(Of System.String).CopyTo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.String[]
+  isExternal: true
+  name: String[]
+  nameWithType: String[]
+  fullName: System.String[]
+  nameWithType.vb: String()
+  fullName.vb: System.String()
+  name.vb: String()
+  spec.csharp:
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+  commentId: M:System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+  isExternal: true
+  name: CopyTo(T[], Int32)
+  nameWithType: ICollection<T>.CopyTo(T[], Int32)
+  fullName: System.Collections.Generic.ICollection<T>.CopyTo(T[], System.Int32)
+  nameWithType.vb: ICollection(Of T).CopyTo(T(), Int32)
+  fullName.vb: System.Collections.Generic.ICollection(Of T).CopyTo(T(), System.Int32)
+  name.vb: CopyTo(T(), Int32)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+    name: CopyTo
+    nameWithType: ICollection<T>.CopyTo
+    fullName: System.Collections.Generic.ICollection<T>.CopyTo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.CopyTo(`0[],System.Int32)
+    name: CopyTo
+    nameWithType: ICollection(Of T).CopyTo
+    fullName: System.Collections.Generic.ICollection(Of T).CopyTo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.Remove*
+  commentId: Overload:NDesk.Options.OptionValueCollection.Remove
+  name: Remove
+  nameWithType: OptionValueCollection.Remove
+  fullName: NDesk.Options.OptionValueCollection.Remove
+- uid: System.Collections.Generic.ICollection{System.String}.Remove(System.String)
+  commentId: M:System.Collections.Generic.ICollection{System.String}.Remove(System.String)
+  parent: System.Collections.Generic.ICollection{System.String}
+  definition: System.Collections.Generic.ICollection`1.Remove(`0)
+  name: Remove(String)
+  nameWithType: ICollection<String>.Remove(String)
+  fullName: System.Collections.Generic.ICollection<System.String>.Remove(System.String)
+  nameWithType.vb: ICollection(Of String).Remove(String)
+  fullName.vb: System.Collections.Generic.ICollection(Of System.String).Remove(System.String)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Remove(`0)
+    name: Remove
+    nameWithType: ICollection<String>.Remove
+    fullName: System.Collections.Generic.ICollection<System.String>.Remove
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Remove(`0)
+    name: Remove
+    nameWithType: ICollection(Of String).Remove
+    fullName: System.Collections.Generic.ICollection(Of System.String).Remove
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.ICollection`1.Remove(`0)
+  commentId: M:System.Collections.Generic.ICollection`1.Remove(`0)
+  isExternal: true
+  name: Remove(T)
+  nameWithType: ICollection<T>.Remove(T)
+  fullName: System.Collections.Generic.ICollection<T>.Remove(T)
+  nameWithType.vb: ICollection(Of T).Remove(T)
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Remove(T)
+  spec.csharp:
+  - uid: System.Collections.Generic.ICollection`1.Remove(`0)
+    name: Remove
+    nameWithType: ICollection<T>.Remove
+    fullName: System.Collections.Generic.ICollection<T>.Remove
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.ICollection`1.Remove(`0)
+    name: Remove
+    nameWithType: ICollection(Of T).Remove
+    fullName: System.Collections.Generic.ICollection(Of T).Remove
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.Count*
+  commentId: Overload:NDesk.Options.OptionValueCollection.Count
+  name: Count
+  nameWithType: OptionValueCollection.Count
+  fullName: NDesk.Options.OptionValueCollection.Count
+- uid: System.Collections.ICollection.Count
+  commentId: P:System.Collections.ICollection.Count
+  parent: System.Collections.ICollection
+  isExternal: true
+  name: Count
+  nameWithType: ICollection.Count
+  fullName: System.Collections.ICollection.Count
+- uid: System.Collections.Generic.ICollection{System.String}.Count
+  commentId: P:System.Collections.Generic.ICollection{System.String}.Count
+  parent: System.Collections.Generic.ICollection{System.String}
+  definition: System.Collections.Generic.ICollection`1.Count
+  name: Count
+  nameWithType: ICollection<String>.Count
+  fullName: System.Collections.Generic.ICollection<System.String>.Count
+  nameWithType.vb: ICollection(Of String).Count
+  fullName.vb: System.Collections.Generic.ICollection(Of System.String).Count
+- uid: System.Collections.Generic.ICollection`1.Count
+  commentId: P:System.Collections.Generic.ICollection`1.Count
+  isExternal: true
+  name: Count
+  nameWithType: ICollection<T>.Count
+  fullName: System.Collections.Generic.ICollection<T>.Count
+  nameWithType.vb: ICollection(Of T).Count
+  fullName.vb: System.Collections.Generic.ICollection(Of T).Count
+- uid: NDesk.Options.OptionValueCollection.IsReadOnly*
+  commentId: Overload:NDesk.Options.OptionValueCollection.IsReadOnly
+  name: IsReadOnly
+  nameWithType: OptionValueCollection.IsReadOnly
+  fullName: NDesk.Options.OptionValueCollection.IsReadOnly
+- uid: System.Collections.IList.IsReadOnly
+  commentId: P:System.Collections.IList.IsReadOnly
+  parent: System.Collections.IList
+  isExternal: true
+  name: IsReadOnly
+  nameWithType: IList.IsReadOnly
+  fullName: System.Collections.IList.IsReadOnly
+- uid: System.Collections.Generic.ICollection{System.String}.IsReadOnly
+  commentId: P:System.Collections.Generic.ICollection{System.String}.IsReadOnly
+  parent: System.Collections.Generic.ICollection{System.String}
+  definition: System.Collections.Generic.ICollection`1.IsReadOnly
+  name: IsReadOnly
+  nameWithType: ICollection<String>.IsReadOnly
+  fullName: System.Collections.Generic.ICollection<System.String>.IsReadOnly
+  nameWithType.vb: ICollection(Of String).IsReadOnly
+  fullName.vb: System.Collections.Generic.ICollection(Of System.String).IsReadOnly
+- uid: System.Collections.Generic.ICollection`1.IsReadOnly
+  commentId: P:System.Collections.Generic.ICollection`1.IsReadOnly
+  isExternal: true
+  name: IsReadOnly
+  nameWithType: ICollection<T>.IsReadOnly
+  fullName: System.Collections.Generic.ICollection<T>.IsReadOnly
+  nameWithType.vb: ICollection(Of T).IsReadOnly
+  fullName.vb: System.Collections.Generic.ICollection(Of T).IsReadOnly
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IEnumerable#GetEnumerator*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#IEnumerable#GetEnumerator
+  name: IEnumerable.GetEnumerator
+  nameWithType: OptionValueCollection.IEnumerable.GetEnumerator
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IEnumerable.GetEnumerator
+  nameWithType.vb: OptionValueCollection.System.Collections.IEnumerable.GetEnumerator
+  name.vb: System.Collections.IEnumerable.GetEnumerator
+- uid: System.Collections.IEnumerable.GetEnumerator
+  commentId: M:System.Collections.IEnumerable.GetEnumerator
+  parent: System.Collections.IEnumerable
+  isExternal: true
+  name: GetEnumerator()
+  nameWithType: IEnumerable.GetEnumerator()
+  fullName: System.Collections.IEnumerable.GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.IEnumerable.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable.GetEnumerator
+    fullName: System.Collections.IEnumerable.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IEnumerable.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable.GetEnumerator
+    fullName: System.Collections.IEnumerable.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.IEnumerator
+  commentId: T:System.Collections.IEnumerator
+  parent: System.Collections
+  isExternal: true
+  name: IEnumerator
+  nameWithType: IEnumerator
+  fullName: System.Collections.IEnumerator
+- uid: NDesk.Options.OptionValueCollection.GetEnumerator*
+  commentId: Overload:NDesk.Options.OptionValueCollection.GetEnumerator
+  name: GetEnumerator
+  nameWithType: OptionValueCollection.GetEnumerator
+  fullName: NDesk.Options.OptionValueCollection.GetEnumerator
+- uid: System.Collections.Generic.IEnumerable{System.String}.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable{System.String}.GetEnumerator
+  parent: System.Collections.Generic.IEnumerable{System.String}
+  definition: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  name: GetEnumerator()
+  nameWithType: IEnumerable<String>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<System.String>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of String).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.String).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable<String>.GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable<System.String>.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable(Of String).GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable(Of System.String).GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerator{System.String}
+  commentId: T:System.Collections.Generic.IEnumerator{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerator`1
+  name: IEnumerator<String>
+  nameWithType: IEnumerator<String>
+  fullName: System.Collections.Generic.IEnumerator<System.String>
+  nameWithType.vb: IEnumerator(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of System.String)
+  name.vb: IEnumerator(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+  commentId: M:System.Collections.Generic.IEnumerable`1.GetEnumerator
+  isExternal: true
+  name: GetEnumerator()
+  nameWithType: IEnumerable<T>.GetEnumerator()
+  fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator()
+  nameWithType.vb: IEnumerable(Of T).GetEnumerator()
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T).GetEnumerator()
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable<T>.GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable<T>.GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1.GetEnumerator
+    name: GetEnumerator
+    nameWithType: IEnumerable(Of T).GetEnumerator
+    fullName: System.Collections.Generic.IEnumerable(Of T).GetEnumerator
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerator`1
+  commentId: T:System.Collections.Generic.IEnumerator`1
+  isExternal: true
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    nameWithType: IEnumerator
+    fullName: System.Collections.Generic.IEnumerator
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Add*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#IList#Add
+  name: IList.Add
+  nameWithType: OptionValueCollection.IList.Add
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Add
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Add
+  name.vb: System.Collections.IList.Add
+- uid: System.Collections.IList.Add(System.Object)
+  commentId: M:System.Collections.IList.Add(System.Object)
+  parent: System.Collections.IList
+  isExternal: true
+  name: Add(Object)
+  nameWithType: IList.Add(Object)
+  fullName: System.Collections.IList.Add(System.Object)
+  spec.csharp:
+  - uid: System.Collections.IList.Add(System.Object)
+    name: Add
+    nameWithType: IList.Add
+    fullName: System.Collections.IList.Add
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IList.Add(System.Object)
+    name: Add
+    nameWithType: IList.Add
+    fullName: System.Collections.IList.Add
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Contains*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#IList#Contains
+  name: IList.Contains
+  nameWithType: OptionValueCollection.IList.Contains
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Contains
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Contains
+  name.vb: System.Collections.IList.Contains
+- uid: System.Collections.IList.Contains(System.Object)
+  commentId: M:System.Collections.IList.Contains(System.Object)
+  parent: System.Collections.IList
+  isExternal: true
+  name: Contains(Object)
+  nameWithType: IList.Contains(Object)
+  fullName: System.Collections.IList.Contains(System.Object)
+  spec.csharp:
+  - uid: System.Collections.IList.Contains(System.Object)
+    name: Contains
+    nameWithType: IList.Contains
+    fullName: System.Collections.IList.Contains
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IList.Contains(System.Object)
+    name: Contains
+    nameWithType: IList.Contains
+    fullName: System.Collections.IList.Contains
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#IndexOf*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#IList#IndexOf
+  name: IList.IndexOf
+  nameWithType: OptionValueCollection.IList.IndexOf
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.IndexOf
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.IndexOf
+  name.vb: System.Collections.IList.IndexOf
+- uid: System.Collections.IList.IndexOf(System.Object)
+  commentId: M:System.Collections.IList.IndexOf(System.Object)
+  parent: System.Collections.IList
+  isExternal: true
+  name: IndexOf(Object)
+  nameWithType: IList.IndexOf(Object)
+  fullName: System.Collections.IList.IndexOf(System.Object)
+  spec.csharp:
+  - uid: System.Collections.IList.IndexOf(System.Object)
+    name: IndexOf
+    nameWithType: IList.IndexOf
+    fullName: System.Collections.IList.IndexOf
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IList.IndexOf(System.Object)
+    name: IndexOf
+    nameWithType: IList.IndexOf
+    fullName: System.Collections.IList.IndexOf
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Insert*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#IList#Insert
+  name: IList.Insert
+  nameWithType: OptionValueCollection.IList.Insert
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Insert
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Insert
+  name.vb: System.Collections.IList.Insert
+- uid: System.Collections.IList.Insert(System.Int32,System.Object)
+  commentId: M:System.Collections.IList.Insert(System.Int32,System.Object)
+  parent: System.Collections.IList
+  isExternal: true
+  name: Insert(Int32, Object)
+  nameWithType: IList.Insert(Int32, Object)
+  fullName: System.Collections.IList.Insert(System.Int32, System.Object)
+  spec.csharp:
+  - uid: System.Collections.IList.Insert(System.Int32,System.Object)
+    name: Insert
+    nameWithType: IList.Insert
+    fullName: System.Collections.IList.Insert
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IList.Insert(System.Int32,System.Object)
+    name: Insert
+    nameWithType: IList.Insert
+    fullName: System.Collections.IList.Insert
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Remove*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#IList#Remove
+  name: IList.Remove
+  nameWithType: OptionValueCollection.IList.Remove
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Remove
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Remove
+  name.vb: System.Collections.IList.Remove
+- uid: System.Collections.IList.Remove(System.Object)
+  commentId: M:System.Collections.IList.Remove(System.Object)
+  parent: System.Collections.IList
+  isExternal: true
+  name: Remove(Object)
+  nameWithType: IList.Remove(Object)
+  fullName: System.Collections.IList.Remove(System.Object)
+  spec.csharp:
+  - uid: System.Collections.IList.Remove(System.Object)
+    name: Remove
+    nameWithType: IList.Remove
+    fullName: System.Collections.IList.Remove
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IList.Remove(System.Object)
+    name: Remove
+    nameWithType: IList.Remove
+    fullName: System.Collections.IList.Remove
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#RemoveAt*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#IList#RemoveAt
+  name: IList.RemoveAt
+  nameWithType: OptionValueCollection.IList.RemoveAt
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.RemoveAt
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.RemoveAt
+  name.vb: System.Collections.IList.RemoveAt
+- uid: System.Collections.IList.RemoveAt(System.Int32)
+  commentId: M:System.Collections.IList.RemoveAt(System.Int32)
+  parent: System.Collections.IList
+  isExternal: true
+  name: RemoveAt(Int32)
+  nameWithType: IList.RemoveAt(Int32)
+  fullName: System.Collections.IList.RemoveAt(System.Int32)
+  spec.csharp:
+  - uid: System.Collections.IList.RemoveAt(System.Int32)
+    name: RemoveAt
+    nameWithType: IList.RemoveAt
+    fullName: System.Collections.IList.RemoveAt
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.IList.RemoveAt(System.Int32)
+    name: RemoveAt
+    nameWithType: IList.RemoveAt
+    fullName: System.Collections.IList.RemoveAt
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#IsFixedSize*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#IList#IsFixedSize
+  name: IList.IsFixedSize
+  nameWithType: OptionValueCollection.IList.IsFixedSize
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.IsFixedSize
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.IsFixedSize
+  name.vb: System.Collections.IList.IsFixedSize
+- uid: System.Collections.IList.IsFixedSize
+  commentId: P:System.Collections.IList.IsFixedSize
+  parent: System.Collections.IList
+  isExternal: true
+  name: IsFixedSize
+  nameWithType: IList.IsFixedSize
+  fullName: System.Collections.IList.IsFixedSize
+- uid: NDesk.Options.OptionValueCollection.System#Collections#IList#Item*
+  commentId: Overload:NDesk.Options.OptionValueCollection.System#Collections#IList#Item
+  name: IList.Item
+  nameWithType: OptionValueCollection.IList.Item
+  fullName: NDesk.Options.OptionValueCollection.System.Collections.IList.Item
+  nameWithType.vb: OptionValueCollection.System.Collections.IList.Item
+  name.vb: System.Collections.IList.Item
+- uid: System.Collections.IList.Item(System.Int32)
+  commentId: P:System.Collections.IList.Item(System.Int32)
+  parent: System.Collections.IList
+  isExternal: true
+  name: Item[Int32]
+  nameWithType: IList.Item[Int32]
+  fullName: System.Collections.IList.Item[System.Int32]
+  nameWithType.vb: IList.Item(Int32)
+  fullName.vb: System.Collections.IList.Item(System.Int32)
+  name.vb: Item(Int32)
+  spec.csharp:
+  - uid: System.Collections.IList.Item(System.Int32)
+    name: Item
+    nameWithType: IList.Item
+    fullName: System.Collections.IList.Item
+    isExternal: true
+  - name: '['
+    nameWithType: '['
+    fullName: '['
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ']'
+    nameWithType: ']'
+    fullName: ']'
+  spec.vb:
+  - uid: System.Collections.IList.Item(System.Int32)
+    name: Item
+    nameWithType: IList.Item
+    fullName: System.Collections.IList.Item
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.IndexOf*
+  commentId: Overload:NDesk.Options.OptionValueCollection.IndexOf
+  name: IndexOf
+  nameWithType: OptionValueCollection.IndexOf
+  fullName: NDesk.Options.OptionValueCollection.IndexOf
+- uid: System.Collections.Generic.IList{System.String}.IndexOf(System.String)
+  commentId: M:System.Collections.Generic.IList{System.String}.IndexOf(System.String)
+  parent: System.Collections.Generic.IList{System.String}
+  definition: System.Collections.Generic.IList`1.IndexOf(`0)
+  name: IndexOf(String)
+  nameWithType: IList<String>.IndexOf(String)
+  fullName: System.Collections.Generic.IList<System.String>.IndexOf(System.String)
+  nameWithType.vb: IList(Of String).IndexOf(String)
+  fullName.vb: System.Collections.Generic.IList(Of System.String).IndexOf(System.String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.IndexOf(`0)
+    name: IndexOf
+    nameWithType: IList<String>.IndexOf
+    fullName: System.Collections.Generic.IList<System.String>.IndexOf
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.IndexOf(`0)
+    name: IndexOf
+    nameWithType: IList(Of String).IndexOf
+    fullName: System.Collections.Generic.IList(Of System.String).IndexOf
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IList`1.IndexOf(`0)
+  commentId: M:System.Collections.Generic.IList`1.IndexOf(`0)
+  isExternal: true
+  name: IndexOf(T)
+  nameWithType: IList<T>.IndexOf(T)
+  fullName: System.Collections.Generic.IList<T>.IndexOf(T)
+  nameWithType.vb: IList(Of T).IndexOf(T)
+  fullName.vb: System.Collections.Generic.IList(Of T).IndexOf(T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.IndexOf(`0)
+    name: IndexOf
+    nameWithType: IList<T>.IndexOf
+    fullName: System.Collections.Generic.IList<T>.IndexOf
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.IndexOf(`0)
+    name: IndexOf
+    nameWithType: IList(Of T).IndexOf
+    fullName: System.Collections.Generic.IList(Of T).IndexOf
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.Insert*
+  commentId: Overload:NDesk.Options.OptionValueCollection.Insert
+  name: Insert
+  nameWithType: OptionValueCollection.Insert
+  fullName: NDesk.Options.OptionValueCollection.Insert
+- uid: System.Collections.Generic.IList{System.String}.Insert(System.Int32,System.String)
+  commentId: M:System.Collections.Generic.IList{System.String}.Insert(System.Int32,System.String)
+  parent: System.Collections.Generic.IList{System.String}
+  definition: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+  name: Insert(Int32, String)
+  nameWithType: IList<String>.Insert(Int32, String)
+  fullName: System.Collections.Generic.IList<System.String>.Insert(System.Int32, System.String)
+  nameWithType.vb: IList(Of String).Insert(Int32, String)
+  fullName.vb: System.Collections.Generic.IList(Of System.String).Insert(System.Int32, System.String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+    name: Insert
+    nameWithType: IList<String>.Insert
+    fullName: System.Collections.Generic.IList<System.String>.Insert
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+    name: Insert
+    nameWithType: IList(Of String).Insert
+    fullName: System.Collections.Generic.IList(Of System.String).Insert
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+  commentId: M:System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+  isExternal: true
+  name: Insert(Int32, T)
+  nameWithType: IList<T>.Insert(Int32, T)
+  fullName: System.Collections.Generic.IList<T>.Insert(System.Int32, T)
+  nameWithType.vb: IList(Of T).Insert(Int32, T)
+  fullName.vb: System.Collections.Generic.IList(Of T).Insert(System.Int32, T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+    name: Insert
+    nameWithType: IList<T>.Insert
+    fullName: System.Collections.Generic.IList<T>.Insert
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.Insert(System.Int32,`0)
+    name: Insert
+    nameWithType: IList(Of T).Insert
+    fullName: System.Collections.Generic.IList(Of T).Insert
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.RemoveAt*
+  commentId: Overload:NDesk.Options.OptionValueCollection.RemoveAt
+  name: RemoveAt
+  nameWithType: OptionValueCollection.RemoveAt
+  fullName: NDesk.Options.OptionValueCollection.RemoveAt
+- uid: System.Collections.Generic.IList{System.String}.RemoveAt(System.Int32)
+  commentId: M:System.Collections.Generic.IList{System.String}.RemoveAt(System.Int32)
+  parent: System.Collections.Generic.IList{System.String}
+  definition: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+  name: RemoveAt(Int32)
+  nameWithType: IList<String>.RemoveAt(Int32)
+  fullName: System.Collections.Generic.IList<System.String>.RemoveAt(System.Int32)
+  nameWithType.vb: IList(Of String).RemoveAt(Int32)
+  fullName.vb: System.Collections.Generic.IList(Of System.String).RemoveAt(System.Int32)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+    name: RemoveAt
+    nameWithType: IList<String>.RemoveAt
+    fullName: System.Collections.Generic.IList<System.String>.RemoveAt
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+    name: RemoveAt
+    nameWithType: IList(Of String).RemoveAt
+    fullName: System.Collections.Generic.IList(Of System.String).RemoveAt
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+  commentId: M:System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+  isExternal: true
+  name: RemoveAt(Int32)
+  nameWithType: IList<T>.RemoveAt(Int32)
+  fullName: System.Collections.Generic.IList<T>.RemoveAt(System.Int32)
+  nameWithType.vb: IList(Of T).RemoveAt(Int32)
+  fullName.vb: System.Collections.Generic.IList(Of T).RemoveAt(System.Int32)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+    name: RemoveAt
+    nameWithType: IList<T>.RemoveAt
+    fullName: System.Collections.Generic.IList<T>.RemoveAt
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.RemoveAt(System.Int32)
+    name: RemoveAt
+    nameWithType: IList(Of T).RemoveAt
+    fullName: System.Collections.Generic.IList(Of T).RemoveAt
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.Item*
+  commentId: Overload:NDesk.Options.OptionValueCollection.Item
+  name: Item
+  nameWithType: OptionValueCollection.Item
+  fullName: NDesk.Options.OptionValueCollection.Item
+- uid: System.Collections.Generic.IList{System.String}.Item(System.Int32)
+  commentId: P:System.Collections.Generic.IList{System.String}.Item(System.Int32)
+  parent: System.Collections.Generic.IList{System.String}
+  definition: System.Collections.Generic.IList`1.Item(System.Int32)
+  name: Item[Int32]
+  nameWithType: IList<String>.Item[Int32]
+  fullName: System.Collections.Generic.IList<System.String>.Item[System.Int32]
+  nameWithType.vb: IList(Of String).Item(Int32)
+  fullName.vb: System.Collections.Generic.IList(Of System.String).Item(System.Int32)
+  name.vb: Item(Int32)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.Item(System.Int32)
+    name: Item
+    nameWithType: IList<String>.Item
+    fullName: System.Collections.Generic.IList<System.String>.Item
+    isExternal: true
+  - name: '['
+    nameWithType: '['
+    fullName: '['
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ']'
+    nameWithType: ']'
+    fullName: ']'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.Item(System.Int32)
+    name: Item
+    nameWithType: IList(Of String).Item
+    fullName: System.Collections.Generic.IList(Of System.String).Item
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IList`1.Item(System.Int32)
+  commentId: P:System.Collections.Generic.IList`1.Item(System.Int32)
+  isExternal: true
+  name: Item[Int32]
+  nameWithType: IList<T>.Item[Int32]
+  fullName: System.Collections.Generic.IList<T>.Item[System.Int32]
+  nameWithType.vb: IList(Of T).Item(Int32)
+  fullName.vb: System.Collections.Generic.IList(Of T).Item(System.Int32)
+  name.vb: Item(Int32)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1.Item(System.Int32)
+    name: Item
+    nameWithType: IList<T>.Item
+    fullName: System.Collections.Generic.IList<T>.Item
+    isExternal: true
+  - name: '['
+    nameWithType: '['
+    fullName: '['
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ']'
+    nameWithType: ']'
+    fullName: ']'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1.Item(System.Int32)
+    name: Item
+    nameWithType: IList(Of T).Item
+    fullName: System.Collections.Generic.IList(Of T).Item
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.ToList*
+  commentId: Overload:NDesk.Options.OptionValueCollection.ToList
+  name: ToList
+  nameWithType: OptionValueCollection.ToList
+  fullName: NDesk.Options.OptionValueCollection.ToList
+- uid: System.Collections.Generic.List{System.String}
+  commentId: T:System.Collections.Generic.List{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<String>
+  nameWithType: List<String>
+  fullName: System.Collections.Generic.List<System.String>
+  nameWithType.vb: List(Of String)
+  fullName.vb: System.Collections.Generic.List(Of System.String)
+  name.vb: List(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.ToArray*
+  commentId: Overload:NDesk.Options.OptionValueCollection.ToArray
+  name: ToArray
+  nameWithType: OptionValueCollection.ToArray
+  fullName: NDesk.Options.OptionValueCollection.ToArray
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: NDesk.Options.OptionValueCollection.ToString*
+  commentId: Overload:NDesk.Options.OptionValueCollection.ToString
+  name: ToString
+  nameWithType: OptionValueCollection.ToString
+  fullName: NDesk.Options.OptionValueCollection.ToString

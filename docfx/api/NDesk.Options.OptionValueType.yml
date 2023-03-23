@@ -1,0 +1,145 @@
+### YamlMime:ManagedReference
+items:
+- uid: NDesk.Options.OptionValueType
+  commentId: T:NDesk.Options.OptionValueType
+  id: OptionValueType
+  parent: NDesk.Options
+  children:
+  - NDesk.Options.OptionValueType.None
+  - NDesk.Options.OptionValueType.Optional
+  - NDesk.Options.OptionValueType.Required
+  langs:
+  - csharp
+  - vb
+  name: OptionValueType
+  nameWithType: OptionValueType
+  fullName: NDesk.Options.OptionValueType
+  type: Enum
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: OptionValueType
+    path: libs/NDesk/Options.cs
+    startLine: 274
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public enum OptionValueType
+    content.vb: Public Enum OptionValueType
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: NDesk.Options.OptionValueType.None
+  commentId: F:NDesk.Options.OptionValueType.None
+  id: None
+  parent: NDesk.Options.OptionValueType
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: OptionValueType.None
+  fullName: NDesk.Options.OptionValueType.None
+  type: Field
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: None
+    path: libs/NDesk/Options.cs
+    startLine: 275
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: None = 0
+    return:
+      type: NDesk.Options.OptionValueType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: NDesk.Options.OptionValueType.Optional
+  commentId: F:NDesk.Options.OptionValueType.Optional
+  id: Optional
+  parent: NDesk.Options.OptionValueType
+  langs:
+  - csharp
+  - vb
+  name: Optional
+  nameWithType: OptionValueType.Optional
+  fullName: NDesk.Options.OptionValueType.Optional
+  type: Field
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Optional
+    path: libs/NDesk/Options.cs
+    startLine: 276
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: Optional = 1
+    return:
+      type: NDesk.Options.OptionValueType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: NDesk.Options.OptionValueType.Required
+  commentId: F:NDesk.Options.OptionValueType.Required
+  id: Required
+  parent: NDesk.Options.OptionValueType
+  langs:
+  - csharp
+  - vb
+  name: Required
+  nameWithType: OptionValueType.Required
+  fullName: NDesk.Options.OptionValueType.Required
+  type: Field
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Required
+    path: libs/NDesk/Options.cs
+    startLine: 277
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: Required = 2
+    return:
+      type: NDesk.Options.OptionValueType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: NDesk.Options
+  commentId: N:NDesk.Options
+  name: NDesk.Options
+  nameWithType: NDesk.Options
+  fullName: NDesk.Options
+- uid: NDesk.Options.OptionValueType
+  commentId: T:NDesk.Options.OptionValueType
+  parent: NDesk.Options
+  name: OptionValueType
+  nameWithType: OptionValueType
+  fullName: NDesk.Options.OptionValueType

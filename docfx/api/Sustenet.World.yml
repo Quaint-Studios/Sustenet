@@ -1,0 +1,22 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.World
+  commentId: N:Sustenet.World
+  id: Sustenet.World
+  children:
+  - Sustenet.World.ClusterServer
+  langs:
+  - csharp
+  - vb
+  name: Sustenet.World
+  nameWithType: Sustenet.World
+  fullName: Sustenet.World
+  type: Namespace
+  assemblies:
+  - Sustenet
+references:
+- uid: Sustenet.World.ClusterServer
+  commentId: T:Sustenet.World.ClusterServer
+  name: ClusterServer
+  nameWithType: ClusterServer
+  fullName: Sustenet.World.ClusterServer

@@ -1,0 +1,1580 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Network.Packet
+  commentId: T:Sustenet.Network.Packet
+  id: Packet
+  parent: Sustenet.Network
+  children:
+  - Sustenet.Network.Packet.#ctor
+  - Sustenet.Network.Packet.#ctor(System.Byte[])
+  - Sustenet.Network.Packet.#ctor(System.Int32)
+  - Sustenet.Network.Packet.Dispose
+  - Sustenet.Network.Packet.Dispose(System.Boolean)
+  - Sustenet.Network.Packet.InsertInt(System.Int32)
+  - Sustenet.Network.Packet.Length
+  - Sustenet.Network.Packet.ReadBool(System.Boolean)
+  - Sustenet.Network.Packet.ReadByte(System.Boolean)
+  - Sustenet.Network.Packet.ReadBytes(System.Int32,System.Boolean)
+  - Sustenet.Network.Packet.ReadFloat(System.Boolean)
+  - Sustenet.Network.Packet.ReadInt(System.Boolean)
+  - Sustenet.Network.Packet.ReadLong(System.Boolean)
+  - Sustenet.Network.Packet.ReadShort(System.Boolean)
+  - Sustenet.Network.Packet.ReadString(System.Boolean)
+  - Sustenet.Network.Packet.Reset(System.Boolean)
+  - Sustenet.Network.Packet.SetBytes(System.Byte[])
+  - Sustenet.Network.Packet.ToArray
+  - Sustenet.Network.Packet.UnreadLength
+  - Sustenet.Network.Packet.Write(System.Boolean)
+  - Sustenet.Network.Packet.Write(System.Byte)
+  - Sustenet.Network.Packet.Write(System.Byte[])
+  - Sustenet.Network.Packet.Write(System.Int16)
+  - Sustenet.Network.Packet.Write(System.Int32)
+  - Sustenet.Network.Packet.Write(System.Int64)
+  - Sustenet.Network.Packet.Write(System.Single)
+  - Sustenet.Network.Packet.Write(System.String)
+  - Sustenet.Network.Packet.WriteLength
+  langs:
+  - csharp
+  - vb
+  name: Packet
+  nameWithType: Packet
+  fullName: Sustenet.Network.Packet
+  type: Class
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Packet
+    path: src/Network/Packet.cs
+    startLine: 31
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nHandles reading and writing data of varying types.\n"
+  example: []
+  syntax:
+    content: 'public class Packet : IDisposable'
+    content.vb: >-
+      Public Class Packet
+          Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: Sustenet.Network.Packet.#ctor
+  commentId: M:Sustenet.Network.Packet.#ctor
+  id: '#ctor'
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Packet()
+  nameWithType: Packet.Packet()
+  fullName: Sustenet.Network.Packet.Packet()
+  type: Constructor
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: .ctor
+    path: src/Network/Packet.cs
+    startLine: 40
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nCreates an empty packet without an ID.\n"
+  example: []
+  syntax:
+    content: public Packet()
+    content.vb: Public Sub New
+  overload: Sustenet.Network.Packet.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.#ctor(System.Int32)
+  commentId: M:Sustenet.Network.Packet.#ctor(System.Int32)
+  id: '#ctor(System.Int32)'
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Packet(Int32)
+  nameWithType: Packet.Packet(Int32)
+  fullName: Sustenet.Network.Packet.Packet(System.Int32)
+  type: Constructor
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: .ctor
+    path: src/Network/Packet.cs
+    startLine: 46
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nCreates an empty packet with an ID. Used for sending data.\n"
+  example: []
+  syntax:
+    content: public Packet(int _id)
+    parameters:
+    - id: _id
+      type: System.Int32
+      description: The packet ID.
+    content.vb: Public Sub New(_id As Integer)
+  overload: Sustenet.Network.Packet.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.#ctor(System.Byte[])
+  commentId: M:Sustenet.Network.Packet.#ctor(System.Byte[])
+  id: '#ctor(System.Byte[])'
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Packet(Byte[])
+  nameWithType: Packet.Packet(Byte[])
+  fullName: Sustenet.Network.Packet.Packet(System.Byte[])
+  type: Constructor
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: .ctor
+    path: src/Network/Packet.cs
+    startLine: 52
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nCreates a packet and sets data to prepare it for reading. Used for receiving data.\n"
+  example: []
+  syntax:
+    content: public Packet(byte[] data)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: The bytes to add to the packet.
+    content.vb: Public Sub New(data As Byte())
+  overload: Sustenet.Network.Packet.#ctor*
+  nameWithType.vb: Packet.Packet(Byte())
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: Sustenet.Network.Packet.Packet(System.Byte())
+  name.vb: Packet(Byte())
+- uid: Sustenet.Network.Packet.SetBytes(System.Byte[])
+  commentId: M:Sustenet.Network.Packet.SetBytes(System.Byte[])
+  id: SetBytes(System.Byte[])
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: SetBytes(Byte[])
+  nameWithType: Packet.SetBytes(Byte[])
+  fullName: Sustenet.Network.Packet.SetBytes(System.Byte[])
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: SetBytes
+    path: src/Network/Packet.cs
+    startLine: 59
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nSets the packet&apos;s content and prepares it to be read.\n"
+  example: []
+  syntax:
+    content: public void SetBytes(byte[] data)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: The bytes to add to the packet.
+    content.vb: Public Sub SetBytes(data As Byte())
+  overload: Sustenet.Network.Packet.SetBytes*
+  nameWithType.vb: Packet.SetBytes(Byte())
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: Sustenet.Network.Packet.SetBytes(System.Byte())
+  name.vb: SetBytes(Byte())
+- uid: Sustenet.Network.Packet.WriteLength
+  commentId: M:Sustenet.Network.Packet.WriteLength
+  id: WriteLength
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: WriteLength()
+  nameWithType: Packet.WriteLength()
+  fullName: Sustenet.Network.Packet.WriteLength()
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: WriteLength
+    path: src/Network/Packet.cs
+    startLine: 70
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nInsert length of the packet&apos;s content at the start of the buffer.\n"
+  example: []
+  syntax:
+    content: public void WriteLength()
+    content.vb: Public Sub WriteLength
+  overload: Sustenet.Network.Packet.WriteLength*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.InsertInt(System.Int32)
+  commentId: M:Sustenet.Network.Packet.InsertInt(System.Int32)
+  id: InsertInt(System.Int32)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: InsertInt(Int32)
+  nameWithType: Packet.InsertInt(Int32)
+  fullName: Sustenet.Network.Packet.InsertInt(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: InsertInt
+    path: src/Network/Packet.cs
+    startLine: 79
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nInserts an integer at the start of the buffer.\n"
+  example: []
+  syntax:
+    content: public void InsertInt(int data)
+    parameters:
+    - id: data
+      type: System.Int32
+      description: The number to insert.
+    content.vb: Public Sub InsertInt(data As Integer)
+  overload: Sustenet.Network.Packet.InsertInt*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ToArray
+  commentId: M:Sustenet.Network.Packet.ToArray
+  id: ToArray
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ToArray()
+  nameWithType: Packet.ToArray()
+  fullName: Sustenet.Network.Packet.ToArray()
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ToArray
+    path: src/Network/Packet.cs
+    startLine: 87
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReturns the packet&apos;s data as an array.\n"
+  example: []
+  syntax:
+    content: public byte[] ToArray()
+    return:
+      type: System.Byte[]
+    content.vb: Public Function ToArray As Byte()
+  overload: Sustenet.Network.Packet.ToArray*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Length
+  commentId: M:Sustenet.Network.Packet.Length
+  id: Length
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Length()
+  nameWithType: Packet.Length()
+  fullName: Sustenet.Network.Packet.Length()
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Length
+    path: src/Network/Packet.cs
+    startLine: 96
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nThe length of the packet&apos;s content.\n"
+  example: []
+  syntax:
+    content: public int Length()
+    return:
+      type: System.Int32
+    content.vb: Public Function Length As Integer
+  overload: Sustenet.Network.Packet.Length*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.UnreadLength
+  commentId: M:Sustenet.Network.Packet.UnreadLength
+  id: UnreadLength
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: UnreadLength()
+  nameWithType: Packet.UnreadLength()
+  fullName: Sustenet.Network.Packet.UnreadLength()
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: UnreadLength
+    path: src/Network/Packet.cs
+    startLine: 104
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReturns the length of unread data in the packet.\n"
+  example: []
+  syntax:
+    content: public int UnreadLength()
+    return:
+      type: System.Int32
+    content.vb: Public Function UnreadLength As Integer
+  overload: Sustenet.Network.Packet.UnreadLength*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Reset(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.Reset(System.Boolean)
+  id: Reset(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Reset(Boolean)
+  nameWithType: Packet.Reset(Boolean)
+  fullName: Sustenet.Network.Packet.Reset(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Reset
+    path: src/Network/Packet.cs
+    startLine: 113
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nResets the packet. Defaults to true, reset the whole packet. False resets the last read int.\n"
+  example: []
+  syntax:
+    content: public void Reset(bool fullReset = true)
+    parameters:
+    - id: fullReset
+      type: System.Boolean
+      description: Determines if the whole packet should be reset.
+    content.vb: Public Sub Reset(fullReset As Boolean = True)
+  overload: Sustenet.Network.Packet.Reset*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Write(System.Byte)
+  commentId: M:Sustenet.Network.Packet.Write(System.Byte)
+  id: Write(System.Byte)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Write(Byte)
+  nameWithType: Packet.Write(Byte)
+  fullName: Sustenet.Network.Packet.Write(System.Byte)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Write
+    path: src/Network/Packet.cs
+    startLine: 129
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Write(byte data)
+    parameters:
+    - id: data
+      type: System.Byte
+    content.vb: Public Sub Write(data As Byte)
+  overload: Sustenet.Network.Packet.Write*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Write(System.Byte[])
+  commentId: M:Sustenet.Network.Packet.Write(System.Byte[])
+  id: Write(System.Byte[])
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Write(Byte[])
+  nameWithType: Packet.Write(Byte[])
+  fullName: Sustenet.Network.Packet.Write(System.Byte[])
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Write
+    path: src/Network/Packet.cs
+    startLine: 134
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Write(byte[] data)
+    parameters:
+    - id: data
+      type: System.Byte[]
+    content.vb: Public Sub Write(data As Byte())
+  overload: Sustenet.Network.Packet.Write*
+  nameWithType.vb: Packet.Write(Byte())
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: Sustenet.Network.Packet.Write(System.Byte())
+  name.vb: Write(Byte())
+- uid: Sustenet.Network.Packet.Write(System.Int16)
+  commentId: M:Sustenet.Network.Packet.Write(System.Int16)
+  id: Write(System.Int16)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Write(Int16)
+  nameWithType: Packet.Write(Int16)
+  fullName: Sustenet.Network.Packet.Write(System.Int16)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Write
+    path: src/Network/Packet.cs
+    startLine: 139
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Write(short data)
+    parameters:
+    - id: data
+      type: System.Int16
+    content.vb: Public Sub Write(data As Short)
+  overload: Sustenet.Network.Packet.Write*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Write(System.Int32)
+  commentId: M:Sustenet.Network.Packet.Write(System.Int32)
+  id: Write(System.Int32)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Write(Int32)
+  nameWithType: Packet.Write(Int32)
+  fullName: Sustenet.Network.Packet.Write(System.Int32)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Write
+    path: src/Network/Packet.cs
+    startLine: 144
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Write(int data)
+    parameters:
+    - id: data
+      type: System.Int32
+    content.vb: Public Sub Write(data As Integer)
+  overload: Sustenet.Network.Packet.Write*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Write(System.Int64)
+  commentId: M:Sustenet.Network.Packet.Write(System.Int64)
+  id: Write(System.Int64)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Write(Int64)
+  nameWithType: Packet.Write(Int64)
+  fullName: Sustenet.Network.Packet.Write(System.Int64)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Write
+    path: src/Network/Packet.cs
+    startLine: 148
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Write(long data)
+    parameters:
+    - id: data
+      type: System.Int64
+    content.vb: Public Sub Write(data As Long)
+  overload: Sustenet.Network.Packet.Write*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Write(System.Single)
+  commentId: M:Sustenet.Network.Packet.Write(System.Single)
+  id: Write(System.Single)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Write(Single)
+  nameWithType: Packet.Write(Single)
+  fullName: Sustenet.Network.Packet.Write(System.Single)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Write
+    path: src/Network/Packet.cs
+    startLine: 153
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Write(float data)
+    parameters:
+    - id: data
+      type: System.Single
+    content.vb: Public Sub Write(data As Single)
+  overload: Sustenet.Network.Packet.Write*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Write(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.Write(System.Boolean)
+  id: Write(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Write(Boolean)
+  nameWithType: Packet.Write(Boolean)
+  fullName: Sustenet.Network.Packet.Write(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Write
+    path: src/Network/Packet.cs
+    startLine: 158
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Write(bool data)
+    parameters:
+    - id: data
+      type: System.Boolean
+    content.vb: Public Sub Write(data As Boolean)
+  overload: Sustenet.Network.Packet.Write*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Write(System.String)
+  commentId: M:Sustenet.Network.Packet.Write(System.String)
+  id: Write(System.String)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Write(String)
+  nameWithType: Packet.Write(String)
+  fullName: Sustenet.Network.Packet.Write(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Write
+    path: src/Network/Packet.cs
+    startLine: 163
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Write(string data)
+    parameters:
+    - id: data
+      type: System.String
+    content.vb: Public Sub Write(data As String)
+  overload: Sustenet.Network.Packet.Write*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ReadByte(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.ReadByte(System.Boolean)
+  id: ReadByte(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ReadByte(Boolean)
+  nameWithType: Packet.ReadByte(Boolean)
+  fullName: Sustenet.Network.Packet.ReadByte(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ReadByte
+    path: src/Network/Packet.cs
+    startLine: 176
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReads a byte from the packet.\n"
+  example: []
+  syntax:
+    content: public byte ReadByte(bool moveReadPos = true)
+    parameters:
+    - id: moveReadPos
+      type: System.Boolean
+      description: If the buffer&apos;s read position should be incremented.
+    return:
+      type: System.Byte
+      description: Returns the byte that was read.
+    content.vb: Public Function ReadByte(moveReadPos As Boolean = True) As Byte
+  overload: Sustenet.Network.Packet.ReadByte*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ReadBytes(System.Int32,System.Boolean)
+  commentId: M:Sustenet.Network.Packet.ReadBytes(System.Int32,System.Boolean)
+  id: ReadBytes(System.Int32,System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ReadBytes(Int32, Boolean)
+  nameWithType: Packet.ReadBytes(Int32, Boolean)
+  fullName: Sustenet.Network.Packet.ReadBytes(System.Int32, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ReadBytes
+    path: src/Network/Packet.cs
+    startLine: 202
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReads a range of bytes from the packet.\n"
+  example: []
+  syntax:
+    content: public byte[] ReadBytes(int length, bool moveReadPos = true)
+    parameters:
+    - id: length
+      type: System.Int32
+      description: The length of the array to read.
+    - id: moveReadPos
+      type: System.Boolean
+      description: If the buffer&apos;s read position should be incremented by the length
+    return:
+      type: System.Byte[]
+      description: Returns the range of bytes that were read.
+    content.vb: Public Function ReadBytes(length As Integer, moveReadPos As Boolean = True) As Byte()
+  overload: Sustenet.Network.Packet.ReadBytes*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ReadShort(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.ReadShort(System.Boolean)
+  id: ReadShort(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ReadShort(Boolean)
+  nameWithType: Packet.ReadShort(Boolean)
+  fullName: Sustenet.Network.Packet.ReadShort(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ReadShort
+    path: src/Network/Packet.cs
+    startLine: 227
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReads a short from the packet.\n"
+  example: []
+  syntax:
+    content: public short ReadShort(bool moveReadPos = true)
+    parameters:
+    - id: moveReadPos
+      type: System.Boolean
+      description: If the buffer&apos;s read position should be incremented by 2.
+    return:
+      type: System.Int16
+      description: Returns the short that was read.
+    content.vb: Public Function ReadShort(moveReadPos As Boolean = True) As Short
+  overload: Sustenet.Network.Packet.ReadShort*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ReadInt(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.ReadInt(System.Boolean)
+  id: ReadInt(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ReadInt(Boolean)
+  nameWithType: Packet.ReadInt(Boolean)
+  fullName: Sustenet.Network.Packet.ReadInt(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ReadInt
+    path: src/Network/Packet.cs
+    startLine: 252
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReads an int from the packet.\n"
+  example: []
+  syntax:
+    content: public int ReadInt(bool moveReadPos = true)
+    parameters:
+    - id: moveReadPos
+      type: System.Boolean
+      description: If the buffer&apos;s read position should be incremented by 4.
+    return:
+      type: System.Int32
+      description: Returns the int that was read.
+    content.vb: Public Function ReadInt(moveReadPos As Boolean = True) As Integer
+  overload: Sustenet.Network.Packet.ReadInt*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ReadLong(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.ReadLong(System.Boolean)
+  id: ReadLong(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ReadLong(Boolean)
+  nameWithType: Packet.ReadLong(Boolean)
+  fullName: Sustenet.Network.Packet.ReadLong(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ReadLong
+    path: src/Network/Packet.cs
+    startLine: 277
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReads a long from the packet.\n"
+  example: []
+  syntax:
+    content: public long ReadLong(bool moveReadPos = true)
+    parameters:
+    - id: moveReadPos
+      type: System.Boolean
+      description: If the buffer&apos;s read position should be incremented by 8.
+    return:
+      type: System.Int64
+      description: Returns the long that was read.
+    content.vb: Public Function ReadLong(moveReadPos As Boolean = True) As Long
+  overload: Sustenet.Network.Packet.ReadLong*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ReadFloat(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.ReadFloat(System.Boolean)
+  id: ReadFloat(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ReadFloat(Boolean)
+  nameWithType: Packet.ReadFloat(Boolean)
+  fullName: Sustenet.Network.Packet.ReadFloat(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ReadFloat
+    path: src/Network/Packet.cs
+    startLine: 302
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReads a float from the packet.\n"
+  example: []
+  syntax:
+    content: public float ReadFloat(bool moveReadPos = true)
+    parameters:
+    - id: moveReadPos
+      type: System.Boolean
+      description: If the buffer&apos;s read position should be incremented by 4.
+    return:
+      type: System.Single
+      description: Returns the float that was read.
+    content.vb: Public Function ReadFloat(moveReadPos As Boolean = True) As Single
+  overload: Sustenet.Network.Packet.ReadFloat*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ReadBool(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.ReadBool(System.Boolean)
+  id: ReadBool(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ReadBool(Boolean)
+  nameWithType: Packet.ReadBool(Boolean)
+  fullName: Sustenet.Network.Packet.ReadBool(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ReadBool
+    path: src/Network/Packet.cs
+    startLine: 327
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReads a bool from the packet.\n"
+  example: []
+  syntax:
+    content: public bool ReadBool(bool moveReadPos = true)
+    parameters:
+    - id: moveReadPos
+      type: System.Boolean
+      description: If the buffer&apos;s read position should be incremented by 1.
+    return:
+      type: System.Boolean
+      description: Returns the bool that was read.
+    content.vb: Public Function ReadBool(moveReadPos As Boolean = True) As Boolean
+  overload: Sustenet.Network.Packet.ReadBool*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ReadString(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.ReadString(System.Boolean)
+  id: ReadString(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ReadString(Boolean)
+  nameWithType: Packet.ReadString(Boolean)
+  fullName: Sustenet.Network.Packet.ReadString(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ReadString
+    path: src/Network/Packet.cs
+    startLine: 352
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReads a string from the packet.\n"
+  example: []
+  syntax:
+    content: public string ReadString(bool moveReadPos = true)
+    parameters:
+    - id: moveReadPos
+      type: System.Boolean
+      description: If the buffer&apos;s read position should be incremented by the length.
+    return:
+      type: System.String
+      description: Returns the string that was read.
+    content.vb: Public Function ReadString(moveReadPos As Boolean = True) As String
+  overload: Sustenet.Network.Packet.ReadString*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.Dispose(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.Dispose(System.Boolean)
+  id: Dispose(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Dispose(Boolean)
+  nameWithType: Packet.Dispose(Boolean)
+  fullName: Sustenet.Network.Packet.Dispose(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Dispose
+    path: src/Network/Packet.cs
+    startLine: 375
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: protected virtual void Dispose(bool disposing)
+    parameters:
+    - id: disposing
+      type: System.Boolean
+    content.vb: Protected Overridable Sub Dispose(disposing As Boolean)
+  overload: Sustenet.Network.Packet.Dispose*
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+- uid: Sustenet.Network.Packet.Dispose
+  commentId: M:Sustenet.Network.Packet.Dispose
+  id: Dispose
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: Packet.Dispose()
+  fullName: Sustenet.Network.Packet.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Dispose
+    path: src/Network/Packet.cs
+    startLine: 390
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose
+  overload: Sustenet.Network.Packet.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: Sustenet.Network
+  commentId: N:Sustenet.Network
+  name: Sustenet.Network
+  nameWithType: Sustenet.Network
+  fullName: Sustenet.Network
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sustenet.Network.Packet.#ctor*
+  commentId: Overload:Sustenet.Network.Packet.#ctor
+  name: Packet
+  nameWithType: Packet.Packet
+  fullName: Sustenet.Network.Packet.Packet
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: Sustenet.Network.Packet.SetBytes*
+  commentId: Overload:Sustenet.Network.Packet.SetBytes
+  name: SetBytes
+  nameWithType: Packet.SetBytes
+  fullName: Sustenet.Network.Packet.SetBytes
+- uid: Sustenet.Network.Packet.WriteLength*
+  commentId: Overload:Sustenet.Network.Packet.WriteLength
+  name: WriteLength
+  nameWithType: Packet.WriteLength
+  fullName: Sustenet.Network.Packet.WriteLength
+- uid: Sustenet.Network.Packet.InsertInt*
+  commentId: Overload:Sustenet.Network.Packet.InsertInt
+  name: InsertInt
+  nameWithType: Packet.InsertInt
+  fullName: Sustenet.Network.Packet.InsertInt
+- uid: Sustenet.Network.Packet.ToArray*
+  commentId: Overload:Sustenet.Network.Packet.ToArray
+  name: ToArray
+  nameWithType: Packet.ToArray
+  fullName: Sustenet.Network.Packet.ToArray
+- uid: Sustenet.Network.Packet.Length*
+  commentId: Overload:Sustenet.Network.Packet.Length
+  name: Length
+  nameWithType: Packet.Length
+  fullName: Sustenet.Network.Packet.Length
+- uid: Sustenet.Network.Packet.UnreadLength*
+  commentId: Overload:Sustenet.Network.Packet.UnreadLength
+  name: UnreadLength
+  nameWithType: Packet.UnreadLength
+  fullName: Sustenet.Network.Packet.UnreadLength
+- uid: Sustenet.Network.Packet.Reset*
+  commentId: Overload:Sustenet.Network.Packet.Reset
+  name: Reset
+  nameWithType: Packet.Reset
+  fullName: Sustenet.Network.Packet.Reset
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: Sustenet.Network.Packet.Write*
+  commentId: Overload:Sustenet.Network.Packet.Write
+  name: Write
+  nameWithType: Packet.Write
+  fullName: Sustenet.Network.Packet.Write
+- uid: System.Byte
+  commentId: T:System.Byte
+  parent: System
+  isExternal: true
+  name: Byte
+  nameWithType: Byte
+  fullName: System.Byte
+- uid: System.Int16
+  commentId: T:System.Int16
+  parent: System
+  isExternal: true
+  name: Int16
+  nameWithType: Int16
+  fullName: System.Int16
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  name: Int64
+  nameWithType: Int64
+  fullName: System.Int64
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  name: Single
+  nameWithType: Single
+  fullName: System.Single
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: Sustenet.Network.Packet.ReadByte*
+  commentId: Overload:Sustenet.Network.Packet.ReadByte
+  name: ReadByte
+  nameWithType: Packet.ReadByte
+  fullName: Sustenet.Network.Packet.ReadByte
+- uid: Sustenet.Network.Packet.ReadBytes*
+  commentId: Overload:Sustenet.Network.Packet.ReadBytes
+  name: ReadBytes
+  nameWithType: Packet.ReadBytes
+  fullName: Sustenet.Network.Packet.ReadBytes
+- uid: Sustenet.Network.Packet.ReadShort*
+  commentId: Overload:Sustenet.Network.Packet.ReadShort
+  name: ReadShort
+  nameWithType: Packet.ReadShort
+  fullName: Sustenet.Network.Packet.ReadShort
+- uid: Sustenet.Network.Packet.ReadInt*
+  commentId: Overload:Sustenet.Network.Packet.ReadInt
+  name: ReadInt
+  nameWithType: Packet.ReadInt
+  fullName: Sustenet.Network.Packet.ReadInt
+- uid: Sustenet.Network.Packet.ReadLong*
+  commentId: Overload:Sustenet.Network.Packet.ReadLong
+  name: ReadLong
+  nameWithType: Packet.ReadLong
+  fullName: Sustenet.Network.Packet.ReadLong
+- uid: Sustenet.Network.Packet.ReadFloat*
+  commentId: Overload:Sustenet.Network.Packet.ReadFloat
+  name: ReadFloat
+  nameWithType: Packet.ReadFloat
+  fullName: Sustenet.Network.Packet.ReadFloat
+- uid: Sustenet.Network.Packet.ReadBool*
+  commentId: Overload:Sustenet.Network.Packet.ReadBool
+  name: ReadBool
+  nameWithType: Packet.ReadBool
+  fullName: Sustenet.Network.Packet.ReadBool
+- uid: Sustenet.Network.Packet.ReadString*
+  commentId: Overload:Sustenet.Network.Packet.ReadString
+  name: ReadString
+  nameWithType: Packet.ReadString
+  fullName: Sustenet.Network.Packet.ReadString
+- uid: Sustenet.Network.Packet.Dispose*
+  commentId: Overload:Sustenet.Network.Packet.Dispose
+  name: Dispose
+  nameWithType: Packet.Dispose
+  fullName: Sustenet.Network.Packet.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )

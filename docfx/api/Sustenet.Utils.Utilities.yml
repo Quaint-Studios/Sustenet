@@ -1,0 +1,793 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Utils.Utilities
+  commentId: T:Sustenet.Utils.Utilities
+  id: Utilities
+  parent: Sustenet.Utils
+  children:
+  - Sustenet.Utils.Utilities.ConsoleHeader(System.String)
+  - Sustenet.Utils.Utilities.GetAppPath
+  - Sustenet.Utils.Utilities.SplitByPascalCase(System.String)
+  - Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.Int32}@)
+  - Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.UInt16}@)
+  - Sustenet.Utils.Utilities.WriteLine(System.Exception)
+  - Sustenet.Utils.Utilities.WriteLine(System.String)
+  langs:
+  - csharp
+  - vb
+  name: Utilities
+  nameWithType: Utilities
+  fullName: Sustenet.Utils.Utilities
+  type: Class
+  source:
+    remote:
+      path: src/Utils/Utilities.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Utilities
+    path: src/Utils/Utilities.cs
+    startLine: 22
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils
+  syntax:
+    content: public static class Utilities
+    content.vb: Public Module Utilities
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.UInt16}@)
+  commentId: M:Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.UInt16}@)
+  id: TryParseNullable(System.String,System.Nullable{System.UInt16}@)
+  parent: Sustenet.Utils.Utilities
+  langs:
+  - csharp
+  - vb
+  name: TryParseNullable(String, out Nullable<UInt16>)
+  nameWithType: Utilities.TryParseNullable(String, out Nullable<UInt16>)
+  fullName: Sustenet.Utils.Utilities.TryParseNullable(System.String, out System.Nullable<System.UInt16>)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Utilities.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: TryParseNullable
+    path: src/Utils/Utilities.cs
+    startLine: 25
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils
+  syntax:
+    content: public static bool TryParseNullable(string n, out ushort? outVal)
+    parameters:
+    - id: n
+      type: System.String
+    - id: outVal
+      type: System.Nullable{System.UInt16}
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function TryParseNullable(n As String, ByRef outVal As UShort?) As Boolean
+  overload: Sustenet.Utils.Utilities.TryParseNullable*
+  nameWithType.vb: Utilities.TryParseNullable(String, ByRef Nullable(Of UInt16))
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: Sustenet.Utils.Utilities.TryParseNullable(System.String, ByRef System.Nullable(Of System.UInt16))
+  name.vb: TryParseNullable(String, ByRef Nullable(Of UInt16))
+- uid: Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.Int32}@)
+  commentId: M:Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.Int32}@)
+  id: TryParseNullable(System.String,System.Nullable{System.Int32}@)
+  parent: Sustenet.Utils.Utilities
+  langs:
+  - csharp
+  - vb
+  name: TryParseNullable(String, out Nullable<Int32>)
+  nameWithType: Utilities.TryParseNullable(String, out Nullable<Int32>)
+  fullName: Sustenet.Utils.Utilities.TryParseNullable(System.String, out System.Nullable<System.Int32>)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Utilities.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: TryParseNullable
+    path: src/Utils/Utilities.cs
+    startLine: 39
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils
+  syntax:
+    content: public static bool TryParseNullable(string n, out int? outVal)
+    parameters:
+    - id: n
+      type: System.String
+    - id: outVal
+      type: System.Nullable{System.Int32}
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function TryParseNullable(n As String, ByRef outVal As Integer?) As Boolean
+  overload: Sustenet.Utils.Utilities.TryParseNullable*
+  nameWithType.vb: Utilities.TryParseNullable(String, ByRef Nullable(Of Int32))
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: Sustenet.Utils.Utilities.TryParseNullable(System.String, ByRef System.Nullable(Of System.Int32))
+  name.vb: TryParseNullable(String, ByRef Nullable(Of Int32))
+- uid: Sustenet.Utils.Utilities.SplitByPascalCase(System.String)
+  commentId: M:Sustenet.Utils.Utilities.SplitByPascalCase(System.String)
+  id: SplitByPascalCase(System.String)
+  parent: Sustenet.Utils.Utilities
+  langs:
+  - csharp
+  - vb
+  name: SplitByPascalCase(String)
+  nameWithType: Utilities.SplitByPascalCase(String)
+  fullName: Sustenet.Utils.Utilities.SplitByPascalCase(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Utilities.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: SplitByPascalCase
+    path: src/Utils/Utilities.cs
+    startLine: 61
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils
+  summary: "\nSplits a text with spaces by pascal casing.\n"
+  example: []
+  syntax:
+    content: public static string SplitByPascalCase(string t)
+    parameters:
+    - id: t
+      type: System.String
+      description: The text to split.
+    return:
+      type: System.String
+      description: The text, split with spaces.
+    content.vb: Public Shared Function SplitByPascalCase(t As String) As String
+  overload: Sustenet.Utils.Utilities.SplitByPascalCase*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Utilities.ConsoleHeader(System.String)
+  commentId: M:Sustenet.Utils.Utilities.ConsoleHeader(System.String)
+  id: ConsoleHeader(System.String)
+  parent: Sustenet.Utils.Utilities
+  langs:
+  - csharp
+  - vb
+  name: ConsoleHeader(String)
+  nameWithType: Utilities.ConsoleHeader(String)
+  fullName: Sustenet.Utils.Utilities.ConsoleHeader(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Utilities.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ConsoleHeader
+    path: src/Utils/Utilities.cs
+    startLine: 71
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils
+  summary: "\nAdds a header wrapper inside a Console.WriteLine(). It&apos;s just for reusability.\n"
+  example: []
+  syntax:
+    content: public static void ConsoleHeader(string h)
+    parameters:
+    - id: h
+      type: System.String
+      description: The text to output.
+    content.vb: Public Shared Sub ConsoleHeader(h As String)
+  overload: Sustenet.Utils.Utilities.ConsoleHeader*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Utilities.GetAppPath
+  commentId: M:Sustenet.Utils.Utilities.GetAppPath
+  id: GetAppPath
+  parent: Sustenet.Utils.Utilities
+  langs:
+  - csharp
+  - vb
+  name: GetAppPath()
+  nameWithType: Utilities.GetAppPath()
+  fullName: Sustenet.Utils.Utilities.GetAppPath()
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Utilities.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: GetAppPath
+    path: src/Utils/Utilities.cs
+    startLine: 82
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils
+  summary: "\n\n"
+  example: []
+  syntax:
+    content: public static string GetAppPath()
+    return:
+      type: System.String
+      description: Returns the app path.
+    content.vb: Public Shared Function GetAppPath As String
+  overload: Sustenet.Utils.Utilities.GetAppPath*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Utilities.WriteLine(System.String)
+  commentId: M:Sustenet.Utils.Utilities.WriteLine(System.String)
+  id: WriteLine(System.String)
+  parent: Sustenet.Utils.Utilities
+  langs:
+  - csharp
+  - vb
+  name: WriteLine(String)
+  nameWithType: Utilities.WriteLine(String)
+  fullName: Sustenet.Utils.Utilities.WriteLine(System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Utilities.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: WriteLine
+    path: src/Utils/Utilities.cs
+    startLine: 90
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils
+  syntax:
+    content: public static void WriteLine(string msg)
+    parameters:
+    - id: msg
+      type: System.String
+    content.vb: Public Shared Sub WriteLine(msg As String)
+  overload: Sustenet.Utils.Utilities.WriteLine*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: Sustenet.Utils.Utilities.WriteLine(System.Exception)
+  commentId: M:Sustenet.Utils.Utilities.WriteLine(System.Exception)
+  id: WriteLine(System.Exception)
+  parent: Sustenet.Utils.Utilities
+  langs:
+  - csharp
+  - vb
+  name: WriteLine(Exception)
+  nameWithType: Utilities.WriteLine(Exception)
+  fullName: Sustenet.Utils.Utilities.WriteLine(System.Exception)
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Utilities.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: WriteLine
+    path: src/Utils/Utilities.cs
+    startLine: 100
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils
+  syntax:
+    content: public static void WriteLine(Exception e)
+    parameters:
+    - id: e
+      type: System.Exception
+    content.vb: Public Shared Sub WriteLine(e As Exception)
+  overload: Sustenet.Utils.Utilities.WriteLine*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: Sustenet.Utils
+  commentId: N:Sustenet.Utils
+  name: Sustenet.Utils
+  nameWithType: Sustenet.Utils
+  fullName: Sustenet.Utils
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sustenet.Utils.Utilities.TryParseNullable*
+  commentId: Overload:Sustenet.Utils.Utilities.TryParseNullable
+  name: TryParseNullable
+  nameWithType: Utilities.TryParseNullable
+  fullName: Sustenet.Utils.Utilities.TryParseNullable
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Nullable{System.UInt16}
+  commentId: T:System.Nullable{System.UInt16}
+  parent: System
+  definition: System.Nullable`1
+  name: Nullable<UInt16>
+  nameWithType: Nullable<UInt16>
+  fullName: System.Nullable<System.UInt16>
+  nameWithType.vb: Nullable(Of UInt16)
+  fullName.vb: System.Nullable(Of System.UInt16)
+  name.vb: Nullable(Of UInt16)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.UInt16
+    name: UInt16
+    nameWithType: UInt16
+    fullName: System.UInt16
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.UInt16
+    name: UInt16
+    nameWithType: UInt16
+    fullName: System.UInt16
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Nullable{System.Int32}
+  commentId: T:System.Nullable{System.Int32}
+  parent: System
+  definition: System.Nullable`1
+  name: Nullable<Int32>
+  nameWithType: Nullable<Int32>
+  fullName: System.Nullable<System.Int32>
+  nameWithType.vb: Nullable(Of Int32)
+  fullName.vb: System.Nullable(Of System.Int32)
+  name.vb: Nullable(Of Int32)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Sustenet.Utils.Utilities.SplitByPascalCase*
+  commentId: Overload:Sustenet.Utils.Utilities.SplitByPascalCase
+  name: SplitByPascalCase
+  nameWithType: Utilities.SplitByPascalCase
+  fullName: Sustenet.Utils.Utilities.SplitByPascalCase
+- uid: Sustenet.Utils.Utilities.ConsoleHeader*
+  commentId: Overload:Sustenet.Utils.Utilities.ConsoleHeader
+  name: ConsoleHeader
+  nameWithType: Utilities.ConsoleHeader
+  fullName: Sustenet.Utils.Utilities.ConsoleHeader
+- uid: Sustenet.Utils.Utilities.GetAppPath*
+  commentId: Overload:Sustenet.Utils.Utilities.GetAppPath
+  name: GetAppPath
+  nameWithType: Utilities.GetAppPath
+  fullName: Sustenet.Utils.Utilities.GetAppPath
+- uid: Sustenet.Utils.Utilities.WriteLine*
+  commentId: Overload:Sustenet.Utils.Utilities.WriteLine
+  name: WriteLine
+  nameWithType: Utilities.WriteLine
+  fullName: Sustenet.Utils.Utilities.WriteLine
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception

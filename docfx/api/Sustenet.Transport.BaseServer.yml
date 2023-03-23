@@ -1,0 +1,1219 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Transport.BaseServer
+  commentId: T:Sustenet.Transport.BaseServer
+  id: BaseServer
+  parent: Sustenet.Transport
+  children:
+  - Sustenet.Transport.BaseServer.#ctor(Sustenet.Transport.BaseServer.ServerType,System.Int32,System.UInt16)
+  - Sustenet.Transport.BaseServer.clients
+  - Sustenet.Transport.BaseServer.DebugServer(System.String,System.String)
+  - Sustenet.Transport.BaseServer.maxConnections
+  - Sustenet.Transport.BaseServer.onConnection
+  - Sustenet.Transport.BaseServer.onDisconnection
+  - Sustenet.Transport.BaseServer.onReceived
+  - Sustenet.Transport.BaseServer.packetHandlers
+  - Sustenet.Transport.BaseServer.port
+  - Sustenet.Transport.BaseServer.releasedIds
+  - Sustenet.Transport.BaseServer.serverType
+  - Sustenet.Transport.BaseServer.serverTypeName
+  - Sustenet.Transport.BaseServer.Start(Sustenet.Transport.BaseServer.ServerType)
+  langs:
+  - csharp
+  - vb
+  name: BaseServer
+  nameWithType: BaseServer
+  fullName: Sustenet.Transport.BaseServer
+  type: Class
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: BaseServer
+    path: src/Transport/BaseServer.cs
+    startLine: 32
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  summary: "\nBase class of all server types. Takes in clients.\n"
+  example: []
+  syntax:
+    content: public class BaseServer
+    content.vb: Public Class BaseServer
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - Sustenet.World.ClusterServer
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: Sustenet.Transport.BaseServer.serverType
+  commentId: F:Sustenet.Transport.BaseServer.serverType
+  id: serverType
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: serverType
+  nameWithType: BaseServer.serverType
+  fullName: Sustenet.Transport.BaseServer.serverType
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: serverType
+    path: src/Transport/BaseServer.cs
+    startLine: 43
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public readonly BaseServer.ServerType serverType
+    return:
+      type: Sustenet.Transport.BaseServer.ServerType
+    content.vb: Public ReadOnly serverType As BaseServer.ServerType
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: Sustenet.Transport.BaseServer.serverTypeName
+  commentId: F:Sustenet.Transport.BaseServer.serverTypeName
+  id: serverTypeName
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: serverTypeName
+  nameWithType: BaseServer.serverTypeName
+  fullName: Sustenet.Transport.BaseServer.serverTypeName
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: serverTypeName
+    path: src/Transport/BaseServer.cs
+    startLine: 44
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public readonly string serverTypeName
+    return:
+      type: System.String
+    content.vb: Public ReadOnly serverTypeName As String
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: Sustenet.Transport.BaseServer.maxConnections
+  commentId: F:Sustenet.Transport.BaseServer.maxConnections
+  id: maxConnections
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: maxConnections
+  nameWithType: BaseServer.maxConnections
+  fullName: Sustenet.Transport.BaseServer.maxConnections
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: maxConnections
+    path: src/Transport/BaseServer.cs
+    startLine: 45
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public readonly int maxConnections
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly maxConnections As Integer
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: Sustenet.Transport.BaseServer.port
+  commentId: F:Sustenet.Transport.BaseServer.port
+  id: port
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: port
+  nameWithType: BaseServer.port
+  fullName: Sustenet.Transport.BaseServer.port
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: port
+    path: src/Transport/BaseServer.cs
+    startLine: 46
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public readonly ushort port
+    return:
+      type: System.UInt16
+    content.vb: Public ReadOnly port As UShort
+  modifiers.csharp:
+  - public
+  - readonly
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: Sustenet.Transport.BaseServer.clients
+  commentId: F:Sustenet.Transport.BaseServer.clients
+  id: clients
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: clients
+  nameWithType: BaseServer.clients
+  fullName: Sustenet.Transport.BaseServer.clients
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: clients
+    path: src/Transport/BaseServer.cs
+    startLine: 48
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public Dictionary<int, BaseClient> clients
+    return:
+      type: System.Collections.Generic.Dictionary{System.Int32,Sustenet.Transport.BaseClient}
+    content.vb: Public clients As Dictionary(Of Integer, BaseClient)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Transport.BaseServer.releasedIds
+  commentId: F:Sustenet.Transport.BaseServer.releasedIds
+  id: releasedIds
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: releasedIds
+  nameWithType: BaseServer.releasedIds
+  fullName: Sustenet.Transport.BaseServer.releasedIds
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: releasedIds
+    path: src/Transport/BaseServer.cs
+    startLine: 49
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public List<int> releasedIds
+    return:
+      type: System.Collections.Generic.List{System.Int32}
+    content.vb: Public releasedIds As List(Of Integer)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Transport.BaseServer.packetHandlers
+  commentId: F:Sustenet.Transport.BaseServer.packetHandlers
+  id: packetHandlers
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: packetHandlers
+  nameWithType: BaseServer.packetHandlers
+  fullName: Sustenet.Transport.BaseServer.packetHandlers
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: packetHandlers
+    path: src/Transport/BaseServer.cs
+    startLine: 56
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  summary: "\nA dictionary on how packets should be handled.\n"
+  example: []
+  syntax:
+    content: protected static Dictionary<int, BaseServer.PacketHandler> packetHandlers
+    return:
+      type: System.Collections.Generic.Dictionary{System.Int32,Sustenet.Transport.BaseServer.PacketHandler}
+    content.vb: Protected Shared packetHandlers As Dictionary(Of Integer, BaseServer.PacketHandler)
+  modifiers.csharp:
+  - protected
+  - static
+  modifiers.vb:
+  - Protected
+  - Shared
+- uid: Sustenet.Transport.BaseServer.onConnection
+  commentId: F:Sustenet.Transport.BaseServer.onConnection
+  id: onConnection
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: onConnection
+  nameWithType: BaseServer.onConnection
+  fullName: Sustenet.Transport.BaseServer.onConnection
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: onConnection
+    path: src/Transport/BaseServer.cs
+    startLine: 58
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public BaseEvent<int> onConnection
+    return:
+      type: Sustenet.Events.BaseEvent{System.Int32}
+    content.vb: Public onConnection As BaseEvent(Of Integer)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Transport.BaseServer.onDisconnection
+  commentId: F:Sustenet.Transport.BaseServer.onDisconnection
+  id: onDisconnection
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: onDisconnection
+  nameWithType: BaseServer.onDisconnection
+  fullName: Sustenet.Transport.BaseServer.onDisconnection
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: onDisconnection
+    path: src/Transport/BaseServer.cs
+    startLine: 59
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public BaseEvent<int> onDisconnection
+    return:
+      type: Sustenet.Events.BaseEvent{System.Int32}
+    content.vb: Public onDisconnection As BaseEvent(Of Integer)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Transport.BaseServer.onReceived
+  commentId: F:Sustenet.Transport.BaseServer.onReceived
+  id: onReceived
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: onReceived
+  nameWithType: BaseServer.onReceived
+  fullName: Sustenet.Transport.BaseServer.onReceived
+  type: Field
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: onReceived
+    path: src/Transport/BaseServer.cs
+    startLine: 60
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public BaseEvent<byte[]> onReceived
+    return:
+      type: Sustenet.Events.BaseEvent{System.Byte[]}
+    content.vb: Public onReceived As BaseEvent(Of Byte())
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Transport.BaseServer.#ctor(Sustenet.Transport.BaseServer.ServerType,System.Int32,System.UInt16)
+  commentId: M:Sustenet.Transport.BaseServer.#ctor(Sustenet.Transport.BaseServer.ServerType,System.Int32,System.UInt16)
+  id: '#ctor(Sustenet.Transport.BaseServer.ServerType,System.Int32,System.UInt16)'
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: BaseServer(BaseServer.ServerType, Int32, UInt16)
+  nameWithType: BaseServer.BaseServer(BaseServer.ServerType, Int32, UInt16)
+  fullName: Sustenet.Transport.BaseServer.BaseServer(Sustenet.Transport.BaseServer.ServerType, System.Int32, System.UInt16)
+  type: Constructor
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: .ctor
+    path: src/Transport/BaseServer.cs
+    startLine: 62
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: protected BaseServer(BaseServer.ServerType _serverType, int _maxConnections = 0, ushort _port = 6256)
+    parameters:
+    - id: _serverType
+      type: Sustenet.Transport.BaseServer.ServerType
+    - id: _maxConnections
+      type: System.Int32
+    - id: _port
+      type: System.UInt16
+    content.vb: Protected Sub New(_serverType As BaseServer.ServerType, _maxConnections As Integer = 0, _port As UShort = 6256)
+  overload: Sustenet.Transport.BaseServer.#ctor*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: Sustenet.Transport.BaseServer.Start(Sustenet.Transport.BaseServer.ServerType)
+  commentId: M:Sustenet.Transport.BaseServer.Start(Sustenet.Transport.BaseServer.ServerType)
+  id: Start(Sustenet.Transport.BaseServer.ServerType)
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: Start(BaseServer.ServerType)
+  nameWithType: BaseServer.Start(BaseServer.ServerType)
+  fullName: Sustenet.Transport.BaseServer.Start(Sustenet.Transport.BaseServer.ServerType)
+  type: Method
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Start
+    path: src/Transport/BaseServer.cs
+    startLine: 75
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  summary: "\nStarts a server.\n"
+  example: []
+  syntax:
+    content: protected void Start(BaseServer.ServerType _serverType)
+    parameters:
+    - id: _serverType
+      type: Sustenet.Transport.BaseServer.ServerType
+    content.vb: Protected Sub Start(_serverType As BaseServer.ServerType)
+  overload: Sustenet.Transport.BaseServer.Start*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: Sustenet.Transport.BaseServer.DebugServer(System.String,System.String)
+  commentId: M:Sustenet.Transport.BaseServer.DebugServer(System.String,System.String)
+  id: DebugServer(System.String,System.String)
+  parent: Sustenet.Transport.BaseServer
+  langs:
+  - csharp
+  - vb
+  name: DebugServer(String, String)
+  nameWithType: BaseServer.DebugServer(String, String)
+  fullName: Sustenet.Transport.BaseServer.DebugServer(System.String, System.String)
+  type: Method
+  source:
+    remote:
+      path: src/Transport/BaseServer.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: DebugServer
+    path: src/Transport/BaseServer.cs
+    startLine: 383
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport
+  syntax:
+    content: public static void DebugServer(string serverTypeName, string msg)
+    parameters:
+    - id: serverTypeName
+      type: System.String
+    - id: msg
+      type: System.String
+    content.vb: Public Shared Sub DebugServer(serverTypeName As String, msg As String)
+  overload: Sustenet.Transport.BaseServer.DebugServer*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: Sustenet.Transport
+  commentId: N:Sustenet.Transport
+  name: Sustenet.Transport
+  nameWithType: Sustenet.Transport
+  fullName: Sustenet.Transport
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Sustenet.Transport.BaseServer.ServerType
+  commentId: T:Sustenet.Transport.BaseServer.ServerType
+  parent: Sustenet.Transport
+  name: BaseServer.ServerType
+  nameWithType: BaseServer.ServerType
+  fullName: Sustenet.Transport.BaseServer.ServerType
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System.UInt16
+  commentId: T:System.UInt16
+  parent: System
+  isExternal: true
+  name: UInt16
+  nameWithType: UInt16
+  fullName: System.UInt16
+- uid: System.Collections.Generic.Dictionary{System.Int32,Sustenet.Transport.BaseClient}
+  commentId: T:System.Collections.Generic.Dictionary{System.Int32,Sustenet.Transport.BaseClient}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Int32, BaseClient>
+  nameWithType: Dictionary<Int32, BaseClient>
+  fullName: System.Collections.Generic.Dictionary<System.Int32, Sustenet.Transport.BaseClient>
+  nameWithType.vb: Dictionary(Of Int32, BaseClient)
+  fullName.vb: System.Collections.Generic.Dictionary(Of System.Int32, Sustenet.Transport.BaseClient)
+  name.vb: Dictionary(Of Int32, BaseClient)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Sustenet.Transport.BaseClient
+    name: BaseClient
+    nameWithType: BaseClient
+    fullName: Sustenet.Transport.BaseClient
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Sustenet.Transport.BaseClient
+    name: BaseClient
+    nameWithType: BaseClient
+    fullName: Sustenet.Transport.BaseClient
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.Dictionary`2
+  commentId: T:System.Collections.Generic.Dictionary`2
+  isExternal: true
+  name: Dictionary<TKey, TValue>
+  nameWithType: Dictionary<TKey, TValue>
+  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
+  nameWithType.vb: Dictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
+  name.vb: Dictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: System.Collections.Generic.List{System.Int32}
+  commentId: T:System.Collections.Generic.List{System.Int32}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.List`1
+  name: List<Int32>
+  nameWithType: List<Int32>
+  fullName: System.Collections.Generic.List<System.Int32>
+  nameWithType.vb: List(Of Int32)
+  fullName.vb: System.Collections.Generic.List(Of System.Int32)
+  name.vb: List(Of Int32)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.List`1
+  commentId: T:System.Collections.Generic.List`1
+  isExternal: true
+  name: List<T>
+  nameWithType: List<T>
+  fullName: System.Collections.Generic.List<T>
+  nameWithType.vb: List(Of T)
+  fullName.vb: System.Collections.Generic.List(Of T)
+  name.vb: List(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.List`1
+    name: List
+    nameWithType: List
+    fullName: System.Collections.Generic.List
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.Dictionary{System.Int32,Sustenet.Transport.BaseServer.PacketHandler}
+  commentId: T:System.Collections.Generic.Dictionary{System.Int32,Sustenet.Transport.BaseServer.PacketHandler}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.Dictionary`2
+  name: Dictionary<Int32, BaseServer.PacketHandler>
+  nameWithType: Dictionary<Int32, BaseServer.PacketHandler>
+  fullName: System.Collections.Generic.Dictionary<System.Int32, Sustenet.Transport.BaseServer.PacketHandler>
+  nameWithType.vb: Dictionary(Of Int32, BaseServer.PacketHandler)
+  fullName.vb: System.Collections.Generic.Dictionary(Of System.Int32, Sustenet.Transport.BaseServer.PacketHandler)
+  name.vb: Dictionary(Of Int32, BaseServer.PacketHandler)
+  spec.csharp:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Sustenet.Transport.BaseServer.PacketHandler
+    name: BaseServer.PacketHandler
+    nameWithType: BaseServer.PacketHandler
+    fullName: Sustenet.Transport.BaseServer.PacketHandler
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.Dictionary`2
+    name: Dictionary
+    nameWithType: Dictionary
+    fullName: System.Collections.Generic.Dictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: Sustenet.Transport.BaseServer.PacketHandler
+    name: BaseServer.PacketHandler
+    nameWithType: BaseServer.PacketHandler
+    fullName: Sustenet.Transport.BaseServer.PacketHandler
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Sustenet.Events.BaseEvent{System.Int32}
+  commentId: T:Sustenet.Events.BaseEvent{System.Int32}
+  parent: Sustenet.Events
+  definition: Sustenet.Events.BaseEvent`1
+  name: BaseEvent<Int32>
+  nameWithType: BaseEvent<Int32>
+  fullName: Sustenet.Events.BaseEvent<System.Int32>
+  nameWithType.vb: BaseEvent(Of Int32)
+  fullName.vb: Sustenet.Events.BaseEvent(Of System.Int32)
+  name.vb: BaseEvent(Of Int32)
+  spec.csharp:
+  - uid: Sustenet.Events.BaseEvent`1
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Sustenet.Events.BaseEvent`1
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Sustenet.Events.BaseEvent`1
+  commentId: T:Sustenet.Events.BaseEvent`1
+  name: BaseEvent<T>
+  nameWithType: BaseEvent<T>
+  fullName: Sustenet.Events.BaseEvent<T>
+  nameWithType.vb: BaseEvent(Of T)
+  fullName.vb: Sustenet.Events.BaseEvent(Of T)
+  name.vb: BaseEvent(Of T)
+  spec.csharp:
+  - uid: Sustenet.Events.BaseEvent`1
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Sustenet.Events.BaseEvent`1
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Sustenet.Events
+  commentId: N:Sustenet.Events
+  name: Sustenet.Events
+  nameWithType: Sustenet.Events
+  fullName: Sustenet.Events
+- uid: Sustenet.Events.BaseEvent{System.Byte[]}
+  commentId: T:Sustenet.Events.BaseEvent{System.Byte[]}
+  parent: Sustenet.Events
+  definition: Sustenet.Events.BaseEvent`1
+  name: BaseEvent<Byte[]>
+  nameWithType: BaseEvent<Byte[]>
+  fullName: Sustenet.Events.BaseEvent<System.Byte[]>
+  nameWithType.vb: BaseEvent(Of Byte())
+  fullName.vb: Sustenet.Events.BaseEvent(Of System.Byte())
+  name.vb: BaseEvent(Of Byte())
+  spec.csharp:
+  - uid: Sustenet.Events.BaseEvent`1
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Sustenet.Events.BaseEvent`1
+    name: BaseEvent
+    nameWithType: BaseEvent
+    fullName: Sustenet.Events.BaseEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Sustenet.Transport.BaseServer.#ctor*
+  commentId: Overload:Sustenet.Transport.BaseServer.#ctor
+  name: BaseServer
+  nameWithType: BaseServer.BaseServer
+  fullName: Sustenet.Transport.BaseServer.BaseServer
+- uid: Sustenet.Transport.BaseServer.Start*
+  commentId: Overload:Sustenet.Transport.BaseServer.Start
+  name: Start
+  nameWithType: BaseServer.Start
+  fullName: Sustenet.Transport.BaseServer.Start
+- uid: Sustenet.Transport.BaseServer.DebugServer*
+  commentId: Overload:Sustenet.Transport.BaseServer.DebugServer
+  name: DebugServer
+  nameWithType: BaseServer.DebugServer
+  fullName: Sustenet.Transport.BaseServer.DebugServer

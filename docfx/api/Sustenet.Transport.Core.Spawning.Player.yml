@@ -1,0 +1,474 @@
+### YamlMime:ManagedReference
+items:
+- uid: Sustenet.Transport.Core.Spawning.Player
+  commentId: T:Sustenet.Transport.Core.Spawning.Player
+  id: Player
+  parent: Sustenet.Transport.Core.Spawning
+  children:
+  - Sustenet.Transport.Core.Spawning.Player.#ctor(System.Int32,System.String,System.Numerics.Vector3)
+  - Sustenet.Transport.Core.Spawning.Player.username
+  langs:
+  - csharp
+  - vb
+  name: Player
+  nameWithType: Player
+  fullName: Sustenet.Transport.Core.Spawning.Player
+  type: Class
+  source:
+    remote:
+      path: src/Transport/Core/Spawning/Player.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Player
+    path: src/Transport/Core/Spawning/Player.cs
+    startLine: 4
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport.Core.Spawning
+  syntax:
+    content: 'public class Player : Spawnee'
+    content.vb: >-
+      Public Class Player
+          Inherits Spawnee
+  inheritance:
+  - System.Object
+  - Sustenet.Transport.Core.Spawning.Spawnee
+  inheritedMembers:
+  - Sustenet.Transport.Core.Spawning.Spawnee.id
+  - Sustenet.Transport.Core.Spawning.Spawnee.position
+  - Sustenet.Transport.Core.Spawning.Spawnee.rotation
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: Sustenet.Transport.Core.Spawning.Player.username
+  commentId: F:Sustenet.Transport.Core.Spawning.Player.username
+  id: username
+  parent: Sustenet.Transport.Core.Spawning.Player
+  langs:
+  - csharp
+  - vb
+  name: username
+  nameWithType: Player.username
+  fullName: Sustenet.Transport.Core.Spawning.Player.username
+  type: Field
+  source:
+    remote:
+      path: src/Transport/Core/Spawning/Player.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: username
+    path: src/Transport/Core/Spawning/Player.cs
+    startLine: 6
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport.Core.Spawning
+  syntax:
+    content: public string username
+    return:
+      type: System.String
+    content.vb: Public username As String
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Transport.Core.Spawning.Player.#ctor(System.Int32,System.String,System.Numerics.Vector3)
+  commentId: M:Sustenet.Transport.Core.Spawning.Player.#ctor(System.Int32,System.String,System.Numerics.Vector3)
+  id: '#ctor(System.Int32,System.String,System.Numerics.Vector3)'
+  parent: Sustenet.Transport.Core.Spawning.Player
+  langs:
+  - csharp
+  - vb
+  name: Player(Int32, String, Vector3)
+  nameWithType: Player.Player(Int32, String, Vector3)
+  fullName: Sustenet.Transport.Core.Spawning.Player.Player(System.Int32, System.String, System.Numerics.Vector3)
+  type: Constructor
+  source:
+    remote:
+      path: src/Transport/Core/Spawning/Player.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: .ctor
+    path: src/Transport/Core/Spawning/Player.cs
+    startLine: 8
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Transport.Core.Spawning
+  syntax:
+    content: public Player(int _id, string _username, Vector3 _spawnPosition)
+    parameters:
+    - id: _id
+      type: System.Int32
+    - id: _username
+      type: System.String
+    - id: _spawnPosition
+      type: System.Numerics.Vector3
+    content.vb: Public Sub New(_id As Integer, _username As String, _spawnPosition As Vector3)
+  overload: Sustenet.Transport.Core.Spawning.Player.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: Sustenet.Transport.Core.Spawning
+  commentId: N:Sustenet.Transport.Core.Spawning
+  name: Sustenet.Transport.Core.Spawning
+  nameWithType: Sustenet.Transport.Core.Spawning
+  fullName: Sustenet.Transport.Core.Spawning
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: Sustenet.Transport.Core.Spawning.Spawnee
+  commentId: T:Sustenet.Transport.Core.Spawning.Spawnee
+  parent: Sustenet.Transport.Core.Spawning
+  name: Spawnee
+  nameWithType: Spawnee
+  fullName: Sustenet.Transport.Core.Spawning.Spawnee
+- uid: Sustenet.Transport.Core.Spawning.Spawnee.id
+  commentId: F:Sustenet.Transport.Core.Spawning.Spawnee.id
+  parent: Sustenet.Transport.Core.Spawning.Spawnee
+  name: id
+  nameWithType: Spawnee.id
+  fullName: Sustenet.Transport.Core.Spawning.Spawnee.id
+- uid: Sustenet.Transport.Core.Spawning.Spawnee.position
+  commentId: F:Sustenet.Transport.Core.Spawning.Spawnee.position
+  parent: Sustenet.Transport.Core.Spawning.Spawnee
+  name: position
+  nameWithType: Spawnee.position
+  fullName: Sustenet.Transport.Core.Spawning.Spawnee.position
+- uid: Sustenet.Transport.Core.Spawning.Spawnee.rotation
+  commentId: F:Sustenet.Transport.Core.Spawning.Spawnee.rotation
+  parent: Sustenet.Transport.Core.Spawning.Spawnee
+  name: rotation
+  nameWithType: Spawnee.rotation
+  fullName: Sustenet.Transport.Core.Spawning.Spawnee.rotation
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: Sustenet.Transport.Core.Spawning.Player.#ctor*
+  commentId: Overload:Sustenet.Transport.Core.Spawning.Player.#ctor
+  name: Player
+  nameWithType: Player.Player
+  fullName: Sustenet.Transport.Core.Spawning.Player.Player
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System.Numerics.Vector3
+  commentId: T:System.Numerics.Vector3
+  parent: System.Numerics
+  isExternal: true
+  name: Vector3
+  nameWithType: Vector3
+  fullName: System.Numerics.Vector3
+- uid: System.Numerics
+  commentId: N:System.Numerics
+  isExternal: true
+  name: System.Numerics
+  nameWithType: System.Numerics
+  fullName: System.Numerics

@@ -1,0 +1,73 @@
+### YamlMime:ManagedReference
+items:
+- uid: NDesk.Options.OptionAction`2
+  commentId: T:NDesk.Options.OptionAction`2
+  id: OptionAction`2
+  parent: NDesk.Options
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: OptionAction<TKey, TValue>
+  nameWithType: OptionAction<TKey, TValue>
+  fullName: NDesk.Options.OptionAction<TKey, TValue>
+  type: Delegate
+  source:
+    remote:
+      path: libs/NDesk/Options.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: OptionAction
+    path: libs/NDesk/Options.cs
+    startLine: 491
+  assemblies:
+  - Sustenet
+  namespace: NDesk.Options
+  syntax:
+    content: public delegate void OptionAction<TKey, TValue>(TKey key, TValue value);
+    parameters:
+    - id: key
+      type: '{TKey}'
+    - id: value
+      type: '{TValue}'
+    typeParameters:
+    - id: TKey
+    - id: TValue
+    content.vb: Public Delegate Sub OptionAction(Of TKey, TValue)(key As TKey, value As TValue)
+  nameWithType.vb: OptionAction(Of TKey, TValue)
+  modifiers.csharp:
+  - public
+  - delegate
+  modifiers.vb:
+  - Public
+  - Delegate
+  fullName.vb: NDesk.Options.OptionAction(Of TKey, TValue)
+  name.vb: OptionAction(Of TKey, TValue)
+references:
+- uid: NDesk.Options
+  commentId: N:NDesk.Options
+  name: NDesk.Options
+  nameWithType: NDesk.Options
+  fullName: NDesk.Options
+- uid: '{TKey}'
+  commentId: '!:TKey'
+  definition: TKey
+  name: TKey
+  nameWithType: TKey
+  fullName: TKey
+- uid: '{TValue}'
+  commentId: '!:TValue'
+  definition: TValue
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: TKey
+  commentId: '!:TKey'
+  name: TKey
+  nameWithType: TKey
+  fullName: TKey
+- uid: TValue
+  commentId: '!:TValue'
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
