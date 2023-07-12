@@ -395,7 +395,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: DebugClient
     path: src/Transport/BaseClient.cs
-    startLine: 318
+    startLine: 322
   assemblies:
   - Sustenet
   namespace: Sustenet.Transport
@@ -432,7 +432,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Dispose
     path: src/Transport/BaseClient.cs
-    startLine: 325
+    startLine: 329
   assemblies:
   - Sustenet
   namespace: Sustenet.Transport
@@ -467,7 +467,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Dispose
     path: src/Transport/BaseClient.cs
-    startLine: 345
+    startLine: 349
   assemblies:
   - Sustenet
   namespace: Sustenet.Transport

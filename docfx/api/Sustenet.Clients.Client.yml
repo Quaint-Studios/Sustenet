@@ -154,7 +154,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: .ctor
     path: src/Clients/Client.cs
-    startLine: 84
+    startLine: 86
   assemblies:
   - Sustenet
   namespace: Sustenet.Clients
@@ -189,7 +189,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Login
     path: src/Clients/Client.cs
-    startLine: 120
+    startLine: 122
   assemblies:
   - Sustenet
   namespace: Sustenet.Clients
@@ -222,7 +222,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Connect
     path: src/Clients/Client.cs
-    startLine: 130
+    startLine: 132
   assemblies:
   - Sustenet
   namespace: Sustenet.Clients
@@ -257,7 +257,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: InitializeClientData
     path: src/Clients/Client.cs
-    startLine: 216
+    startLine: 218
   assemblies:
   - Sustenet
   namespace: Sustenet.Clients

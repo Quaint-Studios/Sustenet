@@ -5,6 +5,7 @@ items:
   id: ServerPackets
   parent: Sustenet.Network
   children:
+  - Sustenet.Network.ServerPackets.clusterServerList
   - Sustenet.Network.ServerPackets.initializeCluster
   - Sustenet.Network.ServerPackets.initializeLogin
   - Sustenet.Network.ServerPackets.message
@@ -210,6 +211,40 @@ items:
   modifiers.vb:
   - Public
   - Const
+- uid: Sustenet.Network.ServerPackets.clusterServerList
+  commentId: F:Sustenet.Network.ServerPackets.clusterServerList
+  id: clusterServerList
+  parent: Sustenet.Network.ServerPackets
+  langs:
+  - csharp
+  - vb
+  name: clusterServerList
+  nameWithType: ServerPackets.clusterServerList
+  fullName: Sustenet.Network.ServerPackets.clusterServerList
+  type: Field
+  source:
+    remote:
+      path: src/Network/PacketTypes.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: clusterServerList
+    path: src/Network/PacketTypes.cs
+    startLine: 51
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nSends a list of cluster servers containing their name, ip, and port.\n"
+  example: []
+  syntax:
+    content: clusterServerList = 3
+    return:
+      type: Sustenet.Network.ServerPackets
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
 - uid: Sustenet.Network.ServerPackets.updatePosition
   commentId: F:Sustenet.Network.ServerPackets.updatePosition
   id: updatePosition
@@ -228,7 +263,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: updatePosition
     path: src/Network/PacketTypes.cs
-    startLine: 49
+    startLine: 56
   assemblies:
   - Sustenet
   namespace: Sustenet.Network

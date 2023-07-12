@@ -225,7 +225,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Dispose
     path: src/Transport/BaseClient.cs
-    startLine: 217
+    startLine: 221
   assemblies:
   - Sustenet
   namespace: Sustenet.Transport
@@ -260,7 +260,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Dispose
     path: src/Transport/BaseClient.cs
-    startLine: 231
+    startLine: 235
   assemblies:
   - Sustenet
   namespace: Sustenet.Transport

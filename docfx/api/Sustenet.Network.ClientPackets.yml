@@ -7,6 +7,7 @@ items:
   children:
   - Sustenet.Network.ClientPackets.answerPassphrase
   - Sustenet.Network.ClientPackets.moveTo
+  - Sustenet.Network.ClientPackets.requestClusterServers
   - Sustenet.Network.ClientPackets.startUdp
   - Sustenet.Network.ClientPackets.validateCluster
   - Sustenet.Network.ClientPackets.validateLogin
@@ -24,7 +25,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ClientPackets
     path: src/Network/PacketTypes.cs
-    startLine: 67
+    startLine: 74
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -57,7 +58,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: answerPassphrase
     path: src/Network/PacketTypes.cs
-    startLine: 72
+    startLine: 79
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -91,7 +92,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: validateCluster
     path: src/Network/PacketTypes.cs
-    startLine: 78
+    startLine: 85
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -125,7 +126,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: validateLogin
     path: src/Network/PacketTypes.cs
-    startLine: 82
+    startLine: 89
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -159,7 +160,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: startUdp
     path: src/Network/PacketTypes.cs
-    startLine: 86
+    startLine: 93
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -167,6 +168,40 @@ items:
   example: []
   syntax:
     content: startUdp = 2
+    return:
+      type: Sustenet.Network.ClientPackets
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: Sustenet.Network.ClientPackets.requestClusterServers
+  commentId: F:Sustenet.Network.ClientPackets.requestClusterServers
+  id: requestClusterServers
+  parent: Sustenet.Network.ClientPackets
+  langs:
+  - csharp
+  - vb
+  name: requestClusterServers
+  nameWithType: ClientPackets.requestClusterServers
+  fullName: Sustenet.Network.ClientPackets.requestClusterServers
+  type: Field
+  source:
+    remote:
+      path: src/Network/PacketTypes.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: requestClusterServers
+    path: src/Network/PacketTypes.cs
+    startLine: 97
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nRequests a list of cluster servers from the master server.\n"
+  example: []
+  syntax:
+    content: requestClusterServers = 3
     return:
       type: Sustenet.Network.ClientPackets
   modifiers.csharp:
@@ -193,7 +228,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: moveTo
     path: src/Network/PacketTypes.cs
-    startLine: 89
+    startLine: 100
   assemblies:
   - Sustenet
   namespace: Sustenet.Network

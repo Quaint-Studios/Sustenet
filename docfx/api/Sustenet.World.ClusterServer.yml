@@ -22,7 +22,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ClusterServer
     path: src/World/ClusterServer.cs
-    startLine: 28
+    startLine: 42
   assemblies:
   - Sustenet
   namespace: Sustenet.World
@@ -80,7 +80,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: masterConn
     path: src/World/ClusterServer.cs
-    startLine: 30
+    startLine: 44
   assemblies:
   - Sustenet
   namespace: Sustenet.World
@@ -111,7 +111,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: .ctor
     path: src/World/ClusterServer.cs
-    startLine: 36
+    startLine: 50
   assemblies:
   - Sustenet
   namespace: Sustenet.World
@@ -148,7 +148,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: InitializeData
     path: src/World/ClusterServer.cs
-    startLine: 45
+    startLine: 59
   assemblies:
   - Sustenet
   namespace: Sustenet.World

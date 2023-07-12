@@ -7,6 +7,7 @@ items:
   children:
   - Sustenet.Utils.Utilities.ConsoleHeader(System.String)
   - Sustenet.Utils.Utilities.GetAppPath
+  - Sustenet.Utils.Utilities.InitializeClusterServer
   - Sustenet.Utils.Utilities.SplitByPascalCase(System.String)
   - Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.Int32}@)
   - Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.UInt16}@)
@@ -50,6 +51,38 @@ items:
   modifiers.vb:
   - Public
   - Module
+- uid: Sustenet.Utils.Utilities.InitializeClusterServer
+  commentId: M:Sustenet.Utils.Utilities.InitializeClusterServer
+  id: InitializeClusterServer
+  parent: Sustenet.Utils.Utilities
+  langs:
+  - csharp
+  - vb
+  name: InitializeClusterServer()
+  nameWithType: Utilities.InitializeClusterServer()
+  fullName: Sustenet.Utils.Utilities.InitializeClusterServer()
+  type: Method
+  source:
+    remote:
+      path: src/Utils/Utilities.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: InitializeClusterServer
+    path: src/Utils/Utilities.cs
+    startLine: 25
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Utils
+  syntax:
+    content: public static void InitializeClusterServer()
+    content.vb: Public Shared Sub InitializeClusterServer
+  overload: Sustenet.Utils.Utilities.InitializeClusterServer*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
 - uid: Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.UInt16}@)
   commentId: M:Sustenet.Utils.Utilities.TryParseNullable(System.String,System.Nullable{System.UInt16}@)
   id: TryParseNullable(System.String,System.Nullable{System.UInt16}@)
@@ -68,7 +101,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: TryParseNullable
     path: src/Utils/Utilities.cs
-    startLine: 25
+    startLine: 32
   assemblies:
   - Sustenet
   namespace: Sustenet.Utils
@@ -110,7 +143,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: TryParseNullable
     path: src/Utils/Utilities.cs
-    startLine: 39
+    startLine: 46
   assemblies:
   - Sustenet
   namespace: Sustenet.Utils
@@ -152,7 +185,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: SplitByPascalCase
     path: src/Utils/Utilities.cs
-    startLine: 61
+    startLine: 68
   assemblies:
   - Sustenet
   namespace: Sustenet.Utils
@@ -193,7 +226,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ConsoleHeader
     path: src/Utils/Utilities.cs
-    startLine: 71
+    startLine: 78
   assemblies:
   - Sustenet
   namespace: Sustenet.Utils
@@ -231,7 +264,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: GetAppPath
     path: src/Utils/Utilities.cs
-    startLine: 82
+    startLine: 89
   assemblies:
   - Sustenet
   namespace: Sustenet.Utils
@@ -268,7 +301,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: WriteLine
     path: src/Utils/Utilities.cs
-    startLine: 90
+    startLine: 97
   assemblies:
   - Sustenet
   namespace: Sustenet.Utils
@@ -303,7 +336,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: WriteLine
     path: src/Utils/Utilities.cs
-    startLine: 100
+    startLine: 107
   assemblies:
   - Sustenet
   namespace: Sustenet.Utils
@@ -618,6 +651,11 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: Sustenet.Utils.Utilities.InitializeClusterServer*
+  commentId: Overload:Sustenet.Utils.Utilities.InitializeClusterServer
+  name: InitializeClusterServer
+  nameWithType: Utilities.InitializeClusterServer
+  fullName: Sustenet.Utils.Utilities.InitializeClusterServer
 - uid: Sustenet.Utils.Utilities.TryParseNullable*
   commentId: Overload:Sustenet.Utils.Utilities.TryParseNullable
   name: TryParseNullable

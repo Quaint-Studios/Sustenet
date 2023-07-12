@@ -20,6 +20,7 @@ items:
   - Sustenet.Network.Packet.ReadLong(System.Boolean)
   - Sustenet.Network.Packet.ReadShort(System.Boolean)
   - Sustenet.Network.Packet.ReadString(System.Boolean)
+  - Sustenet.Network.Packet.ReadUShort(System.Boolean)
   - Sustenet.Network.Packet.Reset(System.Boolean)
   - Sustenet.Network.Packet.SetBytes(System.Byte[])
   - Sustenet.Network.Packet.ToArray
@@ -32,6 +33,7 @@ items:
   - Sustenet.Network.Packet.Write(System.Int64)
   - Sustenet.Network.Packet.Write(System.Single)
   - Sustenet.Network.Packet.Write(System.String)
+  - Sustenet.Network.Packet.Write(System.UInt16)
   - Sustenet.Network.Packet.WriteLength
   langs:
   - csharp
@@ -530,6 +532,39 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: Sustenet.Network.Packet.Write(System.UInt16)
+  commentId: M:Sustenet.Network.Packet.Write(System.UInt16)
+  id: Write(System.UInt16)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: Write(UInt16)
+  nameWithType: Packet.Write(UInt16)
+  fullName: Sustenet.Network.Packet.Write(System.UInt16)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: Write
+    path: src/Network/Packet.cs
+    startLine: 144
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  syntax:
+    content: public void Write(ushort data)
+    parameters:
+    - id: data
+      type: System.UInt16
+    content.vb: Public Sub Write(data As UShort)
+  overload: Sustenet.Network.Packet.Write*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 - uid: Sustenet.Network.Packet.Write(System.Int32)
   commentId: M:Sustenet.Network.Packet.Write(System.Int32)
   id: Write(System.Int32)
@@ -548,7 +583,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Write
     path: src/Network/Packet.cs
-    startLine: 144
+    startLine: 149
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -581,7 +616,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Write
     path: src/Network/Packet.cs
-    startLine: 148
+    startLine: 153
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -614,7 +649,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Write
     path: src/Network/Packet.cs
-    startLine: 153
+    startLine: 158
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -647,7 +682,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Write
     path: src/Network/Packet.cs
-    startLine: 158
+    startLine: 163
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -680,7 +715,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Write
     path: src/Network/Packet.cs
-    startLine: 163
+    startLine: 168
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -713,7 +748,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ReadByte
     path: src/Network/Packet.cs
-    startLine: 176
+    startLine: 181
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -752,7 +787,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ReadBytes
     path: src/Network/Packet.cs
-    startLine: 202
+    startLine: 207
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -794,7 +829,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ReadShort
     path: src/Network/Packet.cs
-    startLine: 227
+    startLine: 232
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -811,6 +846,45 @@ items:
       description: Returns the short that was read.
     content.vb: Public Function ReadShort(moveReadPos As Boolean = True) As Short
   overload: Sustenet.Network.Packet.ReadShort*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Sustenet.Network.Packet.ReadUShort(System.Boolean)
+  commentId: M:Sustenet.Network.Packet.ReadUShort(System.Boolean)
+  id: ReadUShort(System.Boolean)
+  parent: Sustenet.Network.Packet
+  langs:
+  - csharp
+  - vb
+  name: ReadUShort(Boolean)
+  nameWithType: Packet.ReadUShort(Boolean)
+  fullName: Sustenet.Network.Packet.ReadUShort(System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: src/Network/Packet.cs
+      branch: production-prep
+      repo: git@github.com:Quaint-Studios/Sustenet.git
+    id: ReadUShort
+    path: src/Network/Packet.cs
+    startLine: 257
+  assemblies:
+  - Sustenet
+  namespace: Sustenet.Network
+  summary: "\nReads a ushort from the packet.\n"
+  example: []
+  syntax:
+    content: public ushort ReadUShort(bool moveReadPos = true)
+    parameters:
+    - id: moveReadPos
+      type: System.Boolean
+      description: If the buffer&apos;s read position should be incremented by 2.
+    return:
+      type: System.UInt16
+      description: Returns the short that was read.
+    content.vb: Public Function ReadUShort(moveReadPos As Boolean = True) As UShort
+  overload: Sustenet.Network.Packet.ReadUShort*
   modifiers.csharp:
   - public
   modifiers.vb:
@@ -833,7 +907,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ReadInt
     path: src/Network/Packet.cs
-    startLine: 252
+    startLine: 282
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -872,7 +946,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ReadLong
     path: src/Network/Packet.cs
-    startLine: 277
+    startLine: 307
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -911,7 +985,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ReadFloat
     path: src/Network/Packet.cs
-    startLine: 302
+    startLine: 332
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -950,7 +1024,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ReadBool
     path: src/Network/Packet.cs
-    startLine: 327
+    startLine: 357
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -989,7 +1063,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ReadString
     path: src/Network/Packet.cs
-    startLine: 352
+    startLine: 382
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -1028,7 +1102,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Dispose
     path: src/Network/Packet.cs
-    startLine: 375
+    startLine: 405
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -1063,7 +1137,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: Dispose
     path: src/Network/Packet.cs
-    startLine: 390
+    startLine: 420
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -1481,6 +1555,13 @@ references:
   name: Int16
   nameWithType: Int16
   fullName: System.Int16
+- uid: System.UInt16
+  commentId: T:System.UInt16
+  parent: System
+  isExternal: true
+  name: UInt16
+  nameWithType: UInt16
+  fullName: System.UInt16
 - uid: System.Int64
   commentId: T:System.Int64
   parent: System
@@ -1517,6 +1598,11 @@ references:
   name: ReadShort
   nameWithType: Packet.ReadShort
   fullName: Sustenet.Network.Packet.ReadShort
+- uid: Sustenet.Network.Packet.ReadUShort*
+  commentId: Overload:Sustenet.Network.Packet.ReadUShort
+  name: ReadUShort
+  nameWithType: Packet.ReadUShort
+  fullName: Sustenet.Network.Packet.ReadUShort
 - uid: Sustenet.Network.Packet.ReadInt*
   commentId: Overload:Sustenet.Network.Packet.ReadInt
   name: ReadInt

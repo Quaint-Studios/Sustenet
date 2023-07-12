@@ -20,7 +20,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: ClusterPackets
     path: src/Network/PacketTypes.cs
-    startLine: 56
+    startLine: 63
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
@@ -53,7 +53,7 @@ items:
       repo: git@github.com:Quaint-Studios/Sustenet.git
     id: move
     path: src/Network/PacketTypes.cs
-    startLine: 61
+    startLine: 68
   assemblies:
   - Sustenet
   namespace: Sustenet.Network
