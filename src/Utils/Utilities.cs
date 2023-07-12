@@ -22,6 +22,13 @@ namespace Sustenet.Utils
 
     public static class Utilities
     {
+        #region Initialize
+        public static void InitializeClusterServer()
+        {
+            Config.settings = Config.GetConfig(Config.ConfigType.ClusterServer);
+        }
+        #endregion
+
         #region TryParseNullable
         public static bool TryParseNullable(string n, out ushort? outVal)
         {
@@ -76,9 +83,14 @@ namespace Sustenet.Utils
         #endregion
 
         #region Files Handling
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Returns the app path.</returns>
         public static string GetAppPath()
         {
-            return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            return System.IO.Directory.GetCurrentDirectory();
+            // return System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
         }
         #endregion
 

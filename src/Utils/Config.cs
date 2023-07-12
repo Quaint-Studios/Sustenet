@@ -49,7 +49,7 @@ namespace Sustenet.Utils
         public static KeyValueConfigurationCollection GetConfig(ConfigType configType)
         {
             ExeConfigurationFileMap configMap = new ExeConfigurationFileMap();
-            configMap.ExeConfigFilename = Path.Combine(Utilities.GetAppPath(), $@"cfg\{configType.ToString()}.config");
+            configMap.ExeConfigFilename = Path.Combine(Utilities.GetAppPath(), $@"cfg/{configType.ToString()}.config");
             Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configMap, ConfigurationUserLevel.None);
 
             return config.AppSettings.Settings;

@@ -25,7 +25,7 @@ namespace Sustenet.Utils.Security
 
     public static class AESManager
     {
-        private static string rootPath = @"cfg\keys\aes";
+        private static string rootPath = @"cfg/keys/aes";
         private static string fileSuffix = "_aes.xml";
 
         static AESManager()
@@ -99,7 +99,7 @@ namespace Sustenet.Utils.Security
             XmlSerializer serializer = new XmlSerializer(typeof(string));
 
             // AES Key
-            using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), $@"{rootPath}\{keyName}{fileSuffix}")))
+            using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), $@"{rootPath}/{keyName}{fileSuffix}")))
             {
                 serializer.Serialize(writer, aesKey);
             }

@@ -26,7 +26,7 @@ namespace Sustenet.Utils.Security
 
     public static class RSAManager
     {
-        private static string rootPath = @"cfg\keys\rsa";
+        private static string rootPath = @"cfg/keys/rsa";
         private static string privFolder = "priv";
         private static string pubFolder = "pub";
         private static string pubSuffix = "_pub.xml";
@@ -34,12 +34,12 @@ namespace Sustenet.Utils.Security
 
         static RSAManager()
         {
-            string privPath = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}\{privFolder}");
+            string privPath = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}/{privFolder}");
 
             if(!Directory.Exists(privPath))
                 Directory.CreateDirectory(privPath);
 
-            string pubPath = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}\{pubFolder}");
+            string pubPath = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}/{pubFolder}");
 
             if(!Directory.Exists(pubPath))
                 Directory.CreateDirectory(pubPath);
@@ -96,13 +96,13 @@ namespace Sustenet.Utils.Security
             XmlSerializer serializer = new XmlSerializer(typeof(RSAParameters));
 
             // Private Key
-            using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), $@"{rootPath}\{privFolder}\{keyName}{privSuffix}")))
+            using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), $@"{rootPath}/{privFolder}/{keyName}{privSuffix}")))
             {
                 serializer.Serialize(writer, privKey);
             }
 
             // Public Key
-            using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), $@"{rootPath}\{pubFolder}\{keyName}{pubSuffix}")))
+            using(StreamWriter writer = new StreamWriter(Path.Combine(Utilities.GetAppPath(), $@"{rootPath}/{pubFolder}/{keyName}{pubSuffix}")))
             {
                 serializer.Serialize(writer, pubKey);
             }
@@ -127,7 +127,7 @@ namespace Sustenet.Utils.Security
         {
             try
             {
-                string path = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}\{pubFolder}");
+                string path = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}/{pubFolder}");
 
                 // Public Key
                 foreach(string pubKeyName in Directory.GetFiles(path, $"*{pubSuffix}"))
@@ -151,7 +151,7 @@ namespace Sustenet.Utils.Security
         {
             try
             {
-                string path = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}\{privFolder}");
+                string path = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}/{privFolder}");
 
                 // Private Key
                 foreach(string privKeyName in Directory.GetFiles(path, $"*{privSuffix}"))
@@ -180,7 +180,7 @@ namespace Sustenet.Utils.Security
                 // Public Key
                 if(keyType == KeyType.PublicKey)
                 {
-                    string path = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}\{pubFolder}");
+                    string path = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}/{pubFolder}");
                     KeyData data = GetKey(path, $"{keyName}{pubSuffix}", keyType, serializer);
                     AddKey(data.name, data.key, KeyType.PublicKey);
                     return;
@@ -189,7 +189,7 @@ namespace Sustenet.Utils.Security
                 // Private Key
                 if(keyType == KeyType.PrivateKey)
                 {
-                    string path = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}\{privFolder}");
+                    string path = Path.Combine(Utilities.GetAppPath(), $@"{rootPath}/{privFolder}");
                     KeyData data = GetKey(path, $"{keyName}{privSuffix}", keyType, serializer);
                     AddKey(data.name, data.key, KeyType.PrivateKey);
                 }
