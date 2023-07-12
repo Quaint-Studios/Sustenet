@@ -142,6 +142,11 @@ namespace Sustenet.Network
             buffer.AddRange(BitConverter.GetBytes(data));
         }
 
+        public void Write(ushort data)
+        {
+            buffer.AddRange(BitConverter.GetBytes(data));
+        }
+
         public void Write(int data)
         {
             buffer.AddRange(BitConverter.GetBytes(data));
@@ -242,6 +247,31 @@ namespace Sustenet.Network
             else
             {
                 throw new Exception("Could not read value of type 'short'!");
+            }
+        }
+
+        /// <summary>
+        /// Reads a ushort from the packet.
+        /// </summary>
+        /// <param name="moveReadPos">If the buffer's read position should be incremented by 2.</param>
+        /// <returns>Returns the short that was read.</returns>
+        public ushort ReadUShort(bool moveReadPos = true)
+        {
+            // If there are still bytes left unread.
+            if(buffer.Count > readPos)
+            {
+                ushort data = BitConverter.ToUInt16(readableBuffer, readPos); // Convert the bytes to a ushort.
+
+                if(moveReadPos)
+                {
+                    readPos += 2;
+                }
+
+                return data;
+            }
+            else
+            {
+                throw new Exception("Could not read value of type 'ushort'!");
             }
         }
 
