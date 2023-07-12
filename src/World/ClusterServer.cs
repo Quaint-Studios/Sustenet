@@ -22,6 +22,20 @@ namespace Sustenet.World
     using Transport;
     using Utils;
 
+    internal struct ClusterInfo
+    {
+        public string name;
+        public string ip;
+        public ushort port;
+
+        public ClusterInfo(string _name, string _ip, ushort _port)
+        {
+            name = _name;
+            ip = _ip;
+            port = _port;
+        }
+    }
+
     /// <summary>
     /// A regionally hosted server that controls and allocates users to
     /// smaller fragmented servers.

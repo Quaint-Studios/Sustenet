@@ -64,6 +64,21 @@ namespace Sustenet.Transport.Messages.ClientHandlers
         }
         #endregion
 
+        #region Request Section
+        /// <summary>
+        /// TODO DOCUMENTATION
+        /// </summary>
+        /// <param name="client"></param>
+        internal static void RequestClusterServers(this Client client)
+        {
+            // Tell the server to send the client a list of eligible cluster servers
+            using(Packet packet = new Packet((int)ClientPackets.requestClusterServers))
+            {
+                client.SendTcpData(packet);
+            }
+        }
+        #endregion
+
         #region Movement Section
         /// <summary>
         /// Moves the client in the desired direction.

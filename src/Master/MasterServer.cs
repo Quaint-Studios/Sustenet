@@ -35,6 +35,8 @@ namespace Sustenet.Master
         /// </summary>
         public List<int> clusterIds = new List<int>();
 
+        public Dictionary<int, World.ClusterInfo> clusterInfo = new Dictionary<int, World.ClusterInfo>();
+
         public MasterServer(int _maxConnections = 0, ushort _port = 6256) : base(ServerType.MasterServer, _maxConnections, _port)
         {
             RSAManager.LoadPubKeys();
@@ -57,6 +59,10 @@ namespace Sustenet.Master
                     { (int)ClientPackets.validateLogin, this.ValidateLogin },
                     #endregion
 
+                    #region Request Section
+                    { (int)ClientPackets.requestClusterServers, this.RequestClusterServers },
+                    #endregion
+
                     #region Movement Section
                     { (int)ClientPackets.moveTo, this.ValidateMoveTo }
                     #endregion
@@ -73,6 +79,7 @@ namespace Sustenet.Master
             base.DisconnectClient(clientId);
 
             clusterIds.Remove(clientId);
+            clusterInfo.Remove(clientId);
         }
     }
 }

@@ -20,9 +20,15 @@ namespace Sustenet.Transport.Messages.ClusterClientHandlers
     using BaseClientHandlers;
     using Clients;
     using Network;
+    using System.Net;
+    using Utils;
 
     /// <summary>
     /// Any message that is outbound from the Cluster Client.
+    ///
+    /// ClusterClientSend/Receive [CCS/R]
+    /// MasterSend/Receive [MS/R]
+    /// CCS.ValidateCluster -> MR.ValidateCluster -> MS.Passphrase -> CCR.Passphrase -> CCS.AnswerPassphrase -> MR.AnswerPassphrase -> 
     /// </summary>
     static class ClusterClientSend
     {
@@ -50,10 +56,18 @@ namespace Sustenet.Transport.Messages.ClusterClientHandlers
         /// <param name="answer"></param>
         internal static void AnswerPassphrase(this ClusterClient client, string answer)
         {
+            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName()); // `Dns.Resolve()` method is deprecated.
+            IPAddress ipAddress = ipHostInfo.AddressList[0];
+
+            ushort? port = null;
+            Utilities.TryParseNullable(Config.settings["port"].Value, out port);
+
             using(Packet packet = new Packet((int)ClientPackets.answerPassphrase))
             {
                 packet.Write(answer);
                 packet.Write(client.name);
+                packet.Write(ipAddress.ToString());
+                packet.Write(port ?? (ushort)6256);
 
                 client.SendTcpData(packet);
             }

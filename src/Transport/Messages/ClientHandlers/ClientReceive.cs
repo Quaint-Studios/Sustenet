@@ -71,6 +71,22 @@ namespace Sustenet.Transport.Messages.ClientHandlers
         }
         #endregion
 
+        #region Request Section
+        internal static void ClusterServerList(this Client client, Packet packet)
+        {
+            BaseClient.DebugClient(client.id, $"A list of Cluster Servers have been received.");
+
+            int count = packet.ReadInt();
+            World.ClusterInfo[] clusterInfo = new World.ClusterInfo[count];
+            for(int i = 0; i < count; i++)
+            {
+                clusterInfo[i] = new World.ClusterInfo(packet.ReadString(), packet.ReadString(), packet.ReadUShort());
+            }
+
+            client.onClusterServerList.RaiseEvent(clusterInfo);
+        }
+        #endregion
+
         #region Movement Section
         /// <summary>
         /// Updates the client's position. Some prediction should be included to smooth things out.

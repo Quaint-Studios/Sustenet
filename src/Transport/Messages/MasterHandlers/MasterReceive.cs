@@ -76,10 +76,12 @@ namespace Sustenet.Transport.Messages.MasterHandlers
         {
             string answer = packet.ReadString();
             string clusterName = packet.ReadString(); // The requested name for this cluster.
+            string ip = packet.ReadString();
+            ushort port = packet.ReadUShort();
 
             if(answer == server.clients[fromClient].name)
             {
-                server.InitializeCluster(fromClient, clusterName);
+                server.InitializeCluster(fromClient, clusterName, ip, port);
             }
             else
             {
@@ -90,6 +92,19 @@ namespace Sustenet.Transport.Messages.MasterHandlers
 
                 return;
             }
+        }
+        #endregion
+
+        #region Request Section
+        /// <summary>
+        /// TODO DOCUMENTATION
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="fromClient"></param>
+        /// <param name="packet"></param>
+        internal static void RequestClusterServers(this MasterServer server, int fromClient, Packet packet)
+        {
+            server.SendClusterServers(fromClient);
         }
         #endregion
 

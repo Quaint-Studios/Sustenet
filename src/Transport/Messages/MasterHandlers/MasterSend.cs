@@ -60,9 +60,10 @@ namespace Sustenet.Transport.Messages.MasterHandlers
         /// <param name="server">The Master Server to run this on.</param>
         /// <param name="toClient">The client to send this to.</param>
         /// <param name="clusterName">The name the client requested and to send back to them.</param>
-        internal static void InitializeCluster(this MasterServer server, int toClient, string clusterName)
+        internal static void InitializeCluster(this MasterServer server, int toClient, string clusterName, string ip, ushort port)
         {
             server.clusterIds.Add(toClient); // Store the ID as a cluster since they've been verified.
+            server.clusterInfo.Add(toClient, new World.ClusterInfo(clusterName, ip, port));
 
             using(Packet packet = new Packet((int)ServerPackets.initializeCluster))
             {
@@ -104,6 +105,29 @@ namespace Sustenet.Transport.Messages.MasterHandlers
 
                 server.SendTcpData(toClient, packet);
             }
+        }
+        #endregion
+
+        #region Request Section
+        /// <summary>
+        /// TODO DOCUMENTATION
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="toClient"></param>
+        internal static void SendClusterServers(this MasterServer server, int toClient)
+        {
+            using(Packet packet = new Packet((int)ServerPackets.clusterServerList))
+            {
+                packet.Write(server.clusterInfo.Count);
+
+                foreach(World.ClusterInfo cluster in server.clusterInfo.Values)
+                {
+                    packet.Write(cluster.name);
+                    packet.Write(cluster.ip);
+                    packet.Write(cluster.port);
+                }
+            }
+
         }
         #endregion
 

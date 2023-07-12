@@ -82,6 +82,8 @@ namespace Sustenet.Clients
         /// </summary>
         public BaseEvent onInitialized = new BaseEvent();
 
+        internal BaseEvent<World.ClusterInfo[]> onClusterServerList = new BaseEvent<World.ClusterInfo[]>();
+
         public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(-1)
         {
             masterConnection = new Connection
@@ -224,6 +226,10 @@ namespace Sustenet.Clients
                     { (int)ServerPackets.message, this.Message },
                     { (int)ServerPackets.initializeLogin, this.InitializeClient },
                     { (int)ServerPackets.udpReady, this.UdpConnected },
+                    #endregion
+
+                    #region Request Section
+                    { (int)ServerPackets.clusterServerList, this.ClusterServerList },
                     #endregion
 
                     #region Movement Section

@@ -21,7 +21,7 @@ namespace Sustenet.Transport.Messages.ClusterHandlers
     using World;
 
     /// <summary>
-    /// The core all Cluster messages.
+    /// The core of all Cluster messages.
     /// </summary>
     static class ClusterCore
     {
@@ -31,11 +31,11 @@ namespace Sustenet.Transport.Messages.ClusterHandlers
             client.player = player;
 
             // TODO: Split the cluster's clients into fragments so updates are only sent to those within a certain fragmented group and at a reduced rate to neighboring groups.
-            foreach (BaseClient otherClient in cluster.clients.Values)
+            foreach(BaseClient otherClient in cluster.clients.Values)
             {
-                if (otherClient.player != null)
+                if(otherClient.player != null)
                 {
-                    if (otherClient.id != client.id)
+                    if(otherClient.id != client.id)
                     {
                         // Spawn
                     }

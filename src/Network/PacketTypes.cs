@@ -46,6 +46,13 @@ namespace Sustenet.Network
         /// </summary>
         udpReady = 2,
 
+        /// <summary>
+        /// Sends a list of cluster servers containing their name, ip, and port.
+        /// </summary>
+        clusterServerList = 3,
+
+
+
         #region Movement (2000-2999)
         updatePosition = 2000 // TODO: Move to Cluster once clusters are being used.
         #endregion
@@ -85,6 +92,10 @@ namespace Sustenet.Network
         /// Sends an ID to a server to start a UDP connection.
         /// </summary>
         startUdp = 2,
+        /// <summary>
+        /// Requests a list of cluster servers from the master server.
+        /// </summary>
+        requestClusterServers = 3,
 
         #region Movement (2000,2999)
         moveTo = 2000
