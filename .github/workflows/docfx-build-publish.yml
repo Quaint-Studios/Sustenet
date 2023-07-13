@@ -25,7 +25,7 @@ jobs:
           args: install docfx
 
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore ./Sustenet.sln
 
       - name: DocFX Build
         run: docfx docfx.json
