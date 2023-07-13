@@ -78,7 +78,7 @@ namespace Sustenet.Clients
         protected static Dictionary<int, PacketHandler> packetHandlers;
 
         /// <summary>
-        /// After a client logs in successful and gets their username & id back.
+        /// After a client logs in successful and gets their username and id back.
         /// </summary>
         public BaseEvent onInitialized = new BaseEvent();
 
