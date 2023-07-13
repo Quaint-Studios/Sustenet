@@ -6,10 +6,10 @@
           "files": [
             "Sustenet.csproj"
           ],
-          "src": "../"
+          "src": "./"
         }
       ],
-      "dest": "api",
+      "dest": "docfx/api",
       "includePrivateMembers": true,
       "disableGitFeatures": false,
       "disableDefaultFilter": true,
@@ -23,27 +23,27 @@
     "content": [
       {
         "files": [
-          "api/**.yml",
-          "api/index.md"
+          "docfx/api/**.yml",
+          "docfx/api/index.md"
         ]
       },
       {
         "files": [
-          "articles/**.md",
-          "articles/**/toc.yml",
-          "toc.yml",
-          "*.md"
+          "docfx/articles/**.md",
+          "docfx/articles/**/toc.yml",
+          "docfx/toc.yml",
+          "docfx/*.md"
         ]
       }
     ],
     "resource": [
       {
         "files": [
-          "images/**"
+          "docfx/images/**"
         ]
       }
     ],
-    "output": "_site",
+    "output": "docfx/_site",
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
