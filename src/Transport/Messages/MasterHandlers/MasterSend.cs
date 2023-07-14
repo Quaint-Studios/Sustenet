@@ -116,6 +116,8 @@ namespace Sustenet.Transport.Messages.MasterHandlers
         /// <param name="toClient"></param>
         internal static void SendClusterServers(this MasterServer server, int toClient)
         {
+            MasterServer.DebugServer(server.serverTypeName, $"Sending Client#{toClient} a list of requested cluster servers.");
+
             using(Packet packet = new Packet((int)ServerPackets.clusterServerList))
             {
                 packet.Write(server.clusterInfo.Count);
@@ -126,6 +128,8 @@ namespace Sustenet.Transport.Messages.MasterHandlers
                     packet.Write(cluster.ip);
                     packet.Write(cluster.port);
                 }
+
+                server.SendTcpData(toClient, packet);
             }
 
         }

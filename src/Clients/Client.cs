@@ -82,7 +82,7 @@ namespace Sustenet.Clients
         /// </summary>
         public BaseEvent onInitialized = new BaseEvent();
 
-        internal BaseEvent<World.ClusterInfo[]> onClusterServerList = new BaseEvent<World.ClusterInfo[]>();
+        public BaseEvent<World.ClusterInfo[]> onClusterServerList = new BaseEvent<World.ClusterInfo[]>();
 
         public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(-1)
         {
@@ -144,6 +144,16 @@ namespace Sustenet.Clients
                     tcp.Connect(this, IPAddress.Parse(clusterConnection.Ip), clusterConnection.Port);
                     break;
             }
+        }
+        #endregion
+
+        #region Request Functions
+        /// <summary>
+        /// Exposes RequestClusterServers() to Unity.
+        /// </summary>
+        public void GetClusterServers()
+        {
+            this.RequestClusterServers();
         }
         #endregion
 

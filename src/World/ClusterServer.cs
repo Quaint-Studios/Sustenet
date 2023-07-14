@@ -22,7 +22,11 @@ namespace Sustenet.World
     using Transport;
     using Utils;
 
-    internal struct ClusterInfo
+    /// <summary>
+    /// TODO RE-EVALULATE
+    /// TODO DOCUMENTATION
+    /// </summary>
+    public struct ClusterInfo
     {
         public string name;
         public string ip;
