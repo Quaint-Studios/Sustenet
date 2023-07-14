@@ -1,5 +1,4 @@
 ### YamlMime:TableOfContent
-items:
 - uid: NDesk.Options
   name: NDesk.Options
   items:
@@ -7,6 +6,7 @@ items:
     name: Option
   - uid: NDesk.Options.OptionAction`2
     name: OptionAction<TKey, TValue>
+    name.vb: OptionAction(Of TKey, TValue)
   - uid: NDesk.Options.OptionContext
     name: OptionContext
   - uid: NDesk.Options.OptionException
@@ -17,8 +17,10 @@ items:
     name: OptionSet.ActionOption
   - uid: NDesk.Options.OptionSet.ActionOption`1
     name: OptionSet.ActionOption<T>
+    name.vb: OptionSet.ActionOption(Of T)
   - uid: NDesk.Options.OptionSet.ActionOption`2
     name: OptionSet.ActionOption<TKey, TValue>
+    name.vb: OptionSet.ActionOption(Of TKey, TValue)
   - uid: NDesk.Options.OptionValueCollection
     name: OptionValueCollection
   - uid: NDesk.Options.OptionValueType
@@ -54,8 +56,10 @@ items:
     name: BaseEvent
   - uid: Sustenet.Events.BaseEvent`1
     name: BaseEvent<T>
+    name.vb: BaseEvent(Of T)
   - uid: Sustenet.Events.BaseEvent`2
     name: BaseEvent<T1, T2>
+    name.vb: BaseEvent(Of T1, T2)
 - uid: Sustenet.Master
   name: Sustenet.Master
   items:
@@ -201,4 +205,3 @@ items:
     name: ClusterServer
   - uid: Sustenet.World.FragmentServer
     name: FragmentServer
-memberLayout: SamePage
