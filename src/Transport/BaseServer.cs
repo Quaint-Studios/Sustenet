@@ -244,7 +244,7 @@ namespace Sustenet.Transport
                         this.UdpReady(id);
                     };
                     // Clear the entry from the server.
-                    clients[id].onDisconnected.Run += () => { ClearClient(id); };
+                    clients[id].onDisconnected.Run += () => { DisconnectClient(id); };
 
                     clients[id].tcp.Receive(clients[id], client);
 
@@ -262,7 +262,7 @@ namespace Sustenet.Transport
                 // Cleanup.
                 if(id != -1)
                 {
-                    ClearClient(id);
+                    DisconnectClient(id);
                 }
             }
         }
