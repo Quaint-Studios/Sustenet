@@ -179,16 +179,12 @@ namespace Sustenet.Transport
             /// <param name="ar">Result from BeginConnect().</param>
             public void ConnectCallback(IAsyncResult ar, IPAddress ip)
             {
-                Utilities.WriteLine($"{ip.ToString()}");
                 BaseClient client = (BaseClient)ar.AsyncState;
-                Utilities.WriteLine("2");
 
                 try
                 {
-                    Utilities.WriteLine("3");
                     if(socket != null)
                         socket.EndConnect(ar);
-                    Utilities.WriteLine("4");
 
                     if(!socket.Connected)
                     {
