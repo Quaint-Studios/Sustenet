@@ -25,6 +25,7 @@ namespace Sustenet
     {
         public class OptionsData
         {
+            public bool help = false;
             public bool client = false;
             public int maxClients = 1;
             public bool cluster = false;
@@ -44,11 +45,19 @@ namespace Sustenet
             OptionSet options = new OptionSet()
             {
                 {
-                    "client:",
+                    "help",
+                    "This is the help you've been asking for.",
+                    v => {
+                        data.help = true;
+                    }
+                },
+                {
+                    "c|client=",
                     "starts a client and waits for Connect() to be triggered.",
                     v => {
                         if(v != null)
                         {
+                            Console.WriteLine(v);
                             int.TryParse(v, out data.maxClients);
                         }
 
@@ -56,12 +65,12 @@ namespace Sustenet
                     }
                 },
                 {
-                    "cluster",
+                    "cs|cluster",
                     "starts a cluster server and uses the config file to connect to a master server.",
                     v => { data.cluster = true; }
                 },
                 {
-                    "master",
+                    "ms|master",
                     "starts a master server, uses the config file to set it up, and waits for clusters and clients to connect.",
                     v => { data.master = true; }
                 }
@@ -72,8 +81,17 @@ namespace Sustenet
             {
                 extra = options.Parse(args);
 
+                if(data.help == true)
+                {
+                    Console.WriteLine("==== Help ====");
+                    foreach(var opt in options)
+                    {
+                        Console.WriteLine($"{opt}: {opt.Description}");
+                    }
+                }
+
                 // If nothing is set, set master to true.
-                if(data.master == false && data.cluster == false && data.client == false)
+                if(data.help == false && data.master == false && data.cluster == false && data.client == false)
                 {
                     data.master = true;
                 }

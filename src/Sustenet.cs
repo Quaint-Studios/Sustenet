@@ -36,6 +36,11 @@ namespace Sustenet
 
             Options.OptionsData options = Options.GetOptions(args);
 
+            if(options.help)
+            {
+                return;
+            }
+
             if(options.client)
             {
                 // Only to be used for debugging.
@@ -44,9 +49,14 @@ namespace Sustenet
                 {
                     Clients.Client client = new Clients.Client();
                     clients[i] = client;
+                    clients[i].onClusterServerList.Run += (ci) =>
+                    {
+                        Clients.Client.DebugClient(i, "Received Cluster servers.");
+                    };
                     clients[i].onConnected.Run += () =>
                     {
                         client.Login("Mako");
+                        client.GetClusterServers();
                     };
 
                     clients[i].Connect();
