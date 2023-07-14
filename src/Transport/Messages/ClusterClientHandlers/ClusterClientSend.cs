@@ -56,17 +56,16 @@ namespace Sustenet.Transport.Messages.ClusterClientHandlers
         /// <param name="answer"></param>
         internal static void AnswerPassphrase(this ClusterClient client, string answer)
         {
-            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName()); // `Dns.Resolve()` method is deprecated.
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
+            string ip = new WebClient().DownloadString("https://api.ipify.org"); // Get Public IP
 
-            ushort? port = null;
+            ushort? port;
             Utilities.TryParseNullable(Config.settings["port"].Value, out port);
 
             using(Packet packet = new Packet((int)ClientPackets.answerPassphrase))
             {
                 packet.Write(answer);
                 packet.Write(client.name);
-                packet.Write(ipAddress.ToString());
+                packet.Write(ip);
                 packet.Write(port ?? (ushort)6256);
 
                 client.SendTcpData(packet);
