@@ -62,10 +62,6 @@ namespace Sustenet.Master
                     #region Request Section
                     { (int)ClientPackets.requestClusterServers, this.RequestClusterServers },
                     #endregion
-
-                    #region Movement Section
-                    { (int)ClientPackets.moveTo, this.ValidateMoveTo }
-                    #endregion
                 };
             }
         }

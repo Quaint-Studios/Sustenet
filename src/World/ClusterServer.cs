@@ -18,8 +18,12 @@
 namespace Sustenet.World
 {
     using Clients;
+    using Network;
+    using System;
     using System.Collections.Generic;
+    using System.Numerics;
     using Transport;
+    using Transport.Messages.ClusterHandlers;
     using Utils;
 
     /// <summary>
@@ -46,7 +50,32 @@ namespace Sustenet.World
     /// </summary>
     public class ClusterServer : BaseServer
     {
+        /// <summary>
+        /// Data used to validate a client's actions.
+        /// </summary>
+        internal class ClientData
+        {
+            internal Vector3 pos;
+
+            public ClientData(Vector3 _pos)
+            {
+                pos = _pos;
+            }
+        }
+
+        public struct ExternalFuncs
+        {
+            public Predicate<int> IsGrounded;
+
+            public ExternalFuncs(Predicate<int> _IsGrounded)
+            {
+                IsGrounded = _IsGrounded;
+            }
+        }
+
+        public ExternalFuncs externalFuncs;
         public ClusterClient masterConn = new ClusterClient(Config.settings["masterIp"].Value, ushort.TryParse(Config.settings["port"].Value, out ushort port) ? port : (ushort)6256);
+        internal Dictionary<int, ClientData> clientData = new Dictionary<int, ClientData>();
 
         /// <summary>
         /// Creates a Cluster Server that creates Fragment Servers to be used.
@@ -54,6 +83,27 @@ namespace Sustenet.World
         /// </summary>
         public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(ServerType.ClusterServer, _maxConnections, _port)
         {
+            InitializeData();
+
+            Start(ServerType.ClusterServer);
+
+            // When a user connects, load their data in.
+            // Todo: needs to get actual data from the master server.
+            // Also needs to pass that data back occasionally.
+            onConnection.Run += (id) => clientData.Add(id, new ClientData(_pos: new Vector3(0, 0, 0)));
+
+            masterConn.Connect();
+        }
+
+        /// <summary>
+        /// Creates a Cluster Server that creates Fragment Servers to be used.
+        /// For Unity this will allow passing external functions.
+        /// TODO: Will currently only create a single server for itself.
+        /// </summary>
+        public ClusterServer(ExternalFuncs _externalFuncs, int _maxConnections = 0, ushort _port = 6257) : base(ServerType.ClusterServer, _maxConnections, _port)
+        {
+            externalFuncs = _externalFuncs;
+
             InitializeData();
 
             Start(ServerType.ClusterServer);
@@ -67,7 +117,9 @@ namespace Sustenet.World
             {
                 packetHandlers = new Dictionary<int, PacketHandler>()
                 {
-
+                    #region Movement Section
+                    { (int)ClientPackets.moveTo, this.ValidateMoveTo }
+                    #endregion
                 };
             }
         }

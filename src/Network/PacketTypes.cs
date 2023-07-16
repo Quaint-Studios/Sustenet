@@ -49,13 +49,7 @@ namespace Sustenet.Network
         /// <summary>
         /// Sends a list of cluster servers containing their name, ip, and port.
         /// </summary>
-        clusterServerList = 3,
-
-
-
-        #region Movement (2000-2999)
-        updatePosition = 2000 // TODO: Move to Cluster once clusters are being used.
-        #endregion
+        clusterServerList = 3
     }
 
     /// <summary>
@@ -66,7 +60,9 @@ namespace Sustenet.Network
         /// <summary>
         /// Sends movement updates.
         /// </summary>
-        move = 1
+        #region Movement (100-125)
+        updatePosition = 100
+        #endregion
     }
 
     /// <summary>
@@ -97,8 +93,8 @@ namespace Sustenet.Network
         /// </summary>
         requestClusterServers = 3,
 
-        #region Movement (2000,2999)
-        moveTo = 2000
+        #region Movement (100,125)
+        moveTo = 100
         #endregion
     }
 }

@@ -134,25 +134,5 @@ namespace Sustenet.Transport.Messages.MasterHandlers
 
         }
         #endregion
-
-        #region Movement Section
-        internal static void SendUpdatedPosition(this MasterServer server, int toClient, float[] newPos)
-        {
-            if(newPos == null || newPos.Length < 3)
-            {
-                MasterServer.DebugServer(server.serverTypeName, "The new position is either null or doesn't have an x, y, and z.");
-                return;
-            }
-
-            using(Packet packet = new Packet((int)ServerPackets.updatePosition))
-            {
-                packet.Write(newPos[0]);
-                packet.Write(newPos[1]);
-                packet.Write(newPos[2]);
-
-                server.SendUdpData(toClient, packet);
-            }
-        }
-        #endregion
     }
 }

@@ -243,7 +243,7 @@ namespace Sustenet.Clients
                     #endregion
 
                     #region Movement Section
-                    { (int)ServerPackets.updatePosition, this.UpdatePosition }
+                    { (int)ClusterPackets.updatePosition, this.UpdatePosition }
                     #endregion
                 };
             }
