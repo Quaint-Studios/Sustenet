@@ -66,7 +66,7 @@ namespace Sustenet.Transport.Messages.ClusterClientHandlers
                 packet.Write(answer);
                 packet.Write(client.name);
                 packet.Write(ip);
-                packet.Write(port ?? (ushort)6256);
+                packet.Write(port ?? Constants.CLUSTER_PORT);
 
                 client.SendTcpData(packet);
             }

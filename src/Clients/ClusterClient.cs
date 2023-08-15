@@ -24,7 +24,7 @@ namespace Sustenet.Clients
 
     public class ClusterClient : Client
     {
-        public ClusterClient(string _ip = "127.0.0.1", ushort _port = 6256) : base(_ip, _port == 0 ? (ushort)6256 : _port)
+        public ClusterClient(string _ip = "127.0.0.1", ushort _port = Constants.MASTER_PORT) : base(_ip, _port == 0 ? Constants.MASTER_PORT : _port)
         {
             name = Config.settings["serverName"] != null ? Config.settings["serverName"].Value : "Test Name";
 

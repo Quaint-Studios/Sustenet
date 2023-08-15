@@ -60,12 +60,12 @@ namespace Sustenet.Transport
         public BaseEvent<int> onDisconnection = new BaseEvent<int>();
         public BaseEvent<byte[]> onReceived = new BaseEvent<byte[]>();
 
-        protected BaseServer(ServerType _serverType, int _maxConnections = 0, ushort _port = 6256)
+        protected BaseServer(ServerType _serverType, int _maxConnections = 0, ushort _port = Constants.MASTER_PORT)
         {
             serverType = _serverType;
             serverTypeName = Utilities.SplitByPascalCase(serverType.ToString());
             maxConnections = _maxConnections;
-            port = _port == 0 ? (ushort)6256 : _port;
+            port = _port == 0 ? Constants.MASTER_PORT : _port;
         }
 
         #region Connection Functions
@@ -227,16 +227,24 @@ namespace Sustenet.Transport
 
                     clients[id].onReceived.Run += (protocol, data) =>
                     {
-                        // Convert the BaseClient to work for the server.
-                        switch(protocol)
+                        try
                         {
-                            case Protocols.TCP:
-                                clients[id].receivedData.Reset(HandleTcpData(clients[id], data));
-                                return;
+                            // Convert the BaseClient to work for the server.
+                            switch(protocol)
+                            {
+                                case Protocols.TCP:
+                                    clients[id].receivedData.Reset(HandleTcpData(clients[id], data));
+                                    return;
 
-                            case Protocols.UDP:
-                                // Extra things to do goes here.
-                                return;
+                                case Protocols.UDP:
+                                    // Extra things to do goes here.
+                                    return;
+                            }
+                        }
+                        catch(Exception)
+                        {
+                            DebugServer(serverTypeName, $"Something went wrong with a message received from Client#{id}.");
+                            return;
                         }
                     };
                     clients[id].onConnected.Run += () =>
@@ -244,7 +252,7 @@ namespace Sustenet.Transport
                         this.UdpReady(id);
                     };
                     // Clear the entry from the server.
-                    clients[id].onDisconnected.Run += () => { DisconnectClient(id); };
+                    clients[id].onDisconnected.Run += (proto) => { DisconnectClient(id); };
 
                     clients[id].tcp.Receive(clients[id], client);
 
@@ -332,6 +340,9 @@ namespace Sustenet.Transport
 
             while(packetLength > 0 && packetLength <= client.receivedData.UnreadLength())
             {
+                /// TODO:
+                /// if(packetHandlers.Contains(packetId), maybe a try catch.
+
                 byte[] packetBytes = client.receivedData.ReadBytes(packetLength);
 
                 ThreadManager.ExecuteOnMainThread(() =>

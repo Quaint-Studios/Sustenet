@@ -74,14 +74,14 @@ namespace Sustenet.World
         }
 
         public ExternalFuncs externalFuncs;
-        public ClusterClient masterConn = new ClusterClient(Config.settings["masterIp"].Value, ushort.TryParse(Config.settings["port"].Value, out ushort port) ? port : (ushort)6256);
+        public ClusterClient masterConn = new ClusterClient(Config.settings["masterIp"].Value, ushort.TryParse(Config.settings["port"].Value, out ushort port) ? port : Constants.MASTER_PORT);
         internal Dictionary<int, ClientData> clientData = new Dictionary<int, ClientData>();
 
         /// <summary>
         /// Creates a Cluster Server that creates Fragment Servers to be used.
         /// TODO: Will currently only create a single server for itself.
         /// </summary>
-        public ClusterServer(int _maxConnections = 0, ushort _port = 6257) : base(ServerType.ClusterServer, _maxConnections, _port)
+        public ClusterServer(int _maxConnections = 0, ushort _port = Constants.CLUSTER_PORT) : base(ServerType.ClusterServer, _maxConnections, _port)
         {
             InitializeData();
 
@@ -100,7 +100,7 @@ namespace Sustenet.World
         /// For Unity this will allow passing external functions.
         /// TODO: Will currently only create a single server for itself.
         /// </summary>
-        public ClusterServer(ExternalFuncs _externalFuncs, int _maxConnections = 0, ushort _port = 6257) : base(ServerType.ClusterServer, _maxConnections, _port)
+        public ClusterServer(ExternalFuncs _externalFuncs, int _maxConnections = 0, ushort _port = Constants.CLUSTER_PORT) : base(ServerType.ClusterServer, _maxConnections, _port)
         {
             externalFuncs = _externalFuncs;
 

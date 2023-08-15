@@ -41,7 +41,7 @@ namespace Sustenet.Transport
         internal Packet receivedData;
 
         public BaseEvent onConnected = new BaseEvent();
-        public BaseEvent onDisconnected = new BaseEvent();
+        public BaseEvent<Protocols> onDisconnected = new BaseEvent<Protocols>();
         public BaseEvent<Protocols, byte[]> onReceived = new BaseEvent<Protocols, byte[]>();
 
         public Player player;
@@ -97,7 +97,7 @@ namespace Sustenet.Transport
                 }
                 catch
                 {
-                    client.onDisconnected.RaiseEvent();
+                    client.HandleDisconnect(Protocols.TCP);
                 }
             }
 
@@ -121,7 +121,7 @@ namespace Sustenet.Transport
                     if(byteLength <= 0)
                     {
                         // disconnect
-                        client.onDisconnected.RaiseEvent();
+                        client.HandleDisconnect(Protocols.TCP);
                         return;
                     }
 
@@ -138,7 +138,7 @@ namespace Sustenet.Transport
                 {
                     Utilities.WriteLine(e);
                     // onDebug.RaiseEvent($"Error with receiving TCP data...: {e}");
-                    client.onDisconnected.RaiseEvent();
+                    client.HandleDisconnect(Protocols.TCP);
                 }
             }
 
@@ -151,14 +151,22 @@ namespace Sustenet.Transport
             {
                 try
                 {
-                    if(socket == null)
+                    if(socket != null)
                     {
-                        socket = new TcpClient
+                        if(stream != null)
                         {
-                            ReceiveBufferSize = bufferSize,
-                            SendBufferSize = bufferSize
-                        };
+                            stream.Dispose();
+                            stream = null;
+                        }
+                        socket.Dispose();
+                        socket = null;
                     }
+
+                    socket = new TcpClient
+                    {
+                        ReceiveBufferSize = bufferSize,
+                        SendBufferSize = bufferSize
+                    };
 
                     if(receiveBuffer == null)
                     {
@@ -169,7 +177,7 @@ namespace Sustenet.Transport
                 }
                 catch
                 {
-                    client.onDisconnected.RaiseEvent();
+                    client.HandleDisconnect(Protocols.TCP);
                 }
             }
 
@@ -222,7 +230,13 @@ namespace Sustenet.Transport
                     if(disposing)
                     {
                         if(socket != null)
+                        {
+                            if(stream != null)
+                            {
+                                stream.Close();
+                            }
                             socket.Close();
+                        }
                     }
 
                     disposed = true;
@@ -264,7 +278,7 @@ namespace Sustenet.Transport
                 catch(Exception e)
                 {
                     Utilities.WriteLine(e);
-                    client.onDisconnected.RaiseEvent(); // TODO: Pass a TypeEnum.UDP enum to differentiate instructions?
+                    client.HandleDisconnect(Protocols.UDP); // TODO: Pass a TypeEnum.UDP enum to differentiate instructions?
                 }
             }
 
@@ -279,7 +293,7 @@ namespace Sustenet.Transport
 
                     if(data.Length < 4)
                     {
-                        client.onDisconnected.RaiseEvent();
+                        client.HandleDisconnect(Protocols.UDP);
                         return;
                     }
 
@@ -288,7 +302,7 @@ namespace Sustenet.Transport
                 catch(Exception e)
                 {
                     Utilities.WriteLine(e);
-                    client.onDisconnected.RaiseEvent();
+                    client.HandleDisconnect(Protocols.UDP);
                 }
             }
 
@@ -301,6 +315,7 @@ namespace Sustenet.Transport
                     if(disposing)
                     {
                         // Managed resources
+                        socket.Close();
                     }
 
                     // Unmanaged resources
@@ -314,6 +329,35 @@ namespace Sustenet.Transport
                 Dispose(true);
                 GC.SuppressFinalize(this);
             }
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="proto"></param>
+        public void HandleDisconnect(Protocols proto)
+        {
+            // Utilize existing variables to tell us that this client has disconnected.
+            if(id == -2)
+                return;
+
+            int _id = id;
+            id = -2;
+
+            tcp.stream.Close();
+            tcp.socket.Close();
+            UdpHandler.socket.Close();
+
+            tcp.stream = null;
+            tcp.socket = null;
+            UdpHandler.socket = null;
+
+            onDisconnected.RaiseEvent(proto);
+        }
+
+        public bool IsConnected()
+        {
+            return tcp.socket?.Connected ?? false;
         }
 
         public static void DebugClient(int id, string msg)

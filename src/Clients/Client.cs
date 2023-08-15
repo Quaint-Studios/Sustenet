@@ -68,7 +68,7 @@ namespace Sustenet.Clients
 
         internal ConnectionType activeConnection;
         private Connection masterConnection;
-        private Connection clusterConnection;
+        public Connection clusterConnection;
 
         protected delegate void PacketHandler(Packet packet);
 
@@ -84,7 +84,7 @@ namespace Sustenet.Clients
 
         public BaseEvent<World.ClusterInfo[]> onClusterServerList = new BaseEvent<World.ClusterInfo[]>();
 
-        public Client(string _ip = "127.0.0.1", ushort _port = 6256) : base(-1)
+        public Client(string _ip = "127.0.0.1", ushort _port = Utils.Constants.MASTER_PORT) : base(-1)
         {
             masterConnection = new Connection
             {

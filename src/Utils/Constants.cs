@@ -17,14 +17,17 @@
 
 namespace Sustenet.Utils
 {
-    class Constants
+    public class Constants
     {
-        public const bool DEBUGGING = true;
+        internal const bool DEBUGGING = true;
 
         /// <summary>
         /// How many ticks are in a second.
         /// </summary>
-        public const int TICK_RATE = 30;
-        public const int MS_PER_TICK = 1000 / TICK_RATE;
+        internal const int TICK_RATE = 30;
+        internal const int MS_PER_TICK = 1000 / TICK_RATE;
+
+        public const ushort MASTER_PORT = 6256;
+        public const ushort CLUSTER_PORT = 6257;
     }
 }
