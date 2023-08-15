@@ -1,0 +1,1701 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class OptionSet
+ </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class OptionSet
+ ">
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Quaint-Studios/Sustenet/new/production-prep/apiSpec/new?filename=NDesk_Options_OptionSet.md&amp;value=---%0Auid%3A%20NDesk.Options.OptionSet%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+  </head>
+
+  <script type="module">
+    import options from './../../public/main.js'
+    import { init } from './../../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="NDesk.Options.OptionSet">
+
+
+
+  <h1 id="NDesk_Options_OptionSet" data-uid="NDesk.Options.OptionSet" class="text-break">
+    Class OptionSet
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L494"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="NDesk.html">NDesk</a>.<a class="xref" href="NDesk.Options.html">Options</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sustenet.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class OptionSet : KeyedCollection&lt;string, Option&gt;, IList&lt;Option&gt;, ICollection&lt;Option&gt;, IReadOnlyList&lt;Option&gt;, IReadOnlyCollection&lt;Option&gt;, IEnumerable&lt;Option&gt;, IList, ICollection, IEnumerable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1">Collection</a>&lt;<a class="xref" href="NDesk.Options.Option.html">Option</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2">KeyedCollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="NDesk.Options.Option.html">Option</a>&gt;</div>
+      <div><span class="xref">OptionSet</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="NDesk.Options.Option.html">Option</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="NDesk.Options.Option.html">Option</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="NDesk.Options.Option.html">Option</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlycollection-1">IReadOnlyCollection</a>&lt;<a class="xref" href="NDesk.Options.Option.html">Option</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="NDesk.Options.Option.html">Option</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">IList</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.icollection">ICollection</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.changeitemkey">KeyedCollection&lt;string, Option&gt;.ChangeItemKey(Option, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.clearitems">KeyedCollection&lt;string, Option&gt;.ClearItems()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.contains">KeyedCollection&lt;string, Option&gt;.Contains(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.getkeyforitem">KeyedCollection&lt;string, Option&gt;.GetKeyForItem(Option)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.insertitem">KeyedCollection&lt;string, Option&gt;.InsertItem(int, Option)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.remove">KeyedCollection&lt;string, Option&gt;.Remove(string)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.removeitem">KeyedCollection&lt;string, Option&gt;.RemoveItem(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.setitem">KeyedCollection&lt;string, Option&gt;.SetItem(int, Option)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.trygetvalue">KeyedCollection&lt;string, Option&gt;.TryGetValue(string, out Option)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.comparer">KeyedCollection&lt;string, Option&gt;.Comparer</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.dictionary">KeyedCollection&lt;string, Option&gt;.Dictionary</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.keyedcollection-2.item">KeyedCollection&lt;string, Option&gt;.this[string]</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.get_Item(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.set_Item(int, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.clear">Collection&lt;Option&gt;.Clear()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.clearitems">Collection&lt;Option&gt;.ClearItems()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.contains">Collection&lt;Option&gt;.Contains(Option)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.copyto">Collection&lt;Option&gt;.CopyTo(Option[], int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.getenumerator">Collection&lt;Option&gt;.GetEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.indexof">Collection&lt;Option&gt;.IndexOf(Option)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.insert">Collection&lt;Option&gt;.Insert(int, Option)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.remove">Collection&lt;Option&gt;.Remove(Option)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.removeat">Collection&lt;Option&gt;.RemoveAt(int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.icollection">Collection&lt;Option&gt;.ICollection.CopyTo(Array, int)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">Collection&lt;Option&gt;.IEnumerable.GetEnumerator()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.Add(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.Contains(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.IndexOf(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.Insert(int, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.Remove(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.count">Collection&lt;Option&gt;.Count</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Collection&lt;Option&gt;.this[int]</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1.items">Collection&lt;Option&gt;.Items</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">Collection&lt;Option&gt;.ICollection&lt;Option&gt;.IsReadOnly</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.icollection">Collection&lt;Option&gt;.ICollection.IsSynchronized</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.icollection">Collection&lt;Option&gt;.ICollection.SyncRoot</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.IsFixedSize</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.IsReadOnly</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">Collection&lt;Option&gt;.IList.Item[int]</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="NDesk_Options_OptionSet__ctor_" data-uid="NDesk.Options.OptionSet.#ctor*"></a>
+
+  <h3 id="NDesk_Options_OptionSet__ctor" data-uid="NDesk.Options.OptionSet.#ctor">
+  OptionSet()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L496"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet__ctor_" data-uid="NDesk.Options.OptionSet.#ctor*"></a>
+
+  <h3 id="NDesk_Options_OptionSet__ctor_System_Converter_System_String_System_String__" data-uid="NDesk.Options.OptionSet.#ctor(System.Converter{System.String,System.String})">
+  OptionSet(Converter&lt;string, string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L501"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet(Converter&lt;string, string&gt; localizer)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>localizer</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.converter-2">Converter</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="NDesk_Options_OptionSet_OptionWidth" data-uid="NDesk.Options.OptionSet.OptionWidth">
+  OptionWidth
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L897"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private const int OptionWidth = 29</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="NDesk_Options_OptionSet_ValueOption" data-uid="NDesk.Options.OptionSet.ValueOption">
+  ValueOption
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L759"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private readonly Regex ValueOption</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.regularexpressions.regex">Regex</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="NDesk_Options_OptionSet_localizer" data-uid="NDesk.Options.OptionSet.localizer">
+  localizer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L506"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private Converter&lt;string, string&gt; localizer</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.converter-2">Converter</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="NDesk_Options_OptionSet_MessageLocalizer_" data-uid="NDesk.Options.OptionSet.MessageLocalizer*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_MessageLocalizer" data-uid="NDesk.Options.OptionSet.MessageLocalizer">
+  MessageLocalizer
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L508"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Converter&lt;string, string&gt; MessageLocalizer { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.converter-2">Converter</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="NDesk_Options_OptionSet_Add_" data-uid="NDesk.Options.OptionSet.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Add_NDesk_Options_Option_" data-uid="NDesk.Options.OptionSet.Add(NDesk.Options.Option)">
+  Add(Option)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L578"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet Add(Option option)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>option</code> <a class="xref" href="NDesk.Options.Option.html">Option</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionSet.html">OptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Add_" data-uid="NDesk.Options.OptionSet.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Add_System_String_NDesk_Options_OptionAction_System_String_System_String__" data-uid="NDesk.Options.OptionSet.Add(System.String,NDesk.Options.OptionAction{System.String,System.String})">
+  Add(string, OptionAction&lt;string, string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L616"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet Add(string prototype, OptionAction&lt;string, string&gt; action)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prototype</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="NDesk.Options.OptionAction-2.html">OptionAction</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionSet.html">OptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Add_" data-uid="NDesk.Options.OptionSet.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Add_System_String_System_Action_System_String__" data-uid="NDesk.Options.OptionSet.Add(System.String,System.Action{System.String})">
+  Add(string, Action&lt;string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L601"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet Add(string prototype, Action&lt;string&gt; action)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prototype</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionSet.html">OptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Add_" data-uid="NDesk.Options.OptionSet.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Add_System_String_System_String_NDesk_Options_OptionAction_System_String_System_String__" data-uid="NDesk.Options.OptionSet.Add(System.String,System.String,NDesk.Options.OptionAction{System.String,System.String})">
+  Add(string, string, OptionAction&lt;string, string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L621"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet Add(string prototype, string description, OptionAction&lt;string, string&gt; action)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prototype</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="NDesk.Options.OptionAction-2.html">OptionAction</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionSet.html">OptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Add_" data-uid="NDesk.Options.OptionSet.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Add_System_String_System_String_System_Action_System_String__" data-uid="NDesk.Options.OptionSet.Add(System.String,System.String,System.Action{System.String})">
+  Add(string, string, Action&lt;string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L606"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet Add(string prototype, string description, Action&lt;string&gt; action)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prototype</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionSet.html">OptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_AddImpl_" data-uid="NDesk.Options.OptionSet.AddImpl*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_AddImpl_NDesk_Options_Option_" data-uid="NDesk.Options.OptionSet.AddImpl(NDesk.Options.Option)">
+  AddImpl(Option)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L559"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private void AddImpl(Option option)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>option</code> <a class="xref" href="NDesk.Options.Option.html">Option</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Add_" data-uid="NDesk.Options.OptionSet.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Add__1_System_String_System_Action___0__" data-uid="NDesk.Options.OptionSet.Add``1(System.String,System.Action{``0})">
+  Add&lt;T&gt;(string, Action&lt;T&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L667"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet Add&lt;T&gt;(string prototype, Action&lt;T&gt; action)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prototype</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;T&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionSet.html">OptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Add_" data-uid="NDesk.Options.OptionSet.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Add__1_System_String_System_String_System_Action___0__" data-uid="NDesk.Options.OptionSet.Add``1(System.String,System.String,System.Action{``0})">
+  Add&lt;T&gt;(string, string, Action&lt;T&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L672"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet Add&lt;T&gt;(string prototype, string description, Action&lt;T&gt; action)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prototype</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;T&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionSet.html">OptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Add_" data-uid="NDesk.Options.OptionSet.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Add__2_System_String_NDesk_Options_OptionAction___0___1__" data-uid="NDesk.Options.OptionSet.Add``2(System.String,NDesk.Options.OptionAction{``0,``1})">
+  Add&lt;TKey, TValue&gt;(string, OptionAction&lt;TKey, TValue&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L677"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet Add&lt;TKey, TValue&gt;(string prototype, OptionAction&lt;TKey, TValue&gt; action)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prototype</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="NDesk.Options.OptionAction-2.html">OptionAction</a>&lt;TKey, TValue&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionSet.html">OptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TKey</code></dt>
+    <dd></dd>
+    <dt><code>TValue</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Add_" data-uid="NDesk.Options.OptionSet.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Add__2_System_String_System_String_NDesk_Options_OptionAction___0___1__" data-uid="NDesk.Options.OptionSet.Add``2(System.String,System.String,NDesk.Options.OptionAction{``0,``1})">
+  Add&lt;TKey, TValue&gt;(string, string, OptionAction&lt;TKey, TValue&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L682"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public OptionSet Add&lt;TKey, TValue&gt;(string prototype, string description, OptionAction&lt;TKey, TValue&gt; action)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>prototype</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>action</code> <a class="xref" href="NDesk.Options.OptionAction-2.html">OptionAction</a>&lt;TKey, TValue&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionSet.html">OptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TKey</code></dt>
+    <dd></dd>
+    <dt><code>TValue</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_CreateOptionContext_" data-uid="NDesk.Options.OptionSet.CreateOptionContext*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_CreateOptionContext" data-uid="NDesk.Options.OptionSet.CreateOptionContext">
+  CreateOptionContext()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L687"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual OptionContext CreateOptionContext()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionContext.html">OptionContext</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_GetArgumentName_" data-uid="NDesk.Options.OptionSet.GetArgumentName*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_GetArgumentName_System_Int32_System_Int32_System_String_" data-uid="NDesk.Options.OptionSet.GetArgumentName(System.Int32,System.Int32,System.String)">
+  GetArgumentName(int, int, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L980"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private static string GetArgumentName(int index, int maxIndex, string description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>maxIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_GetDescription_" data-uid="NDesk.Options.OptionSet.GetDescription*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_GetDescription_System_String_" data-uid="NDesk.Options.OptionSet.GetDescription(System.String)">
+  GetDescription(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L1004"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private static string GetDescription(string description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_GetKeyForItem_" data-uid="NDesk.Options.OptionSet.GetKeyForItem*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_GetKeyForItem_NDesk_Options_Option_" data-uid="NDesk.Options.OptionSet.GetKeyForItem(NDesk.Options.Option)">
+  GetKeyForItem(Option)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L512"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override string GetKeyForItem(Option item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <a class="xref" href="NDesk.Options.Option.html">Option</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_GetLineEnd_" data-uid="NDesk.Options.OptionSet.GetLineEnd*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_GetLineEnd_System_Int32_System_Int32_System_String_" data-uid="NDesk.Options.OptionSet.GetLineEnd(System.Int32,System.Int32,System.String)">
+  GetLineEnd(int, int, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L1078"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private static int GetLineEnd(int start, int length, string description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>length</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_GetLines_" data-uid="NDesk.Options.OptionSet.GetLines*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_GetLines_System_String_" data-uid="NDesk.Options.OptionSet.GetLines(System.String)">
+  GetLines(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L1046"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private static List&lt;string&gt; GetLines(string description)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>description</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_GetNextOptionIndex_" data-uid="NDesk.Options.OptionSet.GetNextOptionIndex*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_GetNextOptionIndex_System_String___System_Int32_" data-uid="NDesk.Options.OptionSet.GetNextOptionIndex(System.String[],System.Int32)">
+  GetNextOptionIndex(string[], int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L966"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private static int GetNextOptionIndex(string[] names, int i)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>names</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
+    <dd></dd>
+    <dt><code>i</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_GetOptionForName_" data-uid="NDesk.Options.OptionSet.GetOptionForName*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_GetOptionForName_System_String_" data-uid="NDesk.Options.OptionSet.GetOptionForName(System.String)">
+  GetOptionForName(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L523"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use KeyedCollection.this[string]&quot;)]
+protected Option GetOptionForName(string option)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>option</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.Option.html">Option</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_GetOptionParts_" data-uid="NDesk.Options.OptionSet.GetOptionParts*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_GetOptionParts_System_String_System_String__System_String__System_String__System_String__" data-uid="NDesk.Options.OptionSet.GetOptionParts(System.String,System.String@,System.String@,System.String@,System.String@)">
+  GetOptionParts(string, out string, out string, out string, out string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L762"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected bool GetOptionParts(string argument, out string flag, out string name, out string sep, out string value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>argument</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>flag</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>sep</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_InsertItem_" data-uid="NDesk.Options.OptionSet.InsertItem*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_InsertItem_System_Int32_NDesk_Options_Option_" data-uid="NDesk.Options.OptionSet.InsertItem(System.Int32,NDesk.Options.Option)">
+  InsertItem(int, Option)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L536"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void InsertItem(int index, Option item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>item</code> <a class="xref" href="NDesk.Options.Option.html">Option</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Invoke_" data-uid="NDesk.Options.OptionSet.Invoke*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Invoke_NDesk_Options_OptionContext_System_String_System_String_NDesk_Options_Option_" data-uid="NDesk.Options.OptionSet.Invoke(NDesk.Options.OptionContext,System.String,System.String,NDesk.Options.Option)">
+  Invoke(OptionContext, string, string, Option)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L889"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private static void Invoke(OptionContext c, string name, string value, Option option)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>c</code> <a class="xref" href="NDesk.Options.OptionContext.html">OptionContext</a></dt>
+    <dd></dd>
+    <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>option</code> <a class="xref" href="NDesk.Options.Option.html">Option</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Parse_" data-uid="NDesk.Options.OptionSet.Parse*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Parse_System_Collections_Generic_IEnumerable_System_String__" data-uid="NDesk.Options.OptionSet.Parse(System.Collections.Generic.IEnumerable{System.String})">
+  Parse(IEnumerable&lt;string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L721"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; Parse(IEnumerable&lt;string&gt; arguments)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>arguments</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Parse_" data-uid="NDesk.Options.OptionSet.Parse*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Parse_System_String_NDesk_Options_OptionContext_" data-uid="NDesk.Options.OptionSet.Parse(System.String,NDesk.Options.OptionContext)">
+  Parse(string, OptionContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L781"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual bool Parse(string argument, OptionContext c)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>argument</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>c</code> <a class="xref" href="NDesk.Options.OptionContext.html">OptionContext</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_ParseBool_" data-uid="NDesk.Options.OptionSet.ParseBool*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_ParseBool_System_String_System_String_NDesk_Options_OptionContext_" data-uid="NDesk.Options.OptionSet.ParseBool(System.String,System.String,NDesk.Options.OptionContext)">
+  ParseBool(string, string, OptionContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L838"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private bool ParseBool(string option, string n, OptionContext c)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>option</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>n</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>c</code> <a class="xref" href="NDesk.Options.OptionContext.html">OptionContext</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_ParseBundledValue_" data-uid="NDesk.Options.OptionSet.ParseBundledValue*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_ParseBundledValue_System_String_System_String_NDesk_Options_OptionContext_" data-uid="NDesk.Options.OptionSet.ParseBundledValue(System.String,System.String,NDesk.Options.OptionContext)">
+  ParseBundledValue(string, string, OptionContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L855"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private bool ParseBundledValue(string f, string n, OptionContext c)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>f</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>n</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>c</code> <a class="xref" href="NDesk.Options.OptionContext.html">OptionContext</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_ParseValue_" data-uid="NDesk.Options.OptionSet.ParseValue*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_ParseValue_System_String_NDesk_Options_OptionContext_" data-uid="NDesk.Options.OptionSet.ParseValue(System.String,NDesk.Options.OptionContext)">
+  ParseValue(string, OptionContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L819"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private void ParseValue(string option, OptionContext c)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>option</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>c</code> <a class="xref" href="NDesk.Options.OptionContext.html">OptionContext</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_RemoveItem_" data-uid="NDesk.Options.OptionSet.RemoveItem*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_RemoveItem_System_Int32_" data-uid="NDesk.Options.OptionSet.RemoveItem(System.Int32)">
+  RemoveItem(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L542"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void RemoveItem(int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_SetItem_" data-uid="NDesk.Options.OptionSet.SetItem*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_SetItem_System_Int32_NDesk_Options_Option_" data-uid="NDesk.Options.OptionSet.SetItem(System.Int32,NDesk.Options.Option)">
+  SetItem(int, Option)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L552"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void SetItem(int index, Option item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>item</code> <a class="xref" href="NDesk.Options.Option.html">Option</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Unprocessed_" data-uid="NDesk.Options.OptionSet.Unprocessed*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Unprocessed_System_Collections_Generic_ICollection_System_String__NDesk_Options_Option_NDesk_Options_OptionContext_System_String_" data-uid="NDesk.Options.OptionSet.Unprocessed(System.Collections.Generic.ICollection{System.String},NDesk.Options.Option,NDesk.Options.OptionContext,System.String)">
+  Unprocessed(ICollection&lt;string&gt;, Option, OptionContext, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L747"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private static bool Unprocessed(ICollection&lt;string&gt; extra, Option def, OptionContext c, string argument)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>extra</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>def</code> <a class="xref" href="NDesk.Options.Option.html">Option</a></dt>
+    <dd></dd>
+    <dt><code>c</code> <a class="xref" href="NDesk.Options.OptionContext.html">OptionContext</a></dt>
+    <dd></dd>
+    <dt><code>argument</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_Write_" data-uid="NDesk.Options.OptionSet.Write*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_Write_System_IO_TextWriter_System_Int32__System_String_" data-uid="NDesk.Options.OptionSet.Write(System.IO.TextWriter,System.Int32@,System.String)">
+  Write(TextWriter, ref int, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L974"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private static void Write(TextWriter o, ref int n, string s)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>o</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a></dt>
+    <dd></dd>
+    <dt><code>n</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>s</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_WriteOptionDescriptions_" data-uid="NDesk.Options.OptionSet.WriteOptionDescriptions*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_WriteOptionDescriptions_System_IO_TextWriter_" data-uid="NDesk.Options.OptionSet.WriteOptionDescriptions(System.IO.TextWriter)">
+  WriteOptionDescriptions(TextWriter)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L899"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteOptionDescriptions(TextWriter o)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>o</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionSet_WriteOptionPrototype_" data-uid="NDesk.Options.OptionSet.WriteOptionPrototype*"></a>
+
+  <h3 id="NDesk_Options_OptionSet_WriteOptionPrototype_System_IO_TextWriter_NDesk_Options_Option_System_Int32__" data-uid="NDesk.Options.OptionSet.WriteOptionPrototype(System.IO.TextWriter,NDesk.Options.Option,System.Int32@)">
+  WriteOptionPrototype(TextWriter, Option, ref int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L923"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private bool WriteOptionPrototype(TextWriter o, Option p, ref int written)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>o</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.textwriter">TextWriter</a></dt>
+    <dd></dd>
+    <dt><code>p</code> <a class="xref" href="NDesk.Options.Option.html">Option</a></dt>
+    <dd></dd>
+    <dt><code>written</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L494" class="edit-link">Edit this page</a>
+        </div>
+
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

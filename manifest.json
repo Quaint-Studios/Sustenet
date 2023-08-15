@@ -1,0 +1,1012 @@
+{
+  "homepages": [],
+  "source_base_path": "/github/workspace",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.Option.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.Option.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.OptionAction-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.OptionAction-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.OptionContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.OptionContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.OptionException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.OptionException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.OptionSet.ActionOption-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.OptionSet.ActionOption-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.OptionSet.ActionOption-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.OptionSet.ActionOption-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.OptionSet.ActionOption.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.OptionSet.ActionOption.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.OptionSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.OptionSet.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.OptionValueCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.OptionValueCollection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.OptionValueType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.OptionValueType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/NDesk.Options.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/NDesk.Options.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Clients.Client.Connection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Clients.Client.Connection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Clients.Client.ConnectionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Clients.Client.ConnectionType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Clients.Client.PacketHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Clients.Client.PacketHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Clients.Client.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Clients.Client.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Clients.ClusterClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Clients.ClusterClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Clients.Peer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Clients.Peer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Clients.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Clients.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Events.BaseEvent-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Events.BaseEvent-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Events.BaseEvent-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Events.BaseEvent-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Events.BaseEvent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Events.BaseEvent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Events.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Events.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Master.MasterServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Master.MasterServer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Master.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Master.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Network.ClientPackets.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Network.ClientPackets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Network.ClusterPackets.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Network.ClusterPackets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Network.Packet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Network.Packet.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Network.ServerPackets.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Network.ServerPackets.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Network.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Network.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Options.OptionsData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Options.OptionsData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Options.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Options.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Sustenet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Sustenet.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Tests.Utils.Security.SecurityTest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Tests.Utils.Security.SecurityTest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Tests.Utils.Security.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Tests.Utils.Security.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.BaseClient.TcpHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.BaseClient.TcpHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.BaseClient.UdpHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.BaseClient.UdpHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.BaseClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.BaseClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.BaseServer.PacketHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.BaseServer.PacketHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.BaseServer.ServerType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.BaseServer.ServerType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.BaseServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.BaseServer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Core.Spawning.Player.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Core.Spawning.Player.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Core.Spawning.Spawnee.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Core.Spawning.Spawnee.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Core.Spawning.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Core.Spawning.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.BaseClientHandlers.BaseClientCore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.BaseClientHandlers.BaseClientCore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.BaseClientHandlers.BaseClientReceive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.BaseClientHandlers.BaseClientReceive.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.BaseClientHandlers.BaseClientSend.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.BaseClientHandlers.BaseClientSend.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.BaseClientHandlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.BaseClientHandlers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.BaseServerHandlers.BaseServerCore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.BaseServerHandlers.BaseServerCore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.BaseServerHandlers.BaseServerReceive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.BaseServerHandlers.BaseServerReceive.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.BaseServerHandlers.BaseServerSend.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.BaseServerHandlers.BaseServerSend.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.BaseServerHandlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.BaseServerHandlers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClientHandlers.ClientCore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClientHandlers.ClientCore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClientHandlers.ClientReceive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClientHandlers.ClientReceive.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClientHandlers.ClientSend.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClientHandlers.ClientSend.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClientHandlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClientHandlers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterClientHandlers.ClusterClientCore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterClientHandlers.ClusterClientCore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterClientHandlers.ClusterClientReceive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterClientHandlers.ClusterClientReceive.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterClientHandlers.ClusterClientSend.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterClientHandlers.ClusterClientSend.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterClientHandlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterClientHandlers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterHandlers.ClusterCore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterHandlers.ClusterCore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterHandlers.ClusterReceive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterHandlers.ClusterReceive.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterHandlers.ClusterSend.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterHandlers.ClusterSend.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterHandlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.ClusterHandlers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.MasterHandlers.MasterCore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.MasterHandlers.MasterCore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.MasterHandlers.MasterReceive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.MasterHandlers.MasterReceive.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.MasterHandlers.MasterSend.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.MasterHandlers.MasterSend.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Messages.MasterHandlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Messages.MasterHandlers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.Protocols.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.Protocols.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.ThreadManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.ThreadManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Transport.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Transport.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Config.ConfigType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Config.ConfigType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Config.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Constants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Constants.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Mathematics.UMath.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Mathematics.UMath.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Mathematics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Mathematics.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Security.AESManager.EncryptedData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Security.AESManager.EncryptedData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Security.AESManager.KeyData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Security.AESManager.KeyData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Security.AESManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Security.AESManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Security.PassphraseGenerator.PasswordOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Security.PassphraseGenerator.PasswordOptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Security.PassphraseGenerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Security.PassphraseGenerator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Security.RSAManager.KeyData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Security.RSAManager.KeyData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Security.RSAManager.KeyType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Security.RSAManager.KeyType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Security.RSAManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Security.RSAManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Security.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Security.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.Utilities.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.Utilities.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.Utils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.Utils.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.World.ClusterInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.World.ClusterInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.World.ClusterServer.ClientData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.World.ClusterServer.ClientData.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.World.ClusterServer.ExternalFuncs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.World.ClusterServer.ExternalFuncs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.World.ClusterServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.World.ClusterServer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.World.FragmentServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.World.FragmentServer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.World.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.World.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docfx/api/Sustenet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/Sustenet.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docfx/api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docfx/api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/api/toc.html"
+        },
+        ".json": {
+          "relative_path": "docfx/api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docfx/articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/articles/intro.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docfx/articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/articles/toc.html"
+        },
+        ".json": {
+          "relative_path": "docfx/articles/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docfx/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docfx/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docfx/toc.html"
+        },
+        ".json": {
+          "relative_path": "docfx/toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

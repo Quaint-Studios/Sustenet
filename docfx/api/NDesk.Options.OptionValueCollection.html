@@ -1,0 +1,1195 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class OptionValueCollection
+ </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class OptionValueCollection
+ ">
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Quaint-Studios/Sustenet/new/production-prep/apiSpec/new?filename=NDesk_Options_OptionValueCollection.md&amp;value=---%0Auid%3A%20NDesk.Options.OptionValueCollection%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+  </head>
+
+  <script type="module">
+    import options from './../../public/main.js'
+    import { init } from './../../public/docfx.min.js'
+    init(options)
+  </script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="NDesk.Options.OptionValueCollection">
+
+
+
+  <h1 id="NDesk_Options_OptionValueCollection" data-uid="NDesk.Options.OptionValueCollection" class="text-break">
+    Class OptionValueCollection
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L148"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="NDesk.html">NDesk</a>.<a class="xref" href="NDesk.Options.html">Options</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Sustenet.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class OptionValueCollection : IList, ICollection, IList&lt;string&gt;, ICollection&lt;string&gt;, IEnumerable&lt;string&gt;, IEnumerable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">OptionValueCollection</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ilist">IList</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.icollection">ICollection</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.icollection-1">ICollection</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerable">IEnumerable</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="NDesk_Options_OptionValueCollection__ctor_" data-uid="NDesk.Options.OptionValueCollection.#ctor*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection__ctor_NDesk_Options_OptionContext_" data-uid="NDesk.Options.OptionValueCollection.#ctor(NDesk.Options.OptionContext)">
+  OptionValueCollection(OptionContext)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">internal OptionValueCollection(OptionContext c)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>c</code> <a class="xref" href="NDesk.Options.OptionContext.html">OptionContext</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="NDesk_Options_OptionValueCollection_c" data-uid="NDesk.Options.OptionValueCollection.c">
+  c
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private OptionContext c</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="NDesk.Options.OptionContext.html">OptionContext</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="NDesk_Options_OptionValueCollection_values" data-uid="NDesk.Options.OptionValueCollection.values">
+  values
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L150"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private List&lt;string&gt; values</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="NDesk_Options_OptionValueCollection_Count_" data-uid="NDesk.Options.OptionValueCollection.Count*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_Count" data-uid="NDesk.Options.OptionValueCollection.Count">
+  Count
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L170"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_IsReadOnly_" data-uid="NDesk.Options.OptionValueCollection.IsReadOnly*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_IsReadOnly" data-uid="NDesk.Options.OptionValueCollection.IsReadOnly">
+  IsReadOnly
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L171"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsReadOnly { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_Item_" data-uid="NDesk.Options.OptionValueCollection.Item*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_Item_System_Int32_" data-uid="NDesk.Options.OptionValueCollection.Item(System.Int32)">
+  this[int]
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string this[int index] { get; set; }</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="NDesk_Options_OptionValueCollection_Add_" data-uid="NDesk.Options.OptionValueCollection.Add*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_Add_System_String_" data-uid="NDesk.Options.OptionValueCollection.Add(System.String)">
+  Add(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L165"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(string item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_AssertValid_" data-uid="NDesk.Options.OptionValueCollection.AssertValid*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_AssertValid_System_Int32_" data-uid="NDesk.Options.OptionValueCollection.AssertValid(System.Int32)">
+  AssertValid(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">private void AssertValid(int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_Clear_" data-uid="NDesk.Options.OptionValueCollection.Clear*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_Clear" data-uid="NDesk.Options.OptionValueCollection.Clear">
+  Clear()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L166"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Clear()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_Contains_" data-uid="NDesk.Options.OptionValueCollection.Contains*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_Contains_System_String_" data-uid="NDesk.Options.OptionValueCollection.Contains(System.String)">
+  Contains(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L167"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Contains(string item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_CopyTo_" data-uid="NDesk.Options.OptionValueCollection.CopyTo*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_CopyTo_System_String___System_Int32_" data-uid="NDesk.Options.OptionValueCollection.CopyTo(System.String[],System.Int32)">
+  CopyTo(string[], int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CopyTo(string[] array, int arrayIndex)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>array</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
+    <dd></dd>
+    <dt><code>arrayIndex</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_GetEnumerator_" data-uid="NDesk.Options.OptionValueCollection.GetEnumerator*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_GetEnumerator" data-uid="NDesk.Options.OptionValueCollection.GetEnumerator">
+  GetEnumerator()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerator&lt;string&gt; GetEnumerator()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1">IEnumerator</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_IndexOf_" data-uid="NDesk.Options.OptionValueCollection.IndexOf*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_IndexOf_System_String_" data-uid="NDesk.Options.OptionValueCollection.IndexOf(System.String)">
+  IndexOf(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L194"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int IndexOf(string item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_Insert_" data-uid="NDesk.Options.OptionValueCollection.Insert*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_Insert_System_Int32_System_String_" data-uid="NDesk.Options.OptionValueCollection.Insert(System.Int32,System.String)">
+  Insert(int, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L195"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Insert(int index, string item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_Remove_" data-uid="NDesk.Options.OptionValueCollection.Remove*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_Remove_System_String_" data-uid="NDesk.Options.OptionValueCollection.Remove(System.String)">
+  Remove(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L169"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Remove(string item)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>item</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_RemoveAt_" data-uid="NDesk.Options.OptionValueCollection.RemoveAt*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_RemoveAt_System_Int32_" data-uid="NDesk.Options.OptionValueCollection.RemoveAt(System.Int32)">
+  RemoveAt(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L196"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveAt(int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_ToArray_" data-uid="NDesk.Options.OptionValueCollection.ToArray*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_ToArray" data-uid="NDesk.Options.OptionValueCollection.ToArray">
+  ToArray()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L227"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string[] ToArray()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>[]</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_ToList_" data-uid="NDesk.Options.OptionValueCollection.ToList*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_ToList" data-uid="NDesk.Options.OptionValueCollection.ToList">
+  ToList()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L222"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; ToList()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_ToString_" data-uid="NDesk.Options.OptionValueCollection.ToString*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_ToString" data-uid="NDesk.Options.OptionValueCollection.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L232"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="eii">Explicit Interface Implementations
+</h2>
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_ICollection_CopyTo_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#ICollection#CopyTo*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_ICollection_CopyTo_System_Array_System_Int32_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#ICollection#CopyTo(System.Array,System.Int32)">
+  ICollection.CopyTo(Array, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void ICollection.CopyTo(Array array, int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>array</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array">Array</a></dt>
+    <dd></dd>
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_ICollection_IsSynchronized_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#ICollection#IsSynchronized*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_ICollection_IsSynchronized" data-uid="NDesk.Options.OptionValueCollection.System#Collections#ICollection#IsSynchronized">
+  ICollection.IsSynchronized
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L160"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool ICollection.IsSynchronized { get; }</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_ICollection_SyncRoot_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#ICollection#SyncRoot*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_ICollection_SyncRoot" data-uid="NDesk.Options.OptionValueCollection.System#Collections#ICollection#SyncRoot">
+  ICollection.SyncRoot
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L161"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">object ICollection.SyncRoot { get; }</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_IEnumerable_GetEnumerator_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IEnumerable#GetEnumerator*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_IEnumerable_GetEnumerator" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IEnumerable#GetEnumerator">
+  IEnumerable.GetEnumerator()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L175"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IEnumerator IEnumerable.GetEnumerator()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.ienumerator">IEnumerator</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_IList_Add_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Add*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_IList_Add_System_Object_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Add(System.Object)">
+  IList.Add(object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int IList.Add(object value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_IList_Contains_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Contains*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_IList_Contains_System_Object_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Contains(System.Object)">
+  IList.Contains(object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L184"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IList.Contains(object value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_IList_IndexOf_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#IndexOf*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_IList_IndexOf_System_Object_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#IndexOf(System.Object)">
+  IList.IndexOf(object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L185"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int IList.IndexOf(object value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_IList_Insert_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Insert*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_IList_Insert_System_Int32_System_Object_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Insert(System.Int32,System.Object)">
+  IList.Insert(int, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L186"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void IList.Insert(int index, object value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_IList_IsFixedSize_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#IsFixedSize*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_IList_IsFixedSize" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#IsFixedSize">
+  IList.IsFixedSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L189"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool IList.IsFixedSize { get; }</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_IList_Item_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Item*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_IList_Item_System_Int32_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Item(System.Int32)">
+  IList.this[int]
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L190"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">object IList.this[int index] { get; set; }</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_IList_Remove_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Remove*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_IList_Remove_System_Object_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#Remove(System.Object)">
+  IList.Remove(object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L187"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void IList.Remove(object value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="NDesk_Options_OptionValueCollection_System_Collections_IList_RemoveAt_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#RemoveAt*"></a>
+
+  <h3 id="NDesk_Options_OptionValueCollection_System_Collections_IList_RemoveAt_System_Int32_" data-uid="NDesk.Options.OptionValueCollection.System#Collections#IList#RemoveAt(System.Int32)">
+  IList.RemoveAt(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L188"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void IList.RemoveAt(int index)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>index</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Quaint-Studios/Sustenet/blob/production-prep/libs/NDesk/Options.cs/#L148" class="edit-link">Edit this page</a>
+        </div>
+
+        
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
