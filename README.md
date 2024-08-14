@@ -1,7 +1,9 @@
 # Sustenet
-A C# networking solution for Unity3D that has a primary focus on scaling by allowing multiple servers to work together.
+A Zig, formerly C#, networking solution for the Godot Engine, Unreal Engine, and Unity3D. The primary focus is to enable scaling by allowing multiple servers to work together.
 
-![.NET Core](https://github.com/Quaint-Studios/Sustenet/workflows/.NET%20Core/badge.svg) [![CodeFactor](https://www.codefactor.io/repository/github/quaint-studios/sustenet/badge)](https://www.codefactor.io/repository/github/quaint-studios/sustenet)
+![Zig](https://github.com/Quaint-Studios/Sustenet/workflows/Zig/badge.svg) [![CodeFactor](https://www.codefactor.io/repository/github/quaint-studios/sustenet/badge)](https://www.codefactor.io/repository/github/quaint-studios/sustenet)
+
+Note: This README is out of date since we're still migrating from C# to Zig. Things like solutions and project files no longer exist. Regardless, the layout should remain the same for everything.
 
 ## Vision
 
