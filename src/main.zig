@@ -1,8 +1,8 @@
 const std = @import("std");
 const print = std.debug.print;
 
-const base_server = @import("Transport/base_server.zig");
-const base_client = @import("Transport/base_client.zig");
+const sustenet = @import("sustenet.zig");
+const transport = sustenet.transport;
 
 fn entrypoint() !void {
     // Get allocator
@@ -22,37 +22,27 @@ fn entrypoint() !void {
 
     if (argsIterator.next()) |arg| {
         if (std.mem.eql(u8, arg, "server")) {
-            print("Server mode\n", .{});
-            var master_server = base_server.createMasterServer(100, 4337);
+            print("Server mode.\n", .{});
+            var master_server = transport.BaseServer.createMasterServer(100, 4337);
             try master_server.start();
         } else if (std.mem.eql(u8, arg, "client")) {
-            print("Client mode\n", .{});
-            var client = base_client.createClient(4337);
+            print("Client mode.\n", .{});
+            var client = transport.BaseClient.createClient(4337);
             try client.connect();
         } else {
-            print("Unknown mode\n", .{});
+            print("Unknown mode.\n", .{});
         }
     } else {
-        print("No mode specified\n", .{});
+        print("No mode specified. Run `zig build run -- <client|server>`.\n", .{});
     }
 }
 
+var is_running = false;
+
+// pub var clients: Client = ...;
+
 pub fn main() !void {
     try entrypoint();
-
-    // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    print("All your {s} are belong to us 2.\n", .{"codebase"});
-
-    // stdout is for the actual output of your application, for example if you
-    // are implementing gzip, then only the compressed bytes should be sent to
-    // stdout, not any debugging messages.
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
-
-    try stdout.print("Run `zig build test` to run the tests.\n", .{});
-
-    try bw.flush(); // don't forget to flush!
 }
 
 test "simple test" {
