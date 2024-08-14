@@ -1,8 +1,14 @@
 const std = @import("std");
 const print = std.debug.print;
+const ArrayList = std.ArrayList;
 
-const sustenet = @import("sustenet.zig");
+pub const sustenet = @import("sustenet.zig");
 const transport = sustenet.transport;
+const clients = sustenet.clients;
+
+pub var client_list: std.ArrayList(clients.Client) = undefined;
+pub var cluster = undefined;
+pub var master = undefined;
 
 fn entrypoint() !void {
     // Get allocator
@@ -10,30 +16,41 @@ fn entrypoint() !void {
     const allocator = gpa.allocator();
     defer _ = gpa.deinit();
 
-    // Parse args into string array (error union needs 'try')
-    // const args = try std.process.argsAlloc(allocator);
-
     var argsIterator = try std.process.ArgIterator.initWithAllocator(allocator);
     defer argsIterator.deinit();
-
-    // defer std.process.argsFree(allocator, args);
 
     _ = argsIterator.next(); // Skip the first argument, which is the program name
 
     if (argsIterator.next()) |arg| {
         if (std.mem.eql(u8, arg, "server")) {
             print("Server mode.\n", .{});
-            var master_server = transport.BaseServer.createMasterServer(100, 4337);
+            var master_server = transport.BaseServer.createMasterServer(10, 4337);
             try master_server.start();
         } else if (std.mem.eql(u8, arg, "client")) {
-            print("Client mode.\n", .{});
-            var client = transport.BaseClient.createClient(4337);
-            try client.connect();
+            client_list = ArrayList(clients.Client).init(allocator);
+            defer client_list.deinit();
+
+            var max_clients: u32 = 10; // Default value
+            if (argsIterator.next()) |num_arg| {
+                max_clients = std.fmt.parseInt(u32, num_arg, 10) catch 10;
+
+                // Print the number of clients
+                print("Number of clients: {}\n", .{max_clients});
+            }
+
+            for (0..max_clients) |_| {
+                var client = clients.Client.new(4337);
+                try client_list.append(client);
+
+                try client.connect();
+            }
+
+            print("Finished connecting {} clients to the server.\n", .{max_clients});
         } else {
-            print("Unknown mode.\n", .{});
+            print("Unknown mode provided. Aborting.\n", .{});
         }
     } else {
-        print("No mode specified. Run `zig build run -- <client|server>`.\n", .{});
+        print("No mode specified. Run `zig build run -- <client|server> [max clients|max connections]`.\n", .{});
     }
 }
 

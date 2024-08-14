@@ -4,4 +4,4 @@
 
 # Running
 
-```zig build run -- <client|server>```
+```zig build run -- <client|server> [max clients|max connections]```

@@ -12,6 +12,10 @@ id: u32 = 0,
 port: u16 = 4337,
 stream: ?net.Stream,
 
+pub fn new(port: u16) BaseClient {
+    return BaseClient{ .id = 0, .port = port, .stream = null };
+}
+
 pub fn connect(self: *BaseClient) !void {
     self.id = 1;
 
@@ -34,8 +38,4 @@ pub fn send(self: *BaseClient, data: []const u8) !void {
     var writer = self.stream.?.writer();
     const size = try writer.write(data);
     print("Sending '{s}' to peer, total written: {d} bytes\n", .{ data, size });
-}
-
-pub fn createClient(port: u16) BaseClient {
-    return BaseClient{ .id = 0, .port = port, .stream = null };
 }
