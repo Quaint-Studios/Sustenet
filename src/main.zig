@@ -1,10 +1,12 @@
 const std = @import("std");
+pub const sustenet = @import("sustenet.zig");
+
 const print = std.debug.print;
 const ArrayList = std.ArrayList;
-
-pub const sustenet = @import("sustenet.zig");
 const transport = sustenet.transport;
 const clients = sustenet.clients;
+
+const BaseServer = transport.BaseServer;
 
 pub var client_list: std.ArrayList(clients.Client) = undefined;
 pub var cluster = undefined;
@@ -22,11 +24,12 @@ fn entrypoint() !void {
     _ = argsIterator.next(); // Skip the first argument, which is the program name
 
     if (argsIterator.next()) |arg| {
-        if (std.mem.eql(u8, arg, "server")) {
-            print("Server mode.\n", .{});
-            var master_server = transport.BaseServer.createMasterServer(10, 4337);
+        if (std.mem.eql(u8, arg, "server")) { // ----- Server mode
+            var master_server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
+            defer master_server.deinit();
+
             try master_server.start();
-        } else if (std.mem.eql(u8, arg, "client")) {
+        } else if (std.mem.eql(u8, arg, "client")) { // ----- Client mode
             client_list = ArrayList(clients.Client).init(allocator);
             defer client_list.deinit();
 
