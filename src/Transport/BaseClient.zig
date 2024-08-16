@@ -4,6 +4,7 @@
 const std = @import("std");
 const net = std.net;
 const print = std.debug.print;
+const testing = std.testing; // Add import for testing package
 const BaseClient = @This();
 
 const bufferSize = 4028;
@@ -38,4 +39,26 @@ pub fn send(self: *BaseClient, data: []const u8) !void {
     var writer = self.stream.?.writer();
     const size = try writer.write(data);
     print("Sending '{s}' to peer, total written: {d} bytes\n", .{ data, size });
+}
+
+test "setup client" {
+    const client = BaseClient.new(4337);
+    try client.connect();
+
+    try testing.expect(client.id == 1); // Use expect from testing package
+}
+
+test "send data" {
+    const client = BaseClient.new(4337);
+    try client.connect();
+    try client.send("hello ziggy!");
+
+    try testing.expect(client.stream != null);
+}
+
+test "send data with null stream" {
+    const client = BaseClient.new(4337);
+    try client.send("hello ziggy!");
+
+    try testing.expect(client.stream == null);
 }

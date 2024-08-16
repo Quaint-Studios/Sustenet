@@ -9,8 +9,8 @@ const clients = sustenet.clients;
 const BaseServer = transport.BaseServer;
 
 pub var client_list: std.ArrayList(clients.Client) = undefined;
-pub var cluster = undefined;
-pub var master = undefined;
+// pub var cluster = undefined;
+// pub var master = undefined;
 
 fn entrypoint() !void {
     // Get allocator
@@ -70,4 +70,8 @@ test "simple test" {
     defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
     try list.append(42);
     try std.testing.expectEqual(@as(i32, 42), list.pop());
+}
+
+test "all" {
+    std.testing.refAllDecls(@This());
 }
