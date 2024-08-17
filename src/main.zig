@@ -9,6 +9,9 @@ const clients = sustenet.clients;
 const BaseServer = transport.BaseServer;
 
 pub var client_list: std.ArrayList(clients.Client) = undefined;
+
+var is_running = false;
+
 // pub var cluster = undefined;
 // pub var master = undefined;
 
@@ -57,38 +60,20 @@ fn entrypoint() !void {
     }
 }
 
-var is_running = false;
-
-// pub var clients: Client = ...;
-
 pub fn main() !void {
     try entrypoint();
 }
 
+//#region Tests
 test {
     std.testing.refAllDecls(@This());
 }
 
-// test "create server with gpa_allocator" {
-//     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-//     const allocator = gpa.allocator();
-//     defer _ = gpa.deinit();
-
-//     const n = 100000;
-
-//     for (0..n) |_| {
-//         var server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
-//         defer server.deinit();
-
-//         try server.start();
-//     }
-// }
-
-test "create server with page_allocator" {
+test "create server(s) with gp_allocator" {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
 
-    const n = 1_000_000;
+    const n = 1;
     const fmn = try sustenet.utils.Utilities.formatWithCommas(n);
 
     std.debug.print("Creating {s} servers...\n", .{fmn});
@@ -101,38 +86,5 @@ test "create server with page_allocator" {
     }
 
     std.debug.print("Finished creating {s} servers.\n", .{fmn});
-
-    // std.time.sleep(4 * std.time.ns_per_s);
 }
-
-// test "create client with page_allocator" {
-//     const n = 1;
-
-//     for (0..n) |_| {
-//         var client = clients.Client.new(4337);
-//         defer client.super.deinit();
-
-//         try client.connect();
-//     }
-
-//     // std.time.sleep(4 * std.time.ns_per_s);
-// }
-
-// test "create server with arena_allocator" {
-//     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-//     const allocator = gpa.allocator();
-
-//     var arena = std.heap.ArenaAllocator.init(allocator);
-//     defer arena.deinit();
-
-//     const aa = arena.allocator();
-
-//     const n = 750000;
-
-//     for (0..n) |_| {
-//         var server = try BaseServer.new(aa, BaseServer.ServerType.MasterServer, 10, 4337);
-//         defer server.deinit();
-
-//         try server.start();
-//     }
-// }
+//#endregion

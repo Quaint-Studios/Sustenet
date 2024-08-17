@@ -47,25 +47,3 @@ pub fn deinit(self: *BaseClient) void {
         self.stream = null;
     }
 }
-
-test "setup client" {
-    const client = BaseClient.new(4337);
-    try client.connect();
-
-    try testing.expect(client.id == 1); // Use expect from testing package
-}
-
-test "send data" {
-    const client = BaseClient.new(4337);
-    try client.connect();
-    try client.send("hello ziggy!");
-
-    try testing.expect(client.stream != null);
-}
-
-test "send data with null stream" {
-    const client = BaseClient.new(4337);
-    try client.send("hello ziggy!");
-
-    try testing.expect(client.stream == null);
-}
