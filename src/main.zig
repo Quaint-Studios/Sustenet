@@ -26,7 +26,7 @@ fn entrypoint() !void {
     if (argsIterator.next()) |arg| {
         if (std.mem.eql(u8, arg, "server")) { // ----- Server mode
             var master_server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
-            defer master_server.deinit();
+            defer master_server.deinit(allocator);
 
             try master_server.start();
         } else if (std.mem.eql(u8, arg, "client")) { // ----- Client mode
@@ -65,13 +65,74 @@ pub fn main() !void {
     try entrypoint();
 }
 
-test "simple test" {
-    var list = std.ArrayList(i32).init(std.testing.allocator);
-    defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
-    try list.append(42);
-    try std.testing.expectEqual(@as(i32, 42), list.pop());
-}
-
-test "all" {
+test {
     std.testing.refAllDecls(@This());
 }
+
+// test "create server with gpa_allocator" {
+//     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+//     const allocator = gpa.allocator();
+//     defer _ = gpa.deinit();
+
+//     const n = 100000;
+
+//     for (0..n) |_| {
+//         var server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
+//         defer server.deinit();
+
+//         try server.start();
+//     }
+// }
+
+test "create server with page_allocator" {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+
+    const n = 1_000_000;
+    const fmn = try sustenet.utils.Utilities.formatWithCommas(n);
+
+    std.debug.print("Creating {s} servers...\n", .{fmn});
+
+    for (0..n) |_| {
+        var server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
+        defer server.deinit(allocator);
+
+        try server.start();
+    }
+
+    std.debug.print("Finished creating {s} servers.\n", .{fmn});
+
+    // std.time.sleep(4 * std.time.ns_per_s);
+}
+
+// test "create client with page_allocator" {
+//     const n = 1;
+
+//     for (0..n) |_| {
+//         var client = clients.Client.new(4337);
+//         defer client.super.deinit();
+
+//         try client.connect();
+//     }
+
+//     // std.time.sleep(4 * std.time.ns_per_s);
+// }
+
+// test "create server with arena_allocator" {
+//     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+//     const allocator = gpa.allocator();
+
+//     var arena = std.heap.ArenaAllocator.init(allocator);
+//     defer arena.deinit();
+
+//     const aa = arena.allocator();
+
+//     const n = 750000;
+
+//     for (0..n) |_| {
+//         var server = try BaseServer.new(aa, BaseServer.ServerType.MasterServer, 10, 4337);
+//         defer server.deinit();
+
+//         try server.start();
+//     }
+// }

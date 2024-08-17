@@ -24,27 +24,25 @@ port: u16,
 clients: AutoHashMap(i32, BaseClient),
 released_ids: std.ArrayList(i32),
 
-const packetHandler = fn (from_client: i32, packet: Packet) void;
+pub const packetHandler = *const fn (from_client: i32, packet: i32) void;
 
-var packetHandlers: ?AutoHashMap(i32, i32) = null;
+var packetHandlers: ?AutoHashMap(i32, packetHandler) = null;
 
 // onConnection: BaseEvent(comptime i32),
 // onDisconnection: BaseEvent(comptime i32),
 // onReceived: BaseEvent(comptime []u8),
 
 pub fn new(allocator: std.mem.Allocator, server_type: ServerType, max_connections: i32, port: ?u16) !BaseServer {
-    const server_type_name = try Utilities.splitByPascalCase(@tagName(server_type));
-
     var baseServer = BaseServer{
         .server_type = server_type,
-        .server_type_name = server_type_name,
+        .server_type_name = serverTypeToString(server_type),
         .max_connections = max_connections,
         .port = port orelse Constants.MASTER_PORT,
 
-        .clients = undefined,
-        .released_ids = undefined,
+        .clients = AutoHashMap(comptime i32, comptime BaseClient).init(allocator),
+        .released_ids = std.ArrayList(comptime i32).init(allocator),
     };
-    baseServer.init(allocator);
+    baseServer.initializeData(allocator);
 
     return baseServer;
 }
@@ -52,35 +50,59 @@ pub fn new(allocator: std.mem.Allocator, server_type: ServerType, max_connection
 //#region Connection Functions
 pub fn start(self: *BaseServer) !void {
     const allocator = std.heap.page_allocator;
-    {
+    if (Constants.DEBUGGING) {
         const header = try std.fmt.allocPrint(allocator, "Starting {s} on Port {d}", .{ self.server_type_name, self.port });
+        defer allocator.free(header);
         Utilities.consoleHeader(header);
     }
 
     // TODO: Implement server start
 
-    {
+    if (Constants.DEBUGGING) {
         const header = try std.fmt.allocPrint(allocator, "{s} Started (Max connections: {d})", .{ self.server_type_name, self.max_connections });
+        defer allocator.free(header);
         Utilities.consoleHeader(header);
     }
 }
 //#endregion
 
-//#region Memory Functions
-pub fn init(self: *BaseServer, allocator: std.mem.Allocator) void {
-    self.clients = AutoHashMap(comptime i32, comptime BaseClient).init(allocator);
-    self.released_ids = std.ArrayList(i32).init(allocator);
+//#region Data Functions
+pub fn initializeData(_: *BaseServer, allocator: std.mem.Allocator) void {
+    if (BaseServer.packetHandlers == null) {
+        BaseServer.packetHandlers = AutoHashMap(i32, packetHandler).init(allocator);
+    }
+}
+//#endregion
 
-    if (BaseServer.packetHandlers != null) {
-        BaseServer.packetHandlers.?.deinit(); // Clean up and refresh.
+//#region Utillity Functions
+pub fn serverTypeToString(server_type: ServerType) []const u8 {
+    switch (server_type) {
+        ServerType.MasterServer => return "Master Server",
+        ServerType.ClusterServer => return "Cluster Server",
+    }
+}
+//#endregion
+
+//#region Memory Functions
+pub fn deinit(self: *BaseServer, _: std.mem.Allocator) void {
+    // Free clients
+    {
+        var it = self.clients.iterator();
+        while (it.next()) |entry| {
+            var client = entry.value_ptr.*;
+            client.deinit();
+        }
+        self.clients.deinit();
     }
 
-    BaseServer.packetHandlers = AutoHashMap(comptime i32, comptime i32).init(allocator); // TODO: Should be K i32 and V packetHandlers
-}
-
-pub fn deinit(self: *BaseServer) void {
-    self.clients.deinit();
+    // Free released_ids
     self.released_ids.deinit();
+
+    // Free packetHandlers
+    if (BaseServer.packetHandlers != null) {
+        BaseServer.packetHandlers.?.deinit();
+        BaseServer.packetHandlers = null;
+    }
 }
 //#endregion
 
