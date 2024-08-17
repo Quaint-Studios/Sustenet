@@ -1,4 +1,4 @@
-pub const DEBUGGING = true;
+pub const DEBUGGING = false;
 
 /// How many ticks are in a second.
 pub const TICK_RATE: i32 = 30;
