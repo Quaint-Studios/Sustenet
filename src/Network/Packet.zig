@@ -5,12 +5,15 @@ const ArrayList = std.ArrayList;
 const Packet = @This();
 
 buffer: ArrayList(u8),
-readable_buffer: []u8,
+readable_buffer: ?[]u8,
 read_pos: i32 = 0,
 
 /// Creates an empty packet without an ID.
 pub fn new(allocator: std.mem.Allocator) Packet {
-    const packet = Packet{};
+    const packet = Packet{
+        .buffer = ArrayList(u8).init(allocator),
+        .readable_buffer = null,
+    };
     packet.init(allocator);
     return Packet{};
 }

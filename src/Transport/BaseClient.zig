@@ -2,48 +2,80 @@
 //! and receiving data. Also handles the core for connecting to servers.
 
 const std = @import("std");
+const network = @import("network");
+const sustenet = @import("root").sustenet;
+
 const net = std.net;
-const print = std.debug.print;
-const testing = std.testing; // Add import for testing package
+const testing = std.testing;
+const Packet = sustenet.network.Packet;
+const BaseEvent = sustenet.events.BaseEvent;
+const Player = sustenet.core.spawning.Player;
 const BaseClient = @This();
 
-const bufferSize = 4028;
+pub const buffer_size = 4096;
 
-id: u32 = 0,
-port: u16 = 4337,
-stream: ?net.Stream,
+id: i32 = -1,
+name: ?[]const u8 = null,
 
-pub fn new(port: u16) BaseClient {
-    return BaseClient{ .id = 0, .port = port, .stream = null };
+tcp: TcpHandler,
+udp: UdpHandler,
+
+received_data: ?Packet = null,
+
+on_connected: BaseEvent, // Init these early
+on_disconnected: BaseEvent,
+on_received: BaseEvent,
+
+player: ?Player = null,
+
+pub fn new(id: i32) BaseClient {
+    return BaseClient{
+        .id = id,
+
+        .tcp = TcpHandler{
+            .socket = null,
+            .buffer = null,
+        },
+        .udp = UdpHandler{
+            .socket = null,
+            .buffer = null,
+        },
+
+        .on_connected = BaseEvent{},
+        .on_disconnected = BaseEvent{},
+        .on_received = BaseEvent{},
+    };
 }
 
-pub fn connect(self: *BaseClient) !void {
-    self.id = 1;
+const TcpHandler = struct {
+    socket: ?network.Socket,
+    buffer: ?[buffer_size]u8,
 
-    _ = try net.Address.parseIp4("127.0.0.1", self.port);
+    fn deinit(self: *TcpHandler) void {
+        if (self.socket != null) {
+            self.socket.?.close();
+        }
+    }
+};
 
-    // Connect to server.
-    // self.stream = net.tcpConnectToAddress(server) catch |err| {
-    //     print("Unable to connect to Sustenet Server.\n", .{});
-    //     return err;
-    // };
-    // defer self.stream.?.close();
-    // print("Connecting to {}\n", .{server});
+const UdpHandler = struct {
+    socket: ?network.Socket,
+    buffer: ?[buffer_size]u8,
 
-    // try self.send("hello ziggy!");
-}
+    fn deinit(self: *UdpHandler) void {
+        if (self.socket != null) {
+            self.socket.?.close();
+        }
+    }
+};
 
-pub fn send(self: *BaseClient, data: []const u8) !void {
-    if (self.stream == null) return;
-
-    var writer = self.stream.?.writer();
-    const size = try writer.write(data);
-    print("Sending '{s}' to peer, total written: {d} bytes\n", .{ data, size });
-}
-
+//#region Memory Functions
 pub fn deinit(self: *BaseClient) void {
-    if (self.stream != null) {
-        self.stream.?.close();
-        self.stream = null;
+    self.tcp.deinit();
+    self.udp.deinit();
+
+    if (self.received_data != null) {
+        self.received_data.?.deinit();
     }
 }
+//#endregion

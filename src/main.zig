@@ -1,21 +1,26 @@
 const std = @import("std");
+const builtin = @import("builtin");
+const Options = @import("Options.zig");
 pub const sustenet = @import("sustenet.zig");
 
+const eql = std.mem.eql;
 const print = std.debug.print;
 const ArrayList = std.ArrayList;
 const transport = sustenet.transport;
 const clients = sustenet.clients;
 
+const Constants = sustenet.utils.Constants;
 const BaseServer = transport.BaseServer;
 
 pub var client_list: std.ArrayList(clients.Client) = undefined;
 
 var is_running = false;
 
-// pub var cluster = undefined;
+// pub var clients: []Clients.Client;
+// pub var cluster: World = undefined;
 // pub var master = undefined;
 
-fn entrypoint() !void {
+pub fn main() !void {
     // Get allocator
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
@@ -27,41 +32,69 @@ fn entrypoint() !void {
     _ = argsIterator.next(); // Skip the first argument, which is the program name
 
     if (argsIterator.next()) |arg| {
-        if (std.mem.eql(u8, arg, "server")) { // ----- Server mode
-            var master_server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
-            defer master_server.deinit(allocator);
-
-            try master_server.start();
-        } else if (std.mem.eql(u8, arg, "client")) { // ----- Client mode
+        if (eql(u8, arg, "help")) {
+            Options.showHelp();
+            return;
+        } else if (eql(u8, arg, "version")) {
+            print("Sustenet v{s}\n", .{sustenet.utils.Constants.VERSION});
+            return;
+        } else if (eql(u8, arg, "client") or eql(u8, arg, "c")) {
+            // Only to be used for debugging.
             client_list = ArrayList(clients.Client).init(allocator);
-            defer client_list.deinit();
+            defer {
+                // for (client_list.items()) |client| {
+                //     client.deinit();
+                // }
+                client_list.deinit();
+            }
 
-            var max_clients: u32 = 10; // Default value
+            var max_clients: u32 = 1; // Default value
+
+            // Check if the user provided a number of clients to connect
+            print("{s}Starting client mode...{s} ", .{
+                Constants.TERMINAL_ORANGE,
+                Constants.TERMINAL_DEFAULT,
+            });
             if (argsIterator.next()) |num_arg| {
                 max_clients = std.fmt.parseInt(u32, num_arg, 10) catch 10;
 
                 // Print the number of clients
-                print("Number of clients: {}\n", .{max_clients});
+                print("{s}Number of clients: {d}{s}\n", .{
+                    Constants.TERMINAL_BLUE,
+                    max_clients,
+                    Constants.TERMINAL_DEFAULT,
+                });
+            } else {
+                print("{s}No number of clients provided. Defaulting to 1.{s}\n", .{
+                    Constants.TERMINAL_BLUE,
+                    Constants.TERMINAL_DEFAULT,
+                });
             }
 
+            // Connect the clients
             for (0..max_clients) |_| {
-                var client = clients.Client.new(4337);
+                var client = clients.Client.new(null, null);
+                defer client.deinit();
                 try client_list.append(client);
 
                 try client.connect();
             }
 
-            print("Finished connecting {} clients to the server.\n", .{max_clients});
+            print("{s}Finished connecting {d} clients to the server.{s}\n", .{
+                Constants.TERMINAL_GREEN,
+                max_clients,
+                Constants.TERMINAL_DEFAULT,
+            });
+            return;
+        } else if (eql(u8, arg, "cluster") or eql(u8, arg, "cs")) {
+            return;
+        } else if (eql(u8, arg, "master") or eql(u8, arg, "ms")) {
+            return;
         } else {
-            print("Unknown mode provided. Aborting.\n", .{});
+            print("Add 'help' to this command to get a list of options.\n", .{});
+            return;
         }
-    } else {
-        print("No mode specified. Run `zig build run -- <client|server> [max clients|max connections]`.\n", .{});
     }
-}
-
-pub fn main() !void {
-    try entrypoint();
 }
 
 //#region Tests
@@ -76,7 +109,7 @@ test "create server(s) with gp_allocator" {
     const n = 1;
     const fmn = try sustenet.utils.Utilities.formatWithCommas(n);
 
-    std.debug.print("Creating {s} servers...\n", .{fmn});
+    print("Creating {s} servers...\n", .{fmn});
 
     for (0..n) |_| {
         var server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
@@ -85,6 +118,6 @@ test "create server(s) with gp_allocator" {
         try server.start();
     }
 
-    std.debug.print("Finished creating {s} servers.\n", .{fmn});
+    print("Finished creating {s} servers.\n", .{fmn});
 }
 //#endregion

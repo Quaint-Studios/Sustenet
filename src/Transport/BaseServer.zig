@@ -13,6 +13,9 @@ const BaseServer = @This();
 
 pub const ServerType = enum { MasterServer, ClusterServer };
 
+pub const packetHandler = *const fn (from_client: i32, packet: i32) void;
+var packetHandlers: ?AutoHashMap(i32, packetHandler) = null;
+
 // UDP equivalent is in BaseClient.UdpHandler.socket
 // tcp_listener: i32, // Just set as i32 to shutup the compiler
 
@@ -23,10 +26,6 @@ port: u16,
 
 clients: AutoHashMap(i32, BaseClient),
 released_ids: std.ArrayList(i32),
-
-pub const packetHandler = *const fn (from_client: i32, packet: i32) void;
-
-var packetHandlers: ?AutoHashMap(i32, packetHandler) = null;
 
 // onConnection: BaseEvent(comptime i32),
 // onDisconnection: BaseEvent(comptime i32),

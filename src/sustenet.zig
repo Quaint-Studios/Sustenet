@@ -1,4 +1,5 @@
 pub const clients = @import("Clients/clients.zig");
+pub const core = @import("Core/core.zig");
 pub const events = @import("Events/events.zig");
 pub const network = @import("Network/network.zig");
 pub const transport = @import("Transport/transport.zig");
