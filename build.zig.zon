@@ -20,7 +20,7 @@
             .hash = "12203b3634f36570ffced059248bd429cd06dc89a98659c86569d890fdd99b5070bd",
         },
         .zig_numerics = .{
-            .url = "src/deps/zig_numerics",
+            .path = "src/deps/zig_numerics",
             .hash = "1220fa512a354e8763a3586a40fc62608108f1c37b2ec8128d72af65a15a5b1f3206",
         },
     },
