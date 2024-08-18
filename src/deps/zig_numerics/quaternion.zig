@@ -1,4 +1,4 @@
-const vec = @import("Vector.zig");
+const vec = @import("vector.zig");
 
 pub fn Quaternion(comptime Scalar: type) type {
     return extern struct {
