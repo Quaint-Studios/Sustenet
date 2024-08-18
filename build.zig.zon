@@ -16,8 +16,12 @@
     // internet connectivity.
     .dependencies = .{
         .network = .{
-            .url = "https://github.com/ikskuh/zig-network/archive/bcf6cc8918d574f947b2647522d84a805c33f1c8.tar.gz",
+            .url = "git+https://github.com/ikskuh/zig-network#bcf6cc8918d574f947b2647522d84a805c33f1c8",
             .hash = "12203b3634f36570ffced059248bd429cd06dc89a98659c86569d890fdd99b5070bd",
+        },
+        .zig_numerics = .{
+            .url = "src/deps/zig_numerics",
+            .hash = "1220fa512a354e8763a3586a40fc62608108f1c37b2ec8128d72af65a15a5b1f3206",
         },
     },
     .paths = .{
@@ -27,6 +31,7 @@
         // in the same contents hash.
         // For example...
         // "",
+        "deps",
         "build.zig",
         "build.zig.zon",
         "src",
