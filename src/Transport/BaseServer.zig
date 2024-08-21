@@ -141,13 +141,13 @@ fn onTcpConnectCallback(self: *BaseServer, allocator: std.mem.Allocator) void {
                 };
             }
         };
-        const callable = action{
+        var callable = action{
             .server = self,
             .allocator = allocator,
             .client_socket = client_socket,
         };
 
-        var thread_manager = try ThreadManager.getInstance(allocator);
+        var thread_manager = try ThreadManager.getInstance();
         thread_manager.executeOnMainThread(&callable.action);
     }
 }
@@ -397,7 +397,7 @@ fn handleTcpData(
             //             packet_handler.?.*(client.id, packet);
             //         }
             //     };
-            //     ThreadManager.getInstance(allocator).executeOnMainThread(func.exec);
+            //     ThreadManager.getInstance().executeOnMainThread(func.exec);
         }
 
         if (received_data.unreadLength() >= 4) {

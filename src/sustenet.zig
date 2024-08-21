@@ -9,6 +9,8 @@ pub const world = @import("World/world.zig");
 
 pub const zig_numerics = @import("deps/zig_numerics/zig_numerics.zig");
 
+pub var allocator: @import("std").mem.Allocator = undefined;
+
 test {
     @import("std").testing.refAllDecls(@This());
 }

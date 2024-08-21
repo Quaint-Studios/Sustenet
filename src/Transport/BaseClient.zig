@@ -71,7 +71,11 @@ const TcpHandler = struct {
 
     pub fn deinit(self: *TcpHandler) void {
         if (self.socket != null) {
+            std.debug.print("Socket closing now.", .{});
             self.socket.?.close();
+            std.debug.print("Socket closed.", .{});
+        } else {
+            std.debug.print("Socket is null.", .{});
         }
     }
 };
@@ -88,13 +92,18 @@ const UdpHandler = struct {
 
 //#region Memory Functions
 pub fn deinit(self: *BaseClient) void {
+    std.debug.print("Deinitializing BaseClient.", .{});
     self.tcp.deinit();
     self.udp.deinit();
 
     self.received_data.deinit();
 
+    self.on_connected.clearAndFree();
     self.on_connected.deinit();
+    self.on_disconnected.clearAndFree();
     self.on_disconnected.deinit();
+
+    self.on_received.clearAndFree();
     self.on_received.deinit();
 }
 //#endregion

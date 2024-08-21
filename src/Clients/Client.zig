@@ -66,32 +66,33 @@ pub fn new(allocator: std.mem.Allocator, ip: ?[]const u8, port: ?u16) !Client {
         const action = struct {
             action: Action(void) = .{ .compute = compute },
             client: *Client,
-            allocator: std.mem.Allocator,
             fn compute(action: *Action(void)) void {
                 const this: *@This() = @alignCast(@fieldParentPtr("action", action));
-                this.client.*.super.received_data = Packet.new(this.allocator);
+                this.client.*.super.received_data = Packet.new(sustenet.allocator);
             }
         };
-        var callable = action{ .client = &client, .allocator = allocator };
+        var callable = action{ .client = &client };
         try client.super.on_connected.append(&callable.action);
     }
 
-    {
-        const action = struct {
-            action: ActionT2(Protocols, []u8, void) = .{ .compute = compute },
-            client: *Client,
-            allocator: std.mem.Allocator,
-            fn compute(action: *ActionT2(Protocols, []u8, void), protocol: Protocols, data: []u8) void {
-                const this: *@This() = @alignCast(@fieldParentPtr("action", action));
-                switch (protocol) {
-                    .TCP => this.client.*.super.received_data.reset(this.client.*.handleTcpData(this.allocator, data)),
-                    .UDP => _ = this.client.handleUdpData(this.allocator, data),
-                }
-            }
-        };
-        var callable = action{ .client = &client, .allocator = allocator };
-        try client.super.on_received.append(&callable.action);
-    }
+    // {
+    //     const action = struct {
+    //         action: ActionT2(Protocols, []u8, void) = .{ .compute = compute },
+    //         client: *Client,
+    //         allocator: std.mem.Allocator,
+    //         fn compute(action: *ActionT2(Protocols, []u8, void), protocol: Protocols, data: []u8) void {
+    //             const this: *@This() = @alignCast(@fieldParentPtr("action", action));
+    //             switch (protocol) {
+    //                 .TCP => this.client.*.super.received_data.reset(this.client.*.handleTcpData(this.allocator, data)),
+    //                 .UDP => _ = this.client.handleUdpData(this.allocator, data),
+    //             }
+
+    //             this.allocator.destroy(this);
+    //         }
+    //     };
+    //     var callable = action{ .client = &client, .allocator = allocator };
+    //     try client.super.on_received.append(&callable.action);
+    // }
 
     {
         // TODO on_initialized
@@ -146,7 +147,7 @@ fn handleTcpData(self: *Client, allocator: std.mem.Allocator, data: []u8) bool {
             return true;
         };
 
-        var threadManager = try ThreadManager.getInstance(allocator);
+        var threadManager = try ThreadManager.getInstance();
         {
             const action = struct {
                 action: Action(void) = .{ .compute = compute },
@@ -225,7 +226,7 @@ fn handleUdpData(self: *Client, allocator: std.mem.Allocator, data: []u8) bool {
             }
         };
         var callable = action{ .client = self, .allocator = allocator, .data = new_data };
-        var threadManager = ThreadManager.getInstance(allocator) catch |err| {
+        var threadManager = ThreadManager.getInstance() catch |err| {
             std.log.err("Failed to get thread manager: {}\n", .{err});
             return false;
         };
@@ -239,8 +240,15 @@ pub fn initializeClientData(_: *Client) void {}
 
 //#region Memory Functions
 pub fn deinit(self: *Client) void {
+    self.on_cluster_server_list.clearAndFree();
     self.on_cluster_server_list.deinit();
+    self.on_initialized.clearAndFree();
     self.on_initialized.deinit();
+
+    if (packetHandlers != null) {
+        packetHandlers.?.clearAndFree();
+        packetHandlers.?.deinit();
+    }
 
     self.super.deinit();
 }
