@@ -9,6 +9,7 @@ const ArrayList = std.ArrayList;
 const transport = sustenet.transport;
 const clients = sustenet.clients;
 
+const ThreadManager = transport.ThreadManager;
 const Constants = sustenet.utils.Constants;
 const BaseServer = transport.BaseServer;
 
@@ -93,6 +94,22 @@ pub fn main() !void {
         } else {
             print("Add 'help' to this command to get a list of options.\n", .{});
             return;
+        }
+    }
+}
+
+fn updateMain() void {
+    var next = std.time.milliTimestamp();
+
+    while (is_running) {
+        const now = std.time.milliTimestamp();
+        while (next < now) {
+            ThreadManager.updateMain();
+            next += Constants.MS_PER_TICK;
+
+            if (next > std.time.milliTimestamp()) {
+                std.time.sleep(next - std.time.milliTimestamp());
+            }
         }
     }
 }
