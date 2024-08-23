@@ -1,3 +1,3 @@
 //! World namespace
 
-const ClusterInfo = @import("ClusterInfo.zig");
+pub const ClusterInfo = @import("ClusterInfo.zig");
