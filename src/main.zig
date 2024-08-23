@@ -9,7 +9,6 @@ const ArrayList = std.ArrayList;
 const transport = sustenet.transport;
 const clients = sustenet.clients;
 
-const ThreadManager = transport.ThreadManager;
 const Constants = sustenet.utils.Constants;
 const BaseServer = transport.BaseServer;
 
@@ -86,7 +85,6 @@ pub fn main() !void {
                 max_clients,
                 Constants.TERMINAL_DEFAULT,
             });
-            return;
         } else if (eql(u8, arg, "cluster") or eql(u8, arg, "cs")) {
             return;
         } else if (eql(u8, arg, "master") or eql(u8, arg, "ms")) {
@@ -96,22 +94,38 @@ pub fn main() !void {
             return;
         }
     }
+
+    is_running = true;
+    defer is_running = false;
+
+    var logic_thread = try std.Thread.spawn(.{}, updateMain, .{allocator});
+    logic_thread.setName("Logic Thread") catch |err| {
+        print("Error setting thread name: {}\n", .{err});
+    };
+    logic_thread.detach();
+
+    var buffer: [1]u8 = undefined;
+    print("Press Enter to close Sustenet...", .{});
+    _ = try std.io.getStdIn().reader().read(buffer[0..1]);
 }
 
-fn updateMain() void {
+fn updateMain(allocator: std.mem.Allocator) void {
     var next = std.time.milliTimestamp();
+    var ThreadManager = try transport.ThreadManager.getInstance(allocator);
 
     while (is_running) {
         const now = std.time.milliTimestamp();
         while (next < now) {
-            ThreadManager.updateMain();
+            // ThreadManager.updateMain();
             next += Constants.MS_PER_TICK;
 
-            if (next > std.time.milliTimestamp()) {
-                std.time.sleep(next - std.time.milliTimestamp());
+            if (next > now) {
+                std.time.sleep(@as(u64, @intCast(next - now)) * std.time.ns_per_ms);
             }
         }
+        print("Tick\n", .{});
     }
+    ThreadManager.deinit();
 }
 
 //#region Tests
