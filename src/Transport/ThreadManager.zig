@@ -3,22 +3,22 @@ const sustenet = @import("root").sustenet;
 
 const RwLock = std.Thread.RwLock;
 const ArrayList = std.ArrayList;
-const Action = sustenet.utils.Extensions.Action();
+const Event = sustenet.events.BaseEvent.Event();
 
 const ThreadManager = @This();
 var instance: ?ThreadManager = null;
 
 main_pool_lock: RwLock = .{},
-main_pool: ArrayList(Action),
-main_pool_copied: ArrayList(Action),
+main_pool: Event,
+main_pool_copied: Event,
 execute_action: bool = false,
 
 /// Get the singleton instance.
 pub fn getInstance(allocator: std.mem.Allocator) !ThreadManager {
     if (instance == null) {
         instance = ThreadManager{
-            .main_pool = ArrayList(Action).init(allocator),
-            .main_pool_copied = ArrayList(Action).init(allocator),
+            .main_pool = Event.init(allocator),
+            .main_pool_copied = Event.init(allocator),
             .execute_action = false,
         };
     }
@@ -31,7 +31,7 @@ pub fn getInstance(allocator: std.mem.Allocator) !ThreadManager {
 pub fn executeOnMainThread(
     self: *ThreadManager,
     /// The action to be executed on the main thread.
-    action: Action,
+    action: Event,
 ) void {
     self.main_pool_lock.lock();
     defer self.main_pool_lock.unlock();
