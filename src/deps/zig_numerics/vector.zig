@@ -10,9 +10,27 @@ pub fn Vec3(comptime Scalar: type) type {
 
         const Self = @This();
 
+        const Shared = VecShared(T, count);
+
         pub inline fn init(xs: f32) void {
             return Self{ .v = Vector.init(xs) };
         }
+
+        pub inline fn x(self: *const Self) T {
+            return self.v[0];
+        }
+
+        pub inline fn y(self: *const Self) T {
+            return self.v[1];
+        }
+
+        pub inline fn z(self: *const Self) T {
+            return self.v[2];
+        }
+
+        pub const add = Shared.add;
+        pub const addScalar = Shared.addScalar;
+        pub const splat = Shared.splat;
     };
 }
 
