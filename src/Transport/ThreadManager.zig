@@ -3,7 +3,7 @@ const sustenet = @import("root").sustenet;
 
 const RwLock = std.Thread.RwLock;
 const ArrayList = std.ArrayList;
-const Action = sustenet.utils.Extensions.Action;
+const Action = sustenet.utils.Extensions.Action();
 
 const ThreadManager = @This();
 var instance: ?ThreadManager = null;

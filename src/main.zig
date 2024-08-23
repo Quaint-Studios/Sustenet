@@ -146,7 +146,7 @@ test "create server(s) with gp_allocator" {
 
     for (0..n) |_| {
         var server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
-        defer server.deinit(allocator);
+        defer server.deinit();
 
         try server.start(allocator);
     }
