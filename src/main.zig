@@ -7,18 +7,17 @@ const eql = std.mem.eql;
 const print = std.debug.print;
 const ArrayList = std.ArrayList;
 const transport = sustenet.transport;
+const master = sustenet.master;
 const clients = sustenet.clients;
 
 const Constants = sustenet.utils.Constants;
 const BaseServer = transport.BaseServer;
 
-pub var client_list: std.ArrayList(clients.Client) = undefined;
-
 var is_running = false;
 
-// pub var clients: []Clients.Client;
-// pub var cluster: World = undefined;
-// pub var master = undefined;
+pub var client_list: std.ArrayList(clients.Client) = undefined;
+// pub var cluster_server: world.ClusterServer = undefined;
+pub var master_server: master.MasterServer = undefined;
 
 pub fn main() !void {
     // Get allocator
@@ -88,7 +87,10 @@ pub fn main() !void {
         } else if (eql(u8, arg, "cluster") or eql(u8, arg, "cs")) {
             return;
         } else if (eql(u8, arg, "master") or eql(u8, arg, "ms")) {
-            return;
+            // TODO Use config file
+
+            master_server = try master.MasterServer.new(allocator, 0, 4337);
+            defer master_server.deinit();
         } else {
             print("Add 'help' to this command to get a list of options.\n", .{});
             return;

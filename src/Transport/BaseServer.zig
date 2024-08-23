@@ -14,7 +14,7 @@ const BaseServer = @This();
 pub const ServerType = enum { MasterServer, ClusterServer };
 
 pub const packetHandler = *const fn (from_client: i32, packet: i32) void;
-var packetHandlers: ?AutoHashMap(i32, packetHandler) = null;
+pub var packetHandlers: ?AutoHashMap(i32, packetHandler) = null;
 
 // UDP equivalent is in BaseClient.UdpHandler.socket
 // tcp_listener: i32, // Just set as i32 to shutup the compiler
@@ -32,7 +32,7 @@ released_ids: std.ArrayList(i32),
 // onReceived: BaseEvent(comptime []u8),
 
 pub fn new(allocator: std.mem.Allocator, server_type: ServerType, max_connections: i32, port: ?u16) !BaseServer {
-    var baseServer = BaseServer{
+    return BaseServer{
         .server_type = server_type,
         .server_type_name = serverTypeToString(server_type),
         .max_connections = max_connections,
@@ -41,14 +41,14 @@ pub fn new(allocator: std.mem.Allocator, server_type: ServerType, max_connection
         .clients = AutoHashMap(comptime i32, comptime BaseClient).init(allocator),
         .released_ids = std.ArrayList(comptime i32).init(allocator),
     };
-    baseServer.initializeData(allocator);
-
-    return baseServer;
 }
 
 //#region Connection Functions
 pub fn start(self: *BaseServer, allocator: std.mem.Allocator) !void {
     if (Constants.DEBUGGING) {
+
+        // TODO
+        // onConnection.Run += (id) => DebugServer(serverTypeName, $"Client#{id} has connected.");
         const header = try std.fmt.allocPrint(allocator, "Starting {s} on Port {d}", .{ self.server_type_name, self.port });
         defer allocator.free(header);
         Utilities.consoleHeader(header);
@@ -64,14 +64,6 @@ pub fn start(self: *BaseServer, allocator: std.mem.Allocator) !void {
 }
 //#endregion
 
-//#region Data Functions
-pub fn initializeData(_: *BaseServer, allocator: std.mem.Allocator) void {
-    if (BaseServer.packetHandlers == null) {
-        BaseServer.packetHandlers = AutoHashMap(i32, packetHandler).init(allocator);
-    }
-}
-//#endregion
-
 //#region Utillity Functions
 pub fn serverTypeToString(server_type: ServerType) []const u8 {
     switch (server_type) {
@@ -81,8 +73,12 @@ pub fn serverTypeToString(server_type: ServerType) []const u8 {
 }
 //#endregion
 
+//#region Data Functions
+
+//#endregion
+
 //#region Memory Functions
-pub fn deinit(self: *BaseServer, _: std.mem.Allocator) void {
+pub fn deinit(self: *BaseServer) void {
     // Free clients
     {
         var it = self.clients.iterator();
@@ -103,3 +99,7 @@ pub fn deinit(self: *BaseServer, _: std.mem.Allocator) void {
     }
 }
 //#endregion
+
+pub fn debugServer(serverTypeName: []const u8, msg: []const u8) void {
+    Utilities.printMsg("({s}) {s}", .{ serverTypeName, msg });
+}
