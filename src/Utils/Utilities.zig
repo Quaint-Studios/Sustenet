@@ -8,8 +8,7 @@ const Constants = sustenet.utils.Constants;
 /// Potential memory leak.
 ///
 /// TODO: Fix this function.
-pub fn splitByPascalCase(t: []const u8) ![]const u8 {
-    const allocator = std.heap.page_allocator;
+pub fn splitByPascalCase(t: []const u8, allocator: std.mem.Allocator) ![]const u8 {
     var list = std.ArrayList(u8).init(allocator);
     defer list.deinit();
 
@@ -31,14 +30,14 @@ pub fn splitByPascalCase(t: []const u8) ![]const u8 {
     return list.toOwnedSlice();
 }
 
-pub fn formatWithCommas(value: comptime_int) ![]const u8 {
+pub fn formatWithCommas(value: comptime_int, allocator: std.mem.Allocator) ![]const u8 {
     var buffer: [32]u8 = undefined; // Adjust size as needed
     var fba = std.io.fixedBufferStream(&buffer);
     var writer = fba.writer();
     try writer.print("{d}", .{value});
     const str = writer.context.getWritten();
 
-    var result = std.ArrayList(u8).init(std.heap.page_allocator);
+    var result = std.ArrayList(u8).init(allocator);
     defer result.deinit();
 
     var count: i32 = 0;

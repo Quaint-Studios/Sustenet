@@ -124,7 +124,7 @@ test "create server(s) with gp_allocator" {
     const allocator = gpa.allocator();
 
     const n = 1;
-    const fmn = try sustenet.utils.Utilities.formatWithCommas(n);
+    const fmn = try sustenet.utils.Utilities.formatWithCommas(n, allocator);
 
     print("Creating {s} servers...\n", .{fmn});
 
