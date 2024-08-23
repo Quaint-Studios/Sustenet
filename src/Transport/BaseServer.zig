@@ -47,8 +47,7 @@ pub fn new(allocator: std.mem.Allocator, server_type: ServerType, max_connection
 }
 
 //#region Connection Functions
-pub fn start(self: *BaseServer) !void {
-    const allocator = std.heap.page_allocator;
+pub fn start(self: *BaseServer, allocator: std.mem.Allocator) !void {
     if (Constants.DEBUGGING) {
         const header = try std.fmt.allocPrint(allocator, "Starting {s} on Port {d}", .{ self.server_type_name, self.port });
         defer allocator.free(header);

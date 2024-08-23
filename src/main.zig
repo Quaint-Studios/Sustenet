@@ -132,7 +132,7 @@ test "create server(s) with gp_allocator" {
         var server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
         defer server.deinit(allocator);
 
-        try server.start();
+        try server.start(allocator);
     }
 
     print("Finished creating {s} servers.\n", .{fmn});
