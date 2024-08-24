@@ -9,7 +9,9 @@ const ArrayList = std.ArrayList;
 /// A Zig implmenetation of C#'s `Action`.
 pub fn Event() type {
     return struct {
-        invokes: ArrayList(*const fn () void),
+        invokes: List,
+
+        const List = ArrayList(*const fn () void);
 
         const Self = @This();
 
@@ -45,21 +47,22 @@ pub fn Event() type {
 /// A Zig implmenetation of C#'s `Action<T>`.
 pub fn EventT1(comptime _T: type) type {
     return struct {
-        invokes: ArrayList(*const fn (comptime T) void),
+        invokes: List,
 
         pub const T = _T;
+        const List = ArrayList(*const fn (T) void);
 
         const Self = @This();
 
-        pub inline fn init(allocator: std.mem.Allocator) void {
-            Self{ .invokes = ArrayList(*const fn (comptime T) void).init(allocator) };
+        pub inline fn init(allocator: std.mem.Allocator) Self {
+            return Self{ .invokes = ArrayList(*const fn (T) void).init(allocator) };
         }
 
-        pub inline fn add(self: *Self, callable: *const fn (comptime T) void) void {
+        pub inline fn add(self: *Self, callable: *const fn (T) void) void {
             self.invokes.append(callable);
         }
 
-        pub inline fn addSlice(self: *Self, callables: []const *const fn (comptime T) void) void {
+        pub inline fn addSlice(self: *Self, callables: []const *const fn (T) void) void {
             self.invokes.appendSlice(callables);
         }
 
@@ -83,22 +86,23 @@ pub fn EventT1(comptime _T: type) type {
 /// A Zig implmenetation of C#'s `Action<T1, T2>`.
 pub fn EventT2(comptime _T1: type, comptime _T2: type) type {
     return struct {
-        invokes: ArrayList(*const fn (comptime T1, comptime T2) void),
+        invokes: List,
 
         pub const T1 = _T1;
         pub const T2 = _T2;
+        const List = ArrayList(*const fn (T1, T2) void);
 
         const Self = @This();
 
-        pub inline fn init(allocator: std.mem.Allocator) void {
-            Self{ .invokes = ArrayList(*const fn (comptime T1, comptime T2) void).init(allocator) };
+        pub inline fn init(allocator: std.mem.Allocator) Self {
+            return Self{ .invokes = ArrayList(*const fn (T1, T2) void).init(allocator) };
         }
 
-        pub inline fn add(self: *Self, callable: *const fn (comptime T1, comptime T2) void) void {
+        pub inline fn add(self: *Self, callable: *const fn (T1, T2) void) void {
             self.invokes.append(callable);
         }
 
-        pub inline fn addSlice(self: *Self, callables: []const *const fn (comptime T1, comptime T2) void) void {
+        pub inline fn addSlice(self: *Self, callables: []const *const fn (T1, T2) void) void {
             self.invokes.appendSlice(callables);
         }
 
