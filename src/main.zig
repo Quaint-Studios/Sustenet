@@ -41,9 +41,10 @@ pub fn main() !void {
             // Only to be used for debugging.
             client_list = ArrayList(clients.Client).init(allocator);
             defer {
-                // for (client_list.items()) |client| {
-                //     client.deinit();
-                // }
+                for (client_list.items) |const_client| {
+                    var client = const_client;
+                    client.deinit();
+                }
                 client_list.deinit();
             }
 
