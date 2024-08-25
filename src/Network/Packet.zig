@@ -5,7 +5,9 @@ const ArrayList = std.ArrayList;
 const Packet = @This();
 
 buffer: ArrayList(u8),
+/// Private
 readable_buffer: ?[]u8,
+/// Private
 read_pos: i32 = 0,
 
 /// Creates an empty packet without an ID.
@@ -43,6 +45,45 @@ pub fn setBytes(self: *Packet, allocator: std.mem.Allocator, data: []u8) void {
     self.readable_buffer = self.buffer.toOwnedSlice();
 }
 
+/// Insert length of the packet's content at the start of the buffer.
+pub fn writeLength(self: *Packet) void {
+    self.buffer.insertSlice(0, std.mem.toBytes(self.buffer.items.len));
+}
+
+/// Inserts an integer at the start of the buffer.
+pub fn insertInt(self: *Packet, data: i32) void {
+    self.buffer.insertSlice(0, std.mem.toBytes(data));
+}
+
+/// The length of the packet's content.
+pub fn length(self: *Packet) usize {
+    return self.buffer.items.len;
+}
+
+/// Returns the length of unread data in the packet.
+pub fn unreadLength(self: *Packet) usize {
+    return self.length() - self.read_pos;
+}
+
+/// Resets the packet. Defaults to true, reset the whole packet. False resets the last read int.
+pub fn reset(
+    self: *Packet,
+    /// Determines if the whole packet should be reset.
+    fullReset: ?bool,
+) void {
+    if (fullReset orelse true) {
+        self.buffer.clearAndFree();
+        self.readable_buffer = null;
+        self.read_pos = 0;
+    } else {
+        // Ensure read_pos doesn't go below zero.
+        if (self.read_pos >= 4) {
+            self.read_pos -= 4; // "Unread" the last read int.
+        } else {
+            self.read_pos = 0;
+        }
+    }
+}
 //#endregion
 
 //#region Write Functions
@@ -74,6 +115,10 @@ pub fn writeInt(self: *Packet, data: i32) void {
 }
 //#endregion
 
+//#region Read Functions
+// TODO: Implement read functions.
+//#endregion
+
 //#region Memory Functions
 /// Initializes the packet.
 pub fn init(allocator: std.mem.Allocator) Packet {
@@ -84,6 +129,9 @@ pub fn init(allocator: std.mem.Allocator) Packet {
 
 /// Deinitializes the packet.
 pub fn deinit(self: *Packet) void {
+    self.buffer.clearAndFree();
     self.buffer.deinit();
+    self.readable_buffer = null;
+    self.read_pos = 0;
 }
 //#endregion
