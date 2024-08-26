@@ -102,7 +102,7 @@ pub fn main() !void {
     defer is_running = false;
 
     var logic_thread = try std.Thread.spawn(.{}, updateMain, .{allocator});
-    logic_thread.setName("Logic Thread") catch |err| {
+    logic_thread.setName("Logic") catch |err| {
         print("Error setting thread name: {}\n", .{err});
     };
     logic_thread.detach();
