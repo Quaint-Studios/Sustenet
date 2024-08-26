@@ -105,7 +105,9 @@ pub fn start(self: *BaseServer, allocator: std.mem.Allocator) !void {
     // have been called before!
     {
         self.tcp_listener.thread = try std.Thread.spawn(.{}, onTcpConnectCallback, .{ self, allocator });
-        try self.tcp_listener.thread.?.setName("TcpListener");
+        self.tcp_listener.thread.?.setName("TcpListener") catch |err| {
+            print("Error setting thread name: {}\n", .{err});
+        };
         self.tcp_listener.thread.?.detach();
     }
 
