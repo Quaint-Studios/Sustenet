@@ -97,7 +97,7 @@ pub fn Event() type {
         }
 
         pub inline fn invoke(self: *Self) void {
-            for (self.invokes.items()) |callable| {
+            for (self.invokes.items) |callable| {
                 callable();
             }
         }
@@ -123,12 +123,12 @@ pub fn EventT1(comptime _T: type) type {
             return Self{ .invokes = ArrayList(*const fn (T) void).init(allocator) };
         }
 
-        pub inline fn add(self: *Self, callable: *const fn (T) void) void {
-            self.invokes.append(callable);
+        pub inline fn add(self: *Self, callable: *const fn (T) void) !void {
+            try self.invokes.append(callable);
         }
 
-        pub inline fn addSlice(self: *Self, callables: []const *const fn (T) void) void {
-            self.invokes.appendSlice(callables);
+        pub inline fn addSlice(self: *Self, callables: []const *const fn (T) void) !void {
+            try self.invokes.appendSlice(callables);
         }
 
         pub inline fn clear(self: *Self) void {
@@ -136,7 +136,7 @@ pub fn EventT1(comptime _T: type) type {
         }
 
         pub inline fn invoke(self: *Self, arg: T) void {
-            for (self.invokes.items()) |callable| {
+            for (self.invokes.items) |callable| {
                 callable(arg);
             }
         }
@@ -163,12 +163,12 @@ pub fn EventT2(comptime _T1: type, comptime _T2: type) type {
             return Self{ .invokes = ArrayList(*const fn (T1, T2) void).init(allocator) };
         }
 
-        pub inline fn add(self: *Self, callable: *const fn (T1, T2) void) void {
-            self.invokes.append(callable);
+        pub inline fn add(self: *Self, callable: *const fn (T1, T2) void) !void {
+            try self.invokes.append(callable);
         }
 
-        pub inline fn addSlice(self: *Self, callables: []const *const fn (T1, T2) void) void {
-            self.invokes.appendSlice(callables);
+        pub inline fn addSlice(self: *Self, callables: []const *const fn (T1, T2) void) !void {
+            try self.invokes.appendSlice(callables);
         }
 
         pub inline fn clear(self: *Self) void {
@@ -176,7 +176,7 @@ pub fn EventT2(comptime _T1: type, comptime _T2: type) type {
         }
 
         pub inline fn invoke(self: *Self, arg1: T1, arg2: T2) void {
-            for (self.invokes.items()) |callable| {
+            for (self.invokes.items) |callable| {
                 callable(arg1, arg2);
             }
         }
