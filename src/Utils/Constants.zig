@@ -2,7 +2,7 @@ const std = @import("std");
 
 pub const VERSION = "0.1.0";
 
-pub const DEBUGGING = false;
+pub const DEBUGGING = true;
 
 /// How many ticks are in a second.
 pub const TICK_RATE: i32 = 30;

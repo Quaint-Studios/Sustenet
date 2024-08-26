@@ -52,11 +52,9 @@ pub fn formatWithCommas(value: comptime_int, allocator: std.mem.Allocator) ![]co
     return result.toOwnedSlice();
 }
 
-pub fn consoleHeader(h: []const u8, args: anytype) void {
-    comptime {
-        if (Constants.DEBUGGING) {
-            std.debug.print("===== " ++ h ++ " =====\n", .{args});
-        }
+pub fn consoleHeader(comptime h: []const u8, args: anytype) void {
+    if (comptime Constants.DEBUGGING) {
+        std.debug.print("===== " ++ h ++ " =====\n", args);
     }
 }
 //#endregion
@@ -66,11 +64,9 @@ pub fn consoleHeader(h: []const u8, args: anytype) void {
 //#endregion
 
 //#region Debugging
-pub fn printMsg(msg: []const u8, args: anytype) void {
-    comptime {
-        if (Constants.DEBUGGING) {
-            std.debug.print(msg ++ "\n", args orelse .{});
-        }
+pub fn printMsg(comptime msg: []const u8, args: anytype) void {
+    if (Constants.DEBUGGING) {
+        std.debug.print(msg ++ "\n", args);
     }
 }
 //#endregion
