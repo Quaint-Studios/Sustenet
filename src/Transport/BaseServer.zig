@@ -6,6 +6,7 @@ const network = @import("network");
 const expect = std.testing.expect;
 const print = std.debug.print;
 const RwLock = std.Thread.RwLock;
+const ArrayList = std.ArrayList;
 const ThreadManager = sustenet.transport.ThreadManager;
 const AutoHashMap = std.AutoHashMap;
 const Constants = sustenet.utils.Constants;
@@ -13,7 +14,6 @@ const TcpListener = sustenet.network.TcpListener;
 const Packet = sustenet.network.Packet;
 const Protocols = sustenet.transport.Protocols;
 const Utilities = sustenet.utils.Utilities;
-const EventT1 = sustenet.events.BaseEvent.EventT1;
 const BaseClient = sustenet.transport.BaseClient;
 const BaseServer = @This();
 
@@ -45,9 +45,9 @@ clients: AutoHashMap(i32, BaseClient),
 released_ids: std.ArrayList(i32),
 
 // Events
-onConnection: EventT1(i32),
-onDisconnection: EventT1(i32),
-onReceived: EventT1([]u8),
+onConnection: ArrayList(*const fn (i32) void),
+onDisconnection: ArrayList(*const fn (i32) void),
+onReceived: ArrayList(*const fn ([]u8) void),
 
 // Locks
 clients_lock: RwLock = .{},
@@ -66,9 +66,9 @@ pub fn new(allocator: std.mem.Allocator, server_type: ServerType, max_connection
         .clients = AutoHashMap(comptime i32, comptime BaseClient).init(allocator),
         .released_ids = std.ArrayList(comptime i32).init(allocator),
 
-        .onConnection = EventT1(i32).init(allocator),
-        .onDisconnection = EventT1(i32).init(allocator),
-        .onReceived = EventT1([]u8).init(allocator),
+        .onConnection = ArrayList(*const fn (i32) void).init(allocator),
+        .onDisconnection = ArrayList(*const fn (i32) void).init(allocator),
+        .onReceived = ArrayList(*const fn ([]u8) void).init(allocator),
     };
 }
 
@@ -76,15 +76,36 @@ pub fn new(allocator: std.mem.Allocator, server_type: ServerType, max_connection
 pub fn start(self: *BaseServer, allocator: std.mem.Allocator) !void {
     if (Constants.DEBUGGING) {
         {
-            // const func = comptime struct {
-            //     const Self = @This();
-            //     self: *BaseServer,
-            //     pub fn exec(id: i32) void {
-            //         Self.self.debugServer(Self.self.server_type_name, "Client#{d} has connected.", .{id});
-            //     }
-            // };
-            // const func_instance = func{ .self = self };
-            // self.onConnection.add(func_instance.exec);
+            const func = struct {
+                fn create() type {
+                    const Context = struct {
+                        server_type_name: ?*[]const u8,
+                        pub fn setup(this: *@This(), server_type_name: *[]const u8) void {
+                            this.server_type_name = server_type_name;
+                        }
+                        pub fn call(this: *@This(), id: i32) void {
+                            BaseServer.debugServer(this.server_type_name.?.*, "Client#{} has connected.", .{id});
+                        }
+                    };
+
+                    return struct {
+                        var context = Context{ .server_type_name = null };
+                        pub fn setup(server_type_name: *[]const u8) void {
+                            context.setup(server_type_name);
+                        }
+                        pub fn call(id: i32) void {
+                            return context.call(id);
+                        }
+                    };
+                }
+            };
+            const ctx = func.create();
+            const call = ctx.call;
+            ctx.setup(&self.server_type_name);
+            try self.onConnection.append(call);
+            for (self.onConnection.items) |item| {
+                item(1);
+            }
         }
 
         Utilities.consoleHeader("Starting {s} on Port {d}", .{ self.server_type_name, self.port });
@@ -189,8 +210,6 @@ fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: networ
             }
             client.?.received_data = Packet.new(allocator);
 
-            const const_id = id;
-
             {
                 // const func = comptime struct {
                 //     pub fn exec(protocol: Protocols, data: []u8) void {
@@ -234,7 +253,9 @@ fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: networ
 
             // client.?.tcp.receive(client, tcp_client);
 
-            self.onConnection.invoke(const_id);
+            for (self.onConnection.items) |item| {
+                item(id);
+            }
 
             return;
         }

@@ -3,14 +3,13 @@ const sustenet = @import("root").sustenet;
 
 const RwLock = std.Thread.RwLock;
 const ArrayList = std.ArrayList;
-const Event = sustenet.events.BaseEvent.Event();
 
 const ThreadManager = @This();
 pub var instance: ?ThreadManager = null;
 
 main_pool_lock: RwLock = .{},
-main_pool: Event,
-main_pool_copied: Event,
+main_pool: ArrayList(*const fn () void),
+main_pool_copied: ArrayList(*const fn () void),
 execute_event: bool = false,
 
 pub const ThreadManagerError = error{
@@ -21,8 +20,8 @@ pub const ThreadManagerError = error{
 pub fn getInstance(allocator: std.mem.Allocator) !ThreadManager {
     if (instance == null) {
         instance = ThreadManager{
-            .main_pool = Event.init(allocator),
-            .main_pool_copied = Event.init(allocator),
+            .main_pool = ArrayList(*const fn () void).init(allocator),
+            .main_pool_copied = ArrayList(*const fn () void).init(allocator),
             .execute_event = false,
         };
     }
@@ -50,10 +49,10 @@ pub fn updateMain(self: *ThreadManager) void {
         self.main_pool_lock.lock();
         defer self.main_pool_lock.unlock();
 
-        self.main_pool_copied.clear();
+        self.main_pool_copied.clearAndFree();
         {
-            const main_pool_slice = self.main_pool.invokes.toOwnedSlice() catch unreachable;
-            self.main_pool_copied.invokes.appendSlice(main_pool_slice) catch unreachable;
+            const main_pool_slice = self.main_pool.toOwnedSlice() catch unreachable;
+            self.main_pool_copied.appendSlice(main_pool_slice) catch unreachable;
             self.execute_event = false;
         }
 
@@ -64,7 +63,9 @@ pub fn updateMain(self: *ThreadManager) void {
 
 //#region Memory Functions
 pub fn deinit(self: *ThreadManager) void {
+    self.main_pool.clearAndFree();
     self.main_pool.deinit();
+    self.main_pool.clearAndFree();
     self.main_pool_copied.deinit();
     instance = null;
 }
