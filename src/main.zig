@@ -73,7 +73,8 @@ pub fn main() !void {
 
             // Connect the clients
             for (0..max_clients) |_| {
-                var client = clients.Client.new(null, null);
+                // TODO test
+                var client = clients.Client.new(allocator, null, null);
                 defer client.deinit();
                 try client_list.append(client);
 
@@ -108,7 +109,7 @@ pub fn main() !void {
     logic_thread.detach();
 
     var buffer: [1]u8 = undefined;
-    print("Press Enter to close Sustenet...", .{});
+    print("Press Enter to close Sustenet...\n", .{});
     _ = try std.io.getStdIn().reader().read(buffer[0..1]);
 }
 
@@ -126,7 +127,6 @@ fn updateMain(allocator: std.mem.Allocator) void {
                 std.time.sleep(@as(u64, @intCast(next - now)) * std.time.ns_per_ms);
             }
         }
-        print("Tick\n", .{});
     }
     ThreadManager.deinit();
 }
@@ -146,10 +146,8 @@ test "create server(s) with gp_allocator" {
     print("Creating {s} servers...\n", .{fmn});
 
     for (0..n) |_| {
-        var server = try BaseServer.new(allocator, BaseServer.ServerType.MasterServer, 10, 4337);
+        var server = try master.MasterServer.new(allocator, 0, 4337);
         defer server.deinit();
-
-        try server.start(allocator);
     }
 
     print("Finished creating {s} servers.\n", .{fmn});

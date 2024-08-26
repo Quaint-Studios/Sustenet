@@ -5,16 +5,19 @@ const std = @import("std");
 const network = @import("network");
 const sustenet = @import("root").sustenet;
 
-const net = std.net;
 const testing = std.testing;
+const ArrayList = std.ArrayList;
 const Packet = sustenet.network.Packet;
-const BaseEvent = sustenet.events.BaseEvent;
+const Action = sustenet.events.Action;
+const ActionT1 = sustenet.events.ActionT1;
+const ActionT2 = sustenet.events.ActionT2;
 const Player = sustenet.core.spawning.Player;
+const Protocols = sustenet.transport.Protocols;
 const BaseClient = @This();
 
 pub const buffer_size = 4096;
 
-id: i32 = -1,
+id: ?u32 = null,
 name: ?[]const u8 = null,
 
 tcp: TcpHandler,
@@ -22,13 +25,13 @@ udp: UdpHandler,
 
 received_data: ?Packet = null,
 
-on_connected: BaseEvent, // Init these early
-on_disconnected: BaseEvent,
-on_received: BaseEvent,
+on_connected: ArrayList(*Action(void)),
+on_disconnected: ArrayList(*ActionT1(Protocols, void)),
+on_received: ArrayList(*ActionT2(Protocols, []u8, void)),
 
 player: ?Player = null,
 
-pub fn new(id: i32) BaseClient {
+pub fn new(allocator: std.mem.Allocator, id: ?u32) BaseClient {
     return BaseClient{
         .id = id,
 
@@ -41,9 +44,9 @@ pub fn new(id: i32) BaseClient {
             .buffer = null,
         },
 
-        .on_connected = BaseEvent{},
-        .on_disconnected = BaseEvent{},
-        .on_received = BaseEvent{},
+        .on_connected = ArrayList(*Action(void)).init(allocator),
+        .on_disconnected = ArrayList(*ActionT1(Protocols, void)).init(allocator),
+        .on_received = ArrayList(*ActionT2(Protocols, []u8, void)).init(allocator),
     };
 }
 

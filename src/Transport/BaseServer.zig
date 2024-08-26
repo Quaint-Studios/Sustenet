@@ -7,6 +7,9 @@ const expect = std.testing.expect;
 const print = std.debug.print;
 const RwLock = std.Thread.RwLock;
 const ArrayList = std.ArrayList;
+const Action = sustenet.events.Action;
+const ActionT1 = sustenet.events.ActionT1;
+const ActionT2 = sustenet.events.ActionT2;
 const ThreadManager = sustenet.transport.ThreadManager;
 const AutoHashMap = std.AutoHashMap;
 const Constants = sustenet.utils.Constants;
@@ -41,13 +44,13 @@ max_connections: i32,
 port: u16,
 
 // Data
-clients: AutoHashMap(i32, BaseClient),
-released_ids: std.ArrayList(i32),
+clients: AutoHashMap(u32, BaseClient),
+released_ids: std.ArrayList(u32),
 
 // Events
-onConnection: ArrayList(*const fn (i32) void),
-onDisconnection: ArrayList(*const fn (i32) void),
-onReceived: ArrayList(*const fn ([]u8) void),
+onConnection: ArrayList(*ActionT1(u32, void)),
+onDisconnection: ArrayList(*ActionT1(u32, void)),
+onReceived: ArrayList(*ActionT1([]u8, void)),
 
 // Locks
 clients_lock: RwLock = .{},
@@ -63,12 +66,12 @@ pub fn new(allocator: std.mem.Allocator, server_type: ServerType, max_connection
         .max_connections = max_connections,
         .port = port orelse Constants.MASTER_PORT,
 
-        .clients = AutoHashMap(comptime i32, comptime BaseClient).init(allocator),
-        .released_ids = std.ArrayList(comptime i32).init(allocator),
+        .clients = AutoHashMap(comptime u32, comptime BaseClient).init(allocator),
+        .released_ids = std.ArrayList(comptime u32).init(allocator),
 
-        .onConnection = ArrayList(*const fn (i32) void).init(allocator),
-        .onDisconnection = ArrayList(*const fn (i32) void).init(allocator),
-        .onReceived = ArrayList(*const fn ([]u8) void).init(allocator),
+        .onConnection = ArrayList(*ActionT1(u32, void)).init(allocator),
+        .onDisconnection = ArrayList(*ActionT1(u32, void)).init(allocator),
+        .onReceived = ArrayList(*ActionT1([]u8, void)).init(allocator),
     };
 }
 
@@ -76,42 +79,23 @@ pub fn new(allocator: std.mem.Allocator, server_type: ServerType, max_connection
 pub fn start(self: *BaseServer, allocator: std.mem.Allocator) !void {
     if (Constants.DEBUGGING) {
         {
-            const func = struct {
-                fn create() type {
-                    const Context = struct {
-                        server_type_name: ?*[]const u8,
-                        pub fn setup(this: *@This(), server_type_name: *[]const u8) void {
-                            this.server_type_name = server_type_name;
-                        }
-                        pub fn call(this: *@This(), id: i32) void {
-                            BaseServer.debugServer(this.server_type_name.?.*, "Client#{} has connected.", .{id});
-                        }
-                    };
-
-                    return struct {
-                        var context = Context{ .server_type_name = null };
-                        pub fn setup(server_type_name: *[]const u8) void {
-                            context.setup(server_type_name);
-                        }
-                        pub fn call(id: i32) void {
-                            return context.call(id);
-                        }
-                    };
+            const action = struct {
+                action: ActionT1(u32, void) = .{ .compute = compute },
+                server: *BaseServer,
+                fn compute(action: *ActionT1(u32, void), id: u32) void {
+                    const this: *@This() = @alignCast(@fieldParentPtr("action", action));
+                    BaseServer.debugServer(this.server.*.server_type_name, "Client#{} has connected.", .{id});
                 }
             };
-            const ctx = func.create();
-            const call = ctx.call;
-            ctx.setup(&self.server_type_name);
-            try self.onConnection.append(call);
+            var callable = action{ .server = self };
+            try self.onConnection.append(&callable.action);
             for (self.onConnection.items) |item| {
-                item(1);
+                item.compute(item, 444);
             }
         }
 
         Utilities.consoleHeader("Starting {s} on Port {d}", .{ self.server_type_name, self.port });
     }
-
-    try self.tcp_listener.socket.listen();
 
     // Threaded wrapper for network.Socket.accept().
     //
@@ -131,40 +115,49 @@ pub fn start(self: *BaseServer, allocator: std.mem.Allocator) !void {
 }
 
 /// Handles new TCP connections.
-fn onTcpConnectCallback(self: *BaseServer, _: std.mem.Allocator) void {
-    const listener: TcpListener = self.tcp_listener;
+fn onTcpConnectCallback(self: *BaseServer, allocator: std.mem.Allocator) void {
+    self.tcp_listener.socket.listen() catch |err| {
+        debugServer(self.server_type_name, "Error listening on TCP socket: {}\n", .{err});
+        return;
+    };
 
-    _ = listener.socket.accept() catch |err| {
+    const client_socket = self.tcp_listener.socket.accept() catch |err| {
         debugServer(self.server_type_name, "Error accepting TCP client: {}\n", .{err});
         return;
     };
 
     {
-        // TODO: Fix asap
-        // const func = comptime struct {
-        //     server: *BaseServer,
-        //     pub fn exec(this: *@This()) void {
-        //         try this.server.addClient(allocator, client_socket);
-        //     }
-        // };
+        const action = struct {
+            action: Action(void) = .{ .compute = compute },
+            server: *BaseServer,
+            allocator: std.mem.Allocator,
+            client_socket: network.Socket,
+            fn compute(action: *Action(void)) void {
+                const this: *@This() = @alignCast(@fieldParentPtr("action", action));
+                this.server.addClient(this.allocator, this.client_socket) catch |err| {
+                    debugServer(this.server.server_type_name, "Error adding client: {}\n", .{err});
+                };
+            }
+        };
+        const callable = action{
+            .server = self,
+            .allocator = allocator,
+            .client_socket = client_socket,
+        };
 
-        // const func_i = func{ .server = self };
-
-        // const callable = sustenet.events.BaseEvent.Callable(comptime addClient, .{ self, allocator, client_socket });
-
-        // var thread_manager = try ThreadManager.getInstance(allocator);
-        // thread_manager.executeOnMainThread(callable);
+        var thread_manager = try ThreadManager.getInstance(allocator);
+        thread_manager.executeOnMainThread(&callable.action);
     }
 }
 
 fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: network.Socket) anyerror!void {
-    var id: i32 = -1;
+    var id: ?u32 = null;
     errdefer {
         // If the id was never reset.
         // That means that a client may still exist.
         // Cleanup.
-        if (id != -1) {
-            self.disconnectClient(id);
+        if (id != null) {
+            self.disconnectClient(id.?);
         }
     }
 
@@ -178,33 +171,33 @@ fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: networ
                 defer self.released_ids_lock.unlock();
 
                 // Loop until an ID is found.
-                while (id == -1) {
+                while (id == null) {
                     // If there are released IDs, use one.
                     if (self.released_ids.items.len > 0) {
                         id = self.released_ids.getLast();
-                        if (!self.clients.contains(id)) {
-                            try self.clients.put(id, BaseClient.new(id)); // Reserve this spot.
+                        if (!self.clients.contains(id.?)) {
+                            try self.clients.put(id.?, BaseClient.new(allocator, id.?)); // Reserve this spot.
 
                         } else {
-                            id = -1;
+                            id = null;
                         }
 
-                        self.released_ids.pop();
+                        _ = self.released_ids.pop();
                         continue;
                     } else {
                         // Assign the next highest client ID if there's no released IDs.
                         id = self.clients.count();
 
-                        if (!self.clients.contains(id)) {
-                            self.clients.put(id, BaseClient.new(id)); // Reserve this spot here too.
+                        if (!self.clients.contains(id.?)) {
+                            try self.clients.put(id.?, BaseClient.new(allocator, id.?)); // Reserve this spot here too.
                         } else {
-                            id = -1;
+                            id = null;
                             continue;
                         }
                     }
                 }
             }
-            const client = self.clients.get(id);
+            var client = self.clients.get(id.?);
             if (client == null) {
                 return error.ClientMissing;
             }
@@ -230,7 +223,51 @@ fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: networ
                 //         }
                 //     }
                 // };
-                // client.?.on_received.add(func.exec);
+
+                const action = struct {
+                    action: ActionT2(Protocols, []u8, void) = .{ .compute = compute },
+                    id: u32,
+                    server: *BaseServer,
+                    allocator: std.mem.Allocator,
+                    client: *BaseClient,
+                    fn compute(action: *ActionT2(Protocols, []u8, void), protocol: Protocols, data: []u8) void {
+                        const this: *@This() = @alignCast(@fieldParentPtr("action", action));
+                        // Error handle
+                        errdefer {
+                            debugServer(this.server.server_type_name, "Something went wrong with a message received from Client#{d}.", .{this.client.id});
+                        }
+
+                        switch (protocol) {
+                            Protocols.TCP => {
+                                const this_client = this.server.clients.get(this.id);
+                                if (this_client == null) {
+                                    // Error handle
+                                    return;
+                                }
+
+                                var received_data = this_client.?.received_data;
+                                if (received_data == null) {
+                                    // Error handle
+                                    return;
+                                }
+
+                                received_data.?.reset(this.server.handleTcpData(this.allocator, this_client.?, data));
+                                return;
+                            },
+                            Protocols.UDP => {
+                                // Extra things to do goes here.
+                                return;
+                            },
+                        }
+                    }
+                };
+                var callable = action{
+                    .id = id.?,
+                    .server = self,
+                    .allocator = allocator,
+                    .client = &client.?,
+                };
+                try client.?.on_received.append(&callable.action);
             }
 
             {
@@ -254,7 +291,7 @@ fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: networ
             // client.?.tcp.receive(client, tcp_client);
 
             for (self.onConnection.items) |item| {
-                item(id);
+                item.compute(item, id.?);
             }
 
             return;
@@ -266,6 +303,38 @@ fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: networ
 
         debugServer(self.server_type_name, "{s} failed to connect. Max connections of {s} reached.", .{ tcp_client.endpoint.?.address.ipv4.value, self.max_connections });
     }
+}
+
+/// Kicks a client off the server and clears their entry.
+fn disconnectClient(self: *BaseServer, client_id: u32) void {
+    self.clearClient(client_id);
+}
+
+/// Frees up a client ID by wiping them from the server list.
+fn clearClient(_: *BaseServer, _: u32) void {
+    // TODO: Implmenet
+    // self.clients_lock.lock();
+    // {
+    //     defer self.clients_lock.unlock();
+
+    //     if (self.clients.contains(client_id)) {
+    //         const client = self.clients.get(client_id);
+    //         if (client == null) {
+    //             return;
+    //         }
+
+    //         client.?.deinit();
+    //         self.clients.remove(client_id);
+    //         self.released_ids_lock.lock();
+    //         {
+    //             defer self.released_ids_lock.unlock();
+    //             self.released_ids.append(client_id);
+    //         }
+    //         for (self.onDisconnection.items) |item| {
+    //             item(client_id);
+    //         }
+    //     }
+    // }
 }
 //#endregion
 
@@ -281,30 +350,36 @@ pub fn serverTypeToString(server_type: ServerType) []const u8 {
 //#region Data Functions
 /// Handles TCP data. Returns true when no more data left.
 fn handleTcpData(
+    self: *BaseServer,
     allocator: std.mem.Allocator,
     client: BaseClient,
     data: []u8,
 ) bool {
-    const packet_length: i32 = 0;
+    var packet_length: i32 = 0;
 
     if (client.received_data == null) {
         return true;
     }
 
-    client.received_data.?.setBytes(allocator, data);
+    var received_data = client.received_data.?;
 
-    if (client.received_data.?.unreadLength() >= 4) {
-        packet_length = client.received_data.?.readInt();
+    received_data.setBytes(allocator, data) catch |err| {
+        debugServer(self.server_type_name, "Error setting bytes: {}\n", .{err});
+        return true;
+    };
+
+    if (received_data.unreadLength() >= 4) {
+        packet_length = received_data.readInt();
         if (packet_length <= 0) {
             return true;
         }
     }
 
-    while (packet_length > 0 and packet_length <= client.received_data.?.unreadLength()) {
+    while (packet_length > 0 and packet_length <= received_data.unreadLength()) {
         // TODO:
         // if(packetHandlers.Contains(packetId), maybe a try catch.
 
-        // const packet_bytes: []u8 = client.received_data.?.readBytes(packet_length);
+        // const packet_bytes: []u8 = received_data.readBytes(packet_length);
 
         {
             //     const func = comptime struct {
@@ -328,19 +403,19 @@ fn handleTcpData(
             //     ThreadManager.getInstance(allocator).executeOnMainThread(func.exec);
         }
 
-        if (client.received_data.?.unreadLength() >= 4) {
-            packet_length = client.received_data.?.readInt();
+        if (received_data.unreadLength() >= 4) {
+            packet_length = received_data.readInt();
             if (packet_length <= 0) {
                 return true;
             }
         }
-
-        if (packet_length <= 1) {
-            return true;
-        }
-
-        return false;
     }
+
+    if (packet_length <= 1) {
+        return true;
+    }
+
+    return false;
 }
 //#endregion
 

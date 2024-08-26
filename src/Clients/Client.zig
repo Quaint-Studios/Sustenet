@@ -4,9 +4,12 @@ const std = @import("std");
 const sustenet = @import("root").sustenet;
 const network = @import("network");
 
+const ArrayList = std.ArrayList;
 const AutoHashMap = std.AutoHashMap;
-const BaseEvent = sustenet.events.BaseEvent;
+const Action = sustenet.events.Action;
+const ActionT1 = sustenet.events.ActionT1;
 const BaseClient = @import("root").sustenet.transport.BaseClient;
+const ClusterInfo = sustenet.world.ClusterInfo;
 
 const Client = @This();
 
@@ -20,25 +23,22 @@ active_connection: ConnectionType,
 master_connection: ?Connection,
 cluster_connection: ?Connection,
 
-on_initialized: BaseEvent, // Init these early
-on_cluster_server_list: BaseEvent,
+on_initialized: ArrayList(*Action(void)),
+on_cluster_server_list: ArrayList(*ActionT1(ClusterInfo, void)),
 
 super: BaseClient,
 
-pub fn new(_: ?[]const u8, _: ?u16) Client {
+// TODO: ip string and port
+pub fn new(allocator: std.mem.Allocator, _: ?[]const u8, _: ?u16) Client {
     var client = Client{
-        .super = BaseClient.new(-1),
+        .super = BaseClient.new(allocator, null),
 
         .active_connection = ConnectionType.None,
         .master_connection = null,
         .cluster_connection = null,
-        .on_initialized = BaseEvent{},
-        .on_cluster_server_list = BaseEvent{},
+        .on_initialized = ArrayList(*Action(void)).init(allocator),
+        .on_cluster_server_list = ArrayList(*ActionT1(ClusterInfo, void)).init(allocator),
     };
-
-    // client.super.on_connected = BaseEvent.init();
-    // client.super.on_received = BaseEvent.init();
-    // client.super.on_initialized = BaseEvent.init();
 
     client.initializeClientData();
     return client;
