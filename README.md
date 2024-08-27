@@ -5,6 +5,8 @@ A Zig, formerly C#, networking solution for the Godot Engine, Unreal Engine, and
 
 Note: This README is out of date since we're still migrating from C# to Zig. Things like solutions and project files no longer exist. Regardless, the layout should remain the same for everything.
 
+You can also see real world usage of this project over at https://github.com/Quaint-Studios/Reia, the project it was primarily made for!
+
 ## Vision
 
 *This is a rough vision of where this project is headed, a more detailed layout will eventually be added.*
