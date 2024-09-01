@@ -23,7 +23,7 @@ name: ?[]const u8 = null,
 tcp: TcpHandler,
 udp: UdpHandler,
 
-received_data: ?Packet = null,
+received_data: Packet,
 
 on_connected: ArrayList(*Action(void)),
 on_disconnected: ArrayList(*ActionT1(Protocols, void)),
@@ -31,18 +31,17 @@ on_received: ArrayList(*ActionT2(Protocols, []u8, void)),
 
 player: ?Player = null,
 
-pub fn new(allocator: std.mem.Allocator, id: ?u32) BaseClient {
+pub fn new(allocator: std.mem.Allocator, id: ?u32) !BaseClient {
+    const tcp_socket = try network.Socket.create(.ipv4, .tcp);
+    const udp_socket = try network.Socket.create(.ipv4, .udp);
+
     return BaseClient{
         .id = id,
 
-        .tcp = TcpHandler{
-            .socket = null,
-            .buffer = null,
-        },
-        .udp = UdpHandler{
-            .socket = null,
-            .buffer = null,
-        },
+        .tcp = .{ .socket = tcp_socket },
+        .udp = .{ .socket = udp_socket },
+
+        .received_data = Packet.new(allocator),
 
         .on_connected = ArrayList(*Action(void)).init(allocator),
         .on_disconnected = ArrayList(*ActionT1(Protocols, void)).init(allocator),
@@ -50,11 +49,27 @@ pub fn new(allocator: std.mem.Allocator, id: ?u32) BaseClient {
     };
 }
 
+/// Handles events for connecting, receiving, and debugging.
+/// Also controls the socket connection.
 const TcpHandler = struct {
-    socket: ?network.Socket,
-    buffer: ?[buffer_size]u8,
+    const Error = error{
+        SocketIsNull,
+    };
 
-    fn deinit(self: *TcpHandler) void {
+    socket: ?network.Socket,
+    received_buffer: [buffer_size]u8 = undefined,
+
+    //#region Connection Functions
+    pub fn connect(self: *TcpHandler, address: network.Address, port: u16) !void {
+        if (self.socket == null) return error.SocketIsNull;
+        try self.socket.?.connect(.{ .address = address, .port = port });
+    }
+
+    pub fn receive(_: *TcpHandler, _: *BaseClient, _: *network.Socket) void {
+        // TODO Implmenet
+    }
+
+    pub fn deinit(self: *TcpHandler) void {
         if (self.socket != null) {
             self.socket.?.close();
         }
@@ -63,7 +78,6 @@ const TcpHandler = struct {
 
 const UdpHandler = struct {
     socket: ?network.Socket,
-    buffer: ?[buffer_size]u8,
 
     fn deinit(self: *UdpHandler) void {
         if (self.socket != null) {
@@ -77,8 +91,10 @@ pub fn deinit(self: *BaseClient) void {
     self.tcp.deinit();
     self.udp.deinit();
 
-    if (self.received_data != null) {
-        self.received_data.?.deinit();
-    }
+    self.received_data.deinit();
+
+    self.on_connected.deinit();
+    self.on_disconnected.deinit();
+    self.on_received.deinit();
 }
 //#endregion

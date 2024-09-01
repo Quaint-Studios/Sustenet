@@ -178,7 +178,7 @@ fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: networ
                     if (self.released_ids.items.len > 0) {
                         id = self.released_ids.getLast();
                         if (!self.clients.contains(id.?)) {
-                            try self.clients.put(id.?, BaseClient.new(allocator, id.?)); // Reserve this spot.
+                            try self.clients.put(id.?, try BaseClient.new(allocator, id.?)); // Reserve this spot.
 
                         } else {
                             id = null;
@@ -191,7 +191,7 @@ fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: networ
                         id = self.clients.count();
 
                         if (!self.clients.contains(id.?)) {
-                            try self.clients.put(id.?, BaseClient.new(allocator, id.?)); // Reserve this spot here too.
+                            try self.clients.put(id.?, try BaseClient.new(allocator, id.?)); // Reserve this spot here too.
                         } else {
                             id = null;
                             continue;
@@ -248,12 +248,8 @@ fn addClient(self: *BaseServer, allocator: std.mem.Allocator, tcp_client: networ
                                 }
 
                                 var received_data = this_client.?.received_data;
-                                if (received_data == null) {
-                                    // Error handle
-                                    return;
-                                }
 
-                                received_data.?.reset(this.server.handleTcpData(this.allocator, this_client.?, data));
+                                received_data.reset(this.server.handleTcpData(this.allocator, this_client.?, data));
                                 return;
                             },
                             Protocols.UDP => {
@@ -359,11 +355,7 @@ fn handleTcpData(
 ) bool {
     var packet_length: i32 = 0;
 
-    if (client.received_data == null) {
-        return true;
-    }
-
-    var received_data = client.received_data.?;
+    var received_data = client.received_data;
 
     received_data.setBytes(allocator, data) catch |err| {
         debugServer(self.server_type_name, "Error setting bytes: {}\n", .{err});
@@ -371,7 +363,10 @@ fn handleTcpData(
     };
 
     if (received_data.unreadLength() >= 4) {
-        packet_length = received_data.readInt();
+        packet_length = received_data.readInt(null) catch |err| {
+            debugServer(self.server_type_name, "Error reading packet length: {}\n", .{err});
+            return true;
+        };
         if (packet_length <= 0) {
             return true;
         }
@@ -406,7 +401,10 @@ fn handleTcpData(
         }
 
         if (received_data.unreadLength() >= 4) {
-            packet_length = received_data.readInt();
+            packet_length = received_data.readInt(null) catch |err| {
+                debugServer(self.server_type_name, "Error reading packet length: {}\n", .{err});
+                return true;
+            };
             if (packet_length <= 0) {
                 return true;
             }

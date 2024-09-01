@@ -74,11 +74,11 @@ pub fn main() !void {
             // Connect the clients
             for (0..max_clients) |_| {
                 // TODO test
-                var client = clients.Client.new(allocator, null, null);
-                defer client.deinit();
+                var client = try clients.Client.new(allocator, null, null);
                 try client_list.append(client);
-
-                try client.connect();
+                client.connect(.MasterServer) catch {
+                    print("Error connecting client to IP {}:{}\n", .{ client.master_connection.ip, client.master_connection.port });
+                };
             }
 
             print("{s}Finished connecting {d} clients to the server.{s}\n", .{
