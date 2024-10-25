@@ -3,11 +3,17 @@ name: Sustenet (Zig)
 on:
   push:
     branches: [master]
+    paths: [zig/**]
   pull_request:
     branches: [master]
+    paths: [zig/**]
 
 env:
   VERSION: 0.13.0
+
+defaults:
+  run:
+    working-directory: zig
 
 jobs:
   test:
