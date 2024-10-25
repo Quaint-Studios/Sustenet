@@ -1,6 +1,7 @@
 name: Sustenet (Zig)
 
 on:
+  workflow_dispatch:
   push:
     branches: [master]
     paths: [zig/**]
