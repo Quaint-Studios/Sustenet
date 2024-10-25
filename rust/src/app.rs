@@ -1,8 +1,5 @@
 use std::env;
-use std::process;
-use std::sync::{Arc, Mutex};
-use std::thread;
-use std::time::Duration;
+use std::sync::{ Arc, Mutex };
 
 use crate::clients::Client;
 use crate::master::MasterServer;
@@ -63,11 +60,7 @@ impl App {
     /// Only meant for debugging.
     fn start_client(&self, args: &[String]) {
         let mut client_list = self.client_list.lock().unwrap();
-        let max_clients: u32 = if args.len() > 0 {
-            args[0].parse().unwrap_or(1)
-        } else {
-            1
-        };
+        let max_clients: u32 = if args.len() > 0 { args[0].parse().unwrap_or(1) } else { 1 };
 
         println!(
             "{}Starting client mode...{}",
@@ -95,18 +88,20 @@ impl App {
             for _ in 0..max_clients {
                 let client_list2 = Arc::clone(&client_list);
                 let thread_manager = ThreadManager::get_instance();
-                thread_manager.execute_on_side_thread(Box::new(move || {
-                    let client = Client::new(None, None);
-                    // println!(
-                    //     "Connecting client to IP {}:{}",
-                    //     client.master_connection.ip, client.master_connection.port
-                    // );
+                thread_manager.execute_on_side_thread(
+                    Box::new(move || {
+                        let client = Client::new(None, None);
+                        // println!(
+                        //     "Connecting client to IP {}:{}",
+                        //     client.master_connection.ip, client.master_connection.port
+                        // );
 
-                    // client.connect(Client::ConnectionType.MasterServer); // TODO
+                        // client.connect(Client::ConnectionType.MasterServer); // TODO
 
-                    let mut list = client_list2.lock().unwrap();
-                    list.push(client);
-                }));
+                        let mut list = client_list2.lock().unwrap();
+                        list.push(client);
+                    })
+                );
             }
         });
 

@@ -20,8 +20,7 @@ const ALL_OPTIONS: [Option; 5] = [
     },
     Option {
         name: "cs|cluster",
-        description:
-            "starts a cluster server and uses the config file to connect to a master server.",
+        description: "starts a cluster server and uses the config file to connect to a master server.",
     },
     Option {
         name: "ms|master",

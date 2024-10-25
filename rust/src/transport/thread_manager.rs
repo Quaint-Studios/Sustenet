@@ -1,6 +1,6 @@
 use lazy_static::lazy_static;
 use std::collections::VecDeque;
-use std::sync::{Arc, Mutex};
+use std::sync::{ Arc, Mutex };
 
 pub struct ThreadManager {
     main_pool: Arc<Mutex<VecDeque<Box<dyn FnOnce() + Send>>>>,
@@ -33,7 +33,7 @@ impl ThreadManager {
     pub fn execute_on_main_thread(&self, action: Box<dyn FnOnce() + Send>) {
         let mut execute_main_event = self.execute_main_event.lock().unwrap();
         *execute_main_event = true;
-        
+
         let mut main_pool = self.main_pool.lock().unwrap();
         main_pool.push_back(action);
     }
@@ -43,13 +43,13 @@ impl ThreadManager {
         let mut execute_main_event = self.execute_main_event.lock().unwrap();
         if *execute_main_event {
             let mut main_pool = self.main_pool.lock().unwrap();
-            
+
             *execute_main_event = false;
             drop(execute_main_event);
-            
+
             let mut main_pool_copied = VecDeque::new();
             std::mem::swap(&mut *main_pool, &mut main_pool_copied);
-            
+
             drop(main_pool);
 
             while let Some(action) = main_pool_copied.pop_front() {
@@ -61,7 +61,7 @@ impl ThreadManager {
     pub fn execute_on_side_thread(&self, action: Box<dyn FnOnce() + Send>) {
         let mut execute_side_event = self.execute_side_event.lock().unwrap();
         *execute_side_event = true;
-        
+
         let mut side_pool = self.side_pool.lock().unwrap();
         side_pool.push_back(action);
     }

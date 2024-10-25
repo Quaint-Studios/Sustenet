@@ -1,21 +1,11 @@
-use std::io::{self, Read};
-use std::sync::{Arc, Mutex};
+use std::io::{ self, Read };
+use std::sync::{ Arc, Mutex };
 use std::thread;
-use std::time::{Duration, Instant};
+use std::time::{ Duration, Instant };
 
-use app::App;
-use transport::ThreadManager;
-use utils::constants;
-
-mod app;
-mod clients;
-mod core;
-mod master;
-mod options;
-mod transport;
-mod network;
-mod utils;
-mod world;
+use ::sustenet::utils::constants;
+use sustenet::app::App;
+use sustenet::transport::ThreadManager;
 
 lazy_static::lazy_static! {
     static ref IS_RUNNING: Arc<Mutex<bool>> = Arc::new(Mutex::new(false));
@@ -34,18 +24,10 @@ async fn main() {
         let is_running_clone = Arc::clone(&IS_RUNNING);
         let thread_manager_clone = Arc::clone(&thread_manager);
 
-        thread::Builder::new()
+        thread::Builder
+            ::new()
             .name("Logic".to_string())
             .spawn(move || update_main(is_running_clone, thread_manager_clone))
-            .unwrap();
-    }
-
-    for _ in 0..num_cpus::get() {
-        let is_running_clone = Arc::clone(&IS_RUNNING);
-        let thread_manager_clone = Arc::clone(&thread_manager);
-        thread::Builder::new()
-            .name("Side".to_string())
-            .spawn(move || update_side(is_running_clone, thread_manager_clone))
             .unwrap();
     }
 
@@ -74,24 +56,6 @@ fn update_main(is_running: Arc<Mutex<bool>>, thread_manager: Arc<ThreadManager>)
         while next < now {
             thread_manager.update_main();
             next += Duration::from_millis(constants::MS_PER_TICK);
-            if next > now {
-                thread::sleep(next - now);
-            }
-        }
-    }
-}
-
-fn update_side(is_running: Arc<Mutex<bool>>, thread_manager: Arc<ThreadManager>) {
-    let available_threads = num_cpus::get() as u64;
-
-    let mut next = Instant::now();
-    while *is_running.lock().unwrap() {
-        let now = Instant::now();
-        while next < now {
-            thread_manager.update_side();
-            next += Duration::from_millis(
-                constants::MS_PER_TICK * std::cmp::max(1, available_threads - 1),
-            );
             if next > now {
                 thread::sleep(next - now);
             }

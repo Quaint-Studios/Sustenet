@@ -3,7 +3,25 @@ name = "sustenet"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "sustenet"
+path = "src/lib.rs"
+crate-type = ["cdylib", "lib"]
+
+[[bin]]
+name = "master"
+path = "src/bin/master.rs"
+
+[[bin]]
+name = "cluster"
+path = "src/bin/cluster.rs"
+
+[[bin]]
+name = "client"
+path = "src/bin/client.rs"
+
 [dependencies]
+ctrlc = "3.4.5"
 lazy_static = "1.5.0"
 num_cpus = "1.16.0"
 quaternion = "2.0.0"

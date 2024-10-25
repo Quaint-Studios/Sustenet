@@ -1,6 +1,8 @@
-use std::{net::Ipv4Addr, str::FromStr};
+use std::{ net::Ipv4Addr, str::FromStr };
 
-use crate::{transport::BaseClient, utils::constants, world::ClusterInfo};
+use crate::transport::BaseClient;
+use crate::utils::constants;
+use crate::world::ClusterInfo;
 
 pub enum ConnectionType {
     MasterServer,
