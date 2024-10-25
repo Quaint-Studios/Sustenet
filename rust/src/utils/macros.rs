@@ -40,10 +40,10 @@ macro_rules! log_message {
             };
 
             let type_str = match $type {
-                Master => "[Master]",
-                Cluster => "[Cluster]",
-                Client => "[Client]",
-                System => "[System]",
+                LogType::Master => "[Master]",
+                LogType::Cluster => "[Cluster]",
+                LogType::Client => "[Client]",
+                LogType::System => "[System]",
             };
 
             println!("{}{} {}{}", level_str, type_str, format!($($arg)*), TERMINAL_DEFAULT);
