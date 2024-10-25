@@ -3,9 +3,9 @@ use std::sync::{ Arc, Mutex };
 use std::thread;
 use std::time::{ Duration, Instant };
 
-use ::sustenet::utils::constants;
 use sustenet::app::App;
 use sustenet::transport::ThreadManager;
+use sustenet::utils::constants;
 
 lazy_static::lazy_static! {
     static ref IS_RUNNING: Arc<Mutex<bool>> = Arc::new(Mutex::new(false));
