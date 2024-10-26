@@ -57,5 +57,4 @@ jobs:
         with:
           toolchain: ${{env.VERSION}}
           targets: ${{matrix.platform.target}}
-        if: ${{ !matrix.platform.cross }}
-      - run: cargo test
+      - run: ${{matrix.platform.cargo_command}} test -- --nocapture
