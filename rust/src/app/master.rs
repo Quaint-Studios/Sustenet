@@ -3,7 +3,7 @@
 //! 2. Accept clients and authenticate or sign them up.
 //! 3. Send clients to either a low population cluster or a specific one if provided.
 
-use crate::{ master_debug, master_error, master_info, master_success };
+use crate::{ master_debug, master_info, master_success, master_warning };
 
 use tokio::{
     io::{ AsyncBufReadExt, AsyncWriteExt, BufReader },
@@ -12,6 +12,7 @@ use tokio::{
     sync::broadcast,
 };
 
+/// Start the Master Server and handles shutdown signals.
 pub async fn start() {
     let mut shutdown_rx = shutdown_channel().unwrap();
     let mut is_running = true;
@@ -19,9 +20,14 @@ pub async fn start() {
     select! {
         _ = shutdown_rx.recv() => {
             is_running = false;
-            master_info!("Shutting down...");
+            master_warning!("Shutting down...");
         }
         _ = run(&mut is_running) => {}
+    }
+
+    if !is_running {
+        cleanup().await;
+        master_success!("Master Server has been shut down.");
     }
 }
 
@@ -39,6 +45,13 @@ fn shutdown_channel() -> Result<broadcast::Receiver<bool>, ctrlc::Error> {
     Ok(rx)
 }
 
+/// Cleanup the Master Server before shutting down.
+async fn cleanup() {
+    // TODO: Cleanup the Master Server.
+    master_info!("Cleaning up the Master Server...");
+}
+
+/// Entrypoint for the Master Server.
 #[inline(always)]
 async fn run(is_running: &mut bool) {
     master_info!("Starting the Master Server...");
@@ -50,9 +63,8 @@ async fn run(is_running: &mut bool) {
     let listener = TcpListener::bind(format!("{IP}:{PORT}")).await.unwrap();
     master_success!("Now listening on {IP}:{PORT}. Press Ctrl+C to stop.");
     master_debug!("Waiting for incoming connections...");
-    master_error!("This is an error message.");
 
-    let (tx, _rx) = broadcast::channel::<String>(10);
+    let (tx, _rx) = broadcast::channel(10);
 
     while *is_running {
         let (mut socket, addr) = listener.accept().await.unwrap();
@@ -68,21 +80,29 @@ async fn run(is_running: &mut bool) {
             let mut line = String::new();
 
             loop {
-                let bytes_read = reader.read_line(&mut line).await.unwrap();
-                if bytes_read == 0 {
-                    break;
+                tokio::select! {
+                    result = reader.read_line(&mut line) => {
+                        // Break if the line is empty.
+                        if result.unwrap() == 0 {
+                            break;
+                        }
+
+                        // Send the line to the channel.
+                        tx.send((line.clone(), addr)).unwrap();
+                        line.clear();
+                    }
+                    result = rx.recv() => {
+                        // Write the message to the writer.
+                        let (msg, msg_addr) = result.unwrap();
+
+                        if addr != msg_addr {
+                            writer.write_all(&msg.as_bytes()).await.unwrap();
+                        }
+                    }
                 }
-
-                tx.send(line.clone()).unwrap();
-                let msg = rx.recv().await.unwrap();
-
-                writer.write_all(&line.as_bytes()).await.unwrap();
-                line.clear();
             }
         });
     }
 }
 
-mod tests {
-    
-}
+mod tests {}
