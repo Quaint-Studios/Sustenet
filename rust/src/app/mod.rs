@@ -1,4 +1,5 @@
 pub use self::app::App;
+pub use self::app::shutdown_channel;
 
 mod app;
 pub mod client;

@@ -14,7 +14,7 @@ use tokio::{
 
 /// Start the Master Server and handles shutdown signals.
 pub async fn start() {
-    let mut shutdown_rx = shutdown_channel().unwrap();
+    let mut shutdown_rx = crate::app::shutdown_channel().unwrap();
     let mut is_running = true;
 
     select! {
@@ -29,20 +29,6 @@ pub async fn start() {
         cleanup().await;
         master_success!("Master Server has been shut down.");
     }
-}
-
-/// Create a channel to listen for shutdown signals.
-fn shutdown_channel() -> Result<broadcast::Receiver<bool>, ctrlc::Error> {
-    let (tx, rx) = broadcast::channel::<bool>(1);
-
-    // Handle shutdowns gracefully.
-    ctrlc
-        ::set_handler(move || {
-            tx.send(true).unwrap();
-        })
-        .expect("Error setting Ctrl-C handler");
-
-    Ok(rx)
 }
 
 /// Cleanup the Master Server before shutting down.
