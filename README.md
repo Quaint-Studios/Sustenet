@@ -1,9 +1,9 @@
 # Sustenet
-A Zig, formerly C#, networking solution for the Godot Engine, Unreal Engine, and Unity3D. The primary focus is to enable scaling by allowing multiple servers to work together.
+A Rust & Zig, formerly C#, networking solution for the Godot Engine, Unreal Engine, and Unity3D. The primary focus is to enable scaling by allowing multiple servers to work together.
 
 [![Sustenet (Rust)](https://github.com/Quaint-Studios/Sustenet/actions/workflows/sustenet-rust.yml/badge.svg)](https://github.com/Quaint-Studios/Sustenet/actions/workflows/sustenet-rust.yml) [![Sustenet (Zig)](https://github.com/Quaint-Studios/Sustenet/actions/workflows/sustenet-zig.yml/badge.svg)](https://github.com/Quaint-Studios/Sustenet/actions/workflows/sustenet-zig.yml) [![CodeFactor](https://www.codefactor.io/repository/github/quaint-studios/sustenet/badge)](https://www.codefactor.io/repository/github/quaint-studios/sustenet)
 
-Note: This README is out of date since we're still migrating from C# to Zig. Things like solutions and project files no longer exist. Regardless, the layout should remain the same for everything.
+Note: This README is out of date since we're still migrating from C# to Rust/Zig. Things like solutions and project files no longer exist. Regardless, the layout should remain the same for everything.
 
 You can also see real world usage of this project over at https://github.com/Quaint-Studios/Reia, the project it was primarily made for!
 
