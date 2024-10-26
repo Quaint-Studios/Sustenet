@@ -1,0 +1,61 @@
+name: Sustenet (Rust)
+
+on:
+  push:
+    branches: [master]
+    paths: [rust/**]
+  pull_request:
+    branches: [master]
+    paths: [rust/**]
+
+env:
+  VERSION: 1.82.0
+
+defaults:
+  run:
+    working-directory: rust
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform:
+          - os_name: FreeBSD-x86_64
+            os: ubuntu-latest
+            target: x86_64-unknown-freebsd
+            bin: sustenet
+            name: sustenet-FreeBSD-x86_64.tar.gz
+            cargo_command: cargo
+
+          - os_name: Linux-x86_64
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            bin: sustenet
+            name: sustenet-Linux-x86_64-gnu.tar.gz
+            cargo_command: cargo
+
+          - os_name: Windows-x86_64
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            bin: sustenet.exe
+            name: sustenet-Windows-x86_64.zip
+            cargo_command: cargo
+
+          - os_name: macOS-x86_64
+            os: macos-latest
+            target: x86_64-apple-darwin
+            bin: sustenet
+            name: sustenet-macOS-x86_64.tar.gz
+            cargo_command: cargo
+
+    runs-on: ${{matrix.platform.os}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Get rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{env.VERSION}}
+          targets: ${{matrix.platform.target}}
+        if: ${{ !matrix.platform.cross }}
+      - run: cargo test
