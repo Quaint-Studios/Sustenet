@@ -5,12 +5,13 @@
 //! 4. Assign clients to a Fragment Server which is just an "isolated instance".
 //! 5. Send and receive data from the clients through the Fragment Server.
 
+use sustenet::app::cluster;
+
 #[tokio::main]
 async fn main() {
-    println!("Hello, world!");
-
     // Entrypoint design:
     // Immediate receival of the shutdown signal.
     // Immediate receival of packets.
     // Default select with tickrate for processing.
+    cluster::start().await;
 }

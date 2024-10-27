@@ -43,7 +43,7 @@ impl App {
                 }
                 "master" | "ms" => {
                     // TODO Use config file
-                    self.master_server = Some(MasterServer::new());
+                    // self.master_server = Some(MasterServer::new());
                     return Ok(());
                 }
                 _ => {
