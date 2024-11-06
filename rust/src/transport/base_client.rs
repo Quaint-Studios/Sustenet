@@ -1,30 +1,32 @@
 use tokio::io::{ self, AsyncReadExt, AsyncWriteExt };
 use tokio::net::{ TcpStream, UdpSocket };
+use tokio::sync::mpsc::Sender;
 
 use crate::core::spawning::Player;
+use crate::events::Event;
 use crate::network::Packet;
 use crate::transport::Protocols;
 
+use super::BaseServer;
+
 pub struct BaseClient {
-    id: Option<u32>,
-    name: Option<String>,
+    pub id: Option<u32>,
+    pub name: Option<String>,
 
-    tcp: TcpHandler,
-    udp: UdpHandler,
+    pub tcp: TcpHandler,
+    pub udp: UdpHandler,
 
-    received_data: Packet,
+    pub(crate) received_data: Packet,
 
-    on_connected: Vec<Box<dyn Fn() + Send + Sync>>,
-    on_disconnected: Vec<Box<dyn Fn(Protocols) + Send + Sync>>,
-    on_received: Vec<Box<dyn Fn(Protocols, [u8]) + Send + Sync>>,
+    pub player: Option<Player>,
 
-    player: Option<Player>,
+    pub event_sender: Sender<Event>,
 }
 
 impl BaseClient {
     pub const BUFFER_SIZE: usize = 4096;
 
-    pub fn new(id: Option<u32>) -> Self {
+    pub fn new(id: Option<u32>, name: Option<String>, event_sender: Sender<Event>) -> Self {
         BaseClient {
             id,
             name: None,
@@ -37,11 +39,9 @@ impl BaseClient {
 
             received_data: Packet::new(),
 
-            on_connected: vec![],
-            on_disconnected: vec![],
-            on_received: vec![],
-
             player: None,
+
+            event_sender,
         }
     }
 
@@ -50,16 +50,13 @@ impl BaseClient {
         self.tcp.deinit();
         self.udp.deinit();
         self.received_data.deinit();
-        self.on_connected.clear();
-        self.on_disconnected.clear();
-        self.on_received.clear();
     }
 }
 
 /// Handles events for connecting, receiving, and debugging.
 /// Also controls the socket connection.
 pub struct TcpHandler {
-    socket: Option<TcpStream>,
+    pub(crate) socket: Option<TcpStream>,
     receive_buffer: Option<[u8; BaseClient::BUFFER_SIZE]>,
 }
 

@@ -1,5 +1,8 @@
 use std::{ net::Ipv4Addr, str::FromStr };
 
+use tokio::sync::mpsc::{self, Receiver, Sender};
+
+use crate::events::Event;
 use crate::transport::BaseClient;
 use crate::utils::constants;
 use crate::world::ClusterInfo;
@@ -24,12 +27,16 @@ pub struct Client {
     on_cluster_server_list: Vec<Box<dyn Fn(ClusterInfo) + Send>>,
 
     base: BaseClient,
+
+    event_receiver: Receiver<Event>,
+    event_sender: Sender<Event>,
 }
 
 impl Client {
     // TODO: ip string and port
     pub fn new(ip: Option<Ipv4Addr>, port: Option<u16>) -> Client {
-        let base_client = BaseClient::new(None);
+        let (event_sender, event_receiver) = mpsc::channel(100); // TODO: Could be a different channel type.
+        let base_client = BaseClient::new(None, None, event_sender.clone());
 
         return Client {
             active_connection: ConnectionType::None,
@@ -48,6 +55,9 @@ impl Client {
             on_cluster_server_list: vec![],
 
             base: base_client,
+
+            event_receiver,
+            event_sender,
         };
     }
 

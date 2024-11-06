@@ -1,6 +1,8 @@
 pub mod app;
 pub mod clients;
 pub mod core;
+pub mod events;
+pub mod macros;
 pub mod master;
 pub mod network;
 pub mod options;

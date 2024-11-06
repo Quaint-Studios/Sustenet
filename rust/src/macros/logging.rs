@@ -21,8 +21,8 @@ macro_rules! log_message {
         $($arg:tt)*
     ) => {
         {
-            use $crate::utils::macros::LogLevel;
-            use $crate::utils::macros::LogType;
+            use $crate::macros::logging::LogLevel;
+            use $crate::macros::logging::LogType;
             use $crate::utils::constants::{
                 TERMINAL_BLUE,
                 TERMINAL_GREEN,

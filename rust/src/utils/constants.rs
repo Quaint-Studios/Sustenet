@@ -1,6 +1,6 @@
 pub const VERSION: &str = "0.1.0";
 
-pub(crate) const DEBUGGING: bool = false;
+pub(crate) const DEBUGGING: bool = true;
 
 /// How many ticks are in a second.
 pub const TICK_RATE: i32 = 30;

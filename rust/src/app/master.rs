@@ -3,7 +3,7 @@
 //! 2. Accept clients and authenticate or sign them up.
 //! 3. Send clients to either a low population cluster or a specific one if provided.
 
-use crate::{ master_debug, master_info, master_success, master_warning };
+use crate::{ master::MasterServer, master_debug, master_info, master_success, master_warning };
 
 use tokio::{
     io::{ AsyncBufReadExt, AsyncWriteExt, BufReader },
@@ -15,17 +15,17 @@ use tokio::{
 /// Start the Master Server and handles shutdown signals.
 pub async fn start() {
     let mut shutdown_rx = crate::app::shutdown_channel().unwrap();
-    let mut is_running = true;
+    let mut master_server = MasterServer::new(None, None).await.unwrap();
 
     select! {
         _ = shutdown_rx.recv() => {
-            is_running = false;
+            master_server.base.is_running = false;
             master_warning!("Shutting down...");
         }
-        _ = run(&mut is_running) => {}
+        _ = master_server.start() => {}
     }
 
-    if !is_running {
+    if !master_server.base.is_running {
         cleanup().await;
         master_success!("Master Server has been shut down.");
     }
@@ -39,7 +39,7 @@ async fn cleanup() {
 
 /// Entrypoint for the Master Server.
 #[inline(always)]
-async fn run(is_running: &mut bool) {
+async fn run(is_running: &bool) {
     master_info!("Starting the Master Server...");
 
     // TODO: Read from config.

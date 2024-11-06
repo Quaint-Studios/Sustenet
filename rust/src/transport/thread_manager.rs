@@ -52,9 +52,11 @@ impl ThreadManager {
 
             drop(main_pool);
 
-            while let Some(action) = main_pool_copied.pop_front() {
-                action();
-            }
+            tokio::task::spawn(async move {
+                while let Some(action) = main_pool_copied.pop_front() {
+                    action();
+                }
+            });
         }
     }
 
@@ -79,9 +81,11 @@ impl ThreadManager {
 
             drop(side_pool);
 
-            while let Some(action) = side_pool_copied.pop_front() {
-                action();
-            }
+            tokio::task::spawn(async move {
+                while let Some(action) = side_pool_copied.pop_front() {
+                    action();
+                }
+            });
         }
     }
 
