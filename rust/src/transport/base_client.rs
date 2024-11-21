@@ -5,9 +5,6 @@ use tokio::sync::mpsc::Sender;
 use crate::core::spawning::Player;
 use crate::events::Event;
 use crate::network::Packet;
-use crate::transport::Protocols;
-
-use super::BaseServer;
 
 pub struct BaseClient {
     pub id: Option<u32>,
@@ -18,9 +15,9 @@ pub struct BaseClient {
 
     pub(crate) received_data: Packet,
 
-    pub player: Option<Player>,
-
     pub event_sender: Sender<Event>,
+
+    pub player: Option<Player>,
 }
 
 impl BaseClient {
@@ -32,7 +29,7 @@ impl BaseClient {
             name: None,
 
             tcp: TcpHandler {
-                socket: None,
+                stream: None,
                 receive_buffer: None,
             },
             udp: UdpHandler { socket: None },
@@ -56,13 +53,13 @@ impl BaseClient {
 /// Handles events for connecting, receiving, and debugging.
 /// Also controls the socket connection.
 pub struct TcpHandler {
-    pub(crate) socket: Option<TcpStream>,
+    pub(crate) stream: Option<TcpStream>,
     receive_buffer: Option<[u8; BaseClient::BUFFER_SIZE]>,
 }
 
 impl TcpHandler {
     pub async fn connect(&mut self, address: &str, port: u16) -> io::Result<()> {
-        if let Some(socket) = &self.socket {
+        if let Some(socket) = &self.stream {
             // socket.connect((address, port)).await?; // TODO
         } else {
             return Err(io::Error::new(io::ErrorKind::Other, "Socket is null"));
@@ -70,12 +67,28 @@ impl TcpHandler {
         Ok(())
     }
 
-    pub fn receive(&mut self, _client: &mut BaseClient) {
-        // TODO: Implement
+    /// Used for servers that create local records of clients.
+    /// It will wipe any existing connections and start a new one.
+    /// 
+    /// Should disconnect the client if it produces an error.
+    /// 
+    /// * `socket` - The socket to replace the current socket with.
+    pub async fn receive(&mut self, stream: TcpStream) -> io::Result<()> {
+        if self.stream.is_some() {
+            self.stream.as_mut().unwrap().shutdown().await?;
+        }
+
+        self.stream = Some(stream);
+
+        if self.receive_buffer.is_none() {
+            self.receive_buffer = Some([0; BaseClient::BUFFER_SIZE]);
+        }
+
+        Ok(())
     }
 
     pub fn deinit(&mut self) {
-        if let Some(socket) = self.socket.take() {
+        if let Some(socket) = self.stream.take() {
             println!("Socket closing now.");
             // socket.shutdown(); // TODO
             println!("Socket closed.");
