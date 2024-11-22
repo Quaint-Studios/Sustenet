@@ -1,11 +1,8 @@
 use std::{ collections::BTreeSet, sync::Arc };
 
 use dashmap::DashMap;
-use tokio::{
-    io::{ AsyncBufReadExt, AsyncWriteExt, BufReader },
-    net::{ TcpListener, TcpStream },
-    sync::{ broadcast, mpsc, Mutex },
-};
+
+use tokio::{ net::{ TcpListener, TcpStream }, sync::{ mpsc::{ self, Receiver, Sender }, Mutex } };
 
 use crate::{
     clients::ServerClient,
@@ -14,33 +11,6 @@ use crate::{
     utils::constants,
     world::ClusterInfo,
 };
-
-pub struct MasterServer {
-    pub is_running: bool,
-
-    // Master Server Fields
-    pub cluster_ids: Vec<u32>,
-    pub cluster_info: DashMap<u32, ClusterInfo>,
-
-    // Packet Handlers
-    // pub packet_handlers: DashMap<u32, PacketHandler>,
-
-    // Network
-    tcp_listener: TcpListener,
-    // UDP equivalent is in BaseClient.UdpHandler.socket
-
-    // Server Info
-    pub max_connections: u32,
-    pub port: u16,
-
-    // Data
-    pub clients: DashMap<u32, ServerClient>,
-    pub released_ids: Arc<Mutex<BTreeSet<u32>>>,
-
-    // Events
-    pub event_receiver: mpsc::Receiver<Event>,
-    pub event_sender: mpsc::Sender<Event>,
-}
 
 #[derive(Debug)]
 pub enum MasterServerError {
@@ -62,6 +32,30 @@ impl From<MasterServerError> for String {
             MasterServerError::MaxConnectionsReached => "Max connections reached".to_string(),
         }
     }
+}
+
+pub struct MasterServer {
+    pub is_running: bool,
+
+    // Master Server Fields
+    pub cluster_ids: Vec<u32>,
+    pub cluster_info: DashMap<u32, ClusterInfo>,
+
+    // Network
+    tcp_listener: TcpListener,
+    // UDP equivalent is in BaseClient.UdpHandler.socket
+
+    // Server Info
+    pub max_connections: u32,
+    pub port: u16,
+
+    // Data
+    pub clients: DashMap<u32, ServerClient>,
+    pub released_ids: Arc<Mutex<BTreeSet<u32>>>,
+
+    // Events
+    pub event_receiver: Receiver<Event>,
+    pub event_sender: Sender<Event>,
 }
 
 impl ServerCore<MasterServerError> for MasterServer {
@@ -118,74 +112,90 @@ impl ServerCore<MasterServerError> for MasterServer {
             );
         }
 
-        self.listen().await;
+        match self.listen().await {
+            Ok(_) => (),
+            Err(e) => Self::error(format!("Failed to start server: {:?}", e)),
+        }
     }
 
     /// Listens for incoming connections and handles them.
     #[inline(always)]
-    async fn listen(&self) -> Result<(), MasterServerError> {
-        self.process_events();
+    async fn listen(&mut self) -> Result<(), MasterServerError> {
+        tokio::join!(Self::process_events(&mut self.event_receiver), async {
+            // let (tx, _rx) = broadcast::channel(10);
 
-        // let (tx, _rx) = broadcast::channel(10);
+            Self::success("Now listening for connections.".to_string());
 
-        Self::success("Now listening for connections.".to_string());
+            while self.is_running {
+                let (stream, addr) = self.tcp_listener.accept().await.unwrap();
 
-        while self.is_running {
-            let (mut stream, addr) = self.tcp_listener.accept().await.unwrap();
+                Self::debug(format!("Accepted connection from {:?}", addr));
 
-            Self::debug(format!("Accepted connection from {:?}", addr));
-
-            self.on_tcp_connection(stream).await;
-        }
+                match
+                    Self::add_client(
+                        stream,
+                        &self.max_connections,
+                        &self.clients,
+                        self.released_ids.clone(),
+                        &self.event_sender
+                    ).await
+                {
+                    Ok(_) => {
+                        Self::success("Added client successfully.".to_string());
+                        self.event_sender.clone().send(Event::Connection(0)).await.unwrap(); // Doesn't belong but it's here to test.
+                    }
+                    Err(e) => Self::error(format!("Failed to add client: {:?}", e)),
+                };
+            }
+        });
 
         Ok(())
     }
 }
 
 impl ServerConnection<MasterServerError> for MasterServer {
-    async fn on_tcp_connection(&self, stream: TcpStream) {
-        match self.add_client(stream).await {
-            Ok(_) => (),
-            Err(e) => Self::error(format!("Failed to add client: {:?}", e)),
-        }
-    }
-
     fn on_udp_received(&self) {
         todo!()
     }
 
     /// Adds a client to the server.
-    async fn add_client(&self, stream: TcpStream) -> Result<(), MasterServerError> {
+    async fn add_client(
+        stream: TcpStream,
+        max_connections: &u32,
+        clients: &DashMap<u32, ServerClient>,
+        released_ids: Arc<Mutex<BTreeSet<u32>>>,
+        event_sender: &Sender<Event>
+    ) -> Result<(), MasterServerError> {
         // If the max_connections is reached, return an error.
-        if self.max_connections != 0 && self.clients.len() >= (self.max_connections as usize) {
+        if *max_connections != 0 && clients.len() >= (*max_connections as usize) {
             return Err(MasterServerError::MaxConnectionsReached);
         }
 
         // Get the next available ID and insert it.
-        let released_id: Option<u32> = self.released_ids.lock().await.pop_first();
-        self.clients.insert(
-            released_id.unwrap_or(self.clients.len() as u32),
+        let released_id: Option<u32> = released_ids.lock().await.pop_first();
+        clients.insert(
+            released_id.unwrap_or(clients.len() as u32),
             ServerClient::new(
-                released_id.unwrap_or(self.clients.len() as u32),
+                released_id.unwrap_or(clients.len() as u32),
                 stream,
-                self.event_sender.clone()
+                event_sender.clone()
             )
         );
 
         Ok(())
     }
 
-    fn disconnect_client(&self, client_id: u32) {
-        self.clear_client(client_id);
-    }
+    async fn disconnect_client(
+        client_id: u32,
+        clients: &DashMap<u32, ServerClient>,
+        released_ids: Arc<Mutex<BTreeSet<u32>>>
+    ) {
+        clients.remove(&client_id);
 
-    async fn clear_client(&self, client_id: u32) {
-        self.clients.remove(&client_id);
-
-        if self.clients.len() == 0 {
-            self.released_ids.lock().await.clear();
-        } else if self.clients.len() > (client_id as usize) {
-            self.released_ids.lock().await.insert(client_id);
+        if clients.len() == 0 {
+            released_ids.lock().await.clear();
+        } else if clients.len() > (client_id as usize) {
+            released_ids.lock().await.insert(client_id);
         }
 
         Self::debug(format!("Disconnected Client#{client_id}"));
@@ -193,31 +203,37 @@ impl ServerConnection<MasterServerError> for MasterServer {
 }
 
 impl ServerEvents for MasterServer {
-    fn process_events(&self) {
+    async fn process_events(event_receiver: &mut Receiver<Event>) {
+        while let Some(event) = event_receiver.recv().await {
+            match event {
+                Event::Connection(id) => Self::on_connection(id),
+                Event::Disconnection(id) => Self::on_disconnection(id),
+                Event::ReceivedData(id, data) => Self::on_received_data(id, &data),
+            }
+        }
+    }
+
+    fn on_connection(id: u32) {
         todo!()
     }
 
-    fn on_connection(&self, id: u32) {
+    fn on_disconnection(id: u32) {
         todo!()
     }
 
-    fn on_disconnection(&self, id: u32) {
+    fn on_received_data(id: u32, data: &[u8]) {
         todo!()
     }
 
-    fn on_received_data(&self, id: u32, data: &[u8]) {
+    fn on_client_connected(id: u32) {
         todo!()
     }
 
-    fn on_client_connected(&self, id: u32) {
+    fn on_client_disconnected(id: u32, protocol: crate::transport::Protocols) {
         todo!()
     }
 
-    fn on_client_disconnected(&self, id: u32, protocol: crate::transport::Protocols) {
-        todo!()
-    }
-
-    fn on_client_received_data(&self, id: u32, protocol: crate::transport::Protocols, data: &[u8]) {
+    fn on_client_received_data(id: u32, protocol: crate::transport::Protocols, data: &[u8]) {
         todo!()
     }
 }

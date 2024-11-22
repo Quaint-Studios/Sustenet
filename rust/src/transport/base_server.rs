@@ -1,6 +1,9 @@
-use tokio::net::TcpStream;
+use std::{ collections::BTreeSet, sync::Arc };
 
-use crate::clients::ServerClient;
+use dashmap::DashMap;
+use tokio::{ net::TcpStream, sync::{ mpsc::{ Receiver, Sender }, Mutex } };
+
+use crate::{ clients::{self, ServerClient}, events::Event };
 
 use super::Protocols;
 
@@ -8,15 +11,19 @@ pub(crate) trait ServerCore<E> {
     type Server;
     async fn new(max_connections: Option<u32>, port: Option<u16>) -> Result<Self::Server, E>;
     async fn start(&mut self);
-    async fn listen(&self) -> Result<(), E>;
+    async fn listen(&mut self) -> Result<(), E>;
 }
 
 pub(crate) trait ServerConnection<E> {
-    async fn on_tcp_connection(&self, stream: TcpStream);
     fn on_udp_received(&self);
-    async fn add_client(&self, stream: TcpStream) -> Result<(), E>;
-    fn disconnect_client(&self, client_id: u32);
-    async fn clear_client(&self, client_id: u32);
+    async fn add_client(
+        stream: TcpStream,
+        max_connections: &u32,
+        clients: &DashMap<u32, ServerClient>,
+        released_ids: Arc<Mutex<BTreeSet<u32>>>,
+        event_sender: &Sender<Event>
+    ) -> Result<(), E>;
+    async fn disconnect_client(client_id: u32, clients: &DashMap<u32, ServerClient>, released_ids: Arc<Mutex<BTreeSet<u32>>>);
 }
 
 pub(crate) trait ServerData {
@@ -24,13 +31,13 @@ pub(crate) trait ServerData {
 }
 
 pub(crate) trait ServerEvents {
-    fn process_events(&self);
-    fn on_connection(&self, id: u32);
-    fn on_disconnection(&self, id: u32);
-    fn on_received_data(&self, id: u32, data: &[u8]);
-    fn on_client_connected(&self, id: u32);
-    fn on_client_disconnected(&self, id: u32, protocol: Protocols);
-    fn on_client_received_data(&self, id: u32, protocol: Protocols, data: &[u8]);
+    async fn process_events(event_receiver: &mut Receiver<Event>);
+    fn on_connection(id: u32);
+    fn on_disconnection(id: u32);
+    fn on_received_data(id: u32, data: &[u8]);
+    fn on_client_connected(id: u32);
+    fn on_client_disconnected(id: u32, protocol: Protocols);
+    fn on_client_received_data(id: u32, protocol: Protocols, data: &[u8]);
 }
 
 pub(crate) trait ServerLogging {
