@@ -1,63 +1,77 @@
 use tokio::{
-    io::{ AsyncBufReadExt, AsyncWriteExt, BufReader },
+    io::{ AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader },
     net::TcpStream,
     sync::mpsc::Sender,
 };
 
-use crate::events::Event;
+use crate::events::{ClientPackets, Event};
 
 pub struct ServerClient {
     pub id: u32,
-    pub stream: TcpStream,
     pub event_sender: Sender<Event>,
 }
 
 impl ServerClient {
-    pub fn new(id: u32, stream: TcpStream, event_sender: Sender<Event>) -> Self {
-        ServerClient {
-            id,
-            stream,
-            event_sender,
-        }
+    pub fn new(id: u32, event_sender: Sender<Event>) -> Self {
+        ServerClient { id, event_sender }
     }
 
     /// Handle the data from the client.
-    pub async fn handle_data(&mut self) {
-        let (reader, mut _writer) = self.stream.split();
+    pub async fn handle_data(&self, mut stream: TcpStream) {
+        let id = self.id;
+        let event_sender = self.event_sender.clone();
+        let (tx, mut rx) = tokio::sync::mpsc::channel(10);
+        let addr = stream.peer_addr().unwrap();
 
-        let mut reader = BufReader::new(reader);
-        let mut line = String::new();
+        tokio::spawn(async move {
+            let (reader, mut writer) = stream.split();
 
-        loop {
-            tokio::select! {
-                result = reader.read_line(&mut line) => {
-                    // Break if the line is empty.
-                    if result.unwrap() == 0 {
-                        break;
-                    }
+            let mut reader = BufReader::new(reader);
 
-                    // Read the first byte of the line to get the command.
-                    let _command = line.as_bytes()[0];
+            loop {
+                tokio::select! {
+                    // Incoming data from the client.
+                    command = reader.read_u8() => {
+                        println!("SC Received: {:?}", command);
 
-                    // Handle the command. Match it with the Event.
-                    match self.event_sender.send(Event::Connection(self.id)).await {
-                        Ok(_) => {},
-                        Err(e) => {
-                            println!("Error sending connection event: {:?}", e);
+                        if command.is_err() {
+                            break;
+                        }
+
+                        match ClientPackets::from_u8(command.unwrap()) {
+                            ClientPackets::RequestClusterServers => todo!(),
+                            ClientPackets::Message => {
+                                let len = reader.read_u8().await.unwrap();
+                                let mut msg = vec![0; len as usize];
+                                reader.read_exact(&mut msg).await.unwrap();
+                                let msg_str = String::from_utf8(msg).unwrap();
+                                println!("SC Message Received: {:?}", msg_str);
+                            },
+                            ClientPackets::Login => todo!(),
+                            ClientPackets::StartUDP => todo!(),
+                            ClientPackets::JoinCluster => todo!(),
+                            ClientPackets::LeaveCluster => todo!(),
+                            ClientPackets::MoveTo => todo!(),
+                            ClientPackets::Error => {
+                                println!("SC Error");
+                            },
+                        }
+
+                        if 0 == 12 { // Serves no purpose. Just temporary.
+                            tx.send([0]).await.unwrap();
                         }
                     }
+                    // Outgoing data to the client.
+                    result = rx.recv() => {
+                        println!("SC Sending: {:?}", result);
+                        // Write the message to the writer.
+                        let msg = result.unwrap();
 
-                    line.clear();
+                        writer.write_all(&msg).await.unwrap();
+                        writer.flush().await.unwrap();
+                    }
                 }
-                // result = rx.recv() => {
-                //     // Write the message to the writer.
-                //     let (msg, msg_addr) = result.unwrap();
-
-                //     if addr != msg_addr {
-                //         writer.write_all(&msg.as_bytes()).await.unwrap();
-                //     }
-                // }
             }
-        }
+        });
     }
 }

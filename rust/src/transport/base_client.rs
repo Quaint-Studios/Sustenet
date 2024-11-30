@@ -26,7 +26,7 @@ impl BaseClient {
     pub fn new(id: Option<u32>, name: Option<String>, event_sender: Sender<Event>) -> Self {
         BaseClient {
             id,
-            name: None,
+            name,
 
             tcp: TcpHandler {
                 stream: None,
@@ -36,9 +36,9 @@ impl BaseClient {
 
             received_data: Packet::new(),
 
-            player: None,
-
             event_sender,
+            
+            player: None,
         }
     }
 

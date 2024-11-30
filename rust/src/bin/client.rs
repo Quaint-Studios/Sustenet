@@ -7,7 +7,10 @@
 //! 6. Gracefully go back to the Master Server on disconnect from the cluster.
 //! 7. Reconnect to Master Server in increasing intervals on disconnect or failed connection.
 
+use sustenet::clients::Client;
+
 #[tokio::main]
 async fn main() {
-    println!("Hello, world!");
+    let mut client = Client::new(None, None);
+    client.start().await;
 }

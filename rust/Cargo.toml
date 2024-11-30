@@ -28,12 +28,13 @@ num_cpus = "1.16.0"
 quaternion = "2.0.0"
 serde = "1.0.215"
 serde_repr = "0.1.19"
-tokio = { version = "1.40.0", features = [
+tokio = { version = "1.41.1", features = [
   "socket2",
   "macros",
   "rt-multi-thread",
   "net",
   "sync",
   "io-util",
+  "time",
 ] }
 vector3 = "1.1.4"

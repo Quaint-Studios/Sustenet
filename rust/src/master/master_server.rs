@@ -140,10 +140,7 @@ impl ServerCore<MasterServerError> for MasterServer {
                         &self.event_sender
                     ).await
                 {
-                    Ok(_) => {
-                        Self::success("Added client successfully.".to_string());
-                        self.event_sender.clone().send(Event::Connection(0)).await.unwrap(); // Doesn't belong but it's here to test.
-                    }
+                    Ok(_) => (),
                     Err(e) => Self::error(format!("Failed to add client: {:?}", e)),
                 };
             }
@@ -172,15 +169,15 @@ impl ServerConnection<MasterServerError> for MasterServer {
         }
 
         // Get the next available ID and insert it.
-        let released_id: Option<u32> = released_ids.lock().await.pop_first();
-        clients.insert(
-            released_id.unwrap_or(clients.len() as u32),
-            ServerClient::new(
-                released_id.unwrap_or(clients.len() as u32),
-                stream,
-                event_sender.clone()
-            )
-        );
+        let released_id: u32 = released_ids
+            .lock().await
+            .pop_first()
+            .unwrap_or(clients.len() as u32);
+        let client = ServerClient::new(released_id, event_sender.clone());
+        client.handle_data(stream).await;
+        clients.insert(released_id, client);
+
+        event_sender.send(Event::Connection(released_id)).await.unwrap();
 
         Ok(())
     }
@@ -214,7 +211,7 @@ impl ServerEvents for MasterServer {
     }
 
     fn on_connection(id: u32) {
-        todo!()
+        Self::debug(format!("Client#{id} connectted"));
     }
 
     fn on_disconnection(id: u32) {

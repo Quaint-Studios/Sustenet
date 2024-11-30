@@ -8,7 +8,7 @@ pub enum Event {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Serialize_repr, Deserialize_repr)]
-#[repr(u16)]
+#[repr(u8)]
 /// What a Master Server sends. What a client may receive.
 pub enum MasterServerPackets {
     /// Sends a passphrase that a Cluster Client should decrypt and answer.
@@ -27,7 +27,7 @@ pub enum MasterServerPackets {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Serialize_repr, Deserialize_repr)]
-#[repr(u16)]
+#[repr(u8)]
 /// What a Cluster Server sends. What a client may receive.
 pub enum ClusterServerPackets {
     /// Sends the name of the cluster's key to the Master Server.
@@ -48,7 +48,7 @@ pub enum ClusterServerPackets {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Serialize_repr, Deserialize_repr)]
-#[repr(u16)]
+#[repr(u8)]
 /// What a Client sends. What a server may receive.
 pub enum ClientPackets {
     /// Requests a list of cluster servers from the server.
@@ -65,4 +65,21 @@ pub enum ClientPackets {
     LeaveCluster,
 
     MoveTo = 100,
+
+    Error = 200,
+}
+impl ClientPackets {
+    /// Get the packet type from a u8.
+    pub fn from_u8(value: u8) -> Self {
+        match value {
+            2 => ClientPackets::RequestClusterServers,
+            3 => ClientPackets::Message,
+            4 => ClientPackets::Login,
+            5 => ClientPackets::StartUDP,
+            6 => ClientPackets::JoinCluster,
+            7 => ClientPackets::LeaveCluster,
+            100 => ClientPackets::MoveTo,
+            _ => ClientPackets::Error,
+        }
+    }
 }
