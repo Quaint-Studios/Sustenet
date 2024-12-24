@@ -1,0 +1,10 @@
+[all]
+server_name = "Default Server"
+
+max_connections = 0
+port = 0
+
+[cluster]
+key_name = "cluster_key"
+master_ip = "127.0.0.1"
+master_port = 6256

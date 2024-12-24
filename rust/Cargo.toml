@@ -1,4 +1,19 @@
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
 [workspace]
+resolver = "2"
 
 members = ["master", "cluster", "client", "shared", "auth"]
+exclude = ["backup"]
 
+[workspace.dependencies]
+tokio = { version = "1.41.1", default-features = false, features = [
+    # "socket2",
+    "macros",
+    "rt-multi-thread",
+    # "net",
+    # "sync",
+    # "io-util",
+    "time",
+] }
