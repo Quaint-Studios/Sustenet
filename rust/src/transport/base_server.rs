@@ -40,14 +40,6 @@ pub(crate) trait ServerEvents {
     fn on_client_received_data(id: u32, protocol: Protocols, data: &[u8]);
 }
 
-pub(crate) trait ServerLogging {
-    fn debug(message: String);
-    fn info(message: String);
-    fn warning(message: String);
-    fn error(message: String);
-    fn success(message: String);
-}
-
 // use std::collections::BTreeSet;
 // use std::sync::Arc;
 

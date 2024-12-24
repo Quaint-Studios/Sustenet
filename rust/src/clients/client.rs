@@ -6,8 +6,8 @@ use tokio::select;
 use tokio::sync::mpsc::{ self, Receiver, Sender };
 
 use crate::events::{ ClientPackets, Event };
+use crate::transport::Logging;
 use crate::utils::constants;
-use crate::{ client_info, client_success, client_warning };
 
 pub enum ConnectionType {
     MasterServer,
@@ -70,7 +70,7 @@ impl Client {
         select! {
             _ = shutdown_rx.recv() => {
                 is_running = false;
-                client_warning!("Shutting down...");
+                Self::warning("Shutting down...");
             }
             _ = self.connect(&mut is_running) => {}
         }
@@ -120,7 +120,8 @@ impl Client {
                                 writer.flush().await.unwrap();
                             }
                             None => {
-                                println!("C No message to send.");
+                                writer.shutdown().await.unwrap();
+                                !("Shutting down.");
                             }
                         }
                     }
@@ -168,5 +169,47 @@ impl Client {
 
     pub async fn on_cluster_server_list() {
         println!("Cluster Server List:");
+    }
+}
+
+impl Logging for Client {
+    fn debug(message: &str) {
+        if !constants::DEBUGGING {
+            return;
+        }
+
+        crate::client_debug!("{}", message);
+    }
+    
+    fn info(message: &str) {
+        if !constants::DEBUGGING {
+            return;
+        }
+
+        crate::client_info!("{}", message);
+    }
+
+    fn warning(message: &str) {
+        if !constants::DEBUGGING {
+            return;
+        }
+
+        crate::client_warning!("{}", message);
+    }
+
+    fn error(message: &str) {
+        if !constants::DEBUGGING {
+            return;
+        }
+
+        crate::client_error!("{}", message);
+    }
+
+    fn success(message: &str) {
+        if !constants::DEBUGGING {
+            return;
+        }
+
+        crate::client_success!("{}", message);
     }
 }

@@ -8,6 +8,7 @@ use crate::{
     clients::ServerClient,
     events::Event,
     transport::base_server::*,
+    transport::Logging,
     utils::constants,
     world::ClusterInfo,
 };
@@ -108,13 +109,13 @@ impl ServerCore<MasterServerError> for MasterServer {
                 format!(
                     "Starting the Master Server on port {} with {max_connections_str}...",
                     self.port
-                )
+                ).as_str()
             );
         }
 
         match self.listen().await {
             Ok(_) => (),
-            Err(e) => Self::error(format!("Failed to start server: {:?}", e)),
+            Err(e) => Self::error(format!("Failed to start server: {:?}", e).as_str()),
         }
     }
 
@@ -124,12 +125,12 @@ impl ServerCore<MasterServerError> for MasterServer {
         tokio::join!(Self::process_events(&mut self.event_receiver), async {
             // let (tx, _rx) = broadcast::channel(10);
 
-            Self::success("Now listening for connections.".to_string());
+            Self::success("Now listening for connections.");
 
             while self.is_running {
                 let (stream, addr) = self.tcp_listener.accept().await.unwrap();
 
-                Self::debug(format!("Accepted connection from {:?}", addr));
+                Self::debug(format!("Accepted connection from {:?}", addr).as_str());
 
                 match
                     Self::add_client(
@@ -141,7 +142,7 @@ impl ServerCore<MasterServerError> for MasterServer {
                     ).await
                 {
                     Ok(_) => (),
-                    Err(e) => Self::error(format!("Failed to add client: {:?}", e)),
+                    Err(e) => Self::error(format!("Failed to add client: {:?}", e).as_str()),
                 };
             }
         });
@@ -195,7 +196,7 @@ impl ServerConnection<MasterServerError> for MasterServer {
             released_ids.lock().await.insert(client_id);
         }
 
-        Self::debug(format!("Disconnected Client#{client_id}"));
+        Self::debug(format!("Disconnected Client#{client_id}").as_str());
     }
 }
 
@@ -211,7 +212,7 @@ impl ServerEvents for MasterServer {
     }
 
     fn on_connection(id: u32) {
-        Self::debug(format!("Client#{id} connectted"));
+        Self::debug(format!("Client#{id} connected").as_str());
     }
 
     fn on_disconnection(id: u32) {
@@ -235,8 +236,8 @@ impl ServerEvents for MasterServer {
     }
 }
 
-impl ServerLogging for MasterServer {
-    fn debug(message: String) {
+impl Logging for MasterServer {
+    fn debug(message: &str) {
         if !constants::DEBUGGING {
             return;
         }
@@ -244,7 +245,7 @@ impl ServerLogging for MasterServer {
         crate::master_debug!("{}", message);
     }
 
-    fn info(message: String) {
+    fn info(message: &str) {
         if !constants::DEBUGGING {
             return;
         }
@@ -252,7 +253,7 @@ impl ServerLogging for MasterServer {
         crate::master_info!("{}", message);
     }
 
-    fn warning(message: String) {
+    fn warning(message: &str) {
         if !constants::DEBUGGING {
             return;
         }
@@ -260,7 +261,7 @@ impl ServerLogging for MasterServer {
         crate::master_warning!("{}", message);
     }
 
-    fn error(message: String) {
+    fn error(message: &str) {
         if !constants::DEBUGGING {
             return;
         }
@@ -268,7 +269,7 @@ impl ServerLogging for MasterServer {
         crate::master_error!("{}", message);
     }
 
-    fn success(message: String) {
+    fn success(message: &str) {
         if !constants::DEBUGGING {
             return;
         }

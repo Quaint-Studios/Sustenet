@@ -32,12 +32,13 @@ impl ServerClient {
                 tokio::select! {
                     // Incoming data from the client.
                     command = reader.read_u8() => {
-                        println!("SC Received: {:?}", command);
-
+                        
                         if command.is_err() {
                             break;
                         }
 
+                        println!("SC Received: {:?}", command);
+                        
                         match ClientPackets::from_u8(command.unwrap()) {
                             ClientPackets::RequestClusterServers => todo!(),
                             ClientPackets::Message => {

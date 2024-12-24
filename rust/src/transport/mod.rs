@@ -18,3 +18,11 @@ impl From<Protocols> for String {
         }
     }
 }
+
+pub trait Logging {
+    fn debug(message: &str);
+    fn info(message: &str);
+    fn warning(message: &str);
+    fn error(message: &str);
+    fn success(message: &str);
+}
