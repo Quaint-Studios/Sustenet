@@ -2,7 +2,7 @@ use std::collections::BTreeSet;
 use std::sync::Arc;
 
 use dashmap::DashMap;
-use tokio::io::{ AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader };
+use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
 use tokio::net::{ TcpListener, TcpStream };
 use tokio::select;
 use tokio::sync::mpsc::{ self, Sender };
@@ -58,83 +58,43 @@ async fn start() {
             format!("{}:{}", constants::DEFAULT_IP, port)
         ).await.expect("Failed to bind to the specified port.");
 
-        select! {
-            event = event_receiver.recv() => {
-                if let Some(event) = event {
-                    match event {
-                        Event::Connection(id) => on_connection(id),
-                        Event::Disconnection(id) => on_disconnection(id),
-                        Event::ReceivedData(id, data) => on_received_data(id, &data),
+        loop {
+            select! {
+                event = event_receiver.recv() => {
+                    if let Some(event) = event {
+                        match event {
+                            Event::Connection(id) => on_connection(id),
+                            Event::Disconnection(id) => on_disconnection(id),
+                            Event::ReceivedData(id, data) => on_received_data(id, &data),
+                        }
                     }
                 }
-            }
-            // Listen and add clients.
-            res = tcp_listener.accept() => {
-                if let Ok((stream, addr)) = res {
-                    debug(format!("Accepted connection from {:?}", addr).as_str());
+                // Listen and add clients.
+                res = tcp_listener.accept() => {
+                    if let Ok((stream, addr)) = res {
+                        debug(format!("Accepted connection from {:?}", addr).as_str());
 
-                    // If the max_connections is reached, return an error.
-                    if max_connections != 0 && clients.len() >= (max_connections as usize) {
-                        error("Max connections reached.");
-                        return;
+                        // If the max_connections is reached, return an error.
+                        if max_connections != 0 && clients.len() >= (max_connections as usize) {
+                            error("Max connections reached.");
+                            return;
+                        }
+
+                        // Get the next available ID and insert it.
+                        let released_id: u32 = released_ids
+                            .lock().await
+                            .pop_first()
+                            .unwrap_or(clients.len() as u32);
+                        let client = ServerClient::new(released_id, event_sender.clone());
+                        client.handle_data(stream).await;
+                        clients.insert(released_id, client);
+
+                        event_sender.send(Event::Connection(released_id)).await.unwrap();
                     }
-
-                    // Get the next available ID and insert it.
-                    let released_id: u32 = released_ids
-                        .lock().await
-                        .pop_first()
-                        .unwrap_or(clients.len() as u32);
-                    let client = ServerClient::new(released_id, event_sender.clone());
-                    client.handle_data(stream).await;
-                    clients.insert(released_id, client);
-
-                    event_sender.send(Event::Connection(released_id)).await.unwrap();
                 }
-
-
-                // match
-                //     Self::add_client(
-                //         stream,
-                //         &self.max_connections,
-                //         &self.clients,
-                //         self.released_ids.clone(),
-                //         event_sender
-                //     ).await
-                // {
-                //     Ok(_) => (),
-                //     Err(e) => error(format!("Failed to add client: {:?}", e).as_str()),
-                // };
             }
         }
-
-        // Listens for incoming connections and handles them.
-        //     while is_running {
-        //         let (stream, addr) = self.tcp_listener.accept().await.unwrap();
-
-        //         Self::debug(format!("Accepted connection from {:?}", addr).as_str());
-
-        //         match
-        //             Self::add_client(
-        //                 stream,
-        //                 &self.max_connections,
-        //                 &self.clients,
-        //                 self.released_ids.clone(),
-        //                 &self.event_sender
-        //             ).await
-        //         {
-        //             Ok(_) => (),
-        //             Err(e) => Self::error(format!("Failed to add client: {:?}", e).as_str()),
-        //         };
-        //     }
-        // });
     }
-
-    while is_running {
-        println!("Master is running...");
-        tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
-    }
-
-    println!("Master is shutting down...");
 }
 
 // region: Events
@@ -231,7 +191,6 @@ impl ServerClient {
                 select! {
                     // Incoming data from the client.
                     command = reader.read_u8() => {
-
                         if command.is_err() {
                             break;
                         }
@@ -243,7 +202,9 @@ impl ServerClient {
                                 success("A client is requesting clusters...");
                             },
                             x if x == FromUnknown::JoinCluster as u8 => todo!(),
-                            x if x == FromUnknown::BecomeCluster as u8 => todo!(),
+                            x if x == FromUnknown::BecomeCluster as u8 => {
+                                success("A client is becoming a cluster...");
+                            },
                             x if x == FromUnknown::AnswerCluster as u8 => todo!(),
                             _ => (),
                         }
