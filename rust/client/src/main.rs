@@ -79,12 +79,12 @@ async fn start(ip: Ipv4Addr, port: u16) {
     });
 
     loop {
-        send_data(tx.clone(), Box::new([0])).await;
+        send_data(&tx, Box::new([0])).await;
         tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
     }
 }
 
-async fn send_data(tx: mpsc::Sender<Box<[u8]>>, data: Box<[u8]>) {
+async fn send_data(tx: &mpsc::Sender<Box<[u8]>>, data: Box<[u8]>) {
     tx.send(data).await.expect("Failed to send data to the Server.");
 }
 

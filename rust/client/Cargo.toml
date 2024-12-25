@@ -7,5 +7,5 @@ edition = "2021"
 workspace = true
 
 [dependencies]
-tokio = { workspace = true }
 shared = { path = "../shared" }
+tokio = { workspace = true }
