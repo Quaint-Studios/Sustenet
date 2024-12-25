@@ -37,7 +37,7 @@ pub mod master {
 pub mod cluster {
     use config::{ Config, File, FileFormat::Toml };
 
-    use crate::utils::constants::CLUSTER_PORT;
+    use crate::utils::constants::{ CLUSTER_PORT, DEFAULT_IP, MASTER_PORT };
 
     pub struct Settings {
         pub server_name: String,
@@ -48,11 +48,13 @@ pub mod cluster {
         pub key_name: String,
         pub master_ip: String,
         pub master_port: u16,
+
+        pub domain_pub_key: Option<String>,
     }
 
     pub fn read() -> Settings {
         let settings = Config::builder()
-            .add_source(File::new("/Config.toml", Toml))
+            .add_source(File::new("Config.toml", Toml))
             .build()
             .expect("Failed to read the configuration file.");
 
@@ -71,9 +73,25 @@ pub mod cluster {
                 Err(_) => CLUSTER_PORT,
             },
 
-            key_name: settings.get::<String>("key_name").unwrap_or("cluster_key".to_string()),
-            master_ip: settings.get::<String>("master_ip").unwrap_or("127.0.0.1".to_string()),
-            master_port: settings.get::<u16>("master_port").unwrap_or(CLUSTER_PORT),
+            key_name: settings
+                .get::<String>("cluster.key_name")
+                .unwrap_or("cluster_key".to_string()),
+            master_ip: settings
+                .get::<String>("cluster.master_ip")
+                .unwrap_or(DEFAULT_IP.to_string()),
+            master_port: match settings.get::<u16>("cluster.master_port") {
+                Ok(port) =>
+                    match port {
+                        0 => MASTER_PORT,
+                        _ => port,
+                    }
+                Err(_) => MASTER_PORT,
+            },
+
+            domain_pub_key: match settings.get::<String>("cluster.domain_pub_key") {
+                Ok(domain) => Some(domain),
+                Err(_) => None,
+            },
         }
     }
 }

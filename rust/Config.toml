@@ -7,4 +7,6 @@ port = 0
 [cluster]
 key_name = "cluster_key"
 master_ip = "127.0.0.1"
-master_port = 6256
+master_port = 0
+
+domain_pub_key = "https://www.playreia.com/game/pubkey.pub" # Remove this if you want to use the server's bandwidth to send a key to a user directly.
