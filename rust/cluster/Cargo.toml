@@ -7,4 +7,6 @@ edition = "2021"
 workspace = true
 
 [dependencies]
+dashmap = { workspace = true }
 shared = { path = "../shared" }
+tokio = { workspace = true }
