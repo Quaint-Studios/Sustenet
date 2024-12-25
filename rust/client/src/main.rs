@@ -53,7 +53,7 @@ async fn start(ip: Ipv4Addr, port: u16) {
 
     let (tx, mut rx) = mpsc::channel::<Box<[u8]>>(10);
 
-    tokio::spawn(async move {
+    let handler = tokio::spawn(async move {
         let (reader, mut writer) = stream.split();
 
         let mut reader = BufReader::new(reader);
@@ -100,9 +100,13 @@ async fn start(ip: Ipv4Addr, port: u16) {
         }
     });
 
-    loop {
-        send_data(&tx, Box::new([FromUnknown::RequestClusters as u8])).await;
-        tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+    send_data(&tx, Box::new([FromUnknown::RequestClusters as u8])).await;
+
+    match handler.await {
+        Ok(_) => {}
+        Err(e) => {
+            error(format!("Error: {:?}", e).as_str());
+        }
     }
 }
 
@@ -132,12 +136,12 @@ fn warning(message: &str) {
     log_message!(LogLevel::Warning, LogType::Client, "{}", message);
 }
 
-// fn error(message: &str) {
-//     if !constants::DEBUGGING {
-//         return;
-//     }
-//     log_message!(LogLevel::Error, LogType::Client, "{}", message);
-// }
+fn error(message: &str) {
+    if !constants::DEBUGGING {
+        return;
+    }
+    log_message!(LogLevel::Error, LogType::Client, "{}", message);
+}
 
 fn success(message: &str) {
     if !constants::DEBUGGING {
