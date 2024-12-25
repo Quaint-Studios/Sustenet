@@ -8,12 +8,13 @@ members = ["master", "cluster", "client", "shared", "auth"]
 exclude = ["backup"]
 
 [workspace.dependencies]
+dashmap = "6.1.0"
 tokio = { version = "1.41.1", default-features = false, features = [
     # "socket2",
     "macros",
     "rt-multi-thread",
-    # "net",
+    "net",
     # "sync",
-    # "io-util",
+    "io-util",
     "time",
 ] }

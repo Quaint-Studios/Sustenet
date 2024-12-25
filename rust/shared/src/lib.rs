@@ -1,5 +1,7 @@
 pub mod config;
+pub mod network;
 pub mod logging;
+pub mod packets;
 pub mod utils;
 
 pub fn add(left: u64, right: u64) -> u64 {

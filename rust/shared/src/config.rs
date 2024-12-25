@@ -1,6 +1,8 @@
 pub mod master {
     use config::{ Config, File, FileFormat::Toml };
 
+    use crate::utils::constants::MASTER_PORT;
+
     pub struct Settings {
         pub server_name: String,
 
@@ -20,13 +22,22 @@ pub mod master {
                 .unwrap_or("Master Server".to_string()),
 
             max_connections: settings.get::<u32>("all.max_connections").unwrap_or(0),
-            port: settings.get::<u16>("all.port").unwrap_or(0),
+            port: match settings.get::<u16>("all.port") {
+                Ok(port) =>
+                    match port {
+                        0 => MASTER_PORT,
+                        _ => port,
+                    }
+                Err(_) => MASTER_PORT,
+            },
         }
     }
 }
 
 pub mod cluster {
     use config::{ Config, File, FileFormat::Toml };
+
+    use crate::utils::constants::CLUSTER_PORT;
 
     pub struct Settings {
         pub server_name: String,
@@ -51,11 +62,18 @@ pub mod cluster {
                 .unwrap_or("Cluster Server".to_string()),
 
             max_connections: settings.get::<u32>("max_connections").unwrap_or(0),
-            port: settings.get::<u16>("port").unwrap_or(0),
+            port: match settings.get::<u16>("all.port") {
+                Ok(port) =>
+                    match port {
+                        0 => CLUSTER_PORT,
+                        _ => port,
+                    }
+                Err(_) => CLUSTER_PORT,
+            },
 
             key_name: settings.get::<String>("key_name").unwrap_or("cluster_key".to_string()),
             master_ip: settings.get::<String>("master_ip").unwrap_or("127.0.0.1".to_string()),
-            master_port: settings.get::<u16>("master_port").unwrap_or(0),
+            master_port: settings.get::<u16>("master_port").unwrap_or(CLUSTER_PORT),
         }
     }
 }
