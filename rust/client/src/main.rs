@@ -1,6 +1,8 @@
 use std::{ net::Ipv4Addr, str::FromStr };
 
-use tokio::io::{ AsyncBufReadExt, AsyncWriteExt, BufReader };
+use shared::packets::cluster::ToClient;
+use shared::packets::master::{FromUnknown, ToUnknown};
+use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
 use tokio::net::TcpStream;
 use tokio::select;
 use tokio::sync::mpsc;
@@ -32,7 +34,7 @@ async fn main() {
     }
 
     cleanup().await;
-    success("Client has been shut down.");
+    success("The Client has been shut down.");
 }
 
 fn get_ip(ip: &str) -> Ipv4Addr {
@@ -46,24 +48,44 @@ async fn start(ip: Ipv4Addr, port: u16) {
         "Failed to connect to the Master Server."
     );
 
+    // TODO: Mutating this may not work since it's moved.
+    let connection_type = ConnectionType::MasterServer;
+
     let (tx, mut rx) = mpsc::channel::<Box<[u8]>>(10);
 
-    let tcp_handler = tokio::spawn(async move {
+    tokio::spawn(async move {
         let (reader, mut writer) = stream.split();
 
         let mut reader = BufReader::new(reader);
-        let mut line = String::new();
 
         loop {
             select! {
-                _ = reader.read_line(&mut line) => {
-                    if line.is_empty() {
+                command = reader.read_u8() => {
+                    if command.is_err() {
                         break;
                     }
 
-                    info(&line);
+                    debug(format!("Client received data: {:?}", command).as_str());
 
-                    line.clear();
+                    match connection_type {
+                        ConnectionType::MasterServer => match command.unwrap() {
+                            x if x == ToUnknown::SendClusters as u8 => todo!(),
+                            _ => (),
+                        }
+                        ConnectionType::ClusterServer => match command.unwrap() {
+                            x if x == ToClient::SendClusters as u8 => todo!(),
+                            x if x == ToClient::DisconnectCluster as u8 => todo!(),
+                            x if x == ToClient::LeaveCluster as u8 => todo!(),
+
+                            x if x == ToClient::VersionOfKey as u8 => todo!(),
+                            x if x == ToClient::SendPubKey as u8 => todo!(),
+                            x if x == ToClient::Authenticate as u8 => todo!(),
+
+                            x if x == ToClient::Move as u8 => todo!(),
+                            _ => (),
+                        }
+                        _ => (),
+                    }
                 }
                 result = rx.recv() => {
                     if let Some(data) = result {
@@ -79,7 +101,7 @@ async fn start(ip: Ipv4Addr, port: u16) {
     });
 
     loop {
-        send_data(&tx, Box::new([0])).await;
+        send_data(&tx, Box::new([FromUnknown::RequestClusters as u8])).await;
         tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
     }
 }
@@ -89,12 +111,12 @@ async fn send_data(tx: &mpsc::Sender<Box<[u8]>>, data: Box<[u8]>) {
 }
 
 // region: Logging
-// fn debug(message: &str) {
-//     if !constants::DEBUGGING {
-//         return;
-//     }
-//     log_message!(LogLevel::Debug, LogType::Client, "{}", message);
-// }
+fn debug(message: &str) {
+    if !constants::DEBUGGING {
+        return;
+    }
+    log_message!(LogLevel::Debug, LogType::Client, "{}", message);
+}
 
 fn info(message: &str) {
     if !constants::DEBUGGING {
