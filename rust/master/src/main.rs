@@ -2,17 +2,20 @@ use std::collections::BTreeSet;
 use std::sync::Arc;
 
 use dashmap::DashMap;
+use shared::security::aes::*;
 use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
 use tokio::net::{ TcpListener, TcpStream };
 use tokio::select;
 use tokio::sync::mpsc::{ self, Sender };
-use tokio::sync::Mutex;
+use tokio::sync::{ Mutex, RwLock };
 
 use shared::config::master::{ read, Settings };
 use shared::log_message;
 use shared::network::*;
 use shared::packets::master::*;
 use shared::utils::{ self, constants };
+
+pub mod security;
 
 #[tokio::main]
 async fn main() {
@@ -31,8 +34,6 @@ async fn main() {
 /// This function starts the master server.
 /// It listens for an event
 async fn start() {
-    let is_running = true;
-
     let Settings { server_name, max_connections, port } = read();
     info(&server_name);
     let (event_sender, mut event_receiver) = mpsc::channel::<Event>(100);
@@ -167,18 +168,24 @@ fn success(message: &str) {
 
 pub struct ServerClient {
     pub id: u32,
+    pub name: Arc<RwLock<Option<String>>>,
     pub event_sender: Sender<Event>,
 }
 
 impl ServerClient {
     pub fn new(id: u32, event_sender: Sender<Event>) -> Self {
-        ServerClient { id, event_sender }
+        ServerClient {
+            id,
+            name: Arc::new(RwLock::new(None)),
+            event_sender,
+        }
     }
 
     /// Handle the data from the client.
     pub async fn handle_data(&self, mut stream: TcpStream) {
         // let id = self.id;
         // let event_sender = self.event_sender.clone();
+        let name = self.name.clone();
         let (tx, mut rx) = tokio::sync::mpsc::channel(10);
         // let addr = stream.peer_addr().unwrap();
 
@@ -192,10 +199,10 @@ impl ServerClient {
                     // Incoming data from the client.
                     command = reader.read_u8() => {
                         if command.is_err() {
-                            break;
+                            continue;
                         }
 
-                        debug(format!("Master received data: {:?}", command).as_str());
+                        debug(format!("Master Server received data: {:?}", command).as_str());
 
                         match command.unwrap() {
                             x if x == FromUnknown::RequestClusters as u8 => {
@@ -203,27 +210,89 @@ impl ServerClient {
                             },
                             x if x == FromUnknown::JoinCluster as u8 => todo!(),
                             x if x == FromUnknown::BecomeCluster as u8 => {
-                                success("A client is becoming a cluster...");
-                            },
-                            x if x == FromUnknown::AnswerCluster as u8 => todo!(),
-                            _ => (),
-                        }
+                                let len = reader.read_u8().await.unwrap() as usize;
+                                let mut key_name = vec![0u8; len];
+                                match reader.read_exact(&mut key_name).await {
+                                    Ok(_) => {},
+                                    Err(e) => {
+                                        error(format!("Failed to read cluster name to String: {:?}", e).as_str());
+                                        continue;
+                                    }
+                                }
+                                let key_name = String::from_utf8(key_name).unwrap();
+                                let key = match security::AES_KEYS.get(&key_name) {
+                                    Some(key) => key,
+                                    None => {
+                                        error(format!("Key {} doesn't exist.", key_name).as_str());
+                                        continue;
+                                    }
+                                };
 
-                        if 0 == 12 { // Serves no purpose. Just temporary.
-                            tx.send([0]).await.unwrap();
+                                let mut data = vec![ToUnknown::VerifyCluster as u8];
+
+                                let passphrase = &security::generate_passphrase();
+                                let encrypted_passphrase = encrypt(passphrase, key);
+
+                                data.push(encrypted_passphrase.len() as u8);
+                                data.extend_from_slice(&encrypted_passphrase);
+
+                                {
+                                    let mut name = name.write().await;
+                                    *name = Some(String::from_utf8(passphrase.to_vec()).unwrap());
+                                }
+                                Self::send_data(&tx, data.into_boxed_slice()).await;
+                            },
+                            x if x == FromUnknown::AnswerCluster as u8 => {
+                                let len = reader.read_u8().await.unwrap() as usize;
+                                let mut passphrase = vec![0u8; len];
+                                match reader.read_exact(&mut passphrase).await {
+                                    Ok(_) => {},
+                                    Err(e) => {
+                                        error(format!("Failed to read the passphrase to String: {:?}", e).as_str());
+                                        continue;
+                                    }
+                                }
+
+                                {
+                                    let passphrase = match String::from_utf8(passphrase) {
+                                        Ok(passphrase) => passphrase,
+                                        Err(e) => {
+                                            error(format!("Failed to convert passphrase to String: {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    };
+
+                                    let name = name.read().await;
+                                    if (*name).is_none() || passphrase != *name.as_ref().unwrap() {
+                                        error("The passphrase doesn't match the name.");
+                                        continue;
+                                    }
+                                }
+
+                                Self::send_data(&tx, Box::new([ToUnknown::CreateCluster as u8])).await;
+
+                                success("We did it! We got an answer back from the cluster.");
+                            },
+                            _ => (),
                         }
                     }
                     // Outgoing data to the client.
                     result = rx.recv() => {
-                        println!("SC Sending: {:?}", result);
-                        // Write the message to the writer.
-                        let msg = result.unwrap();
-
-                        writer.write_all(&msg).await.unwrap();
-                        writer.flush().await.unwrap();
+                        if let Some(data) = result {
+                            writer.write_all(&data).await.expect("Failed to write to the Master Server.");
+                            writer.flush().await.expect("Failed to flush the writer.");
+                        } else {
+                            writer.shutdown().await.expect("Failed to shutdown the writer.");
+                            info("Cluster Server is shutting down its client writer.");
+                            break;
+                        }
                     }
                 }
             }
         });
+    }
+
+    async fn send_data(tx: &mpsc::Sender<Box<[u8]>>, data: Box<[u8]>) {
+        tx.send(data).await.expect("Failed to send data out.");
     }
 }

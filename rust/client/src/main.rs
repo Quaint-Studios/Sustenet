@@ -1,7 +1,7 @@
 use std::{ net::Ipv4Addr, str::FromStr };
 
 use shared::packets::cluster::ToClient;
-use shared::packets::master::{FromUnknown, ToUnknown};
+use shared::packets::master::{ FromUnknown, ToUnknown };
 use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
 use tokio::net::TcpStream;
 use tokio::select;
@@ -15,11 +15,6 @@ pub enum ConnectionType {
     MasterServer,
     ClusterServer,
     None,
-}
-
-pub struct Connection {
-    pub ip: Ipv4Addr,
-    pub port: u16,
 }
 
 #[tokio::main]
@@ -44,25 +39,24 @@ fn get_ip(ip: &str) -> Ipv4Addr {
 async fn cleanup() {}
 
 async fn start(ip: Ipv4Addr, port: u16) {
-    let mut stream = TcpStream::connect(format!("{}:{}", ip, port)).await.expect(
-        "Failed to connect to the Master Server."
-    );
-
     // TODO: Mutating this may not work since it's moved.
     let connection_type = ConnectionType::MasterServer;
 
     let (tx, mut rx) = mpsc::channel::<Box<[u8]>>(10);
 
     let handler = tokio::spawn(async move {
-        let (reader, mut writer) = stream.split();
+        let mut stream = TcpStream::connect(format!("{}:{}", ip, port)).await.expect(
+            "Failed to connect to the Master Server."
+        );
 
+        let (reader, mut writer) = stream.split();
         let mut reader = BufReader::new(reader);
 
         loop {
             select! {
                 command = reader.read_u8() => {
                     if command.is_err() {
-                        break;
+                        continue;
                     }
 
                     debug(format!("Client received data: {:?}", command).as_str());
@@ -91,9 +85,11 @@ async fn start(ip: Ipv4Addr, port: u16) {
                     if let Some(data) = result {
                         writer.write_all(&data).await.expect("Failed to write to the Server.");
                         writer.flush().await.expect("Failed to flush the writer.");
+                        success(format!("Client sent {data:?} as data to the Master Server.").as_str());
                     } else {
                         writer.shutdown().await.expect("Failed to shutdown the writer.");
-                        info("Shutting down.");
+                        info("Client is shutting down its writer.");
+                        break;
                     }
                 }
             }
