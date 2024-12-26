@@ -7,7 +7,7 @@ use tokio::sync::mpsc;
 
 use shared::config::cluster::{ read, Settings };
 use shared::packets::master::{ FromUnknown, ToUnknown };
-use shared::security::aes::{decrypt, load_key};
+use shared::security::aes::{decrypt, generate_key, load_key, save_key};
 use shared::utils;
 use shared::utils::constants::DEFAULT_IP;
 
@@ -42,8 +42,25 @@ async fn start() {
         master_port,
         domain_pub_key: _,
     } = read();
-    info(&server_name);
-    let key = load_key(key_name.as_str()).expect("Failed to load the key.");
+    let key = match load_key(key_name.as_str()) {
+        Ok(key) => key,
+        Err(_) => {
+            if std::fs::DirBuilder::new().recursive(true).create("keys").is_err() {
+                error("Failed to create the 'keys' directory.");
+                panic!();
+            }
+
+            let key = generate_key();
+            if save_key(key_name.as_str(), key).is_err() {
+                error("Failed to save the generated key.");
+                panic!();
+            }
+
+            warning(format!("A new AES key at 'keys/{key_name}' has been generated and saved. Make sure the Master Server also has this key for authentication.").as_str());
+
+            key
+        }
+    };
 
     let (tx, mut rx) = mpsc::channel::<Box<[u8]>>(10);
     let tx_clone = tx.clone();
@@ -83,6 +100,9 @@ async fn start() {
 
                             data.push(decrypted_passphrase.len() as u8);
                             data.extend_from_slice(&decrypted_passphrase);
+                            data.push(server_name.len() as u8);
+                            data.extend_from_slice(&server_name.as_bytes());
+
                             send_data(&tx_clone, data.into_boxed_slice()).await;
                         }
                         x if x == ToUnknown::CreateCluster as u8 => {
@@ -105,14 +125,11 @@ async fn start() {
         }
     });
 
-    // Should send the server name with the passphrase as 2 separate strings but 1 packet.
-    println!("Need to send {} and {} to Master Server.", server_name, key_name);
     let command = FromUnknown::BecomeCluster as u8;
-    let key_name = b"cluster_key";
 
     let mut data = [command].to_vec();
     data.push(key_name.len() as u8);
-    data.extend_from_slice(key_name);
+    data.extend_from_slice(key_name.as_bytes());
 
     let data = data.into_boxed_slice();
     send_data(&tx, data).await;

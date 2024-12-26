@@ -263,10 +263,34 @@ impl ServerClient {
                                     };
 
                                     let name = name.read().await;
-                                    if (*name).is_none() || passphrase != *name.as_ref().unwrap() {
+                                    if (*name).is_none() || passphrase != *name.as_ref().expect("Failed to get saved passphrase.") {
                                         error("The passphrase doesn't match the name.");
                                         continue;
+                                    } else {
+                                        success(format!("The passphrase matches the name: {:?} is {}", *name, passphrase).as_str());
                                     }
+                                }
+
+                                {
+                                    // Read their new name they sent.
+                                    let len = reader.read_u8().await.unwrap() as usize;
+                                    let mut server_name = vec![0u8; len];
+                                    match reader.read_exact(&mut server_name).await {
+                                        Ok(_) => {},
+                                        Err(e) => {
+                                            error(format!("Failed to read the server name to String: {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    };
+
+                                    let server_name = match String::from_utf8(server_name) {
+                                        Ok(server_name) => server_name,
+                                        Err(e) => {
+                                            error(format!("Failed to convert server name to String: {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    };
+                                    *name.write().await = Some(server_name);
                                 }
 
                                 Self::send_data(&tx, Box::new([ToUnknown::CreateCluster as u8])).await;
