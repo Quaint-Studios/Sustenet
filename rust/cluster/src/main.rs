@@ -35,8 +35,8 @@ async fn cleanup() {}
 async fn start() {
     let Settings {
         server_name,
-        max_connections: _,
-        port: _,
+        max_connections,
+        port,
         key_name,
         master_ip,
         master_port,
@@ -102,8 +102,14 @@ async fn start() {
                             data.extend_from_slice(&decrypted_passphrase);
                             data.push(server_name.len() as u8);
                             data.extend_from_slice(&server_name.as_bytes());
+                            let ip = "127.0.0.1".as_bytes(); // TODO: Use public_ip to get an actual IP.
+                            data.push(ip.len() as u8);
+                            data.extend_from_slice(ip);
+                            data.extend_from_slice(&port.to_be_bytes());
+                            data.extend_from_slice(&max_connections.to_be_bytes());
 
-                            send_data(&tx_clone, data.into_boxed_slice()).await;
+
+                            send_data(&tx, data.into_boxed_slice()).await;
                         }
                         x if x == ToUnknown::CreateCluster as u8 => {
                             success("We did it! We verified the cluster!");
@@ -132,7 +138,7 @@ async fn start() {
     data.extend_from_slice(key_name.as_bytes());
 
     let data = data.into_boxed_slice();
-    send_data(&tx, data).await;
+    send_data(&tx_clone, data).await;
 
     match handler.await {
         Ok(_) => {}

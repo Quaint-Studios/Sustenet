@@ -7,5 +7,6 @@ edition = "2021"
 workspace = true
 
 [dependencies]
+lazy_static.workspace = true
 shared = { path = "../shared" }
 tokio.workspace = true

@@ -2,7 +2,7 @@ use std::collections::BTreeSet;
 use std::sync::Arc;
 
 use dashmap::DashMap;
-use shared::security::aes::*;
+
 use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
 use tokio::net::{ TcpListener, TcpStream };
 use tokio::select;
@@ -13,9 +13,47 @@ use shared::config::master::{ read, Settings };
 use shared::log_message;
 use shared::network::*;
 use shared::packets::master::*;
+use shared::security::aes::*;
 use shared::utils::{ self, constants };
 
 pub mod security;
+
+lazy_static::lazy_static! {
+    static ref CLUSTER_IDS: Arc<RwLock<BTreeSet<ClusterInfo>>> = Arc::new(
+        RwLock::new(BTreeSet::new())
+    );
+}
+
+#[derive(Eq)]
+struct ClusterInfo {
+    id: u32,
+    name: String,
+    ip: String,
+    port: u16,
+    max_connections: u32,
+}
+
+impl Ord for ClusterInfo {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        // Define how to compare two ClusterInfo instances
+        // For example, if ClusterInfo has a field `id` of type i32:
+        self.id.cmp(&other.id)
+    }
+}
+
+impl PartialOrd for ClusterInfo {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl PartialEq for ClusterInfo {
+    fn eq(&self, other: &Self) -> bool {
+        // Define when two ClusterInfo instances are equal
+        // For example, if ClusterInfo has a field `id` of type i32:
+        self.id == other.id
+    }
+}
 
 #[tokio::main]
 async fn main() {
@@ -39,7 +77,7 @@ async fn start() {
     let (event_sender, mut event_receiver) = mpsc::channel::<Event>(100);
 
     let clients: DashMap<u32, ServerClient> = DashMap::new();
-    let released_ids: Arc<Mutex<BTreeSet<u32>>> = Arc::new(Mutex::new(BTreeSet::new()));
+    let released_ids: Arc<Mutex<BTreeSet<u32>>> = Arc::new(Mutex::new(BTreeSet::new())); // In the future, think about reserving cluster ids. Sometimes a cluster can get a high ID, causing RAM to stay high during low loads.
 
     {
         let max_connections_str = match max_connections {
@@ -65,7 +103,21 @@ async fn start() {
                     if let Some(event) = event {
                         match event {
                             Event::Connection(id) => on_connection(id),
-                            Event::Disconnection(id) => on_disconnection(id),
+                            Event::Disconnection(id) => {
+                                debug(format!("Client#{id} disconnected.").as_str());
+                                clients.remove(&id);
+
+                                if id >= clients.len() as u32 {
+                                    info(format!("Client#{id} wasn't added to the released IDs list.").as_str());
+                                    continue;
+                                }
+
+                                let mut ids = released_ids.lock().await;
+                                if !(*ids).insert(id) {
+                                    error(format!("ID {} already exists in the released IDs.", id).as_str());
+                                    continue;
+                                };
+                            },
                             Event::ReceivedData(id, data) => on_received_data(id, &data),
                         }
                     }
@@ -78,7 +130,7 @@ async fn start() {
                         // If the max_connections is reached, return an error.
                         if max_connections != 0 && clients.len() >= (max_connections as usize) {
                             error("Max connections reached.");
-                            return;
+                            continue;
                         }
 
                         // Get the next available ID and insert it.
@@ -86,8 +138,8 @@ async fn start() {
                             .lock().await
                             .pop_first()
                             .unwrap_or(clients.len() as u32);
-                        let client = ServerClient::new(released_id, event_sender.clone());
-                        client.handle_data(stream).await;
+                        let mut client = ServerClient::new(released_id);
+                        client.handle_data(event_sender.clone(), stream).await;
                         clients.insert(released_id, client);
 
                         event_sender.send(Event::Connection(released_id)).await.unwrap();
@@ -101,11 +153,6 @@ async fn start() {
 // region: Events
 fn on_connection(id: u32) {
     debug(format!("Client#{id} connected").as_str());
-}
-
-fn on_disconnection(id: u32) {
-    debug(format!("Client#{id} disconnected").as_str());
-    todo!()
 }
 
 fn on_received_data(id: u32, data: &[u8]) {
@@ -169,25 +216,24 @@ fn success(message: &str) {
 pub struct ServerClient {
     pub id: u32,
     pub name: Arc<RwLock<Option<String>>>,
-    pub event_sender: Sender<Event>,
+    pub sender: Option<Sender<Box<[u8]>>>,
 }
 
 impl ServerClient {
-    pub fn new(id: u32, event_sender: Sender<Event>) -> Self {
+    pub fn new(id: u32) -> Self {
         ServerClient {
             id,
             name: Arc::new(RwLock::new(None)),
-            event_sender,
+            sender: None,
         }
     }
 
     /// Handle the data from the client.
-    pub async fn handle_data(&self, mut stream: TcpStream) {
-        // let id = self.id;
-        // let event_sender = self.event_sender.clone();
+    pub async fn handle_data(&mut self, event_sender: Sender<Event>, mut stream: TcpStream) {
+        let id = self.id;
         let name = self.name.clone();
         let (tx, mut rx) = tokio::sync::mpsc::channel(10);
-        // let addr = stream.peer_addr().unwrap();
+        self.sender = Some(tx.clone());
 
         tokio::spawn(async move {
             let (reader, mut writer) = stream.split();
@@ -199,18 +245,36 @@ impl ServerClient {
                     // Incoming data from the client.
                     command = reader.read_u8() => {
                         if command.is_err() {
-                            continue;
+                            event_sender.send(Event::Disconnection(id)).await.expect("Failed to send disconnection event.");
+                            break;
                         }
 
                         debug(format!("Master Server received data: {:?}", command).as_str());
 
                         match command.unwrap() {
                             x if x == FromUnknown::RequestClusters as u8 => {
-                                success("A client is requesting clusters...");
+                                let mut data = vec![ToUnknown::SendClusters as u8];
+                                let cluster_ids = CLUSTER_IDS.read().await;
+                                data.push(cluster_ids.len() as u8);
+                                for cluster in (*cluster_ids).iter() {
+                                    data.push(cluster.name.len() as u8);
+                                    data.extend_from_slice(cluster.name.as_bytes());
+                                    data.push(cluster.ip.len() as u8);
+                                    data.extend_from_slice(cluster.ip.as_bytes());
+                                    data.extend_from_slice(&cluster.port.to_be_bytes());
+                                    data.extend_from_slice(&cluster.max_connections.to_be_bytes());
+                                }
+                                Self::send_data(&tx, data.into_boxed_slice()).await;
                             },
                             x if x == FromUnknown::JoinCluster as u8 => todo!(),
                             x if x == FromUnknown::BecomeCluster as u8 => {
-                                let len = reader.read_u8().await.unwrap() as usize;
+                                let len = match reader.read_u8().await {
+                                    Ok(len) => len,
+                                    Err(e) => {
+                                        error(format!("Failed to read cluster name length: {:?}", e).as_str());
+                                        continue;
+                                    }
+                                } as usize;
                                 let mut key_name = vec![0u8; len];
                                 match reader.read_exact(&mut key_name).await {
                                     Ok(_) => {},
@@ -271,31 +335,85 @@ impl ServerClient {
                                     }
                                 }
 
+                                // Read their new name they sent.
+                                let len = reader.read_u8().await.unwrap() as usize;
+                                let mut server_name = vec![0u8; len];
+                                match reader.read_exact(&mut server_name).await {
+                                    Ok(_) => {},
+                                    Err(e) => {
+                                        error(format!("Failed to read the server name to String: {:?}", e).as_str());
+                                        continue;
+                                    }
+                                };
+
+                                let server_name = match String::from_utf8(server_name) {
+                                    Ok(server_name) => server_name,
+                                    Err(e) => {
+                                        error(format!("Failed to convert server name to String: {:?}", e).as_str());
+                                        continue;
+                                    }
+                                };
+
                                 {
-                                    // Read their new name they sent.
-                                    let len = reader.read_u8().await.unwrap() as usize;
-                                    let mut server_name = vec![0u8; len];
-                                    match reader.read_exact(&mut server_name).await {
+                                    let mut name = name.write().await;
+                                    *name = Some(server_name.clone());
+                                }
+
+                                {
+                                    // Read IP to len. Read port u16. Read max connections u32.
+                                    let len = match reader.read_u8().await {
+                                        Ok(len) => len,
+                                        Err(e) => {
+                                            error(format!("Failed to read the IP length: {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    } as usize;
+                                    let mut ip = vec![0u8; len];
+                                    match reader.read_exact(&mut ip).await {
                                         Ok(_) => {},
                                         Err(e) => {
-                                            error(format!("Failed to read the server name to String: {:?}", e).as_str());
+                                            error(format!("Failed to read the IP to String: {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    }
+                                    let ip = match String::from_utf8(ip) {
+                                        Ok(ip) => ip,
+                                        Err(e) => {
+                                            error(format!("Failed to convert IP to String: {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    };
+                                    let port = match reader.read_u16().await {
+                                        Ok(port) => port,
+                                        Err(e) => {
+                                            error(format!("Failed to read the port: {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    };
+                                    let max_connections = match reader.read_u32().await {
+                                        Ok(max_connections) => max_connections,
+                                        Err(e) => {
+                                            error(format!("Failed to read the max connections: {:?}", e).as_str());
                                             continue;
                                         }
                                     };
 
-                                    let server_name = match String::from_utf8(server_name) {
-                                        Ok(server_name) => server_name,
-                                        Err(e) => {
-                                            error(format!("Failed to convert server name to String: {:?}", e).as_str());
-                                            continue;
-                                        }
-                                    };
-                                    *name.write().await = Some(server_name);
+                                    let mut cluster_ids = CLUSTER_IDS.write().await;
+                                    if (*cluster_ids).insert(ClusterInfo {
+                                        id,
+                                        name: server_name,
+                                        ip,
+                                        port,
+                                        max_connections,
+                                    }) {
+                                        success(format!("Client#{id} has become a cluster.").as_str());
+                                    } else {
+                                        error(format!("Client#{id} failed to become a cluster.").as_str());
+                                        continue;
+                                    }
                                 }
 
                                 Self::send_data(&tx, Box::new([ToUnknown::CreateCluster as u8])).await;
-
-                                success("We did it! We got an answer back from the cluster.");
                             },
                             _ => (),
                         }
@@ -308,6 +426,7 @@ impl ServerClient {
                         } else {
                             writer.shutdown().await.expect("Failed to shutdown the writer.");
                             info("Cluster Server is shutting down its client writer.");
+                            event_sender.send(Event::Disconnection(id)).await.expect("Failed to send disconnection event.");
                             break;
                         }
                     }

@@ -1,15 +1,28 @@
+use std::sync::Arc;
 use std::{ net::Ipv4Addr, str::FromStr };
 
-use shared::packets::cluster::ToClient;
-use shared::packets::master::{ FromUnknown, ToUnknown };
 use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
 use tokio::net::TcpStream;
 use tokio::select;
-use tokio::sync::mpsc;
+use tokio::sync::{ mpsc, RwLock };
 
 use shared::log_message;
+use shared::packets::cluster::ToClient;
+use shared::packets::master::{ FromUnknown, ToUnknown };
 use shared::utils::constants::{ DEFAULT_IP, MASTER_PORT };
 use shared::utils::{ self, constants };
+
+lazy_static::lazy_static! {
+    static ref CLUSTER_SERVERS: Arc<RwLock<Vec<ClusterInfo>>> = Arc::new(RwLock::new(Vec::new()));
+}
+
+#[derive(Debug)]
+pub struct ClusterInfo {
+    pub name: String,
+    pub ip: String,
+    pub port: u16,
+    pub max_connections: u32,
+}
 
 pub enum ConnectionType {
     MasterServer,
@@ -63,7 +76,95 @@ async fn start(ip: Ipv4Addr, port: u16) {
 
                     match connection_type {
                         ConnectionType::MasterServer => match command.unwrap() {
-                            x if x == ToUnknown::SendClusters as u8 => todo!(),
+                            x if x == ToUnknown::SendClusters as u8 => {
+                                //amount
+                                let amount = match reader.read_u8().await {
+                                    Ok(amount) => amount,
+                                    Err(_) => {
+                                        error("Failed to read the amount of clusters.");
+                                        continue;
+                                    }
+                                };
+
+                                let mut cluster_servers_tmp = Vec::new();
+                                for _ in 0..amount {
+                                    //name
+                                    let name_len = match reader.read_u8().await {
+                                        Ok(len) => len,
+                                        Err(e) => {
+                                            error(format!("Failed to read the cluster name len. {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    } as usize;
+                                    let mut name = vec![0u8; name_len as usize];
+                                    match reader.read_exact(&mut name).await {
+                                        Ok(_) => (),
+                                        Err(e) => {
+                                            error(format!("Failed to read the cluster name. {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    };
+                                    let name = match String::from_utf8(name) {
+                                        Ok(name) => name,
+                                        Err(e) => {
+                                            error(format!("Failed to convert the cluster name to a String. {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    };
+                                    //ip
+                                    let ip_len = match reader.read_u8().await {
+                                        Ok(len) => len,
+                                        Err(e) => {
+                                            error(format!("Failed to read the cluster IP len. {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    } as usize;
+                                    let mut ip = vec![0u8; ip_len as usize];
+                                    match reader.read_exact(&mut ip).await {
+                                        Ok(_) => (),
+                                        Err(e) => {
+                                            error(format!("Failed to read the cluster IP. {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    };
+                                    let ip = match String::from_utf8(ip) {
+                                        Ok(ip) => ip,
+                                        Err(e) => {
+                                            error(format!("Failed to convert the cluster IP to a String. {:?}", e).as_str());
+                                            continue;
+                                        }
+                                    };
+                                    //port
+                                    let port = match reader.read_u16().await {
+                                        Ok(port) => port,
+                                        Err(_) => {
+                                            error("Failed to read the cluster port.");
+                                            continue;
+                                        }
+                                    };
+                                    //max_connections
+                                    let max_connections = match reader.read_u32().await {
+                                        Ok(max_connections) => max_connections,
+                                        Err(_) => {
+                                            error("Failed to read the cluster max connections.");
+                                            continue;
+                                        }
+                                    };
+
+                                    cluster_servers_tmp.push(ClusterInfo {
+                                        name,
+                                        ip,
+                                        port,
+                                        max_connections,
+                                    });
+                                }
+
+                                let mut cluster_servers = CLUSTER_SERVERS.write().await;
+                                *cluster_servers = cluster_servers_tmp;
+
+                                success("Client received the cluster servers from the Master Server.");
+                                println!("{:?}", *cluster_servers);
+                            },
                             _ => (),
                         }
                         ConnectionType::ClusterServer => match command.unwrap() {
