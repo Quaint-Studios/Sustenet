@@ -4,6 +4,7 @@ use std::{ net::Ipv4Addr, str::FromStr };
 
 use dashmap::DashMap;
 
+use shared::lselect;
 use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
 use tokio::net::{ TcpListener, TcpStream };
 use tokio::select;
@@ -82,7 +83,8 @@ async fn start() {
     let (tx, mut rx) = mpsc::channel::<Box<[u8]>>(10);
     let tx_clone = tx.clone();
 
-    let handler = tokio::spawn(async move {
+    // Cluster Server's connection to the Master Server.
+    tokio::spawn(async move {
         let mut stream = TcpStream::connect(
             format!("{}:{}", get_ip(&master_ip), master_port)
         ).await.expect("Failed to connect to the Master Server.");
@@ -210,19 +212,91 @@ async fn start() {
         }
     });
 
-    let command = FromUnknown::BecomeCluster as u8;
+    // Send a request to the Master Server to become a cluster.
+    {
+        let command = FromUnknown::BecomeCluster as u8;
 
-    let mut data = [command].to_vec();
-    data.push(key_name.len() as u8);
-    data.extend_from_slice(key_name.as_bytes());
+        let mut data = [command].to_vec();
+        data.push(key_name.len() as u8);
+        data.extend_from_slice(key_name.as_bytes());
 
-    let data = data.into_boxed_slice();
-    send_data(&tx_clone, data).await;
+        let data = data.into_boxed_slice();
+        send_data(&tx_clone, data).await;
+    }
 
-    match handler.await {
-        Ok(_) => {}
-        Err(e) => {
-            error(format!("Error: {:?}", e).as_str());
+    // Cluster Server Listener
+    {
+        let (event_sender, mut event_receiver) = mpsc::channel::<Event>(100);
+
+        let clients: DashMap<u32, ServerClient> = DashMap::new();
+        let released_ids: Arc<Mutex<BTreeSet<u32>>> = Arc::new(Mutex::new(BTreeSet::new()));
+
+        {
+            let max_connections_str = match max_connections {
+                0 => "unlimited max connections".to_string(),
+                1 => "1 max connection".to_string(),
+                _ => format!("{} max connections", max_connections),
+            };
+
+            debug(
+                format!("Starting the Master Server on port {} with {max_connections_str}...", port).as_str()
+            );
+        }
+
+        // Listen
+        {
+            let tcp_listener = TcpListener::bind(
+                format!("{}:{}", constants::DEFAULT_IP, port)
+            ).await.expect("Failed to bind to the specified port.");
+
+            lselect! {
+                event = event_receiver.recv() => {
+                    if let Some(event) = event {
+                        match event {
+                            Event::Connection(id) => on_connection(id),
+                            Event::Disconnection(id) => {
+                                debug(format!("Client#{id} disconnected.").as_str());
+                                clients.remove(&id);
+
+                                if id >= clients.len() as u32 {
+                                    info(format!("Client#{id} wasn't added to the released IDs list.").as_str());
+                                    continue;
+                                }
+
+                                let mut ids = released_ids.lock().await;
+                                if !(*ids).insert(id) {
+                                    error(format!("ID {} already exists in the released IDs.", id).as_str());
+                                    continue;
+                                };
+                            },
+                            Event::ReceivedData(id, data) => on_received_data(id, &data),
+                        }
+                    }
+                }
+                // Listen and add clients.
+                res = tcp_listener.accept() => {
+                    if let Ok((stream, addr)) = res {
+                        debug(format!("Accepted connection from {:?}", addr).as_str());
+
+                        // If the max_connections is reached, return an error.
+                        if max_connections != 0 && clients.len() >= (max_connections as usize) {
+                            error("Max connections reached.");
+                            continue;
+                        }
+
+                        // Get the next available ID and insert it.
+                        let released_id: u32 = released_ids
+                            .lock().await
+                            .pop_first()
+                            .unwrap_or(clients.len() as u32);
+                        let mut client = ServerClient::new(released_id);
+                        client.handle_data(event_sender.clone(), stream).await;
+                        clients.insert(released_id, client);
+
+                        event_sender.send(Event::Connection(released_id)).await.unwrap();
+                    }
+                }
+            }
         }
     }
 }

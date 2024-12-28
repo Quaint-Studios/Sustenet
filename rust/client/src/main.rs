@@ -6,13 +6,11 @@ use tokio::net::TcpStream;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::{ mpsc, Mutex, RwLock };
 
-use shared::log_message;
 use shared::packets::cluster::ToClient;
 use shared::packets::master::{ FromUnknown, ToUnknown };
 use shared::utils::constants::{ DEFAULT_IP, MASTER_PORT };
 use shared::utils::{ self, constants };
-
-pub mod macros;
+use shared::{ log_message, lread_string, lselect };
 
 lazy_static::lazy_static! {
     static ref CLUSTER_SERVERS: Arc<RwLock<Vec<ClusterInfo>>> = Arc::new(RwLock::new(Vec::new()));
@@ -53,11 +51,21 @@ impl From<ClusterInfo> for Connection {
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Eq, PartialEq)]
 pub enum ConnectionType {
     MasterServer,
     ClusterServer,
     None,
+}
+
+impl std::fmt::Display for ConnectionType {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            ConnectionType::MasterServer => write!(f, "Master Server"),
+            ConnectionType::ClusterServer => write!(f, "Cluster Server"),
+            ConnectionType::None => write!(f, "Unknown"),
+        }
+    }
 }
 
 #[tokio::main]
@@ -108,18 +116,11 @@ async fn start() {
     }
 
     let handler = tokio::spawn(async move {
+        warning(format!("Connecting to the {connection_type}...").as_str());
         let mut stream = TcpStream::connect(format!("{}:{}", ip, port)).await.expect(
-            format!(
-                "Failed to connect to the {} Server at {}:{}.",
-                match connection_type {
-                    ConnectionType::MasterServer => "Master",
-                    ConnectionType::ClusterServer => "Cluster",
-                    ConnectionType::None => "Unknown",
-                },
-                ip,
-                port
-            ).as_str()
+            format!("Failed to connect to the {connection_type} at {ip}:{port}.").as_str()
         );
+        success(format!("Connected to the {connection_type} at {ip}:{port}.").as_str());
 
         let (reader, mut writer) = stream.split();
         let mut reader = BufReader::new(reader);
@@ -130,12 +131,11 @@ async fn start() {
                     continue;
                 }
 
-                debug(format!("Client received data: {:?}", command).as_str());
+                info(format!("Received data: {:?}", command).as_str());
 
                 match connection_type {
                     ConnectionType::MasterServer => match command.unwrap() {
                         x if x == ToUnknown::SendClusters as u8 => {
-                            //amount
                             let amount = match reader.read_u8().await {
                                 Ok(amount) => amount,
                                 Err(_) => {
@@ -176,7 +176,7 @@ async fn start() {
                                     let mut cluster_servers = CLUSTER_SERVERS.write().await;
                                     *cluster_servers = cluster_servers_tmp;
 
-                                    success("Client received the cluster servers from the Master Server.");
+                                    success(format!("Received {amount} Cluster servers from the {connection_type}.").as_str());
                                     println!("{:?}", *cluster_servers);
                                 }
                                 join_cluster(0).await;
@@ -185,7 +185,53 @@ async fn start() {
                         _ => (),
                     }
                     ConnectionType::ClusterServer => match command.unwrap() {
-                        x if x == ToClient::SendClusters as u8 => todo!(),
+                        x if x == ToClient::SendClusters as u8 => {
+                            let amount = match reader.read_u8().await {
+                                Ok(amount) => amount,
+                                Err(_) => {
+                                    error("Failed to read the amount of clusters.");
+                                    continue;
+                                }
+                            };
+
+                            let mut cluster_servers_tmp = Vec::new();
+                            for _ in 0..amount {
+                                let name = lread_string!(reader, error, "cluster name");
+                                let ip = lread_string!(reader, error, "cluster IP");
+                                let port = match reader.read_u16().await {
+                                    Ok(port) => port,
+                                    Err(_) => {
+                                        error("Failed to read the cluster port.");
+                                        continue;
+                                    }
+                                };
+                                let max_connections = match reader.read_u32().await {
+                                    Ok(max_connections) => max_connections,
+                                    Err(_) => {
+                                        error("Failed to read the cluster max connections.");
+                                        continue;
+                                    }
+                                };
+
+                                cluster_servers_tmp.push(ClusterInfo {
+                                    name,
+                                    ip,
+                                    port,
+                                    max_connections,
+                                });
+                            }
+
+                            {
+                                {
+                                    let mut cluster_servers = CLUSTER_SERVERS.write().await;
+                                    *cluster_servers = cluster_servers_tmp;
+
+                                    success(format!("Received {amount} Cluster servers from the {connection_type}.").as_str());
+                                    println!("{:?}", *cluster_servers);
+                                }
+                                join_cluster(0).await;
+                            }
+                        },
                         x if x == ToClient::DisconnectCluster as u8 => todo!(),
                         x if x == ToClient::LeaveCluster as u8 => todo!(),
 
@@ -203,23 +249,25 @@ async fn start() {
                 if let Some(data) = result {
                     if data.is_empty() {
                         writer.shutdown().await.expect("Failed to shutdown the writer.");
-                        info("Client is shutting down its writer.");
+                        info("Closing connection...");
                         break;
                     }
 
                     writer.write_all(&data).await.expect("Failed to write to the Server.");
                     writer.flush().await.expect("Failed to flush the writer.");
-                    success(format!("Client sent {data:?} as data to the Master Server.").as_str());
+                    info(format!("Sent {data:?} as data to the {connection_type}.").as_str());
                 } else {
                     writer.shutdown().await.expect("Failed to shutdown the writer.");
-                    info("Client is shutting down its writer.");
+                    info("Shutting down connection...");
                     break;
                 }
             }
         }
     });
 
-    send_data(Box::new([FromUnknown::RequestClusters as u8])).await;
+    if connection_type == ConnectionType::MasterServer {
+        send_data(Box::new([FromUnknown::RequestClusters as u8])).await;
+    }
 
     let _ = handler.await;
 }
