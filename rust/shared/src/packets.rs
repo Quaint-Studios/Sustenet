@@ -14,6 +14,7 @@ pub mod master {
         /// When they send the decrypted key back to the Master Server.
         AnswerCluster,
     }
+    #[repr(u8)]
     pub enum ToUnknown {
         /// Sends a list of cluster servers containing their name, ip, and port.
         SendClusters,
@@ -24,10 +25,9 @@ pub mod master {
         /// Once validated, the cluster is moved to the cluster list and
         /// notifies them that they're now a cluster.
         CreateCluster,
+        
+        // Cluster things go here.
     }
-
-    pub enum FromCluster {}
-    pub enum ToCluster {}
 }
 
 pub mod cluster {

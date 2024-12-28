@@ -1,15 +1,28 @@
+use std::collections::BTreeSet;
+use std::sync::Arc;
 use std::{ net::Ipv4Addr, str::FromStr };
 
+use dashmap::DashMap;
+
 use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
-use tokio::net::TcpStream;
+use tokio::net::{ TcpListener, TcpStream };
 use tokio::select;
-use tokio::sync::mpsc;
+use tokio::sync::mpsc::Sender;
+use tokio::sync::{ mpsc, Mutex, RwLock };
 
 use shared::config::cluster::{ read, Settings };
+use shared::network::{ ClusterInfo, Event };
+use shared::packets::cluster::FromClient;
 use shared::packets::master::{ FromUnknown, ToUnknown };
-use shared::security::aes::{decrypt, generate_key, load_key, save_key};
-use shared::utils;
+use shared::security::aes::{ decrypt, generate_key, load_key, save_key };
 use shared::utils::constants::DEFAULT_IP;
+use shared::utils::{ self, constants };
+
+lazy_static::lazy_static! {
+    static ref CLUSTER_IDS: Arc<RwLock<BTreeSet<ClusterInfo>>> = Arc::new(
+        RwLock::new(BTreeSet::new())
+    );
+}
 
 #[tokio::main]
 async fn main() {
@@ -56,7 +69,11 @@ async fn start() {
                 panic!();
             }
 
-            warning(format!("A new AES key at 'keys/{key_name}' has been generated and saved. Make sure the Master Server also has this key for authentication.").as_str());
+            warning(
+                format!(
+                    "A new AES key at 'keys/{key_name}' has been generated and saved. Make sure the Master Server also has this key for authentication."
+                ).as_str()
+            );
 
             key
         }
@@ -129,6 +146,68 @@ async fn start() {
                 }
             }
         }
+
+        let (event_sender, mut event_receiver) = mpsc::channel::<Event>(100);
+
+        let clients: DashMap<u32, ServerClient> = DashMap::new();
+        let released_ids: Arc<Mutex<BTreeSet<u32>>> = Arc::new(Mutex::new(BTreeSet::new())); // In the future, think about reserving cluster ids. Sometimes a cluster can get a high ID, causing RAM to stay high during low loads.
+
+        {
+            let tcp_listener = TcpListener::bind(
+                format!("{}:{}", constants::DEFAULT_IP, port)
+            ).await.expect("Failed to bind to the specified port.");
+
+            loop {
+                select! {
+                    event = event_receiver.recv() => {
+                        if let Some(event) = event {
+                            match event {
+                                Event::Connection(id) => on_connection(id),
+                                Event::Disconnection(id) => {
+                                    debug(format!("Client#{id} disconnected.").as_str());
+                                    clients.remove(&id);
+
+                                    if id >= clients.len() as u32 {
+                                        info(format!("Client#{id} wasn't added to the released IDs list.").as_str());
+                                        continue;
+                                    }
+
+                                    let mut ids = released_ids.lock().await;
+                                    if !(*ids).insert(id) {
+                                        error(format!("ID {} already exists in the released IDs.", id).as_str());
+                                        continue;
+                                    };
+                                },
+                                Event::ReceivedData(id, data) => on_received_data(id, &data),
+                            }
+                        }
+                    }
+                    // Listen and add clients.
+                    res = tcp_listener.accept() => {
+                        if let Ok((stream, addr)) = res {
+                            debug(format!("Accepted connection from {:?}", addr).as_str());
+
+                            // If the max_connections is reached, return an error.
+                            if max_connections != 0 && clients.len() >= (max_connections as usize) {
+                                error("Max connections reached.");
+                                continue;
+                            }
+
+                            // Get the next available ID and insert it.
+                            let released_id: u32 = released_ids
+                                .lock().await
+                                .pop_first()
+                                .unwrap_or(clients.len() as u32);
+                            let mut client = ServerClient::new(released_id);
+                            client.handle_data(event_sender.clone(), stream).await;
+                            clients.insert(released_id, client);
+
+                            event_sender.send(Event::Connection(released_id)).await.unwrap();
+                        }
+                    }
+                }
+            }
+        }
     });
 
     let command = FromUnknown::BecomeCluster as u8;
@@ -151,6 +230,32 @@ async fn start() {
 async fn send_data(tx: &mpsc::Sender<Box<[u8]>>, data: Box<[u8]>) {
     tx.send(data).await.expect("Failed to send data to the Server.");
 }
+
+// region: Events
+fn on_connection(id: u32) {
+    debug(format!("Client#{id} connected").as_str());
+}
+
+fn on_received_data(id: u32, data: &[u8]) {
+    debug(format!("Received data from Client#{id}: {:?}", data).as_str());
+    todo!()
+}
+
+// fn on_client_connected(id: u32) {
+//     debug(format!("Client connected: {}", id).as_str());
+//     todo!()
+// }
+
+// fn on_client_disconnected(id: u32, protocol: Protocols) {
+//     debug(format!("Client disconnected: {} {}", id, protocol as u8).as_str());
+//     todo!()
+// }
+
+// fn on_client_received_data(id: u32, protocol: Protocols, data: &[u8]) {
+//     debug(format!("Client received data: {} {} {:?}", id, protocol as u8, data).as_str());
+//     todo!()
+// }
+// endregion
 
 // region: Logging
 use shared::{ log_message, utils::constants::DEBUGGING };
@@ -190,3 +295,81 @@ fn success(message: &str) {
     log_message!(LogLevel::Success, LogType::Cluster, "{}", message);
 }
 // endregion
+
+pub struct ServerClient {
+    pub id: u32,
+    pub name: Arc<RwLock<Option<String>>>,
+    pub sender: Option<Sender<Box<[u8]>>>,
+}
+
+impl ServerClient {
+    pub fn new(id: u32) -> Self {
+        ServerClient {
+            id,
+            name: Arc::new(RwLock::new(None)),
+            sender: None,
+        }
+    }
+
+    /// Handle the data from the client.
+    pub async fn handle_data(&mut self, event_sender: Sender<Event>, mut stream: TcpStream) {
+        let id = self.id;
+        let _name = self.name.clone(); // TODO: Implement name handling.
+        let (tx, mut rx) = tokio::sync::mpsc::channel(10);
+        self.sender = Some(tx.clone());
+
+        tokio::spawn(async move {
+            let (reader, mut writer) = stream.split();
+
+            let mut reader = BufReader::new(reader);
+
+            loop {
+                select! {
+                    // Incoming data from the client.
+                    command = reader.read_u8() => {
+                        if command.is_err() {
+                            event_sender.send(Event::Disconnection(id)).await.expect("Failed to send disconnection event.");
+                            break;
+                        }
+
+                        debug(format!("Cluster Server received data: {:?}", command).as_str());
+
+                        match command.unwrap() {
+                            x if x == FromClient::RequestClusters as u8 => {
+                                let mut data = vec![ToUnknown::SendClusters as u8];
+                                let cluster_ids = CLUSTER_IDS.read().await;
+                                data.push(cluster_ids.len() as u8);
+                                for cluster in (*cluster_ids).iter() {
+                                    data.push(cluster.name.len() as u8);
+                                    data.extend_from_slice(cluster.name.as_bytes());
+                                    data.push(cluster.ip.len() as u8);
+                                    data.extend_from_slice(cluster.ip.as_bytes());
+                                    data.extend_from_slice(&cluster.port.to_be_bytes());
+                                    data.extend_from_slice(&cluster.max_connections.to_be_bytes());
+                                }
+                                Self::send_data(&tx, data.into_boxed_slice()).await;
+                            },
+                            _ => (),
+                        }
+                    }
+                    // Outgoing data to the client.
+                    result = rx.recv() => {
+                        if let Some(data) = result {
+                            writer.write_all(&data).await.expect("Failed to write to the Master Server.");
+                            writer.flush().await.expect("Failed to flush the writer.");
+                        } else {
+                            writer.shutdown().await.expect("Failed to shutdown the writer.");
+                            info("Cluster Server is shutting down its client writer.");
+                            event_sender.send(Event::Disconnection(id)).await.expect("Failed to send disconnection event.");
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    async fn send_data(tx: &mpsc::Sender<Box<[u8]>>, data: Box<[u8]>) {
+        tx.send(data).await.expect("Failed to send data out.");
+    }
+}

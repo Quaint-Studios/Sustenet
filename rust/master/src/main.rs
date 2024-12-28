@@ -72,8 +72,7 @@ async fn main() {
 /// This function starts the master server.
 /// It listens for an event
 async fn start() {
-    let Settings { server_name, max_connections, port } = read();
-    info(&server_name);
+    let Settings { server_name: _, max_connections, port } = read();
     let (event_sender, mut event_receiver) = mpsc::channel::<Event>(100);
 
     let clients: DashMap<u32, ServerClient> = DashMap::new();
@@ -249,7 +248,7 @@ impl ServerClient {
                             break;
                         }
 
-                        debug(format!("Master Server received data: {:?}", command).as_str());
+                        debug(format!("Received data from Client#{id}: {:?}", command).as_str());
 
                         match command.unwrap() {
                             x if x == FromUnknown::RequestClusters as u8 => {
@@ -265,8 +264,11 @@ impl ServerClient {
                                     data.extend_from_slice(&cluster.max_connections.to_be_bytes());
                                 }
                                 Self::send_data(&tx, data.into_boxed_slice()).await;
-                            },
-                            x if x == FromUnknown::JoinCluster as u8 => todo!(),
+                            },                    
+                            x if x == FromUnknown::JoinCluster as u8 => {
+                                event_sender.send(Event::Disconnection(id)).await.expect("Failed to send disconnection event.");
+                                break;
+                            },                     
                             x if x == FromUnknown::BecomeCluster as u8 => {
                                 let len = match reader.read_u8().await {
                                     Ok(len) => len,
@@ -415,6 +417,9 @@ impl ServerClient {
 
                                 Self::send_data(&tx, Box::new([ToUnknown::CreateCluster as u8])).await;
                             },
+
+                            // Cluster Section
+
                             _ => (),
                         }
                     }
