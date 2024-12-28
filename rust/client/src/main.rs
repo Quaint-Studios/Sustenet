@@ -325,12 +325,12 @@ async fn join_cluster(id: usize) {
 }
 
 // region: Logging
-fn debug(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Debug, LogType::Client, "{}", message);
-}
+// fn debug(message: &str) {
+//     if !constants::DEBUGGING {
+//         return;
+//     }
+//     log_message!(LogLevel::Debug, LogType::Client, "{}", message);
+// }
 
 fn info(message: &str) {
     if !constants::DEBUGGING {
