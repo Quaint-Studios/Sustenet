@@ -160,7 +160,6 @@ pub async fn start() {
                                     success(format!("Received {amount} Cluster servers from the {connection_type}.").as_str());
                                     println!("{:?}", *cluster_servers);
                                 }
-                                join_cluster(0).await;
                             }
                         },
                         _ => (),
@@ -266,11 +265,24 @@ pub async fn send_data(data: Box<[u8]>) {
 }
 
 pub async fn join_cluster(id: usize) {
+    if id < (0 as usize) {
+        error("Failed to join a cluster. The cluster ID is invalid (less than 0).");
+        return;
+    }
+
     let cluster_servers = CLUSTER_SERVERS.read().await;
     if cluster_servers.is_empty() {
         error("Failed to join a cluster. No cluster servers are available.");
         return;
     }
+
+    if id >= cluster_servers.len() {
+        error(
+            "Failed to join a cluster. The cluster ID is invalid (greater than the amount of clusters)."
+        );
+        return;
+    }
+
     let cluster = (
         match cluster_servers.get(id) {
             Some(cluster) => cluster,
@@ -293,16 +305,20 @@ pub async fn join_cluster(id: usize) {
     {
         // Overwrite the current connection with the cluster connection.
         *CONNECTION.write().await = Some(connection);
-        let tx = SENDER.lock().await;
-        let tx = match tx.as_ref() {
-            Some(tx) => tx,
-            None => {
-                error("Failed to send data to the Server. The Sender is not set.");
-                return;
-            }
-        };
-        tx.send(Box::new([])).await.expect("Failed to shutdown.");
+        stop().await;
     }
+}
+
+async fn stop() {
+    let tx = SENDER.lock().await;
+    let tx = match tx.as_ref() {
+        Some(tx) => tx,
+        None => {
+            error("Failed to send data to the Server. The Sender is not set.");
+            return;
+        }
+    };
+    tx.send(Box::new([])).await.expect("Failed to shutdown.");
 }
 
 // region: Logging
