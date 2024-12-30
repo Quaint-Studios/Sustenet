@@ -209,7 +209,6 @@ pub async fn start() {
                                     success(format!("Received {amount} Cluster servers from the {connection_type}.").as_str());
                                     println!("{:?}", *cluster_servers);
                                 }
-                                join_cluster(0).await;
                             }
                         },
                         x if x == ToClient::DisconnectCluster as u8 => todo!(),
