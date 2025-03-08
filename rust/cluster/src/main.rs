@@ -1,4 +1,5 @@
 use std::collections::BTreeSet;
+use std::net::IpAddr;
 use std::sync::Arc;
 use std::{ net::Ipv4Addr, str::FromStr };
 
@@ -18,6 +19,7 @@ use shared::packets::master::{ FromUnknown, ToUnknown };
 use shared::security::aes::{ decrypt, generate_key, load_key, save_key };
 use shared::utils::constants::DEFAULT_IP;
 use shared::utils::{ self, constants };
+use public_ip::addr;
 
 lazy_static::lazy_static! {
     static ref CLUSTER_IDS: Arc<RwLock<BTreeSet<ClusterInfo>>> = Arc::new(
@@ -42,6 +44,20 @@ async fn main() {
 
 fn get_ip(ip: &str) -> Ipv4Addr {
     Ipv4Addr::from_str(ip).unwrap_or(Ipv4Addr::from_str(DEFAULT_IP).unwrap_or(Ipv4Addr::LOCALHOST))
+}
+
+ async fn get_public_ip() -> Option<IpAddr> {
+    match addr().await {
+        Some(ip) => Some(ip),
+        None => None,
+    }
+}
+
+fn ip_to_bytes(ip: IpAddr) -> Vec<u8> {
+    match ip {
+        IpAddr::V4(ipv4) => ipv4.octets().to_vec(),
+        IpAddr::V6(ipv6) => ipv6.octets().to_vec(),
+    }
 }
 
 async fn cleanup() {}
@@ -121,21 +137,29 @@ async fn start() {
                             data.extend_from_slice(&decrypted_passphrase);
                             data.push(server_name.len() as u8);
                             data.extend_from_slice(&server_name.as_bytes());
-                            let ip = "127.0.0.1".as_bytes(); // TODO: Use public_ip to get an actual IP.
-                            data.push(ip.len() as u8);
-                            data.extend_from_slice(ip);
-                            data.extend_from_slice(&port.to_be_bytes());
-                            data.extend_from_slice(&max_connections.to_be_bytes());
+
+                        if let Some(ip) = get_public_ip().await {
+                            println!("Public IP: {}", ip);
+                           let ip_byte = ip_to_bytes(ip);
+                            data.push(ip_byte.len() as u8);
+                            let mut data = Vec::new();
+                            data.extend_from_slice(&ip_byte);
+                        } else {
+                            println!("Couldn't get public IP");
+                        }
+
+                        data.extend_from_slice(&port.to_be_bytes());
+                        data.extend_from_slice(&max_connections.to_be_bytes());
 
 
-                            send_data(&tx, data.into_boxed_slice()).await;
-                        }
-                        x if x == ToUnknown::CreateCluster as u8 => {
-                            success("We did it! We verified the cluster!");
-                        }
-                        _ => (),
+                        send_data(&tx, data.into_boxed_slice()).await;
                     }
+                    x if x == ToUnknown::CreateCluster as u8 => {
+                        success("We did it! We verified the cluster!");
+                    }
+                    _ => (),
                 }
+            }
                 result = rx.recv() => {
                     if let Some(data) = result {
                         writer.write_all(&data).await.expect("Failed to write to the Master Server.");
@@ -446,4 +470,6 @@ impl ServerClient {
     async fn send_data(tx: &mpsc::Sender<Box<[u8]>>, data: Box<[u8]>) {
         tx.send(data).await.expect("Failed to send data out.");
     }
+
+
 }
