@@ -239,7 +239,7 @@ async fn start() {
             };
 
             debug(
-                format!("Starting the Master Server on port {} with {max_connections_str}...", port).as_str()
+                format!("Starting the Cluster Server on port {} with {max_connections_str}...", port).as_str()
             );
         }
 
