@@ -1,5 +1,4 @@
 use std::collections::BTreeSet;
-use std::net::IpAddr;
 use std::sync::Arc;
 use std::{ net::Ipv4Addr, str::FromStr };
 
@@ -12,6 +11,7 @@ use tokio::select;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::{ mpsc, Mutex, RwLock };
 
+use public_ip::addr;
 use shared::config::cluster::{ read, Settings };
 use shared::network::{ ClusterInfo, Event };
 use shared::packets::cluster::FromClient;
@@ -19,7 +19,6 @@ use shared::packets::master::{ FromUnknown, ToUnknown };
 use shared::security::aes::{ decrypt, generate_key, load_key, save_key };
 use shared::utils::constants::DEFAULT_IP;
 use shared::utils::{ self, constants };
-use public_ip::addr;
 
 lazy_static::lazy_static! {
     static ref CLUSTER_IDS: Arc<RwLock<BTreeSet<ClusterInfo>>> = Arc::new(
@@ -44,20 +43,6 @@ async fn main() {
 
 fn get_ip(ip: &str) -> Ipv4Addr {
     Ipv4Addr::from_str(ip).unwrap_or(Ipv4Addr::from_str(DEFAULT_IP).unwrap_or(Ipv4Addr::LOCALHOST))
-}
-
- async fn get_public_ip() -> Option<IpAddr> {
-    match addr().await {
-        Some(ip) => Some(ip),
-        None => None,
-    }
-}
-
-fn ip_to_bytes(ip: IpAddr) -> Vec<u8> {
-    match ip {
-        IpAddr::V4(ipv4) => ipv4.octets().to_vec(),
-        IpAddr::V6(ipv6) => ipv6.octets().to_vec(),
-    }
 }
 
 async fn cleanup() {}
@@ -138,14 +123,14 @@ async fn start() {
                             data.push(server_name.len() as u8);
                             data.extend_from_slice(&server_name.as_bytes());
 
-                        if let Some(ip) = get_public_ip().await {
-                            println!("Public IP: {}", ip);
-                           let ip_byte = ip_to_bytes(ip);
-                            data.push(ip_byte.len() as u8);
-                            let mut data = Vec::new();
-                            data.extend_from_slice(&ip_byte);
+                        if let Some(ip) = addr().await {
+                            let ip_string = ip.to_string();
+                            let ip_bytes = ip_string.as_bytes();
+                            data.push(ip_bytes.len() as u8);
+                            data.extend_from_slice(&ip.to_string().as_bytes());
                         } else {
-                            println!("Couldn't get public IP");
+                            error("Failed to get the public IP address.");
+                            return;
                         }
 
                         data.extend_from_slice(&port.to_be_bytes());
@@ -470,6 +455,4 @@ impl ServerClient {
     async fn send_data(tx: &mpsc::Sender<Box<[u8]>>, data: Box<[u8]>) {
         tx.send(data).await.expect("Failed to send data out.");
     }
-
-
 }
