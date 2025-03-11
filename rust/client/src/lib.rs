@@ -1,3 +1,4 @@
+use std::net::IpAddr;
 use std::sync::Arc;
 use std::{ net::Ipv4Addr, str::FromStr };
 
@@ -38,7 +39,7 @@ pub struct ClusterInfo {
 
 #[derive(Clone, Copy)]
 pub struct Connection {
-    pub ip: Ipv4Addr,
+    pub ip: IpAddr,
     pub port: u16,
     connection_type: ConnectionType,
 }
@@ -46,7 +47,7 @@ pub struct Connection {
 impl From<ClusterInfo> for Connection {
     fn from(info: ClusterInfo) -> Self {
         Connection {
-            ip: Ipv4Addr::from_str(info.ip.as_str()).expect("Failed to parse the IP."),
+            ip: IpAddr::from_str(info.ip.as_str()).expect("Failed to parse the IP."),
             port: info.port,
             connection_type: ConnectionType::ClusterServer,
         }
@@ -70,8 +71,8 @@ impl std::fmt::Display for ConnectionType {
     }
 }
 
-pub fn get_ip(ip: &str) -> Ipv4Addr {
-    Ipv4Addr::from_str(ip).unwrap_or(Ipv4Addr::from_str(DEFAULT_IP).unwrap_or(Ipv4Addr::LOCALHOST))
+pub fn get_ip(ip: &str) -> IpAddr {
+    IpAddr::from_str(ip).unwrap_or(IpAddr::from_str(DEFAULT_IP).unwrap_or(IpAddr::V4(Ipv4Addr::LOCALHOST)))
 }
 
 pub async fn cleanup() {}

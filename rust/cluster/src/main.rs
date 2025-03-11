@@ -11,6 +11,7 @@ use tokio::select;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::{ mpsc, Mutex, RwLock };
 
+use public_ip::addr;
 use shared::config::cluster::{ read, Settings };
 use shared::network::{ ClusterInfo, Event };
 use shared::packets::cluster::FromClient;
@@ -121,21 +122,29 @@ async fn start() {
                             data.extend_from_slice(&decrypted_passphrase);
                             data.push(server_name.len() as u8);
                             data.extend_from_slice(&server_name.as_bytes());
-                            let ip = "127.0.0.1".as_bytes(); // TODO: Use public_ip to get an actual IP.
-                            data.push(ip.len() as u8);
-                            data.extend_from_slice(ip);
-                            data.extend_from_slice(&port.to_be_bytes());
-                            data.extend_from_slice(&max_connections.to_be_bytes());
+
+                        if let Some(ip) = addr().await {
+                            let ip_string = ip.to_string();
+                            let ip_bytes = ip_string.as_bytes();
+                            data.push(ip_bytes.len() as u8);
+                            data.extend_from_slice(&ip.to_string().as_bytes());
+                        } else {
+                            error("Failed to get the public IP address.");
+                            return;
+                        }
+
+                        data.extend_from_slice(&port.to_be_bytes());
+                        data.extend_from_slice(&max_connections.to_be_bytes());
 
 
-                            send_data(&tx, data.into_boxed_slice()).await;
-                        }
-                        x if x == ToUnknown::CreateCluster as u8 => {
-                            success("We did it! We verified the cluster!");
-                        }
-                        _ => (),
+                        send_data(&tx, data.into_boxed_slice()).await;
                     }
+                    x if x == ToUnknown::CreateCluster as u8 => {
+                        success("We did it! We verified the cluster!");
+                    }
+                    _ => (),
                 }
+            }
                 result = rx.recv() => {
                     if let Some(data) = result {
                         writer.write_all(&data).await.expect("Failed to write to the Master Server.");
