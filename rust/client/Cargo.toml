@@ -1,5 +1,5 @@
 [package]
-name = "client"
+name = "sustenet-client"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,5 +8,5 @@ workspace = true
 
 [dependencies]
 lazy_static.workspace = true
-shared = { path = "../shared" }
+shared = { package = "sustenet-shared", path = "../shared" }
 tokio.workspace = true

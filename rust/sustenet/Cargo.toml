@@ -1,0 +1,25 @@
+[package]
+name = "sustenet"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+sustenet-auth = { path = "../auth", optional = true }
+sustenet-client = { path = "../client", optional = true }
+sustenet-cluster = { path = "../cluster", optional = true }
+sustenet-master = { path = "../master", optional = true }
+sustenet-shared = { path = "../shared", optional = true }
+
+[lints]
+workspace = true
+
+# This should load auth, client, cluster, master, and shared as dependencies with the ability to choose which ones to include with features.
+
+[features]
+default = []
+auth = ["sustenet-auth"]
+client = ["sustenet-client"]
+cluster = ["sustenet-cluster"]
+master = ["sustenet-master"]
+shared = ["sustenet-shared"]
+full = ["auth", "client", "cluster", "master", "shared"]

@@ -1,5 +1,5 @@
 [package]
-name = "master"
+name = "sustenet-master"
 version = "0.1.0"
 edition = "2021"
 
@@ -10,5 +10,5 @@ workspace = true
 dashmap.workspace = true
 getrandom.workspace = true
 lazy_static.workspace = true
-shared = { path = "../shared" }
+shared = { package = "sustenet-shared", path = "../shared" }
 tokio.workspace = true

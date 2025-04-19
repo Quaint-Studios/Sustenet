@@ -4,7 +4,14 @@ unsafe_code = "forbid"
 [workspace]
 resolver = "2"
 
-members = ["master", "cluster", "client", "shared", "auth"]
+members = [
+    "master",
+    "cluster",
+    "client",
+    "shared",
+    "auth",
+    "sustenet",
+]
 exclude = ["backup"]
 
 [workspace.dependencies]
