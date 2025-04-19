@@ -115,7 +115,7 @@ pub mod aes {
         let (nonce, data) = data.split_at(12);
         let nonce = Nonce::from_slice(nonce);
         let cipher = Aes256Gcm::new(&key);
-        cipher.decrypt(nonce, data).expect("Failed to decrypt data.")
+        cipher.decrypt(nonce, data).expect("Failed to decrypt data. Maybe the key doesn't match the name?")
     }
 }
 
