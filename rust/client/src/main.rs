@@ -1,4 +1,4 @@
-use client::{ cleanup, start, success, warning, CONNECTION };
+use sustenet_client::{ cleanup, start, success, warning, CONNECTION };
 use shared::{ lselect, utils };
 
 #[tokio::main]

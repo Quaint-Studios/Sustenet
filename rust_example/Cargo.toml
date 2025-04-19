@@ -5,8 +5,7 @@ edition = "2024"
 description = "Example Rust project using Sustenet"
 
 [dependencies]
-cluster = { version = "0.1.0", path = "../rust/cluster" }
-shared = { version = "0.1.0", path = "../rust/shared" }
+sustenet = { version = "0.1.0", path = "../rust/sustenet", features = ["cluster", "shared"] }
 tokio = { version = "1.41.1", default-features = false, features = [
 	"macros",
 	"rt-multi-thread",

@@ -1,5 +1,5 @@
-use cluster::{ cleanup, error, start };
-use shared::Plugin;
+use sustenet::cluster::{ cleanup, error, start };
+use sustenet::shared::Plugin;
 use tokio::sync::mpsc::Sender;
 
 struct Reia;
