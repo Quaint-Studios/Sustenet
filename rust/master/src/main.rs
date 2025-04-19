@@ -264,11 +264,11 @@ impl ServerClient {
                                     data.extend_from_slice(&cluster.max_connections.to_be_bytes());
                                 }
                                 Self::send_data(&tx, data.into_boxed_slice()).await;
-                            },                    
+                            },
                             x if x == FromUnknown::JoinCluster as u8 => {
                                 event_sender.send(Event::Disconnection(id)).await.expect("Failed to send disconnection event.");
                                 break;
-                            },                     
+                            },
                             x if x == FromUnknown::BecomeCluster as u8 => {
                                 let len = match reader.read_u8().await {
                                     Ok(len) => len,
