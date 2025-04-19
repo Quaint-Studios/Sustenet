@@ -1,4 +1,4 @@
-use cluster::{ cleanup, start, success, warning };
+use cluster::{cleanup, start, success, warning};
 use shared::utils;
 use tokio::{select, sync::mpsc::Sender};
 
@@ -7,7 +7,7 @@ impl shared::Plugin for DefaultPlugin {
     fn receive(
         &self,
         _tx: Sender<Box<[u8]>>,
-        command: u8
+        command: u8,
     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>> {
         Box::pin(async move {
             match command {
@@ -17,6 +17,8 @@ impl shared::Plugin for DefaultPlugin {
             }
         })
     }
+
+    fn info(&self, _: &str) {}
 }
 
 #[tokio::main]

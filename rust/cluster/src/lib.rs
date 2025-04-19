@@ -46,16 +46,23 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
         Ok(key) => key,
         Err(_) => {
             if std::fs::DirBuilder::new().recursive(true).create("keys").is_err() {
+                plugin.info("Failed to create the 'keys' directory.");
                 error("Failed to create the 'keys' directory.");
                 panic!();
             }
 
             let key = generate_key();
             if save_key(key_name.as_str(), key).is_err() {
+                plugin.info("Failed to save the generated key.");
                 error("Failed to save the generated key.");
                 panic!();
             }
 
+            plugin.info(
+                format!(
+                    "A new AES key at 'keys/{key_name}' has been generated and saved. Make sure the Master Server also has this key for authentication."
+                ).as_str()
+            );
             warning(
                 format!(
                     "A new AES key at 'keys/{key_name}' has been generated and saved. Make sure the Master Server also has this key for authentication."
@@ -85,6 +92,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                         continue;
                     }
 
+                    plugin.info(format!("Cluster Server received data: {:?}", command).as_str());
                     debug(format!("Cluster Server received data: {:?}", command).as_str());
 
                     match command.unwrap() {
@@ -94,6 +102,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                             match reader.read_exact(&mut passphrase).await {
                                 Ok(_) => {},
                                 Err(e) => {
+                                    plugin.info(format!("Failed to read passphrase to String: {:?}", e).as_str());
                                     error(format!("Failed to read passphrase to String: {:?}", e).as_str());
                                     continue;
                                 }
@@ -114,6 +123,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                                 data.push(ip_bytes.len() as u8);
                                 data.extend_from_slice(&ip.to_string().as_bytes());
                             } else {
+                                plugin.info("Failed to get the public IP address.");
                                 error("Failed to get the public IP address.");
                                 return;
                             }
@@ -125,6 +135,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                             send_data(&tx, data.into_boxed_slice()).await;
                         }
                         x if x == ToUnknown::CreateCluster as u8 => {
+                            plugin.info("We did it! We verified the cluster!");
                             success("We did it! We verified the cluster!");
                         }
                         cmd => plugin.receive(tx.clone(), cmd).await,
@@ -136,6 +147,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                         writer.flush().await.expect("Failed to flush the writer.");
                     } else {
                         writer.shutdown().await.expect("Failed to shutdown the writer.");
+                        plugin.info("Cluster Server is shutting down its client writer.");
                         info("Cluster Server is shutting down its client writer.");
                         break;
                     }
@@ -160,6 +172,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                             match event {
                                 Event::Connection(id) => on_connection(id),
                                 Event::Disconnection(id) => {
+                                    plugin.info(format!("Client#{id} disconnected.").as_str());
                                     debug(format!("Client#{id} disconnected.").as_str());
                                     clients.remove(&id);
 
@@ -170,6 +183,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
 
                                     let mut ids = released_ids.lock().await;
                                     if !(*ids).insert(id) {
+                                        plugin.info(format!("ID {} already exists in the released IDs.", id).as_str());
                                         error(format!("ID {} already exists in the released IDs.", id).as_str());
                                         continue;
                                     };
@@ -181,10 +195,12 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                     // Listen and add clients.
                     res = tcp_listener.accept() => {
                         if let Ok((stream, addr)) = res {
+                            plugin.info(format!("Accepted connection from {:?}", addr).as_str());
                             debug(format!("Accepted connection from {:?}", addr).as_str());
 
                             // If the max_connections is reached, return an error.
                             if max_connections != 0 && clients.len() >= (max_connections as usize) {
+                                plugin.info("Max connections reached.");
                                 error("Max connections reached.");
                                 continue;
                             }

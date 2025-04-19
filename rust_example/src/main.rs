@@ -16,6 +16,10 @@ impl Plugin for Reia {
             }
         })
     }
+
+    fn info(&self, message: &str) {
+        println!("{message}");
+    }
 }
 
 #[tokio::main]

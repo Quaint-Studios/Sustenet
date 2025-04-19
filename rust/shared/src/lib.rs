@@ -16,6 +16,8 @@ pub trait Plugin: Send + Sync {
         tx: Sender<Box<[u8]>>,
         command: u8
     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>>;
+
+    fn info(&self, message: &str);
 }
 
 // TODO: Use a Result instead.
