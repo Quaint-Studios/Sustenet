@@ -14,6 +14,12 @@ members = [
 ]
 exclude = ["backup"]
 
+[workspace.package]
+edition = "2024"
+license = "MIT"
+authors = ["Quaint Studios", "Makosai"]
+homepage = "https://github.com/Quaint-Studios/Sustenet"
+
 [workspace.dependencies]
 aes-gcm = "0.10.3"
 base64 = "0.22.1"

@@ -1,7 +1,12 @@
 [package]
 name = "sustenet-shared"
 version = "0.1.0"
-edition = "2021"
+edition.workspace = true
+description = "Sustenet shared library that contains the common code used by all modules."
+
+license.workspace = true
+authors.workspace = true
+homepage.workspace = true
 
 [dependencies]
 aes-gcm = { workspace = true }

@@ -1,7 +1,12 @@
 [package]
 name = "sustenet-master"
 version = "0.1.0"
-edition = "2021"
+edition.workspace = true
+description = "Sustenet master server that accepts connections from cluster servers and clients. It also redirects clients to clusters."
+
+license.workspace = true
+authors.workspace = true
+homepage.workspace = true
 
 [lints]
 workspace = true

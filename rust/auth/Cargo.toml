@@ -1,6 +1,11 @@
 [package]
 name = "sustenet-auth"
 version = "0.1.0"
-edition = "2021"
+edition.workspace = true
+description = "Sustenet authentication module that links with Supabase and Turso."
+
+license.workspace = true
+authors.workspace = true
+homepage.workspace = true
 
 [dependencies]

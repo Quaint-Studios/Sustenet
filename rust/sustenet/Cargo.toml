@@ -1,7 +1,12 @@
 [package]
 name = "sustenet"
 version = "0.1.0"
-edition = "2024"
+edition.workspace = true
+description = "A networking solution for MMOs and large multiplayer games. It includes a master server, cluster servers, a client library, and authentication."
+
+license.workspace = true
+authors.workspace = true
+homepage.workspace = true
 
 [dependencies]
 sustenet-auth = { path = "../auth", optional = true }

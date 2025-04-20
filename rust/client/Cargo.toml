@@ -1,7 +1,12 @@
 [package]
 name = "sustenet-client"
 version = "0.1.0"
-edition = "2021"
+edition.workspace = true
+description = "Sustenet client used to connect to the master and cluster servers."
+
+license.workspace = true
+authors.workspace = true
+homepage.workspace = true
 
 [lints]
 workspace = true
