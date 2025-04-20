@@ -13,5 +13,5 @@ workspace = true
 
 [dependencies]
 lazy_static.workspace = true
-shared = { package = "sustenet-shared", path = "../shared" }
+shared = { package = "sustenet-shared", path = "../shared", version = "*" }
 tokio.workspace = true
