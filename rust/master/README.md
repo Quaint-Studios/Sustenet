@@ -1,6 +1,6 @@
 # sustenet-master
 
-`sustenet-master` is the authoritative server crate for the Sustenet networking solution. It manages client connections, authentication, and communication with clusters, acting as the central coordinator for distributed game server clusters. It's designed to accept cluster servers as well as clients and routes clients to clusters.
+`sustenet-master` is the authoritative server crate for Sustenet's networking solution. It manages client connections, authentication, and communication with clusters, acting as the central coordinator for distributed game server clusters. It's designed to accept cluster servers as well as clients and routes clients to clusters.
 
 Sustenet is a networking solution for game engines. It's made to primarily be used for MMO or large-scale multiplayer games in Godot Engine but can also be used in Unity and Unreal Engine. Support for other engines will continue to grow over time.
 
@@ -29,6 +29,7 @@ The configuration file is *Config.toml*. Below is an example configuration:
 ```toml
 [all]
 server_name = "Master Server"
+
 max_connections = 0
 port = 6256
 ```
