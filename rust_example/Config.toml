@@ -9,4 +9,4 @@ key_name = "cluster_key_test"
 master_ip = "127.0.0.1"
 master_port = 0
 
-domain_pub_key = "https://www.playreia.com/game/pubkey.pub" # Remove this if you want to use the server's bandwidth to send a key to a user directly.
+domain_pub_key = "https://site-cdn.playreia.com/game/pubkey.pub" # Remove this if you want to use the server's bandwidth to send a key to a user directly.
