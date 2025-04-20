@@ -2,7 +2,7 @@
 
 `sustenet-shared` is a Rust crate providing common utilities, configuration, networking types, security primitives, and macros for Sustenet's networking solution. It is designed to be used by the master, cluster, client, and other Sustenet components to ensure consistency and code reuse.
 
-Sustenet is a networking solution for game engines. It's made to primarily be used for MMO or large-scale projects in the Godot Engine but can also be used in Unity and Unreal Engine. Support for other engines will continue to grow over time.
+Sustenet is a networking solution for game engines. It's made to primarily be used for MMO or large-scale multiplayer games in Godot Engine but can also be used in Unity and Unreal Engine. Support for other engines will continue to grow over time.
 
 ## Features
 
