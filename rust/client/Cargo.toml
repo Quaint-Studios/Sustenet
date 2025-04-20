@@ -13,5 +13,13 @@ workspace = true
 
 [dependencies]
 lazy_static.workspace = true
-shared = { package = "sustenet-shared", path = "../shared" }
-tokio.workspace = true
+sustenet-shared.workspace = true
+tokio = { workspace = true, features = [
+	# "socket2",
+	"macros",
+	"rt-multi-thread",
+	"net",
+	# "sync",
+	"io-util",
+	"time",
+] }

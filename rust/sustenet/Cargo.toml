@@ -8,17 +8,15 @@ license.workspace = true
 authors.workspace = true
 homepage.workspace = true
 
-[dependencies]
-sustenet-auth = { path = "../auth", optional = true }
-sustenet-client = { path = "../client", optional = true }
-sustenet-cluster = { path = "../cluster", optional = true }
-sustenet-master = { path = "../master", optional = true }
-sustenet-shared = { path = "../shared", optional = true }
-
 [lints]
 workspace = true
 
-# This should load auth, client, cluster, master, and shared as dependencies with the ability to choose which ones to include with features.
+[dependencies]
+sustenet-auth = { optional = true, workspace = true }
+sustenet-client = { optional = true, workspace = true }
+sustenet-cluster = { optional = true, workspace = true }
+sustenet-master = { optional = true, workspace = true }
+sustenet-shared = { optional = true, workspace = true }
 
 [features]
 default = ["full"]

@@ -1,3 +1,5 @@
+use sustenet_shared as shared;
+
 use shared::security::aes::{ load_all_keys, KeyMap };
 
 lazy_static::lazy_static! {

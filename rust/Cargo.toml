@@ -4,14 +4,7 @@ unsafe_code = "forbid"
 [workspace]
 resolver = "2"
 
-members = [
-    "master",
-    "cluster",
-    "client",
-    "shared",
-    "auth",
-    "sustenet",
-]
+members = ["master", "cluster", "client", "shared", "auth", "sustenet"]
 exclude = ["backup"]
 
 [workspace.package]
@@ -22,6 +15,15 @@ authors = ["Quaint Studios", "Makosai"]
 homepage = "https://github.com/Quaint-Studios/Sustenet"
 
 [workspace.dependencies]
+sustenet-auth = { path = "auth", version = "0.1.1" }
+sustenet-client = { path = "client", version = "0.1.1" }
+sustenet-cluster = { path = "cluster", version = "0.1.1" }
+sustenet-master = { path = "master", version = "0.1.1" }
+sustenet-shared = { path = "shared", version = "0.1.1" }
+
+aes = "0.8.4"
+public-ip = "0.2.2"
+
 aes-gcm = "0.10.3"
 base64 = "0.22.1"
 config = "0.15.4"
@@ -29,12 +31,4 @@ ctrlc = "3.4.5"
 dashmap = "6.1.0"
 getrandom = "0.3.2"
 lazy_static = "1.5.0"
-tokio = { version = "1.41.1", default-features = false, features = [
-    # "socket2",
-    "macros",
-    "rt-multi-thread",
-    "net",
-    # "sync",
-    "io-util",
-    "time",
-] }
+tokio = { version = "1.41.1", default-features = false, features = [] }

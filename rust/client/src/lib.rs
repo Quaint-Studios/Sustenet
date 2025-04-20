@@ -1,3 +1,5 @@
+use sustenet_shared as shared;
+
 use std::net::IpAddr;
 use std::sync::Arc;
 use std::{ net::Ipv4Addr, str::FromStr };

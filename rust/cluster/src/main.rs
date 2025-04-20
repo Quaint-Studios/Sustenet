@@ -1,3 +1,5 @@
+use sustenet_shared as shared;
+
 use sustenet_cluster::{cleanup, start, success, warning};
 use shared::utils;
 use tokio::{select, sync::mpsc::Sender};

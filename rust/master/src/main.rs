@@ -1,3 +1,5 @@
+use sustenet_shared as shared;
+
 use sustenet_master::{start, success, warning};
 
 use tokio::select;

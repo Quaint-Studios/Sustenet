@@ -1,3 +1,5 @@
+use sustenet_shared as shared;
+
 use std::collections::BTreeSet;
 use std::sync::Arc;
 

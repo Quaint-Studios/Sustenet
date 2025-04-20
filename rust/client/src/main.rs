@@ -1,3 +1,5 @@
+use sustenet_shared as shared;
+
 use sustenet_client::{ cleanup, start, success, warning, CONNECTION };
 use shared::{ lselect, utils };
 
