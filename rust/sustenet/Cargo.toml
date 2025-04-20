@@ -9,11 +9,11 @@ authors.workspace = true
 homepage.workspace = true
 
 [dependencies]
-sustenet-auth = { path = "../auth", optional = true }
-sustenet-client = { path = "../client", optional = true }
-sustenet-cluster = { path = "../cluster", optional = true }
-sustenet-master = { path = "../master", optional = true }
-sustenet-shared = { path = "../shared", optional = true }
+sustenet-auth = { path = "../auth", optional = true, version = "0.1.0" }
+sustenet-client = { path = "../client", optional = true, version = "0.1.0" }
+sustenet-cluster = { path = "../cluster", optional = true, version = "0.1.0" }
+sustenet-master = { path = "../master", optional = true, version = "0.1.0" }
+sustenet-shared = { path = "../shared", optional = true, version = "0.1.0" }
 
 [lints]
 workspace = true
