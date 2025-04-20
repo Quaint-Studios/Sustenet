@@ -1,6 +1,6 @@
 [package]
 name = "sustenet-master"
-version = "0.1.0"
+version.workspace = true
 edition.workspace = true
 description = "Sustenet master server that accepts connections from cluster servers and clients. It also redirects clients to clusters."
 
@@ -15,5 +15,5 @@ workspace = true
 dashmap.workspace = true
 getrandom.workspace = true
 lazy_static.workspace = true
-shared = { package = "sustenet-shared", path = "../shared", version = "0.1.0" }
+shared = { package = "sustenet-shared", path = "../shared" }
 tokio.workspace = true

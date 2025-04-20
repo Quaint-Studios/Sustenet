@@ -1,6 +1,6 @@
 [package]
 name = "sustenet"
-version = "0.1.0"
+version.workspace = true
 edition.workspace = true
 description = "A networking solution for MMOs and large multiplayer games. It includes a master server, cluster servers, a client library, and authentication."
 
@@ -9,11 +9,11 @@ authors.workspace = true
 homepage.workspace = true
 
 [dependencies]
-sustenet-auth = { path = "../auth", optional = true, version = "0.1.0" }
-sustenet-client = { path = "../client", optional = true, version = "0.1.0" }
-sustenet-cluster = { path = "../cluster", optional = true, version = "0.1.0" }
-sustenet-master = { path = "../master", optional = true, version = "0.1.0" }
-sustenet-shared = { path = "../shared", optional = true, version = "0.1.0" }
+sustenet-auth = { path = "../auth", optional = true }
+sustenet-client = { path = "../client", optional = true }
+sustenet-cluster = { path = "../cluster", optional = true }
+sustenet-master = { path = "../master", optional = true }
+sustenet-shared = { path = "../shared", optional = true }
 
 [lints]
 workspace = true
@@ -21,7 +21,7 @@ workspace = true
 # This should load auth, client, cluster, master, and shared as dependencies with the ability to choose which ones to include with features.
 
 [features]
-default = []
+default = ["full"]
 auth = ["sustenet-auth"]
 client = ["sustenet-client"]
 cluster = ["sustenet-cluster"]

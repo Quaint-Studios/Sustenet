@@ -15,6 +15,7 @@ members = [
 exclude = ["backup"]
 
 [workspace.package]
+version = "0.1.1"
 edition = "2024"
 license = "MIT"
 authors = ["Quaint Studios", "Makosai"]
@@ -26,7 +27,7 @@ base64 = "0.22.1"
 config = "0.15.4"
 ctrlc = "3.4.5"
 dashmap = "6.1.0"
-getrandom = "0.2.15"
+getrandom = "0.3.2"
 lazy_static = "1.5.0"
 tokio = { version = "1.41.1", default-features = false, features = [
     # "socket2",

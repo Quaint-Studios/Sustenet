@@ -1,6 +1,6 @@
 [package]
 name = "sustenet-client"
-version = "0.1.0"
+version.workspace = true
 edition.workspace = true
 description = "Sustenet client used to connect to the master and cluster servers."
 
@@ -13,5 +13,5 @@ workspace = true
 
 [dependencies]
 lazy_static.workspace = true
-shared = { package = "sustenet-shared", path = "../shared", version = "0.1.0" }
+shared = { package = "sustenet-shared", path = "../shared" }
 tokio.workspace = true

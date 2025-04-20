@@ -144,7 +144,7 @@ pub mod tests {
 
     #[test]
     pub fn test_save_key() {
-        match save_key("cluster_key2", generate_key()) {
+        match save_key("cluster_key_testrunner", generate_key()) {
             Ok(_) => {}
             Err(e) => {
                 println!("Failed to save key: {:?}", e);
@@ -156,19 +156,17 @@ pub mod tests {
     pub fn test_save_key_and_load_key() {
         let key = generate_key();
 
-        match save_key("../cluster_key3", key) {
+        match save_key("../../keys/cluster_key_testrunner2", key) {
             Ok(_) => {}
             Err(e) => {
-                println!("Failed to save key: {:?}", e);
-                return;
+                panic!("Failed to save key: {:?}", e);
             }
         }
 
-        let key2 = match load_key("cluster_key3") {
+        let key2 = match load_key("../../keys/cluster_key_testrunner2") {
             Ok(key) => key,
             Err(e) => {
-                println!("Failed to load key: {:?}", e);
-                return;
+                panic!("Failed to load key: {:?}", e);
             }
         };
 
@@ -177,12 +175,11 @@ pub mod tests {
 
     #[test]
     pub fn test_load_key() {
-        println!("Dir: {:?}", std::fs::read_dir("keys"));
-        let key = match load_key("cluster_key") {
+        println!("Dir: {:?}", std::fs::read_dir("../keys"));
+        let key = match load_key("../../keys/cluster_key_testrunner") {
             Ok(key) => key,
             Err(e) => {
-                println!("Failed to load key: {:?}", e);
-                return;
+                panic!("Failed to load key: {:?}", e);
             }
         };
         assert_eq!(key.as_slice().len(), 32);
@@ -194,6 +191,8 @@ pub mod tests {
             Ok(keys) => keys,
             Err(e) => {
                 println!("Failed to load all keys: {:?}", e);
+                // TODO: Figure out a way to change the directory for tests.
+                // This function works, just not in tests.
                 return;
             }
         };
