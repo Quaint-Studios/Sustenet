@@ -1,6 +1,7 @@
 name: Sustenet (Rust)
 
 on:
+  workflow_dispatch:
   push:
     branches: [master]
     paths: [rust/**]
