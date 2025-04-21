@@ -1,11 +1,10 @@
 pub mod base64engine {
-    use base64::{
-        Engine, alphabet,
-        engine::{self, general_purpose},
-    };
+    use base64::{ Engine, alphabet, engine::{ self, general_purpose } };
 
-    const CUSTOM_ENGINE: engine::GeneralPurpose =
-        engine::GeneralPurpose::new(&alphabet::URL_SAFE, general_purpose::NO_PAD);
+    const CUSTOM_ENGINE: engine::GeneralPurpose = engine::GeneralPurpose::new(
+        &alphabet::URL_SAFE,
+        general_purpose::NO_PAD
+    );
     pub fn base64_encode(input: &[u8]) -> String {
         CUSTOM_ENGINE.encode(input)
     }
@@ -16,30 +15,23 @@ pub mod base64engine {
 }
 
 pub mod aes {
-    use std::{
-        collections::HashMap,
-        fs::File,
-        io::{Read, Write},
-        vec,
-    };
+    use std::{ collections::HashMap, fs::File, io::{ Read, Write }, vec };
 
     use aes_gcm::{
         Aes256Gcm, // Or `Aes128Gcm`
         Key,
         Nonce,
-        aead::{Aead, AeadCore, KeyInit, OsRng},
+        aead::{ Aead, AeadCore, KeyInit, OsRng },
     };
 
     pub fn create_keys_dir() -> std::io::Result<()> {
-        if std::fs::DirBuilder::new()
-            .recursive(true)
-            .create("keys")
-            .is_err()
-        {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::Other,
-                "Failed to create the 'keys' directory.",
-            ));
+        if std::fs::DirBuilder::new().recursive(true).create("keys").is_err() {
+            return Err(
+                std::io::Error::new(
+                    std::io::ErrorKind::Other,
+                    "Failed to create the 'keys' directory."
+                )
+            );
         }
 
         Ok(())
@@ -59,34 +51,28 @@ pub mod aes {
         let mut file = match File::open(format!("keys/{name}")) {
             Ok(file) => file,
             Err(_) => {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::NotFound,
-                    "Failed to open file.",
-                ));
+                return Err(
+                    std::io::Error::new(std::io::ErrorKind::NotFound, "Failed to open file.")
+                );
             }
         };
         let mut buf = vec![];
         match file.read_to_end(&mut buf) {
             Ok(_) => {
                 if buf.is_empty() {
-                    return Err(std::io::Error::new(
-                        std::io::ErrorKind::InvalidData,
-                        "Key is empty.",
-                    ));
+                    return Err(
+                        std::io::Error::new(std::io::ErrorKind::InvalidData, "Key is empty.")
+                    );
                 }
 
                 if buf.len() != 32 {
-                    return Err(std::io::Error::new(
-                        std::io::ErrorKind::InvalidData,
-                        "Key is not 32 bytes.",
-                    ));
+                    return Err(
+                        std::io::Error::new(std::io::ErrorKind::InvalidData, "Key is not 32 bytes.")
+                    );
                 }
             }
             Err(_) => {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    "Failed to read file.",
-                ));
+                return Err(std::io::Error::new(std::io::ErrorKind::Other, "Failed to read file."));
             }
         }
         Ok(Key::<Aes256Gcm>::from_slice(buf.as_slice()).to_owned())
@@ -100,10 +86,9 @@ pub mod aes {
         let entries = match std::fs::read_dir("keys") {
             Ok(entries) => entries,
             Err(_) => {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::NotFound,
-                    "Directory 'keys' missing.",
-                ));
+                return Err(
+                    std::io::Error::new(std::io::ErrorKind::NotFound, "Directory 'keys' missing.")
+                );
             }
         };
 
@@ -135,9 +120,7 @@ pub mod aes {
         let nonce = Aes256Gcm::generate_nonce(&mut OsRng); // 96-bits; unique per message
         let cipher = Aes256Gcm::new(&key);
 
-        let ciphered_data = cipher
-            .encrypt(&nonce, data)
-            .expect("Failed to encrypt data.");
+        let ciphered_data = cipher.encrypt(&nonce, data).expect("Failed to encrypt data.");
         [nonce.as_slice(), ciphered_data.as_slice()].concat()
     }
 
@@ -153,15 +136,13 @@ pub mod aes {
 
 #[cfg(test)]
 pub mod tests {
-    use super::{aes::*, base64engine::*};
+    use super::{ aes::*, base64engine::* };
 
     #[test]
     pub fn test_create_keys_dir() {
         match create_keys_dir() {
-            Ok(_) => assert!(
-                std::path::Path::new("keys").exists(),
-                "Keys directory does not exist."
-            ),
+            Ok(_) =>
+                assert!(std::path::Path::new("keys").exists(), "Keys directory does not exist."),
             Err(e) => {
                 panic!("Failed to create keys directory: {:?}", e);
             }
@@ -220,8 +201,18 @@ pub mod tests {
 
     #[test]
     pub fn test_load_key() {
-        println!("Dir: {:?}", std::fs::read_dir("keys"));
-        let key = match load_key("cluster_key_testrunner") {
+        if let Err(e) = create_keys_dir() {
+            panic!("Failed to create keys directory: {:?}", e);
+        }
+
+        match save_key("cluster_key_testrunner3", generate_key()) {
+            Ok(_) => {}
+            Err(e) => {
+                println!("Failed to save key: {:?}", e);
+            }
+        };
+
+        let key = match load_key("cluster_key_testrunner3") {
             Ok(key) => key,
             Err(e) => {
                 panic!("Failed to load key: {:?}", e);
@@ -232,13 +223,39 @@ pub mod tests {
 
     #[test]
     pub fn test_load_all_keys() {
+        if let Err(e) = create_keys_dir() {
+            panic!("Failed to create keys directory: {:?}", e);
+        }
+
+        match save_key("cluster_key_testrunner4", generate_key()) {
+            Ok(_) => {}
+            Err(e) => {
+                println!("Failed to save key: {:?}", e);
+            }
+        };
+
+        match save_key("cluster_key_testrunner5", generate_key()) {
+            Ok(_) => {}
+            Err(e) => {
+                println!("Failed to save key: {:?}", e);
+            }
+        };
+
         let keys = match load_all_keys() {
             Ok(keys) => keys,
             Err(e) => {
                 panic!("Failed to load all keys: {:?}", e);
             }
         };
-        assert_eq!(keys.len(), 2);
+
+        let count = match std::fs::read_dir("keys") {
+            Ok(entries) => entries.count(),
+            Err(_) => {
+                panic!("Failed to read 'keys' directory.");
+            }
+        };
+
+        assert_eq!(keys.len(), count);
     }
 
     #[test]
@@ -247,13 +264,13 @@ pub mod tests {
     }
 
     fn workspace_dir() -> std::path::PathBuf {
-        let output = std::process::Command::new(env!("CARGO"))
+        let output = std::process::Command
+            ::new(env!("CARGO"))
             .arg("locate-project")
             .arg("--workspace")
             .arg("--message-format=plain")
             .output()
-            .unwrap()
-            .stdout;
+            .unwrap().stdout;
         let cargo_path = std::path::Path::new(std::str::from_utf8(&output).unwrap().trim());
         cargo_path.parent().unwrap().to_path_buf()
     }
