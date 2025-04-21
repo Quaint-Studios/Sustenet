@@ -1,15 +1,26 @@
 use sustenet_shared as shared;
 
-use sustenet_cluster::{cleanup, start, success, warning};
-use shared::utils;
-use tokio::{select, sync::mpsc::Sender};
+use tokio::{ select, sync::mpsc::Sender };
 
-struct DefaultPlugin;
+use shared::utils;
+use sustenet_cluster::{ LOGGER, cleanup, start };
+
+struct DefaultPlugin {
+    sender: std::sync::OnceLock<Sender<Box<[u8]>>>,
+}
 impl shared::Plugin for DefaultPlugin {
-    fn receive(
+    fn set_sender(&self, tx: Sender<Box<[u8]>>) {
+        // Set the sender
+        if self.sender.set(tx).is_err() {
+            LOGGER.error("Failed to set sender");
+        }
+    }
+
+    fn receive<'plug>(
         &self,
         _tx: Sender<Box<[u8]>>,
         command: u8,
+        _reader: &'plug mut tokio::io::BufReader<tokio::net::tcp::ReadHalf<'_>>
     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>> {
         Box::pin(async move {
             match command {
@@ -29,11 +40,11 @@ async fn main() {
 
     select! {
         _ = shutdown_rx.recv() => {
-            warning("Shutting down...");
+            LOGGER.warning("Shutting down...");
         }
-        _ = start(DefaultPlugin {}) => {}
+        _ = start(DefaultPlugin { sender: std::sync::OnceLock::new() }) => {}
     }
 
     cleanup().await;
-    success("The Cluster Server has been shut down.");
+    LOGGER.success("The Cluster Server has been shut down.");
 }

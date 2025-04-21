@@ -11,11 +11,14 @@ pub mod security;
 pub mod macros;
 
 pub trait Plugin: Send + Sync {
-    fn receive(
+    fn set_sender(&self, tx: Sender<Box<[u8]>>);
+
+    fn receive<'plug>(
         &self,
         tx: Sender<Box<[u8]>>,
-        command: u8
-    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>>;
+        command: u8,
+        reader: &'plug mut tokio::io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
+    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send + 'plug>>;
 
     fn info(&self, message: &str);
 }

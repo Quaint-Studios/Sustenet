@@ -1,32 +1,33 @@
 use sustenet_shared as shared;
 
 use std::collections::BTreeSet;
-use std::sync::Arc;
+use std::sync::{ Arc, LazyLock, OnceLock };
 use std::{ net::Ipv4Addr, str::FromStr };
 
-use dashmap::DashMap;
-
-use shared::{lselect, Plugin};
 use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
 use tokio::net::{ TcpListener, TcpStream };
 use tokio::select;
 use tokio::sync::mpsc::Sender;
-use tokio::sync::{ mpsc, Mutex, RwLock };
+use tokio::sync::{ Mutex, RwLock, mpsc };
+
+use dashmap::DashMap;
 
 use public_ip::addr;
-use shared::config::cluster::{ read, Settings };
+
+use shared::config::cluster::{ Settings, read };
 use shared::network::{ ClusterInfo, Event };
 use shared::packets::cluster::FromClient;
 use shared::packets::master::{ FromUnknown, ToUnknown };
-use shared::security::aes::{ decrypt, generate_key, load_key, save_key };
-use shared::utils::constants;
-use shared::utils::constants::DEFAULT_IP;
+use shared::security::aes::{ create_keys_dir, decrypt, generate_key, load_key, save_key };
+use shared::utils::constants::{ self, DEFAULT_IP };
+use shared::{ Plugin, lselect };
 
 lazy_static::lazy_static! {
     static ref CLUSTER_IDS: Arc<RwLock<BTreeSet<ClusterInfo>>> = Arc::new(
         RwLock::new(BTreeSet::new())
     );
 }
+pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| Logger::new());
 
 pub fn get_ip(ip: &str) -> Ipv4Addr {
     Ipv4Addr::from_str(ip).unwrap_or(Ipv4Addr::from_str(DEFAULT_IP).unwrap_or(Ipv4Addr::LOCALHOST))
@@ -35,6 +36,13 @@ pub fn get_ip(ip: &str) -> Ipv4Addr {
 pub async fn cleanup() {}
 
 pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
+    let plugin = Arc::new(plugin);
+
+    LOGGER.set_plugin({
+        let plugin = Arc::clone(&plugin);
+        move |msg| plugin.info(msg)
+    });
+
     let Settings {
         server_name,
         max_connections,
@@ -47,25 +55,18 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
     let key = match load_key(key_name.as_str()) {
         Ok(key) => key,
         Err(_) => {
-            if std::fs::DirBuilder::new().recursive(true).create("keys").is_err() {
-                plugin.info("Failed to create the 'keys' directory.");
-                error("Failed to create the 'keys' directory.");
-                panic!();
+            if let Err(e) = create_keys_dir() {
+                LOGGER.error(e.to_string().as_str());
+                panic!("{e:?}");
             }
 
             let key = generate_key();
             if save_key(key_name.as_str(), key).is_err() {
-                plugin.info("Failed to save the generated key.");
-                error("Failed to save the generated key.");
-                panic!();
+                LOGGER.error("Failed to save the generated key.");
+                panic!("Failed to save the generated key.");
             }
 
-            plugin.info(
-                format!(
-                    "A new AES key at 'keys/{key_name}' has been generated and saved. Make sure the Master Server also has this key for authentication."
-                ).as_str()
-            );
-            warning(
+            LOGGER.warning(
                 format!(
                     "A new AES key at 'keys/{key_name}' has been generated and saved. Make sure the Master Server also has this key for authentication."
                 ).as_str()
@@ -76,6 +77,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
     };
 
     let (tx, mut rx) = mpsc::channel::<Box<[u8]>>(10);
+    plugin.set_sender(tx.clone());
     let tx_clone = tx.clone();
 
     // Cluster Server's connection to the Master Server.
@@ -94,8 +96,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                         continue;
                     }
 
-                    plugin.info(format!("Cluster Server received data: {:?}", command).as_str());
-                    debug(format!("Cluster Server received data: {:?}", command).as_str());
+                    LOGGER.debug(format!("Cluster Server received data: {:?}", command).as_str());
 
                     match command.unwrap() {
                         x if x == ToUnknown::VerifyCluster as u8 => {
@@ -104,8 +105,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                             match reader.read_exact(&mut passphrase).await {
                                 Ok(_) => {},
                                 Err(e) => {
-                                    plugin.info(format!("Failed to read passphrase to String: {:?}", e).as_str());
-                                    error(format!("Failed to read passphrase to String: {:?}", e).as_str());
+                                    LOGGER.error(format!("Failed to read passphrase to String: {:?}", e).as_str());
                                     continue;
                                 }
                             }
@@ -123,10 +123,9 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                                 let ip_string = ip.to_string();
                                 let ip_bytes = ip_string.as_bytes();
                                 data.push(ip_bytes.len() as u8);
-                                data.extend_from_slice(&ip.to_string().as_bytes());
+                                data.extend_from_slice(ip_bytes);
                             } else {
-                                plugin.info("Failed to get the public IP address.");
-                                error("Failed to get the public IP address.");
+                                LOGGER.error("Failed to get the public IP address.");
                                 return;
                             }
 
@@ -137,10 +136,9 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                             send_data(&tx, data.into_boxed_slice()).await;
                         }
                         x if x == ToUnknown::CreateCluster as u8 => {
-                            plugin.info("We did it! We verified the cluster!");
-                            success("We did it! We verified the cluster!");
+                            LOGGER.success("We did it! We verified the cluster!");
                         }
-                        cmd => plugin.receive(tx.clone(), cmd).await,
+                        cmd => plugin.receive(tx.clone(), cmd, &mut reader).await,
                 }
             }
                 result = rx.recv() => {
@@ -149,8 +147,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                         writer.flush().await.expect("Failed to flush the writer.");
                     } else {
                         writer.shutdown().await.expect("Failed to shutdown the writer.");
-                        plugin.info("Cluster Server is shutting down its client writer.");
-                        info("Cluster Server is shutting down its client writer.");
+                        LOGGER.info("Cluster Server is shutting down its client writer.");
                         break;
                     }
                 }
@@ -174,19 +171,17 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                             match event {
                                 Event::Connection(id) => on_connection(id),
                                 Event::Disconnection(id) => {
-                                    plugin.info(format!("Client#{id} disconnected.").as_str());
-                                    debug(format!("Client#{id} disconnected.").as_str());
+                                    LOGGER.debug(format!("Client#{id} disconnected.").as_str());
                                     clients.remove(&id);
 
                                     if id >= clients.len() as u32 {
-                                        info(format!("Client#{id} wasn't added to the released IDs list.").as_str());
+                                        LOGGER.info(format!("Client#{id} wasn't added to the released IDs list.").as_str());
                                         continue;
                                     }
 
                                     let mut ids = released_ids.lock().await;
                                     if !(*ids).insert(id) {
-                                        plugin.info(format!("ID {} already exists in the released IDs.", id).as_str());
-                                        error(format!("ID {} already exists in the released IDs.", id).as_str());
+                                        LOGGER.error(format!("ID {} already exists in the released IDs.", id).as_str());
                                         continue;
                                     };
                                 },
@@ -197,13 +192,11 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                     // Listen and add clients.
                     res = tcp_listener.accept() => {
                         if let Ok((stream, addr)) = res {
-                            plugin.info(format!("Accepted connection from {:?}", addr).as_str());
-                            debug(format!("Accepted connection from {:?}", addr).as_str());
+                            LOGGER.debug(format!("Accepted connection from {:?}", addr).as_str());
 
                             // If the max_connections is reached, return an error.
                             if max_connections != 0 && clients.len() >= (max_connections as usize) {
-                                plugin.info("Max connections reached.");
-                                error("Max connections reached.");
+                                LOGGER.error("Max connections reached.");
                                 continue;
                             }
 
@@ -250,7 +243,7 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                 _ => format!("{} max connections", max_connections),
             };
 
-            debug(
+            LOGGER.debug(
                 format!("Starting the Cluster Server on port {} with {max_connections_str}...", port).as_str()
             );
         }
@@ -267,17 +260,17 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                         match event {
                             Event::Connection(id) => on_connection(id),
                             Event::Disconnection(id) => {
-                                debug(format!("Client#{id} disconnected.").as_str());
+                                LOGGER.debug(format!("Client#{id} disconnected.").as_str());
                                 clients.remove(&id);
 
                                 if id >= clients.len() as u32 {
-                                    info(format!("Client#{id} wasn't added to the released IDs list.").as_str());
+                                    LOGGER.info(format!("Client#{id} wasn't added to the released IDs list.").as_str());
                                     continue;
                                 }
 
                                 let mut ids = released_ids.lock().await;
                                 if !(*ids).insert(id) {
-                                    error(format!("ID {} already exists in the released IDs.", id).as_str());
+                                    LOGGER.error(format!("ID {} already exists in the released IDs.", id).as_str());
                                     continue;
                                 };
                             },
@@ -288,11 +281,11 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
                 // Listen and add clients.
                 res = tcp_listener.accept() => {
                     if let Ok((stream, addr)) = res {
-                        debug(format!("Accepted connection from {:?}", addr).as_str());
+                        LOGGER.debug(format!("Accepted connection from {:?}", addr).as_str());
 
                         // If the max_connections is reached, return an error.
                         if max_connections != 0 && clients.len() >= (max_connections as usize) {
-                            error("Max connections reached.");
+                            LOGGER.error("Max connections reached.");
                             continue;
                         }
 
@@ -319,26 +312,26 @@ async fn send_data(tx: &mpsc::Sender<Box<[u8]>>, data: Box<[u8]>) {
 
 // region: Events
 fn on_connection(id: u32) {
-    debug(format!("Client#{id} connected").as_str());
+    LOGGER.debug(format!("Client#{id} connected").as_str());
 }
 
 fn on_received_data(id: u32, data: &[u8]) {
-    debug(format!("Received data from Client#{id}: {:?}", data).as_str());
+    LOGGER.debug(format!("Received data from Client#{id}: {:?}", data).as_str());
     todo!()
 }
 
 // fn on_client_connected(id: u32) {
-//     debug(format!("Client connected: {}", id).as_str());
+//     LOGGER.debug(format!("Client connected: {}", id).as_str());
 //     todo!()
 // }
 
 // fn on_client_disconnected(id: u32, protocol: Protocols) {
-//     debug(format!("Client disconnected: {} {}", id, protocol as u8).as_str());
+//     LOGGER.debug(format!("Client disconnected: {} {}", id, protocol as u8).as_str());
 //     todo!()
 // }
 
 // fn on_client_received_data(id: u32, protocol: Protocols, data: &[u8]) {
-//     debug(format!("Client received data: {} {} {:?}", id, protocol as u8, data).as_str());
+//     LOGGER.debug(format!("Client received data: {} {} {:?}", id, protocol as u8, data).as_str());
 //     todo!()
 // }
 // endregion
@@ -346,39 +339,69 @@ fn on_received_data(id: u32, data: &[u8]) {
 // region: Logging
 use shared::{ log_message, utils::constants::DEBUGGING };
 
-pub fn debug(message: &str) {
-    if !DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Debug, LogType::Cluster, "{}", message);
+pub struct Logger {
+    plugin_info: OnceLock<Box<dyn Fn(&str) + Send + Sync + 'static>>,
 }
-
-pub fn info(message: &str) {
-    if !DEBUGGING {
-        return;
+impl Logger {
+    pub fn new() -> Self {
+        Logger {
+            plugin_info: OnceLock::new(),
+        }
     }
-    log_message!(LogLevel::Info, LogType::Cluster, "{}", message);
-}
 
-pub fn warning(message: &str) {
-    if !DEBUGGING {
-        return;
+    pub fn set_plugin<F>(&self, plugin: F) where F: Fn(&str) + Send + Sync + 'static {
+        let _ = self.plugin_info.set(Box::new(plugin));
     }
-    log_message!(LogLevel::Warning, LogType::Cluster, "{}", message);
-}
 
-pub fn error(message: &str) {
-    if !DEBUGGING {
-        return;
+    pub fn debug(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Debug, LogType::Cluster, "{}", message);
     }
-    log_message!(LogLevel::Error, LogType::Cluster, "{}", message);
-}
 
-pub fn success(message: &str) {
-    if !DEBUGGING {
-        return;
+    pub fn info(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Info, LogType::Cluster, "{}", message);
     }
-    log_message!(LogLevel::Success, LogType::Cluster, "{}", message);
+
+    pub fn warning(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Warning, LogType::Cluster, "{}", message);
+    }
+
+    pub fn error(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Error, LogType::Cluster, "{}", message);
+    }
+
+    pub fn success(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Success, LogType::Cluster, "{}", message);
+    }
 }
 // endregion
 
@@ -418,7 +441,7 @@ impl ServerClient {
                             break;
                         }
 
-                        debug(format!("Cluster Server received data: {:?}", command).as_str());
+                        LOGGER.debug(format!("Cluster Server received data: {:?}", command).as_str());
 
                         match command.unwrap() {
                             x if x == FromClient::RequestClusters as u8 => {
@@ -445,7 +468,7 @@ impl ServerClient {
                             writer.flush().await.expect("Failed to flush the writer.");
                         } else {
                             writer.shutdown().await.expect("Failed to shutdown the writer.");
-                            info("Cluster Server is shutting down its client writer.");
+                            LOGGER.info("Cluster Server is shutting down its client writer.");
                             event_sender.send(Event::Disconnection(id)).await.expect("Failed to send disconnection event.");
                             break;
                         }
