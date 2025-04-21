@@ -1,4 +1,4 @@
-use sustenet::cluster::{LOGGER, cleanup, start};
+use sustenet::cluster::{ LOGGER, cleanup, start };
 use sustenet::shared::Plugin;
 use tokio::io::AsyncReadExt;
 use tokio::sync::mpsc::Sender;
@@ -17,13 +17,13 @@ impl Reia {
     async fn handle_data(
         tx: Sender<Box<[u8]>>,
         command: u8,
-        reader: &mut tokio::io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
+        reader: &mut tokio::io::BufReader<tokio::net::tcp::ReadHalf<'_>>
     ) {
-        LOGGER.info(format!("Received new command: {}", command).as_str());
+        LOGGER.info(&format!("Received new command: {}", command));
 
         // Send a test message back to the sender
         if let Err(e) = tx.send(Box::new([20])).await {
-            LOGGER.error(format!("Failed to send message. {e}").as_str());
+            LOGGER.error(&format!("Failed to send message. {e}"));
         }
 
         // Read the message from the reader
@@ -32,7 +32,7 @@ impl Reia {
         match reader.read_exact(&mut passphrase).await {
             Ok(_) => {}
             Err(e) => {
-                LOGGER.error(format!("Failed to read passphrase to String: {:?}", e).as_str());
+                LOGGER.error(&format!("Failed to read passphrase to String: {:?}", e));
                 return;
             }
         };
@@ -44,7 +44,7 @@ impl Plugin for Reia {
     fn set_sender(&self, tx: Sender<Box<[u8]>>) {
         // Set the sender
         if self.sender.set(tx).is_err() {
-            LOGGER.error("Failed to set sender");
+            LOGGER.error("Failed to set sender.");
         }
     }
 
@@ -52,7 +52,7 @@ impl Plugin for Reia {
         &self,
         tx: Sender<Box<[u8]>>,
         command: u8,
-        reader: &'plug mut tokio::io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
+        reader: &'plug mut tokio::io::BufReader<tokio::net::tcp::ReadHalf<'_>>
     ) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send + 'plug>> {
         Box::pin(Self::handle_data(tx, command, reader))
     }
