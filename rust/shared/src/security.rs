@@ -235,10 +235,7 @@ pub mod tests {
         let keys = match load_all_keys() {
             Ok(keys) => keys,
             Err(e) => {
-                println!("Failed to load all keys: {:?}", e);
-                // TODO: Figure out a way to change the directory for tests.
-                // This function works, just not in tests.
-                return;
+                panic!("Failed to load all keys: {:?}", e);
             }
         };
         assert_eq!(keys.len(), 2);
