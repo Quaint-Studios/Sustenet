@@ -3,12 +3,12 @@ use sustenet_shared as shared;
 use tokio::{ select, sync::mpsc::Sender };
 
 use shared::utils;
-use sustenet_cluster::{ LOGGER, cleanup, start };
+use sustenet_cluster::{ cleanup, start_with_config, LOGGER };
 
 struct DefaultPlugin {
     sender: std::sync::OnceLock<Sender<Box<[u8]>>>,
 }
-impl shared::Plugin for DefaultPlugin {
+impl shared::ServerPlugin for DefaultPlugin {
     fn set_sender(&self, tx: Sender<Box<[u8]>>) {
         // Set the sender
         if self.sender.set(tx).is_err() {
@@ -42,7 +42,7 @@ async fn main() {
         _ = shutdown_rx.recv() => {
             LOGGER.warning("Shutting down...");
         }
-        _ = start(DefaultPlugin { sender: std::sync::OnceLock::new() }) => {}
+        _ = start_with_config(DefaultPlugin { sender: std::sync::OnceLock::new() }) => {}
     }
 
     cleanup().await;

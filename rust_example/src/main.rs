@@ -1,5 +1,5 @@
-use sustenet::cluster::{ LOGGER, cleanup, start };
-use sustenet::shared::Plugin;
+use sustenet::cluster::{ cleanup, start_with_config, LOGGER };
+use sustenet::shared::ServerPlugin;
 use tokio::io::AsyncReadExt;
 use tokio::sync::mpsc::Sender;
 
@@ -40,7 +40,7 @@ impl Reia {
 }
 
 // Plugin initialization
-impl Plugin for Reia {
+impl ServerPlugin for Reia {
     fn set_sender(&self, tx: Sender<Box<[u8]>>) {
         // Set the sender
         if self.sender.set(tx).is_err() {
@@ -64,6 +64,6 @@ impl Plugin for Reia {
 
 #[tokio::main]
 async fn main() {
-    start(Reia::new()).await;
+    start_with_config(Reia::new()).await;
     cleanup().await;
 }

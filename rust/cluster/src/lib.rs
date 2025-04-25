@@ -1,7 +1,6 @@
 use sustenet_shared as shared;
 
 use std::collections::BTreeSet;
-use std::sync::{ Arc, LazyLock, OnceLock };
 use std::sync::{ Arc, LazyLock };
 use std::{ net::Ipv4Addr, str::FromStr };
 
@@ -22,7 +21,7 @@ use shared::packets::cluster::FromClient;
 use shared::packets::master::{ FromUnknown, ToUnknown };
 use shared::security::aes::{ create_keys_dir, decrypt, generate_key, load_key, save_key };
 use shared::utils::constants::{ self, DEFAULT_IP };
-use shared::{ Plugin, lselect };
+use shared::{ ServerPlugin, lselect };
 
 lazy_static::lazy_static! {
     static ref CLUSTER_IDS: Arc<RwLock<BTreeSet<ClusterInfo>>> = Arc::new(
@@ -37,14 +36,11 @@ pub fn get_ip(ip: &str) -> Ipv4Addr {
 
 pub async fn cleanup() {}
 
-pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
-    let plugin = Arc::new(plugin);
+pub async fn start_with_config<P>(plugin: P) where P: ServerPlugin + Send + Sync + 'static {
+    start(plugin, read()).await;
+}
 
-    LOGGER.set_plugin({
-        let plugin = Arc::clone(&plugin);
-        move |msg| plugin.info(msg)
-    });
-
+pub async fn start<P>(plugin: P, settings: Settings) where P: ServerPlugin + Send + Sync + 'static {
     let Settings {
         server_name,
         max_connections,
@@ -53,7 +49,15 @@ pub async fn start<P>(plugin: P) where P: Plugin + Send + Sync + 'static {
         master_ip,
         master_port,
         domain_pub_key: _,
-    } = read();
+    } = settings;
+
+    let plugin = Arc::new(plugin);
+
+    LOGGER.set_plugin({
+        let plugin = Arc::clone(&plugin);
+        move |msg| plugin.info(msg)
+    });
+
     let key = match load_key(key_name.as_str()) {
         Ok(key) => key,
         Err(_) => {

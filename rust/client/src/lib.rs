@@ -1,25 +1,25 @@
 use sustenet_shared as shared;
 
-use std::net::IpAddr;
-use std::sync::Arc;
-use std::{ net::Ipv4Addr, str::FromStr };
+use std::net::{ IpAddr, Ipv4Addr };
+use std::str::FromStr;
+use std::sync::{ Arc, LazyLock };
 
 use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
 use tokio::net::TcpStream;
 use tokio::sync::mpsc::Sender;
-use tokio::sync::{ mpsc, Mutex, RwLock };
+use tokio::sync::{ RwLock, mpsc };
 
+use shared::logging::{ LogType, Logger };
 use shared::packets::cluster::ToClient;
-use shared::packets::master::{ FromUnknown, ToUnknown };
-use shared::utils::constants;
+use shared::packets::master::ToUnknown;
 use shared::utils::constants::{ DEFAULT_IP, MASTER_PORT };
-use shared::{ log_message, lread_string, lselect };
+use shared::{ lread_string, lselect };
+use sustenet_shared::ClientPlugin;
 
 lazy_static::lazy_static! {
     pub static ref CLUSTER_SERVERS: Arc<RwLock<Vec<ClusterInfo>>> = Arc::new(
         RwLock::new(Vec::new())
     );
-    pub static ref SENDER: Arc<Mutex<Option<Sender<Box<[u8]>>>>> = Arc::new(Mutex::new(None));
     pub static ref CONNECTION: Arc<RwLock<Option<Connection>>> = Arc::new(
         RwLock::new(
             Some(Connection {
@@ -30,6 +30,7 @@ lazy_static::lazy_static! {
         )
     );
 }
+pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| Logger::new(LogType::Cluster));
 
 #[derive(Debug, Clone)]
 pub struct ClusterInfo {
@@ -74,13 +75,15 @@ impl std::fmt::Display for ConnectionType {
 }
 
 pub fn get_ip(ip: &str) -> IpAddr {
-    IpAddr::from_str(ip).unwrap_or(IpAddr::from_str(DEFAULT_IP).unwrap_or(IpAddr::V4(Ipv4Addr::LOCALHOST)))
+    IpAddr::from_str(ip).unwrap_or(
+        IpAddr::from_str(DEFAULT_IP).unwrap_or(IpAddr::V4(Ipv4Addr::LOCALHOST))
+    )
 }
 
 pub async fn cleanup() {}
 
-pub async fn start() {
-    // Get the connection information.
+pub async fn start<P>(plugin: P) where P: ClientPlugin + Send + Sync + 'static {
+    // Get the connection LOGGER.information.
     let connection = *CONNECTION.read().await;
     if connection.is_none() {
         return;
@@ -95,16 +98,14 @@ pub async fn start() {
     }
 
     let (tx, mut rx) = mpsc::channel::<Box<[u8]>>(10);
-    {
-        SENDER.lock().await.replace(tx);
-    }
+    plugin.set_sender(tx.clone());
 
     let handler = tokio::spawn(async move {
-        warning(format!("Connecting to the {connection_type}...").as_str());
+        LOGGER.warning(format!("Connecting to the {connection_type}...").as_str());
         let mut stream = TcpStream::connect(format!("{}:{}", ip, port)).await.expect(
             format!("Failed to connect to the {connection_type} at {ip}:{port}.").as_str()
         );
-        success(format!("Connected to the {connection_type} at {ip}:{port}.").as_str());
+        LOGGER.success(format!("Connected to the {connection_type} at {ip}:{port}.").as_str());
 
         let (reader, mut writer) = stream.split();
         let mut reader = BufReader::new(reader);
@@ -115,7 +116,7 @@ pub async fn start() {
                     continue;
                 }
 
-                info(format!("Received data: {:?}", command).as_str());
+                LOGGER.info(format!("Received data: {:?}", command).as_str());
 
                 match connection_type {
                     ConnectionType::MasterServer => match command.unwrap() {
@@ -123,26 +124,26 @@ pub async fn start() {
                             let amount = match reader.read_u8().await {
                                 Ok(amount) => amount,
                                 Err(_) => {
-                                    error("Failed to read the amount of clusters.");
+                                    LOGGER.error("Failed to read the amount of clusters.");
                                     continue;
                                 }
                             };
 
                             let mut cluster_servers_tmp = Vec::new();
                             for _ in 0..amount {
-                                let name = lread_string!(reader, error, "cluster name");
-                                let ip = lread_string!(reader, error, "cluster IP");
+                                let name = lread_string!(reader, |msg| LOGGER.error(msg), "cluster name");
+                                let ip = lread_string!(reader, |msg| LOGGER.error(msg), "cluster IP");
                                 let port = match reader.read_u16().await {
                                     Ok(port) => port,
                                     Err(_) => {
-                                        error("Failed to read the cluster port.");
+                                        LOGGER.error("Failed to read the cluster port.");
                                         continue;
                                     }
                                 };
                                 let max_connections = match reader.read_u32().await {
                                     Ok(max_connections) => max_connections,
                                     Err(_) => {
-                                        error("Failed to read the cluster max connections.");
+                                        LOGGER.error("Failed to read the cluster max connections.");
                                         continue;
                                     }
                                 };
@@ -160,38 +161,38 @@ pub async fn start() {
                                     let mut cluster_servers = CLUSTER_SERVERS.write().await;
                                     *cluster_servers = cluster_servers_tmp;
 
-                                    success(format!("Received {amount} Cluster servers from the {connection_type}.").as_str());
+                                    LOGGER.success(format!("Received {amount} Cluster servers from the {connection_type}.").as_str());
                                     println!("{:?}", *cluster_servers);
                                 }
                             }
                         },
-                        _ => (),
+                        cmd => plugin.receive_master(tx.clone(), cmd, &mut reader).await,
                     }
                     ConnectionType::ClusterServer => match command.unwrap() {
                         x if x == ToClient::SendClusters as u8 => {
                             let amount = match reader.read_u8().await {
                                 Ok(amount) => amount,
                                 Err(_) => {
-                                    error("Failed to read the amount of clusters.");
+                                    LOGGER.error("Failed to read the amount of clusters.");
                                     continue;
                                 }
                             };
 
                             let mut cluster_servers_tmp = Vec::new();
                             for _ in 0..amount {
-                                let name = lread_string!(reader, error, "cluster name");
-                                let ip = lread_string!(reader, error, "cluster IP");
+                                let name = lread_string!(reader, |msg| LOGGER.error(msg), "cluster name");
+                                let ip = lread_string!(reader, |msg| LOGGER.error(msg), "cluster IP");
                                 let port = match reader.read_u16().await {
                                     Ok(port) => port,
                                     Err(_) => {
-                                        error("Failed to read the cluster port.");
+                                        LOGGER.error("Failed to read the cluster port.");
                                         continue;
                                     }
                                 };
                                 let max_connections = match reader.read_u32().await {
                                     Ok(max_connections) => max_connections,
                                     Err(_) => {
-                                        error("Failed to read the cluster max connections.");
+                                        LOGGER.error("Failed to read the cluster max connections.");
                                         continue;
                                     }
                                 };
@@ -209,7 +210,7 @@ pub async fn start() {
                                     let mut cluster_servers = CLUSTER_SERVERS.write().await;
                                     *cluster_servers = cluster_servers_tmp;
 
-                                    success(format!("Received {amount} Cluster servers from the {connection_type}.").as_str());
+                                    LOGGER.success(format!("Received {amount} Cluster servers from the {connection_type}.").as_str());
                                     println!("{:?}", *cluster_servers);
                                 }
                             }
@@ -222,7 +223,7 @@ pub async fn start() {
                         x if x == ToClient::Authenticate as u8 => todo!(),
 
                         x if x == ToClient::Move as u8 => todo!(),
-                        _ => (),
+                        cmd => plugin.receive_cluster(tx.clone(), cmd, &mut reader).await,
                     }
                     _ => (),
                 }
@@ -231,55 +232,43 @@ pub async fn start() {
                 if let Some(data) = result {
                     if data.is_empty() {
                         writer.shutdown().await.expect("Failed to shutdown the writer.");
-                        info("Closing connection...");
+                        LOGGER.info("Closing connection...");
                         break;
                     }
 
                     writer.write_all(&data).await.expect("Failed to write to the Server.");
                     writer.flush().await.expect("Failed to flush the writer.");
-                    info(format!("Sent {data:?} as data to the {connection_type}.").as_str());
+                    LOGGER.info(format!("Sent {data:?} as data to the {connection_type}.").as_str());
                 } else {
                     writer.shutdown().await.expect("Failed to shutdown the writer.");
-                    info("Shutting down connection...");
+                    LOGGER.info("Shutting down connection...");
                     break;
                 }
             }
         }
     });
 
-    if connection_type == ConnectionType::MasterServer {
-        send_data(Box::new([FromUnknown::RequestClusters as u8])).await;
-    }
-
     let _ = handler.await;
 }
 
-pub async fn send_data(data: Box<[u8]>) {
-    let tx = SENDER.lock().await;
-    match tx.as_ref() {
-        Some(tx) => {
-            tx.send(data).await.expect("Failed to send data to the Server.");
-        }
-        None => {
-            error("Failed to send data to the Server. The Sender is not set.");
-        }
-    }
+pub async fn send_data(tx: &Sender<Box<[u8]>>, data: Box<[u8]>) {
+    tx.send(data).await.expect("Failed to send data to the Server.");
 }
 
-pub async fn join_cluster(id: usize) {
+pub async fn join_cluster(tx: &Sender<Box<[u8]>>, id: usize) {
     if id < (0 as usize) {
-        error("Failed to join a cluster. The cluster ID is invalid (less than 0).");
+        LOGGER.error("Failed to join a cluster. The cluster ID is invalid (less than 0).");
         return;
     }
 
     let cluster_servers = CLUSTER_SERVERS.read().await;
     if cluster_servers.is_empty() {
-        error("Failed to join a cluster. No cluster servers are available.");
+        LOGGER.error("Failed to join a cluster. No cluster servers are available.");
         return;
     }
 
     if id >= cluster_servers.len() {
-        error(
+        LOGGER.error(
             "Failed to join a cluster. The cluster ID is invalid (greater than the amount of clusters)."
         );
         return;
@@ -289,73 +278,28 @@ pub async fn join_cluster(id: usize) {
         match cluster_servers.get(id) {
             Some(cluster) => cluster,
             None => {
-                error("Failed to join a cluster. The cluster ID is invalid.");
+                LOGGER.error("Failed to join a cluster. The cluster ID is invalid.");
                 return;
             }
         }
     ).clone();
 
-    success(format!("Client is joining cluster {}", cluster.name).as_str());
+    LOGGER.success(format!("Client is joining cluster {}", cluster.name).as_str());
 
     let connection = match std::panic::catch_unwind(|| Connection::from(cluster)) {
         Ok(connection) => connection,
         Err(_) => {
-            error("Failed to create a connection with the Cluster Server.");
+            LOGGER.error("Failed to create a connection with the Cluster Server.");
             return;
         }
     };
     {
         // Overwrite the current connection with the cluster connection.
         *CONNECTION.write().await = Some(connection);
-        stop().await;
+        stop(tx).await;
     }
 }
 
-async fn stop() {
-    let tx = SENDER.lock().await;
-    let tx = match tx.as_ref() {
-        Some(tx) => tx,
-        None => {
-            error("Failed to send data to the Server. The Sender is not set.");
-            return;
-        }
-    };
+async fn stop(tx: &Sender<Box<[u8]>>) {
     tx.send(Box::new([])).await.expect("Failed to shutdown.");
 }
-
-// region: Logging
-// fn debug(message: &str) {
-//     if !constants::DEBUGGING {
-//         return;
-//     }
-//     log_message!(LogLevel::Debug, LogType::Client, "{}", message);
-// }
-
-pub fn info(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Info, LogType::Client, "{}", message);
-}
-
-pub fn warning(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Warning, LogType::Client, "{}", message);
-}
-
-pub fn error(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Error, LogType::Client, "{}", message);
-}
-
-pub fn success(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Success, LogType::Client, "{}", message);
-}
-// endregion

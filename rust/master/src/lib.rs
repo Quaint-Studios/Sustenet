@@ -1,18 +1,18 @@
 use sustenet_shared as shared;
 
 use std::collections::BTreeSet;
-use std::sync::Arc;
+use std::sync::{ Arc, LazyLock };
 
 use dashmap::DashMap;
 
-use tokio::io::{AsyncReadExt, AsyncWriteExt, BufReader};
-use tokio::net::{TcpListener, TcpStream};
+use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
+use tokio::net::{ TcpListener, TcpStream };
 use tokio::select;
-use tokio::sync::mpsc::{self, Sender};
-use tokio::sync::{Mutex, RwLock};
+use tokio::sync::mpsc::{ self, Sender };
+use tokio::sync::{ Mutex, RwLock };
 
-use shared::config::master::{Settings, read};
-use shared::log_message;
+use shared::config::master::{ Settings, read };
+use shared::logging::{ LogType, Logger };
 use shared::network::*;
 use shared::packets::master::*;
 use shared::security::aes::*;
@@ -25,6 +25,7 @@ lazy_static::lazy_static! {
         RwLock::new(BTreeSet::new())
     );
 }
+pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| Logger::new(LogType::Cluster));
 
 #[derive(Eq)]
 struct ClusterInfo {
@@ -57,14 +58,14 @@ impl PartialEq for ClusterInfo {
     }
 }
 
+pub async fn start_with_config() {
+    start(read()).await;
+}
+
 /// This function starts the master server.
 /// It listens for an event
-pub async fn start() {
-    let Settings {
-        server_name: _,
-        max_connections,
-        port,
-    } = read();
+pub async fn start(settings: Settings) {
+    let Settings { server_name: _, max_connections, port } = settings;
     let (event_sender, mut event_receiver) = mpsc::channel::<Event>(100);
 
     let clients: DashMap<u32, ServerClient> = DashMap::new();
@@ -77,20 +78,16 @@ pub async fn start() {
             _ => format!("{} max connections", max_connections),
         };
 
-        debug(
-            format!(
-                "Starting the Master Server on port {} with {max_connections_str}...",
-                port
-            )
-            .as_str(),
+        LOGGER.debug(
+            format!("Starting the Master Server on port {} with {max_connections_str}...", port).as_str()
         );
     }
 
     // Listen
     {
-        let tcp_listener = TcpListener::bind(format!("{}:{}", constants::DEFAULT_IP, port))
-            .await
-            .expect("Failed to bind to the specified port.");
+        let tcp_listener = TcpListener::bind(
+            format!("{}:{}", constants::DEFAULT_IP, port)
+        ).await.expect("Failed to bind to the specified port.");
 
         loop {
             select! {
@@ -99,17 +96,17 @@ pub async fn start() {
                         match event {
                             Event::Connection(id) => on_connection(id),
                             Event::Disconnection(id) => {
-                                debug(format!("Client#{id} disconnected.").as_str());
+                                LOGGER.debug(format!("Client#{id} disconnected.").as_str());
                                 clients.remove(&id);
 
                                 if id >= clients.len() as u32 {
-                                    info(format!("Client#{id} wasn't added to the released IDs list.").as_str());
+                                    LOGGER.info(format!("Client#{id} wasn't added to the released IDs list.").as_str());
                                     continue;
                                 }
 
                                 let mut ids = released_ids.lock().await;
                                 if !(*ids).insert(id) {
-                                    error(format!("ID {} already exists in the released IDs.", id).as_str());
+                                    LOGGER.error(format!("ID {} already exists in the released IDs.", id).as_str());
                                     continue;
                                 };
                             },
@@ -120,11 +117,11 @@ pub async fn start() {
                 // Listen and add clients.
                 res = tcp_listener.accept() => {
                     if let Ok((stream, addr)) = res {
-                        debug(format!("Accepted connection from {:?}", addr).as_str());
+                        LOGGER.debug(format!("Accepted connection from {:?}", addr).as_str());
 
                         // If the max_connections is reached, return an error.
                         if max_connections != 0 && clients.len() >= (max_connections as usize) {
-                            error("Max connections reached.");
+                            LOGGER.error("Max connections reached.");
                             continue;
                         }
 
@@ -147,65 +144,28 @@ pub async fn start() {
 
 // region: Events
 fn on_connection(id: u32) {
-    debug(format!("Client#{id} connected").as_str());
+    LOGGER.debug(format!("Client#{id} connected").as_str());
 }
 
 fn on_received_data(id: u32, data: &[u8]) {
-    debug(format!("Received data from Client#{id}: {:?}", data).as_str());
+    LOGGER.debug(format!("Received data from Client#{id}: {:?}", data).as_str());
     todo!()
 }
 
 // fn on_client_connected(id: u32) {
-//     debug(format!("Client connected: {}", id).as_str());
+//     LOGGER.debug(format!("Client connected: {}", id).as_str());
 //     todo!()
 // }
 
 // fn on_client_disconnected(id: u32, protocol: Protocols) {
-//     debug(format!("Client disconnected: {} {}", id, protocol as u8).as_str());
+//     LOGGER.debug(format!("Client disconnected: {} {}", id, protocol as u8).as_str());
 //     todo!()
 // }
 
 // fn on_client_received_data(id: u32, protocol: Protocols, data: &[u8]) {
-//     debug(format!("Client received data: {} {} {:?}", id, protocol as u8, data).as_str());
+//     LOGGER.debug(format!("Client received data: {} {} {:?}", id, protocol as u8, data).as_str());
 //     todo!()
 // }
-// endregion
-
-// region: Logging
-pub fn debug(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Debug, LogType::Master, "{}", message);
-}
-
-pub fn info(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Info, LogType::Master, "{}", message);
-}
-
-pub fn warning(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Warning, LogType::Master, "{}", message);
-}
-
-pub fn error(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Error, LogType::Master, "{}", message);
-}
-
-pub fn success(message: &str) {
-    if !constants::DEBUGGING {
-        return;
-    }
-    log_message!(LogLevel::Success, LogType::Master, "{}", message);
-}
 // endregion
 
 pub struct ServerClient {
@@ -244,7 +204,7 @@ impl ServerClient {
                             break;
                         }
 
-                        debug(format!("Received data from Client#{id}: {:?}", command).as_str());
+                        LOGGER.debug(format!("Received data from Client#{id}: {:?}", command).as_str());
 
                         match command.unwrap() {
                             x if x == FromUnknown::RequestClusters as u8 => {
@@ -269,7 +229,7 @@ impl ServerClient {
                                 let len = match reader.read_u8().await {
                                     Ok(len) => len,
                                     Err(e) => {
-                                        error(format!("Failed to read cluster name length: {:?}", e).as_str());
+                                        LOGGER.error(format!("Failed to read cluster name length: {:?}", e).as_str());
                                         continue;
                                     }
                                 } as usize;
@@ -277,7 +237,7 @@ impl ServerClient {
                                 match reader.read_exact(&mut key_name).await {
                                     Ok(_) => {},
                                     Err(e) => {
-                                        error(format!("Failed to read cluster name to String: {:?}", e).as_str());
+                                        LOGGER.error(format!("Failed to read cluster name to String: {:?}", e).as_str());
                                         continue;
                                     }
                                 }
@@ -285,7 +245,7 @@ impl ServerClient {
                                 let key = match security::AES_KEYS.get(&key_name) {
                                     Some(key) => key,
                                     None => {
-                                        error(format!("Key {} doesn't exist.", key_name).as_str());
+                                        LOGGER.error(format!("Key {} doesn't exist.", key_name).as_str());
                                         continue;
                                     }
                                 };
@@ -310,7 +270,7 @@ impl ServerClient {
                                 match reader.read_exact(&mut passphrase).await {
                                     Ok(_) => {},
                                     Err(e) => {
-                                        error(format!("Failed to read the passphrase to String: {:?}", e).as_str());
+                                        LOGGER.error(format!("Failed to read the passphrase to String: {:?}", e).as_str());
                                         continue;
                                     }
                                 }
@@ -319,17 +279,17 @@ impl ServerClient {
                                     let passphrase = match String::from_utf8(passphrase) {
                                         Ok(passphrase) => passphrase,
                                         Err(e) => {
-                                            error(format!("Failed to convert passphrase to String: {:?}", e).as_str());
+                                            LOGGER.error(format!("Failed to convert passphrase to String: {:?}", e).as_str());
                                             continue;
                                         }
                                     };
 
                                     let name = name.read().await;
                                     if (*name).is_none() || passphrase != *name.as_ref().expect("Failed to get saved passphrase.") {
-                                        error("The passphrase doesn't match the name.");
+                                        LOGGER.error("The passphrase doesn't match the name.");
                                         continue;
                                     } else {
-                                        success(format!("The passphrase matches the name: {:?} is {}", *name, passphrase).as_str());
+                                        LOGGER.success(format!("The passphrase matches the name: {:?} is {}", *name, passphrase).as_str());
                                     }
                                 }
 
@@ -339,7 +299,7 @@ impl ServerClient {
                                 match reader.read_exact(&mut server_name).await {
                                     Ok(_) => {},
                                     Err(e) => {
-                                        error(format!("Failed to read the server name to String: {:?}", e).as_str());
+                                        LOGGER.error(format!("Failed to read the server name to String: {:?}", e).as_str());
                                         continue;
                                     }
                                 };
@@ -347,7 +307,7 @@ impl ServerClient {
                                 let server_name = match String::from_utf8(server_name) {
                                     Ok(server_name) => server_name,
                                     Err(e) => {
-                                        error(format!("Failed to convert server name to String: {:?}", e).as_str());
+                                        LOGGER.error(format!("Failed to convert server name to String: {:?}", e).as_str());
                                         continue;
                                     }
                                 };
@@ -362,7 +322,7 @@ impl ServerClient {
                                     let len = match reader.read_u8().await {
                                         Ok(len) => len,
                                         Err(e) => {
-                                            error(format!("Failed to read the IP length: {:?}", e).as_str());
+                                            LOGGER.error(format!("Failed to read the IP length: {:?}", e).as_str());
                                             continue;
                                         }
                                     } as usize;
@@ -370,28 +330,28 @@ impl ServerClient {
                                     match reader.read_exact(&mut ip).await {
                                         Ok(_) => {},
                                         Err(e) => {
-                                            error(format!("Failed to read the IP to String: {:?}", e).as_str());
+                                            LOGGER.error(format!("Failed to read the IP to String: {:?}", e).as_str());
                                             continue;
                                         }
                                     }
                                     let ip = match String::from_utf8(ip) {
                                         Ok(ip) => ip,
                                         Err(e) => {
-                                            error(format!("Failed to convert IP to String: {:?}", e).as_str());
+                                            LOGGER.error(format!("Failed to convert IP to String: {:?}", e).as_str());
                                             continue;
                                         }
                                     };
                                     let port = match reader.read_u16().await {
                                         Ok(port) => port,
                                         Err(e) => {
-                                            error(format!("Failed to read the port: {:?}", e).as_str());
+                                            LOGGER.error(format!("Failed to read the port: {:?}", e).as_str());
                                             continue;
                                         }
                                     };
                                     let max_connections = match reader.read_u32().await {
                                         Ok(max_connections) => max_connections,
                                         Err(e) => {
-                                            error(format!("Failed to read the max connections: {:?}", e).as_str());
+                                            LOGGER.error(format!("Failed to read the max connections: {:?}", e).as_str());
                                             continue;
                                         }
                                     };
@@ -404,9 +364,9 @@ impl ServerClient {
                                         port,
                                         max_connections,
                                     }) {
-                                        success(format!("Client#{id} has become a cluster.").as_str());
+                                        LOGGER.success(format!("Client#{id} has become a cluster.").as_str());
                                     } else {
-                                        error(format!("Client#{id} failed to become a cluster.").as_str());
+                                        LOGGER.error(format!("Client#{id} failed to become a cluster.").as_str());
                                         continue;
                                     }
                                 }
@@ -426,7 +386,7 @@ impl ServerClient {
                             writer.flush().await.expect("Failed to flush the writer.");
                         } else {
                             writer.shutdown().await.expect("Failed to shutdown the writer.");
-                            info("Cluster Server is shutting down its client writer.");
+                            LOGGER.info("Cluster Server is shutting down its client writer.");
                             event_sender.send(Event::Disconnection(id)).await.expect("Failed to send disconnection event.");
                             break;
                         }

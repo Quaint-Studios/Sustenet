@@ -1,6 +1,6 @@
 use sustenet_shared as shared;
 
-use sustenet_master::{start, success, warning};
+use sustenet_master::{ LOGGER, start_with_config };
 
 use tokio::select;
 
@@ -14,10 +14,10 @@ async fn main() {
 
     select! {
         _ = shutdown_rx.recv() => {
-            warning("Shutting down...");
+            LOGGER.warning("Shutting down...");
         }
-        _ = start() => {}
+        _ = start_with_config() => {}
     }
 
-    success("The Master Server has been shut down.");
+    LOGGER.success("The Master Server has been shut down.");
 }
