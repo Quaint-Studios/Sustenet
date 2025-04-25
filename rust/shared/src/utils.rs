@@ -15,7 +15,7 @@ pub fn shutdown_channel() -> Result<tokio::sync::broadcast::Receiver<bool>, ctrl
 pub mod constants {
     pub const VERSION: &str = "0.1.2";
 
-    pub const DEBUGGING: bool = true;
+    pub const DEBUGGING: bool = cfg!(debug_assertions);
 
     /// How many ticks are in a second.
     pub const TICK_RATE: i32 = 30;
