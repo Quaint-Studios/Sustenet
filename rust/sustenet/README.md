@@ -35,7 +35,7 @@ Below is a minimal example of a custom plugin for a cluster server, based on [`r
 
 ```rust
 use sustenet::cluster::{ LOGGER, cleanup, start };
-use sustenet::shared::Plugin;
+use sustenet::shared::ServerPlugin;
 use tokio::io::AsyncReadExt;
 use tokio::sync::mpsc::Sender;
 
@@ -76,7 +76,7 @@ impl Reia {
 }
 
 // Plugin initialization
-impl Plugin for Reia {
+impl ServerPlugin for Reia {
     fn set_sender(&self, tx: Sender<Box<[u8]>>) {
         // Set the sender
         if self.sender.set(tx).is_err() {

@@ -23,11 +23,11 @@ Sustenet is a networking solution for game engines. It's made to primarily be us
 
 ```rs
 use sustenet::cluster::{ cleanup, error, start };
-use sustenet::shared::Plugin;
+use sustenet::shared::ServerPlugin;
 use tokio::sync::mpsc::Sender;
 
 struct Reia;
-impl Plugin for Reia {
+impl ServerPlugin for Reia {
     fn receive(
         &self,
         tx: Sender<Box<[u8]>>,
