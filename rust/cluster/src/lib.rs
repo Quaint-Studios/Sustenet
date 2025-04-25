@@ -2,6 +2,7 @@ use sustenet_shared as shared;
 
 use std::collections::BTreeSet;
 use std::sync::{ Arc, LazyLock, OnceLock };
+use std::sync::{ Arc, LazyLock };
 use std::{ net::Ipv4Addr, str::FromStr };
 
 use tokio::io::{ AsyncReadExt, AsyncWriteExt, BufReader };
@@ -15,6 +16,7 @@ use dashmap::DashMap;
 use public_ip::addr;
 
 use shared::config::cluster::{ Settings, read };
+use shared::logging::{ LogType, Logger };
 use shared::network::{ ClusterInfo, Event };
 use shared::packets::cluster::FromClient;
 use shared::packets::master::{ FromUnknown, ToUnknown };
@@ -27,7 +29,7 @@ lazy_static::lazy_static! {
         RwLock::new(BTreeSet::new())
     );
 }
-pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| Logger::new());
+pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| Logger::new(LogType::Cluster));
 
 pub fn get_ip(ip: &str) -> Ipv4Addr {
     Ipv4Addr::from_str(ip).unwrap_or(Ipv4Addr::from_str(DEFAULT_IP).unwrap_or(Ipv4Addr::LOCALHOST))
@@ -334,75 +336,6 @@ fn on_received_data(id: u32, data: &[u8]) {
 //     LOGGER.debug(format!("Client received data: {} {} {:?}", id, protocol as u8, data).as_str());
 //     todo!()
 // }
-// endregion
-
-// region: Logging
-use shared::{ log_message, utils::constants::DEBUGGING };
-
-pub struct Logger {
-    plugin_info: OnceLock<Box<dyn Fn(&str) + Send + Sync + 'static>>,
-}
-impl Logger {
-    pub fn new() -> Self {
-        Logger {
-            plugin_info: OnceLock::new(),
-        }
-    }
-
-    pub fn set_plugin<F>(&self, plugin: F) where F: Fn(&str) + Send + Sync + 'static {
-        let _ = self.plugin_info.set(Box::new(plugin));
-    }
-
-    pub fn debug(&self, message: &str) {
-        if !DEBUGGING {
-            return;
-        }
-        if let Some(plugin_info) = self.plugin_info.get() {
-            plugin_info(message);
-        }
-        log_message!(LogLevel::Debug, LogType::Cluster, "{}", message);
-    }
-
-    pub fn info(&self, message: &str) {
-        if !DEBUGGING {
-            return;
-        }
-        if let Some(plugin_info) = self.plugin_info.get() {
-            plugin_info(message);
-        }
-        log_message!(LogLevel::Info, LogType::Cluster, "{}", message);
-    }
-
-    pub fn warning(&self, message: &str) {
-        if !DEBUGGING {
-            return;
-        }
-        if let Some(plugin_info) = self.plugin_info.get() {
-            plugin_info(message);
-        }
-        log_message!(LogLevel::Warning, LogType::Cluster, "{}", message);
-    }
-
-    pub fn error(&self, message: &str) {
-        if !DEBUGGING {
-            return;
-        }
-        if let Some(plugin_info) = self.plugin_info.get() {
-            plugin_info(message);
-        }
-        log_message!(LogLevel::Error, LogType::Cluster, "{}", message);
-    }
-
-    pub fn success(&self, message: &str) {
-        if !DEBUGGING {
-            return;
-        }
-        if let Some(plugin_info) = self.plugin_info.get() {
-            plugin_info(message);
-        }
-        log_message!(LogLevel::Success, LogType::Cluster, "{}", message);
-    }
-}
 // endregion
 
 pub struct ServerClient {

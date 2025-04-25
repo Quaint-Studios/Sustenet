@@ -50,3 +50,72 @@ macro_rules! log_message {
         }
     };
 }
+
+use crate::{ log_message, utils::constants::DEBUGGING };
+
+pub struct Logger {
+    plugin_info: std::sync::OnceLock<Box<dyn Fn(&str) + Send + Sync + 'static>>,
+    log_type: LogType,
+}
+impl Logger {
+    pub fn new(log_type: LogType) -> Self {
+        Logger {
+            plugin_info: std::sync::OnceLock::new(),
+            log_type,
+        }
+    }
+
+    pub fn set_plugin<F>(&self, plugin: F) where F: Fn(&str) + Send + Sync + 'static {
+        let _ = self.plugin_info.set(Box::new(plugin));
+    }
+
+    pub fn debug(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Debug, self.log_type, "{}", message);
+    }
+
+    pub fn info(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Info, self.log_type, "{}", message);
+    }
+
+    pub fn warning(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Warning, self.log_type, "{}", message);
+    }
+
+    pub fn error(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Error, self.log_type, "{}", message);
+    }
+
+    pub fn success(&self, message: &str) {
+        if !DEBUGGING {
+            return;
+        }
+        if let Some(plugin_info) = self.plugin_info.get() {
+            plugin_info(message);
+        }
+        log_message!(LogLevel::Success, self.log_type, "{}", message);
+    }
+}
