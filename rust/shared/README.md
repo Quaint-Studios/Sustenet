@@ -29,12 +29,12 @@ Add `sustenet-shared` as a dependency in your Cargo.toml (usually crates.io):
 
 ```toml
 [dependencies]
-sustenet = { version = "0.1.2", features = ["shared"] }
+sustenet = { version = "0.1.3", features = ["shared"] }
 ```
 
 Or via git:
 ```toml
 [dependencies]
-sustenet = { git = "https://github.com/Quaint-Studios/Sustenet", version = "0.1.2", features = ["shared"] }
+sustenet = { git = "https://github.com/Quaint-Studios/Sustenet", version = "0.1.3", features = ["shared"] }
 ```
 

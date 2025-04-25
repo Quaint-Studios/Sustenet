@@ -13,7 +13,7 @@ pub fn shutdown_channel() -> Result<tokio::sync::broadcast::Receiver<bool>, ctrl
 }
 
 pub mod constants {
-    pub const VERSION: &str = "0.1.2";
+    pub const VERSION: &str = "0.1.3";
 
     pub const DEBUGGING: bool = cfg!(debug_assertions);
 

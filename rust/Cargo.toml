@@ -8,18 +8,18 @@ members = ["master", "cluster", "client", "shared", "auth", "sustenet"]
 exclude = ["backup"]
 
 [workspace.package]
-version = "0.1.2"
+version = "0.1.3"
 edition = "2024"
 license = "MIT"
 authors = ["Quaint Studios", "Makosai"]
 homepage = "https://github.com/Quaint-Studios/Sustenet"
 
 [workspace.dependencies]
-sustenet-auth = { path = "auth", version = "0.1.2" }
-sustenet-client = { path = "client", version = "0.1.2" }
-sustenet-cluster = { path = "cluster", version = "0.1.2" }
-sustenet-master = { path = "master", version = "0.1.2" }
-sustenet-shared = { path = "shared", version = "0.1.2" }
+sustenet-auth = { path = "auth", version = "0.1.3" }
+sustenet-client = { path = "client", version = "0.1.3" }
+sustenet-cluster = { path = "cluster", version = "0.1.3" }
+sustenet-master = { path = "master", version = "0.1.3" }
+sustenet-shared = { path = "shared", version = "0.1.3" }
 
 aes = "0.8.4"
 public-ip = "0.2.2"
