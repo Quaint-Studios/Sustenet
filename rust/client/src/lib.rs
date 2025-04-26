@@ -9,12 +9,12 @@ use tokio::net::TcpStream;
 use tokio::sync::mpsc::Sender;
 use tokio::sync::{ RwLock, mpsc };
 
+use sustenet_shared::ClientPlugin;
 use shared::logging::{ LogType, Logger };
 use shared::packets::cluster::ToClient;
 use shared::packets::master::ToUnknown;
 use shared::utils::constants::{ DEFAULT_IP, MASTER_PORT };
 use shared::{ lread_string, lselect };
-use sustenet_shared::ClientPlugin;
 
 lazy_static::lazy_static! {
     pub static ref CLUSTER_SERVERS: Arc<RwLock<Vec<ClusterInfo>>> = Arc::new(
@@ -44,7 +44,7 @@ pub struct ClusterInfo {
 pub struct Connection {
     pub ip: IpAddr,
     pub port: u16,
-    connection_type: ConnectionType,
+    pub connection_type: ConnectionType,
 }
 
 impl From<ClusterInfo> for Connection {
