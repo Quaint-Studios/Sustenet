@@ -25,14 +25,14 @@ Add `sustenet` as a dependency in your `Cargo.toml` (from crates.io):
 
 ```toml
 [dependencies]
-sustenet = { version = "0.1.3", features = ["shared", "cluster", "master", "client", "full"] } # Choose your features
+sustenet = { version = "0.1.4", features = ["shared", "cluster", "master", "client", "full"] } # Choose your features
 ```
 
 Or via git:
 
 ```toml
 [dependencies]
-sustenet = { git = "https://github.com/Quaint-Studios/Sustenet", version = "0.1.3", features = ["shared", "cluster", "master", "client", "full"] }
+sustenet = { git = "https://github.com/Quaint-Studios/Sustenet", version = "0.1.4", features = ["shared", "cluster", "master", "client", "full"] }
 ```
 
 ### Example: Writing a Cluster Plugin
