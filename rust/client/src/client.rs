@@ -1,10 +1,15 @@
 //! Handles connections to a server and sending messages.
 use sustenet_shared::logging::{ LogType, Logger };
+use sustenet_shared::lselect;
+use sustenet_shared::packets::{ Connection, Diagnostics, Messaging };
 
+use std::io::{ Error, ErrorKind };
 use std::sync::LazyLock;
 
 use bytes::Bytes;
-use tokio::io;
+use tokio::io::AsyncReadExt;
+use tokio::io::{ self, AsyncWriteExt };
+use tokio::net::TcpStream;
 use tokio::sync::{ broadcast, mpsc };
 
 /// Global logger for the client module.
@@ -18,12 +23,14 @@ pub struct ClusterInfo {
     pub max_connections: u32,
 }
 
-/// Events emitted by the client to notify listeners (such as a game engine).
+/// Events emitted by the client to notify listeners.
 #[derive(Debug, Clone)]
 pub enum ClientEvent {
     Connected,
     Disconnected,
+    CommandSent(u8),
     MessageSent(Bytes),
+    CommandReceived(u8),
     MessageReceived(Bytes),
     Error(String),
 }
@@ -32,8 +39,6 @@ pub enum ClientEvent {
 pub struct Client {
     /// Sends messages to the server.
     sender: mpsc::Sender<Bytes>,
-    /// Receives messages from the server.
-    receiver: mpsc::Receiver<Bytes>,
     /// Sends events to listeners.
     event_tx: broadcast::Sender<ClientEvent>,
     /// Receives events about connection state and activity.
@@ -45,24 +50,161 @@ pub struct Client {
 impl Client {
     /// Attempts to connect to a server at the specified address and port and returns a `ClientHandle`.
     pub async fn connect(address: &str, port: u16) -> io::Result<Self> {
-        LOGGER.info(&format!("Connecting to {}:{}...", address, port)).await;
+        let addr = format!("{}:{}", address, port);
+        LOGGER.info(&format!("Connecting to {addr}...")).await;
 
-        let (sender, receiver) = mpsc::channel::<Bytes>(64);
+        // Establish a connection to the server.
+        let mut stream = match TcpStream::connect(&addr).await {
+            Ok(s) => {
+                LOGGER.success(&format!("Connected to {addr}")).await;
+                s
+            }
+            Err(e) => {
+                LOGGER.error(&format!("Failed to connect to {addr}")).await;
+                return Err(
+                    Error::new(
+                        ErrorKind::ConnectionRefused,
+                        format!("Failed to connect to ({addr}): {e}")
+                    )
+                );
+            }
+        };
+
+        let (sender, mut receiver) = mpsc::channel::<Bytes>(64);
         let (event_tx, event_rx) = broadcast::channel::<ClientEvent>(16);
+
+        let sender_clone = sender.clone();
+        let event_tx_clone = event_tx.clone();
+
+        tokio::spawn(async move {
+            let (reader, mut writer) = stream.split();
+            let mut reader = io::BufReader::new(reader);
+
+            lselect!(
+                // Handle local requests to send a message to the server.
+                msg = receiver.recv() => {
+                    match msg {
+                        Some(msg) => {
+                            if msg.is_empty() {
+                                LOGGER.warning("Received empty message, shutting down client").await;
+                                Self::handle_shutdown(writer, event_tx_clone).await;
+                                break;
+                            }
+
+                            LOGGER.debug(&format!("Sending message: {:?}", msg)).await;
+                            if let Err(e) = writer.write_all(&msg).await {
+                                let msg = format!("Failed to send message to server: {e}");
+                                LOGGER.error(&msg).await;
+                                let _ = event_tx_clone.send(ClientEvent::Error(msg));
+                            } else {
+                                let _ = event_tx_clone.send(ClientEvent::MessageSent(msg));
+                            }
+                        },
+                        None => {
+                            LOGGER.warning("Connection closed").await;
+                            Self::handle_shutdown(writer, event_tx_clone).await;
+                            break;
+                        }
+                    }
+                },
+                command = reader.read_u8() => {
+                    match command {
+                        Ok(command) => {
+                            LOGGER.debug(&format!("Received command: {command}")).await;
+
+                            Self::handle_command(command, &sender_clone, &mut reader, &mut writer, &event_tx_clone).await;
+
+                            // Notify listeners about the received message.
+                            let _ = event_tx_clone.send(ClientEvent::CommandReceived(command));
+                        },
+                        Err(e) => {
+                            let msg = format!("Failed to read command from server: {e}");
+                            LOGGER.error(&msg).await;
+                            let _ = event_tx_clone.send(ClientEvent::Error(msg));
+                        }
+                    }
+                }
+            )
+        });
 
         // Notify connected immediately.
         let _ = event_tx.send(ClientEvent::Connected);
 
         Ok(Client {
             sender,
-            receiver,
             event_tx,
             event_rx,
             cluster_servers: Vec::new(),
         })
     }
 
-    // region: Connection Management
+    async fn handle_shutdown(
+        mut writer: tokio::net::tcp::WriteHalf<'_>,
+        event_tx_clone: broadcast::Sender<ClientEvent>
+    ) {
+        if let Err(e) = writer.shutdown().await {
+            let msg = format!("Failed to shutdown writer: {e}");
+            LOGGER.error(&msg).await;
+            let _ = event_tx_clone.send(ClientEvent::Error(msg));
+        }
+        let _ = event_tx_clone.send(ClientEvent::Disconnected);
+    }
+
+    /// Handles commands received from the server.
+    /// This function is called in a separate task to handle incoming commands.
+    async fn handle_command(
+        command: u8,
+        sender: &mpsc::Sender<Bytes>,
+        reader: &mut io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
+        writer: &mut tokio::net::tcp::WriteHalf<'_>,
+        event_tx: &broadcast::Sender<ClientEvent>
+    ) {
+        // Handle the command received from the server.
+        match command {
+            x if x == (Connection::Connect as u8) => {
+                LOGGER.info("Handling Connection Connect").await;
+            }
+            x if x == (Connection::Disconnect as u8) => {
+                LOGGER.info("Handling Connection Disconnect").await;
+            }
+            x if x == (Connection::Authenticate as u8) => {
+                LOGGER.info("Handling Connection Authenticate").await;
+            }
+
+            x if x == (Messaging::SendGlobalMessage as u8) => {
+                LOGGER.info("Handling Messaging Send Global Message").await;
+            }
+            x if x == (Messaging::SendPrivateMessage as u8) => {
+                LOGGER.info("Handling Messaging Send Private Message").await;
+            }
+            x if x == (Messaging::SendPartyMessage as u8) => {
+                LOGGER.info("Handling Messaging Send Party Message").await;
+            }
+            x if x == (Messaging::SendLocalMessage as u8) => {
+                LOGGER.info("Handling Messaging Send Local Message").await;
+            }
+
+            x if x == (Diagnostics::CheckServerType as u8) => {
+                LOGGER.info("Handling Diagnostics Check Server Type").await;
+            }
+            x if x == (Diagnostics::CheckServerVersion as u8) => {
+                LOGGER.info("Handling Diagnostics Check Server Version").await;
+            }
+            x if x == (Diagnostics::CheckServerUptime as u8) => {
+                LOGGER.info("Handling Diagnostics Check Server Uptime").await;
+            }
+            x if x == (Diagnostics::CheckServerPlayerCount as u8) => {
+                LOGGER.info("Handling Diagnostics Check Server Player Count").await;
+            }
+
+            _ => {
+                let msg = format!("Unknown command received: {command}");
+                LOGGER.error(&msg).await;
+                let _ = event_tx.send(ClientEvent::Error(msg));
+            }
+        }
+    }
+
     /// Sends a message to the server.
     pub async fn send_message(&self, msg: Bytes) -> Result<(), mpsc::error::SendError<Bytes>> {
         self.sender.send(msg.clone()).await?;
@@ -72,13 +214,6 @@ impl Client {
         Ok(())
     }
 
-    /// Receives the next message from the server.
-    pub async fn receive_message(&mut self) -> Option<Bytes> {
-        self.receiver.recv().await
-    }
-    // endregion: Connection Management
-
-    // region: Event Management
     /// Returns a cloneable event receiver for status updates.
     pub fn event_receiver(&self) -> broadcast::Receiver<ClientEvent> {
         self.event_rx.resubscribe()
@@ -92,9 +227,8 @@ impl Client {
             Err(_) => None,
         }
     }
-    // endregion: Event Management
 
-    // region: Cluster Server Management
+    // region: Cluster Server Utilities
     pub fn get_cluster_servers(&self) -> &[ClusterInfo] {
         &self.cluster_servers
     }
@@ -114,5 +248,5 @@ impl Client {
     pub fn clear_cluster_servers(&mut self) {
         self.cluster_servers.clear();
     }
-    // endregion: Cluster Server Management
+    // endregion: Cluster Server Utilities
 }

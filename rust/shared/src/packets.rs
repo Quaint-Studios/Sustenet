@@ -1,16 +1,3 @@
-pub enum Packets {
-    /// Handles packets related to messaging and chat.
-    Messaging(Messaging),
-    /// Handles packets related to movement and player actions.
-    Player(Player),
-    /// Handles packets related to connection management.
-    Connection(Connection),
-    /// Cluster setup packets
-    ClusterSetup(ClusterSetup),
-    /// Diagnostics packets
-    Diagnostics(Diagnostics),
-}
-
 #[repr(u8)]
 /// Handles packets related to messaging and chat.
 pub enum Messaging {
@@ -22,24 +9,6 @@ pub enum Messaging {
     SendPartyMessage,
     /// Send a local message.
     SendLocalMessage,
-}
-
-#[repr(u8)]
-/// Handles packets related to movement and player actions.
-/// Should eventually be migrated to an external crate.
-pub enum Player {
-    /// Move the player to a new position.
-    Move = 210,
-    /// Teleport the player to a new position.
-    Teleport,
-    /// Change the player's name.
-    ChangeName,
-    /// Update the player's health.
-    UpdateHealth,
-    /// Update the player's inventory.
-    UpdateInventory,
-    /// Sends the entire inventory to the client.
-    RequestInventory,
 }
 
 #[repr(u8)]
@@ -79,11 +48,58 @@ pub enum Diagnostics {
 
 #[cfg(test)]
 pub mod tests {
-    use super::Packets;
+    use crate::packets::{ ClusterSetup, Connection, Diagnostics, Messaging };
 
     #[test]
     fn test_enum_size() {
-        assert_eq!(std::mem::size_of::<Packets>(), 1);
+        assert_eq!(std::mem::size_of::<Messaging>(), 1);
+        assert_eq!(std::mem::size_of::<Connection>(), 1);
+        assert_eq!(std::mem::size_of::<ClusterSetup>(), 1);
+        assert_eq!(std::mem::size_of::<Diagnostics>(), 1);
+    }
+
+    #[test]
+    /// This test checks that all enum values are unique.
+    /// The values should range between 200 and 255.
+    /// That's the range for reserved commands for Sustenet.
+    fn test_enum_unique_values() {
+        use std::collections::HashSet;
+
+        macro_rules! enum_values {
+            ($enum:ty, [$( $variant:path ),* $(,)?]) => {
+                vec![$($variant as u8),*]
+            };
+        }
+
+        let all_enums = [
+            enum_values!(Messaging, [
+                Messaging::SendGlobalMessage,
+                Messaging::SendPrivateMessage,
+                Messaging::SendPartyMessage,
+                Messaging::SendLocalMessage,
+            ]),
+            enum_values!(Connection, [
+                Connection::Connect,
+                Connection::Disconnect,
+                Connection::Authenticate,
+            ]),
+            enum_values!(ClusterSetup, [
+                ClusterSetup::Init,
+                ClusterSetup::AnswerSecret,
+            ]),
+            enum_values!(Diagnostics, [
+                Diagnostics::CheckServerType,
+                Diagnostics::CheckServerVersion,
+                Diagnostics::CheckServerUptime,
+                Diagnostics::CheckServerPlayerCount,
+            ]),
+        ].concat();
+
+        let mut set = HashSet::new();
+        for val in all_enums {
+            assert!(set.insert(val), "Duplicate value found: {val}");
+        }
+
     }
 }
 
