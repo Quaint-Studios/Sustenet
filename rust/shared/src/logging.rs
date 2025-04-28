@@ -53,11 +53,13 @@ macro_rules! log_message {
 
 use crate::{ log_message, utils::constants::DEBUGGING };
 
+/// Logger struct to handle logging messages with different log levels and types.
 pub struct Logger {
     plugin_info: std::sync::OnceLock<Box<dyn Fn(&str) + Send + Sync + 'static>>,
     log_type: LogType,
 }
 impl Logger {
+    /// Creates a new Logger instance with the specified log type.
     pub fn new(log_type: LogType) -> Self {
         Logger {
             plugin_info: std::sync::OnceLock::new(),
@@ -65,11 +67,13 @@ impl Logger {
         }
     }
 
-    pub fn set_plugin<F>(&self, plugin: F) where F: Fn(&str) + Send + Sync + 'static {
+    /// Sets the plugin info function to be called when logging messages.
+    pub fn set_plugin_info<F>(&self, plugin: F) where F: Fn(&str) + Send + Sync + 'static {
         let _ = self.plugin_info.set(Box::new(plugin));
     }
 
-    pub fn debug(&self, message: &str) {
+    /// Logs a debug message if debugging is enabled.
+    pub async fn debug(&self, message: &str) {
         if !DEBUGGING {
             return;
         }
@@ -79,17 +83,16 @@ impl Logger {
         log_message!(LogLevel::Debug, self.log_type, "{}", message);
     }
 
-    pub fn info(&self, message: &str) {
-        if !DEBUGGING {
-            return;
-        }
+    /// Logs an info message.
+    pub async fn info(&self, message: &str) {
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
         log_message!(LogLevel::Info, self.log_type, "{}", message);
     }
 
-    pub fn warning(&self, message: &str) {
+    /// Logs a warning message if debugging is enabled.
+    pub async fn warning(&self, message: &str) {
         if !DEBUGGING {
             return;
         }
@@ -99,20 +102,16 @@ impl Logger {
         log_message!(LogLevel::Warning, self.log_type, "{}", message);
     }
 
-    pub fn error(&self, message: &str) {
-        if !DEBUGGING {
-            return;
-        }
+    /// Logs an error message.
+    pub async fn error(&self, message: &str) {
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
         log_message!(LogLevel::Error, self.log_type, "{}", message);
     }
 
-    pub fn success(&self, message: &str) {
-        if !DEBUGGING {
-            return;
-        }
+    /// Logs a success message.
+    pub async fn success(&self, message: &str) {
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
