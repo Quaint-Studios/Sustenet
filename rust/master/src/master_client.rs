@@ -1,9 +1,15 @@
-use sustenet_shared::{ lselect, packets::{ ClusterSetup, Connection, Diagnostics } };
+use sustenet_shared::lselect;
+use sustenet_shared::packets::{ ClusterSetup, Connection, Diagnostics };
 
 use std::io::Error;
 
 use bytes::Bytes;
-use tokio::{ io::{ self, AsyncReadExt, AsyncWriteExt }, net::TcpStream, sync::{ broadcast, mpsc::{self, error::SendError} } };
+use tokio::io;
+use tokio::io::{ AsyncReadExt, AsyncWriteExt };
+use tokio::net::TcpStream;
+use tokio::sync::broadcast;
+use tokio::sync::mpsc;
+use tokio::sync::mpsc::error::SendError;
 
 use crate::master::{ LOGGER, MasterEvent };
 
