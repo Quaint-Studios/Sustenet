@@ -46,7 +46,7 @@ macro_rules! log_message {
                 LogType::System => "[System]",
             };
 
-            println!("{}{} {}{}", level_str, type_str, format!($($arg)*), TERMINAL_DEFAULT);
+            format!("{}{} {}{}", level_str, type_str, format!($($arg)*), TERMINAL_DEFAULT)
         }
     };
 }
@@ -57,13 +57,26 @@ use crate::{ log_message, utils::constants::DEBUGGING };
 pub struct Logger {
     plugin_info: std::sync::OnceLock<Box<dyn Fn(&str) + Send + Sync + 'static>>,
     log_type: LogType,
+    task: tokio::task::JoinHandle<()>,
+    sender: tokio::sync::mpsc::Sender<String>,
+
 }
 impl Logger {
     /// Creates a new Logger instance with the specified log type.
     pub fn new(log_type: LogType) -> Self {
+        let (sender, mut receiver) = tokio::sync::mpsc::channel::<String>(100_000); // Bounded to 100k messages
+
+        let task = tokio::spawn(async move {
+            while let Some(msg) = receiver.recv().await {
+                println!("{msg}");
+            }
+        });
+
         Logger {
             plugin_info: std::sync::OnceLock::new(),
             log_type,
+            task,
+            sender,
         }
     }
 
@@ -80,7 +93,7 @@ impl Logger {
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
-        log_message!(LogLevel::Debug, self.log_type, "{}", message);
+        let _ = self.sender.try_send(log_message!( LogLevel::Debug, self.log_type, "{}", message));
     }
 
     /// Logs an info message.
@@ -88,7 +101,7 @@ impl Logger {
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
-        log_message!(LogLevel::Info, self.log_type, "{}", message);
+        let _ = self.sender.try_send(log_message!( LogLevel::Info, self.log_type, "{}", message));
     }
 
     /// Logs a warning message if debugging is enabled.
@@ -99,7 +112,7 @@ impl Logger {
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
-        log_message!(LogLevel::Warning, self.log_type, "{}", message);
+        let _ = self.sender.try_send(log_message!( LogLevel::Warning, self.log_type, "{}", message));
     }
 
     /// Logs an error message.
@@ -107,7 +120,7 @@ impl Logger {
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
-        log_message!(LogLevel::Error, self.log_type, "{}", message);
+        let _ = self.sender.try_send(log_message!( LogLevel::Error, self.log_type, "{}", message));
     }
 
     /// Logs a success message.
@@ -115,6 +128,6 @@ impl Logger {
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
-        log_message!(LogLevel::Success, self.log_type, "{}", message);
+        let _ = self.sender.try_send(log_message!( LogLevel::Success, self.log_type, "{}", message));
     }
 }
