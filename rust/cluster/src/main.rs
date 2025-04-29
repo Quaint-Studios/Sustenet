@@ -1,4 +1,4 @@
-use sustenet_cluster::LOGGER;
+use sustenet_shared::utils;
 
 #[tokio::main]
 async fn main() {
@@ -6,20 +6,28 @@ async fn main() {
     let mut shutdown_rx = match utils::shutdown_channel() {
         Ok(rx) => rx,
         Err(e) => {
-            LOGGER.error(&format!("Error creating shutdown channel: {e}"));
+            println!("Error creating shutdown channel: {e}");
+            return;
+        }
+    };
+
+    let cluster = match sustenet_cluster::ClusterServer::new_from_config().await {
+        Ok(cluster) => cluster,
+        Err(e) => {
+            eprintln!("Failed to create cluster server: {e}");
             return;
         }
     };
 
     // Wait for the shutdown signal or start the server
-    lselect! {
+    tokio::select! {
         _ = shutdown_rx.recv() => {
-            LOGGER.warning("Shutting down...");
-            break;
+            println!("Shutting down...");
+        }
+        _ = cluster.start() => {
+            println!("Cluster server started.");
         }
     }
-    
-    LOGGER.success("The Cluster Server has been shut down.");
 }
 
 // use sustenet_shared as shared;

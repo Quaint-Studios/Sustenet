@@ -14,6 +14,10 @@ pub enum Messaging {
 #[repr(u8)]
 pub enum Connection {
     /// The client is requesting to connect to the server.
+    /// 
+    /// 1. From Client to Server: CMD + Len&VersionNumber
+    /// 
+    /// TODO: Run the check version function.
     Connect = 240,
     /// The client is disconnecting from the server.
     Disconnect,
@@ -28,8 +32,19 @@ pub enum ClusterSetup {
     /// If the key doesn't exist, the server will do nothing but
     /// stay silent. If it does exist, it will send a generated
     /// passphrase that's encrypted with AES.
+    /// 
+    /// 1. From Cluster to Master: CMD + Len&VersionNumber + Len&Key Name
+    /// 2. From Master to Cluster: CMD + Encrypted Passphrase
+    /// TODO: Then you need to temporarity store them in a DashMap outside of clusters.
+    /// 
+    /// If the key doesn't exist, do nothing.
     Init = 245,
     /// When they send the decrypted key back to the Master Server.
+    /// 
+    /// 1. From Cluster to Master: CMD + Decrypted Passphrase + IP + Port + Max connections + Len&Name
+    /// 2. From Master to Cluster: CMD
+    /// 
+    /// If it fails, say nothing.
     AnswerSecret,
 }
 
@@ -39,8 +54,6 @@ pub enum ClusterSetup {
 pub enum Diagnostics {
     /// Requests information about a server's type.
     CheckServerType = 250,
-    /// Requests information about a server's version.
-    CheckServerVersion,
     /// Requests information about a server's uptime.
     CheckServerUptime,
     /// Requests information about how many players are connected to a server.
@@ -90,7 +103,6 @@ pub mod tests {
             ]),
             enum_values!(Diagnostics, [
                 Diagnostics::CheckServerType,
-                Diagnostics::CheckServerVersion,
                 Diagnostics::CheckServerUptime,
                 Diagnostics::CheckServerPlayerCount,
             ]),

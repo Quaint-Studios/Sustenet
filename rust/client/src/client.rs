@@ -24,6 +24,8 @@ pub struct ClusterInfo {
 }
 
 /// Events emitted by the client to notify listeners.
+/// 
+/// Should be handled with `event_receiver` or `next_event` externally.
 #[derive(Debug, Clone)]
 pub enum ClientEvent {
     Connected,
@@ -181,9 +183,6 @@ impl Client {
 
             x if x == (Diagnostics::CheckServerType as u8) => {
                 LOGGER.info("Handling Diagnostics Check Server Type").await;
-            }
-            x if x == (Diagnostics::CheckServerVersion as u8) => {
-                LOGGER.info("Handling Diagnostics Check Server Version").await;
             }
             x if x == (Diagnostics::CheckServerUptime as u8) => {
                 LOGGER.info("Handling Diagnostics Check Server Uptime").await;

@@ -1,41 +1,36 @@
 use sustenet_shared::lselect;
-use sustenet_shared::packets::{ClusterSetup, Connection, Diagnostics};
+use sustenet_shared::packets::{ ClusterSetup, Connection, Diagnostics };
 
-use std::io::{Error, ErrorKind};
+use std::io::Error;
 
 use bytes::Bytes;
 use tokio::io;
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::io::{ AsyncReadExt, AsyncWriteExt };
 use tokio::net::TcpStream;
 use tokio::sync::broadcast;
 use tokio::sync::mpsc;
 use tokio::sync::mpsc::error::SendError;
 
-use crate::master::{LOGGER, MasterEvent};
+use crate::cluster::{ ClusterEvent, LOGGER };
 
 /// Handles connections that clients and cluster servers establish with the
 /// master server.
-pub struct MasterClient {
+pub struct ClusterClient {
     sender: mpsc::Sender<Bytes>,
 }
 
-impl MasterClient {
+impl ClusterClient {
     pub async fn new(
         id: u32,
         stream: TcpStream,
-        event_tx: broadcast::Sender<MasterEvent>,
+        event_tx: broadcast::Sender<ClusterEvent>
     ) -> io::Result<Self> {
         let (sender, receiver) = mpsc::channel::<Bytes>(16);
         let connection = Self { sender };
 
         if let Err(e) = Self::receive(id, stream, connection.sender.clone(), receiver, event_tx) {
-            LOGGER
-                .error(&format!("Failed to start connection #{id}"))
-                .await;
-            return Err(Error::new(
-                e.kind(),
-                format!("Failed to start connection #{id}: {e}"),
-            ));
+            LOGGER.error(&format!("Failed to start connection #{id}")).await;
+            return Err(Error::new(e.kind(), format!("Failed to start connection #{id}: {e}")));
         }
 
         Ok(connection)
@@ -57,7 +52,7 @@ impl MasterClient {
         mut stream: TcpStream,
         sender: mpsc::Sender<Bytes>,
         mut receiver: mpsc::Receiver<Bytes>,
-        event_tx: broadcast::Sender<MasterEvent>,
+        event_tx: broadcast::Sender<ClusterEvent>
     ) -> io::Result<()> {
         tokio::spawn(async move {
             let (reader, mut writer) = stream.split();
@@ -78,10 +73,10 @@ impl MasterClient {
                             if let Err(e) = writer.write_all(&msg).await {
                                 let msg = format!("Failed to send message to server: {e}");
                                 LOGGER.error(&msg).await;
-                                let _ = event_tx.send(MasterEvent::Error(msg));
+                                let _ = event_tx.send(ClusterEvent::Error(msg));
                             } else {
                                 // TODO: Still need to decide if we should notify about messages sent on a server.
-                                // let _ = event_tx.send(MasterEvent::MessageSent(msg));
+                                // let _ = event_tx.send(ClusterEvent::MessageSent(msg));
                             }
                         },
                         None => {
@@ -101,49 +96,12 @@ impl MasterClient {
                             // Notify listeners about the received message.
                             // TODO: Should we? I'm leaning more towards not notifying about commands.
                             // It could ruin performance.
-                            // let _ = event_tx_clone.send(MasterEvent::CommandReceived(command));
+                            // let _ = event_tx_clone.send(ClusterEvent::CommandReceived(command));
                         },
                         Err(e) => {
-                            match e.kind() {
-                                ErrorKind::UnexpectedEof => {
-                                    LOGGER.warning(&format!("Connection #{id} closed by peer (EOF)")).await;
-                                    Self::handle_shutdown(writer, event_tx, id).await;
-                                    break;
-                                }
-                                ErrorKind::ConnectionReset => {
-                                    LOGGER.info(&format!("Connection #{id} reset by peer")).await;
-                                    Self::handle_shutdown(writer, event_tx, id).await;
-                                    break;
-                                }
-                                ErrorKind::ConnectionAborted => {
-                                    LOGGER.info(&format!("Connection #{id} aborted")).await;
-                                    Self::handle_shutdown(writer, event_tx, id).await;
-                                    break;
-                                }
-                                ErrorKind::TimedOut => {
-                                    LOGGER.warning(&format!("Connection #{id} timed out")).await;
-                                    Self::handle_shutdown(writer, event_tx, id).await;
-                                    break;
-                                }
-                                ErrorKind::BrokenPipe => {
-                                    LOGGER.info(&format!("Connection #{id} broken pipe")).await;
-                                    Self::handle_shutdown(writer, event_tx, id).await;
-                                    break;
-                                }
-                                ErrorKind::NotConnected => {
-                                    LOGGER.info(&format!("Connection #{id} not connected")).await;
-                                    Self::handle_shutdown(writer, event_tx, id).await;
-                                    break;
-                                }
-                                _ => {
-                                    let msg = format!("Failed to read command for connection #{}: {e}", id);
-                                    LOGGER.error(&msg).await;
-                                    let _ = event_tx.send(MasterEvent::Error(msg));
-                                    Self::handle_shutdown(writer, event_tx, id).await;
-                                    break;
-                                }
-                            }
-
+                            let msg = format!("Failed to read command for connection #{}: {e}", id);
+                            LOGGER.error(&msg).await;
+                            let _ = event_tx.send(ClusterEvent::Error(msg));
                         }
                     }
                 }
@@ -156,9 +114,7 @@ impl MasterClient {
     /// An external method to allow the master server to send messages to the client.
     pub async fn send(&self, bytes: Bytes) -> Result<(), SendError<Bytes>> {
         if let Err(e) = self.sender.send(bytes).await {
-            LOGGER
-                .error(&format!("Failed to send message to client: {e}"))
-                .await;
+            LOGGER.error(&format!("Failed to send message to client: {e}")).await;
             return Err(e);
         }
         Ok(())
@@ -166,15 +122,15 @@ impl MasterClient {
 
     async fn handle_shutdown(
         mut writer: tokio::net::tcp::WriteHalf<'_>,
-        event_tx: broadcast::Sender<MasterEvent>,
-        id: u32,
+        event_tx: broadcast::Sender<ClusterEvent>,
+        id: u32
     ) {
         if let Err(e) = writer.shutdown().await {
             let msg = format!("Failed to shutdown writer: {e}");
             LOGGER.error(&msg).await;
-            let _ = event_tx.send(MasterEvent::Error(msg));
+            let _ = event_tx.send(ClusterEvent::Error(msg));
         }
-        let _ = event_tx.send(MasterEvent::Disconnected(id));
+        let _ = event_tx.send(ClusterEvent::Disconnected(id));
     }
 
     async fn handle_command(
@@ -182,7 +138,7 @@ impl MasterClient {
         sender: &mpsc::Sender<Bytes>,
         reader: &mut io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
         writer: &mut tokio::net::tcp::WriteHalf<'_>,
-        event_tx: &broadcast::Sender<MasterEvent>,
+        event_tx: &broadcast::Sender<ClusterEvent>
     ) {
         // Handle the command received from the server.
         match command {
@@ -197,14 +153,10 @@ impl MasterClient {
                 LOGGER.info("Handling Diagnostics Check Server Type").await;
             }
             x if x == (Diagnostics::CheckServerUptime as u8) => {
-                LOGGER
-                    .info("Handling Diagnostics Check Server Uptime")
-                    .await;
+                LOGGER.info("Handling Diagnostics Check Server Uptime").await;
             }
             x if x == (Diagnostics::CheckServerPlayerCount as u8) => {
-                LOGGER
-                    .info("Handling Diagnostics Check Server Player Count")
-                    .await;
+                LOGGER.info("Handling Diagnostics Check Server Player Count").await;
             }
 
             x if x == (ClusterSetup::Init as u8) => {
@@ -217,7 +169,7 @@ impl MasterClient {
             _ => {
                 let msg = format!("Unknown command received: {command}");
                 LOGGER.error(&msg).await;
-                let _ = event_tx.send(MasterEvent::Error(msg));
+                let _ = event_tx.send(ClusterEvent::Error(msg));
             }
         }
     }

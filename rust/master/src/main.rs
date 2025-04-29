@@ -11,7 +11,7 @@ async fn main() {
         }
     };
 
-    let master = match sustenet_master::MasterServer::new_from_config().await {
+    let mut master = match sustenet_master::MasterServer::new_from_config().await {
         Ok(master) => master,
         Err(e) => {
             eprintln!("Failed to create master server: {e}");
