@@ -1,3 +1,5 @@
+use std::net::IpAddr;
+
 pub enum Protocols {
     TCP,
     UDP,
@@ -10,13 +12,14 @@ pub enum Event {
     ReceivedData(u32, Vec<u8>),
 }
 
-#[derive(Eq)]
+#[derive(Eq)]/// Used to store cluster information that we can reuse.
 pub struct ClusterInfo {
     pub id: u32,
     pub name: String,
-    pub ip: String,
+	pub ip: IpAddr,
     pub port: u16,
     pub max_connections: u32,
+    pub start_time: u32,
 }
 
 impl Ord for ClusterInfo {

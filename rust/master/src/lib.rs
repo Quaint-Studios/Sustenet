@@ -1,8 +1,9 @@
 pub mod master;
-pub mod server_client;
+pub mod master_client;
+pub mod security;
 
 pub use master::MasterServer;
-pub use server_client::ServerClient;
+pub use master_client::MasterClient;
 
 // use sustenet_shared as shared;
 

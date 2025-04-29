@@ -1,6 +1,4 @@
-use sustenet_shared as shared;
-
-use shared::security::aes::{ load_all_keys, KeyMap };
+use sustenet_shared::security::aes::{ load_all_keys, KeyMap };
 
 lazy_static::lazy_static! {
     pub static ref AES_KEYS: KeyMap = match load_all_keys() {

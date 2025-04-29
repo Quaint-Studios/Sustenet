@@ -1,25 +1,19 @@
-use std::{io::Error, net::IpAddr};
+use sustenet_shared::{ lselect, packets::{ ClusterSetup, Connection, Diagnostics } };
+
+use std::io::Error;
 
 use bytes::Bytes;
-use sustenet_shared::{ lselect, packets::{ ClusterSetup, Connection, Diagnostics } };
-use tokio::{ io::{ self, AsyncReadExt, AsyncWriteExt }, net::TcpStream, sync::{ broadcast, mpsc } };
+use tokio::{ io::{ self, AsyncReadExt, AsyncWriteExt }, net::TcpStream, sync::{ broadcast, mpsc::{self, error::SendError} } };
 
 use crate::master::{ LOGGER, MasterEvent };
 
-/// Used to store cluster information that we can reuse.
-pub struct ClusterInfo {
-    pub id: u32,
-    pub name: String,
-	pub ip: IpAddr,
-}
-
 /// Handles connections that clients and cluster servers establish with the
 /// master server.
-pub struct ServerClient {
+pub struct MasterClient {
     sender: mpsc::Sender<Bytes>,
 }
 
-impl ServerClient {
+impl MasterClient {
     pub async fn new(
         id: u32,
         stream: TcpStream,
@@ -111,17 +105,26 @@ impl ServerClient {
         Ok(())
     }
 
+    /// An external method to allow the master server to send messages to the client.
+    pub async fn send(&self, bytes: Bytes) -> Result<(), SendError<Bytes>> {
+        if let Err(e) = self.sender.send(bytes).await {
+            LOGGER.error(&format!("Failed to send message to client: {e}")).await;
+            return Err(e);
+        }
+        Ok(())
+    }
+
     async fn handle_shutdown(
         mut writer: tokio::net::tcp::WriteHalf<'_>,
-        event_tx_clone: broadcast::Sender<MasterEvent>,
+        event_tx: broadcast::Sender<MasterEvent>,
         id: u32
     ) {
         if let Err(e) = writer.shutdown().await {
             let msg = format!("Failed to shutdown writer: {e}");
             LOGGER.error(&msg).await;
-            let _ = event_tx_clone.send(MasterEvent::Error(msg));
+            let _ = event_tx.send(MasterEvent::Error(msg));
         }
-        let _ = event_tx_clone.send(MasterEvent::Disconnected(id));
+        let _ = event_tx.send(MasterEvent::Disconnected(id));
     }
 
     async fn handle_command(
