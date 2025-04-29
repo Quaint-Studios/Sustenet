@@ -3,7 +3,7 @@ use sustenet_shared::logging::{ LogType, Logger };
 use sustenet_shared::lselect;
 use sustenet_shared::packets::{ Connection, Diagnostics, Messaging };
 
-use std::io::{ Error, ErrorKind };
+use std::io::Error;
 use std::sync::LazyLock;
 
 use bytes::Bytes;
@@ -61,12 +61,7 @@ impl Client {
             }
             Err(e) => {
                 LOGGER.error(&format!("Failed to connect to {addr}")).await;
-                return Err(
-                    Error::new(
-                        ErrorKind::ConnectionRefused,
-                        format!("Failed to connect to ({addr}): {e}")
-                    )
-                );
+                return Err(Error::new(e.kind(), format!("Failed to connect to ({addr}): {e}")));
             }
         };
 

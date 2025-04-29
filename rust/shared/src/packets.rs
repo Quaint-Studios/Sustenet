@@ -34,6 +34,7 @@ pub enum ClusterSetup {
 }
 
 #[repr(u8)]
+#[derive(Debug, Clone)]
 /// Used to request information about the server.
 pub enum Diagnostics {
     /// Requests information about a server's type.

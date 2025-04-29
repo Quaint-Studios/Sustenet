@@ -12,6 +12,7 @@ homepage.workspace = true
 workspace = true
 
 [dependencies]
+bytes.workspace = true
 dashmap.workspace = true
 getrandom.workspace = true
 lazy_static.workspace = true

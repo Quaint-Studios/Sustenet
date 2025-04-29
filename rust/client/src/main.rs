@@ -4,8 +4,14 @@ use sustenet_shared::lselect;
 #[tokio::main]
 pub async fn main() {
     let address = "127.0.0.1";
-    let port = 6256u16;
-    let mut client = Client::connect(address, port).await.expect("Failed to connect to the server");
+    let port = 6256;
+    let mut client = match Client::connect(address, port).await {
+        Ok(client) => client,
+        Err(e) => {
+            eprintln!("Failed to connect to the server: {e}");
+            return;
+        }
+    };
     lselect! {
         Some(event) = client.next_event() => {
             println!("Received event: {:?}", event);
