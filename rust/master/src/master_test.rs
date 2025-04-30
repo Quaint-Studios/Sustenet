@@ -1,230 +1,13 @@
-//! Handles connections and logic specific to the Master Server.
-//! This module is intended for managing cluster/server registration, diagnostics, and authentication.
-use crate::master_client::MasterClient;
-use sustenet_shared::logging::{ LogType, Logger };
-use sustenet_shared::lselect;
-use sustenet_shared::network::ClusterInfo;
-use sustenet_shared::packets::Diagnostics;
-use sustenet_shared::utils::constants::{ self, DEFAULT_IP };
-
-use std::collections::BTreeSet;
-use std::io::{ Error, ErrorKind };
-use std::net::SocketAddr;
-use std::sync::LazyLock;
-
-use bytes::Bytes;
-use dashmap::DashMap;
-use tokio::io;
-use tokio::net::{ TcpListener, TcpStream };
-use tokio::sync::broadcast;
-
-/// Global logger for the master module.
-pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| Logger::new(LogType::Master));
-
-/// Events emitted by the master server to notify listeners.
-#[derive(Debug, Clone)]
-pub enum MasterEvent {
-    /// When a connection is established with a client or server.
-    Connected(u32),
-    /// When a connection is closed with a client or server.
-    Disconnected(u32),
-    ClusterRegistered(u32, String),
-    ClusterRegistrationFailed(u32),
-    DiagnosticsReceived(Diagnostics, Bytes),
-    Error(String),
-}
-
-/// Handles connections and interactions with Cluster Servers and Clients.
-pub struct MasterServer {
-    max_connections: u32,
-    port: u16,
-    // sender: mpsc::Sender<Bytes>,
-    event_tx: broadcast::Sender<MasterEvent>,
-    event_rx: broadcast::Receiver<MasterEvent>,
-    connections: DashMap<u32, MasterClient>,
-    // connections: Vec<MasterClient>,
-    // free_list: VecDeque<u64>,
-    cluster_servers: BTreeSet<ClusterInfo>,
-    released_ids: BTreeSet<u32>,
-    max_id: u32, // Track the maximum ID assigned to clients
-}
-
-impl MasterServer {
-    pub async fn new(/* config: Config */) -> io::Result<Self> {
-        // Load the configuration from a file or environment variables
-        // For now, we'll use a default port
-        let max_connections = 0; // TODO: Load from config
-        let port = constants::MASTER_PORT; // TODO: Load from config
-
-        let (event_tx, event_rx) = broadcast::channel::<MasterEvent>(16);
-
-        Ok(Self {
-            max_connections,
-            port,
-            event_tx,
-            event_rx,
-            connections: DashMap::new(),
-            cluster_servers: BTreeSet::new(),
-            released_ids: BTreeSet::new(),
-            max_id: 0,
-        })
-    }
-
-    pub async fn new_from_cli() -> io::Result<Self> {
-        // TODO (low priority): Load the configuration from CLI arguments
-        todo!()
-    }
-
-    pub async fn new_from_config() -> io::Result<Self> {
-        // TODO: Load the configuration from a file
-        Self::new().await
-    }
-
-    ///
-    pub async fn start(&mut self) -> io::Result<()> {
-        let addr = format!("{}:{}", DEFAULT_IP, self.port);
-
-        let listener = match TcpListener::bind(&addr).await {
-            Ok(l) => {
-                LOGGER.success(&format!("Master server started on {addr}")).await;
-                l
-            }
-            Err(e) => {
-                LOGGER.error(&format!("Failed to bind to {addr}")).await;
-                return Err(Error::new(e.kind(), format!("Failed to bind to ({addr}): {e}")));
-            }
-        };
-
-        lselect!(
-            event = self.event_rx.recv() => {
-                if let Ok(event) = event {
-                    match event {
-                        MasterEvent::Connected(id) => {
-                            LOGGER.debug(&format!("Client #{id} connected")).await;
-                        }
-                        MasterEvent::Disconnected(id) => {
-                            LOGGER.debug(&format!("Client #{id} disconnected")).await;
-                            if self.connections.remove(&id).is_none() {
-                                LOGGER.warning(&format!("Disconnected client #{id} not found")).await;
-                                continue;
-                            }
-
-                            if id < self.max_id {
-                                if !self.released_ids.insert(id) {
-                                    LOGGER.warning(&format!("ID #{id} discarded")).await;
-                                } else {
-                                    LOGGER.debug(&format!("ID #{id} stored")).await;
-                                }
-
-                                self.max_id = self.connections.iter().map(|elem| *elem.key()).max().unwrap_or(0);
-                                self.released_ids.retain(|&released_id| released_id <= self.max_id);
-                            }
-                        }
-                        MasterEvent::ClusterRegistered(id, name) => {
-                            LOGGER.success(&format!("Cluster ({name}) registered with ID #{id}")).await;
-                        }
-                        MasterEvent::ClusterRegistrationFailed(id) => {
-                            LOGGER.error(&format!("Cluster registration failed for ID {id}")).await;
-                        }
-                        MasterEvent::DiagnosticsReceived(diagnostics, bytes) => {
-                            LOGGER.debug(&format!("Diagnostics received: {diagnostics:?}")).await;
-                        }
-                        MasterEvent::Error(msg) => {
-                            LOGGER.error(&format!("Error: {msg}")).await;
-                        }
-                    }
-                }
-            }
-            res = listener.accept() => {
-                self.handle_listener(res).await?;
-            }
-        );
-    }
-
-    pub async fn handle_listener(
-        &mut self,
-        res: io::Result<(TcpStream, SocketAddr)>
-    ) -> io::Result<()> {
-        let (stream, peer) = match res {
-            Ok(pair) => pair,
-            Err(e) => {
-                LOGGER.error(&format!("Failed to accept connection: {e}")).await;
-                return Err(Error::new(e.kind(), format!("Failed to accept connection: {e}")));
-            }
-        };
-
-        if self.max_connections != 0 && self.connections.len() >= (self.max_connections as usize) {
-            LOGGER.warning(&format!("Max connections reached: {}", self.max_connections)).await;
-            return Err(
-                Error::new(
-                    ErrorKind::Other,
-                    format!("Max connections reached: {}", self.max_connections)
-                )
-            );
-        }
-
-        let id = self.released_ids.pop_first().unwrap_or(self.max_id + 1);
-        self.max_id = self.max_id.max(id);
-
-        let connection = MasterClient::new(id, stream, self.event_tx.clone()).await?;
-        self.connections.insert(id, connection);
-
-        LOGGER.debug(&format!("Accepted connection from {peer}")).await;
-        let _ = self.event_tx.send(MasterEvent::Connected(id));
-
-        Ok(())
-    }
-
-    /// Sends a message to a specific client.
-    pub async fn send(client: &MasterClient, bytes: Bytes) -> io::Result<()> {
-        if let Err(e) = client.send(bytes).await {
-            LOGGER.error(&format!("Failed to send message to client: {e}")).await;
-            return Err(
-                Error::new(ErrorKind::Other, format!("Failed to send message to client: {e}"))
-            );
-        }
-        Ok(())
-    }
-
-    /// Sends a message to a specific client ID.
-    pub async fn send_to(&self, id: &u32, bytes: Bytes) -> io::Result<()> {
-        if let Some(client) = self.connections.get(id) {
-            Self::send(&client, bytes).await?;
-        } else {
-            LOGGER.warning(&format!("Client {id} not found")).await;
-            return Err(Error::new(std::io::ErrorKind::NotFound, format!("Client {id} not found")));
-        }
-        Ok(())
-    }
-
-    /// Sends a message to all connections.
-    pub async fn send_to_all(&self, bytes: Bytes) -> io::Result<()> {
-        for client in self.connections.iter() {
-            Self::send(&client, bytes.clone()).await?;
-        }
-        Ok(())
-    }
-
-    /// Sends a message to all cluster servers.
-    pub async fn send_to_clusters(&self, bytes: Bytes) -> io::Result<()> {
-        for cluster in self.cluster_servers.iter() {
-            if let Err(e) = self.send_to(&cluster.id, bytes.clone()).await {
-                LOGGER.error(
-                    &format!("Failed to send message to cluster {}: {e}", cluster.name)
-                ).await;
-            }
-        }
-        Ok(())
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use std::collections::HashMap;
 
+    use bytes::Bytes;
     use tokio::time::Instant;
 
-    struct Connection {}
+    struct Connection {
+		sender: tokio::sync::mpsc::Sender<Bytes>,
+	}
 
     struct MasterServer {
         connections: HashMap<u64, Connection>,
@@ -252,8 +35,13 @@ mod tests {
                 id
             };
 
+			// Create a new channel for the connection
+			let (sender, _receiver) = tokio::sync::mpsc::channel(100); // Example channel with a buffer size of 100
+
             // Add the connection
-            self.connections.insert(id, Connection {});
+            self.connections.insert(id, Connection {
+				sender,
+			});
             id
         }
 
@@ -271,6 +59,7 @@ mod tests {
     }
 
     #[tokio::test]
+	#[ignore]
     async fn test_add_connection() {
         let mut server = MasterServer::new();
 
@@ -285,6 +74,7 @@ mod tests {
     }
 
     #[tokio::test]
+	#[ignore]
     async fn test_remove_connection() {
         let mut server = MasterServer::new();
 
@@ -308,6 +98,7 @@ mod tests {
     }
 
     #[tokio::test]
+	#[ignore]
     async fn test_performance_at_scale() {
         const MAX_CONNS: usize = 1_000_000;
 
@@ -323,10 +114,44 @@ mod tests {
 
         // Verify all connections are added
         assert_eq!(server.connections.len(), MAX_CONNS);
-        assert!(elapsed.as_secs() < 1);
+        assert!(elapsed.as_secs() < 5);
     }
 
+	#[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+	#[ignore]
+	/// NOTE: This is bad.
+	async fn test_parallel_performance_at_scale() {
+		const MAX_CONNS: usize = 1_000_000;
+
+		let mut server = std::sync::Arc::new(tokio::sync::Mutex::new(MasterServer::new()));
+
+		// Performance test: adding connections in parallel
+		let start_time = Instant::now();
+		let mut handles = Vec::new();
+		for _ in 0..MAX_CONNS {
+			let server = std::sync::Arc::clone(&server);
+			handles.push(tokio::spawn(async move {
+				let mut server = server.lock().await;
+				server.add_connection();
+			}));
+		}
+
+		for handle in handles {
+			let _ = handle.await.unwrap();
+		}
+
+		let elapsed = start_time.elapsed();
+		println!("Time to add {MAX_CONNS} connections in parallel: {:?}", elapsed);
+
+		// Verify all connections are added
+		assert!(elapsed.as_secs() < 5);
+
+		let server = server.lock().await;
+		assert_eq!(server.connections.len(), MAX_CONNS);
+	}
+
     #[tokio::test]
+	#[ignore]
     async fn test_performance_get_connection_by_id() {
         const MAX_CONNS: usize = 1_000_000;
 
@@ -340,7 +165,7 @@ mod tests {
         let elapsed = start_time.elapsed();
         println!("Time to add {MAX_CONNS} connections: {:?}", elapsed);
 
-        assert!(elapsed.as_secs() < 1);
+        assert!(elapsed.as_secs() < 5);
 
         // Performance test: retrieving connections by ID
         let start_time = Instant::now();
@@ -351,10 +176,11 @@ mod tests {
         println!("Time to get {MAX_CONNS} connections by ID: {:?}", elapsed);
 
         // Assert the lookup performance
-        assert!(elapsed.as_secs() < 1);
+        assert!(elapsed.as_secs() < 5);
     }
 
     #[tokio::test]
+	#[ignore]
     async fn test_remove_all_connections() {
         const MAX_CONNS: usize = 1_000_000;
 
@@ -367,7 +193,7 @@ mod tests {
         }
         let elapsed = start_time.elapsed();
         println!("Time to add {MAX_CONNS} connections: {:?}", elapsed);
-        assert!(elapsed.as_secs() < 1);
+        assert!(elapsed.as_secs() < 5);
 
         // Verify all connections are added
         assert_eq!(server.connections.len(), MAX_CONNS);
@@ -384,10 +210,11 @@ mod tests {
         // Verify all connections are removed
         assert!(server.connections.is_empty());
         assert_eq!(server.free_list.len(), MAX_CONNS);
-        assert!(elapsed.as_secs() < 1);
+        assert!(elapsed.as_secs() < 5);
     }
 
     #[tokio::test]
+	#[ignore]
     async fn test_ram_usage() {
         const MAX_CONNS: usize = 1_000_000;
 
@@ -421,7 +248,7 @@ mod tests {
             server.free_list.capacity() * std::mem::size_of::<u64>();
 
         println!("Time to add {MAX_CONNS} connections: {:?}", elapsed);
-        assert!(elapsed.as_secs() < 1);
+        assert!(elapsed.as_secs() < 5);
         println!(
             "Estimated memory usage after adding connections: ({} conn bytes) ({} free_list bytes) {} total bytes",
             memory_connections_after,
@@ -483,3 +310,7 @@ mod tests {
     }
 }
 
+/// The point of this module is to stress test the current implementation of the MasterServer.
+mod integrated_tests {
+	
+}

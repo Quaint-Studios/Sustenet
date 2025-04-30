@@ -11,6 +11,9 @@ homepage.workspace = true
 [lints]
 workspace = true
 
+[features]
+perf = []
+
 [dependencies]
 aes-gcm = { workspace = true }
 base64.workspace = true

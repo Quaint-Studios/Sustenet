@@ -17,6 +17,12 @@ pub mod constants {
 
     pub const DEBUGGING: bool = cfg!(debug_assertions);
 
+    #[cfg(feature = "perf")]
+    pub(crate) const PERFORMANCE: bool = true;
+
+    #[cfg(not(feature = "perf"))]
+    pub(crate) const PERFORMANCE: bool = false;
+
     /// How many ticks are in a second.
     pub const TICK_RATE: i32 = 30;
     pub const MS_PER_TICK: u64 = 1000 / (TICK_RATE as u64);

@@ -1,3 +1,4 @@
+use sustenet_master::MasterClient;
 use sustenet_shared::utils;
 
 #[tokio::main]

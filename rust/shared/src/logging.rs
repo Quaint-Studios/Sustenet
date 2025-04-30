@@ -51,7 +51,7 @@ macro_rules! log_message {
     };
 }
 
-use crate::{ log_message, utils::constants::DEBUGGING };
+use crate::{ log_message, utils::constants::DEBUGGING, utils::constants::PERFORMANCE };
 
 /// Logger struct to handle logging messages with different log levels and types.
 pub struct Logger {
@@ -87,7 +87,7 @@ impl Logger {
 
     /// Logs a debug message if debugging is enabled.
     pub async fn debug(&self, message: &str) {
-        if !DEBUGGING {
+        if !DEBUGGING || PERFORMANCE {
             return;
         }
         if let Some(plugin_info) = self.plugin_info.get() {
@@ -98,6 +98,9 @@ impl Logger {
 
     /// Logs an info message.
     pub async fn info(&self, message: &str) {
+        if PERFORMANCE {
+            return;
+        }
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
@@ -106,7 +109,7 @@ impl Logger {
 
     /// Logs a warning message if debugging is enabled.
     pub async fn warning(&self, message: &str) {
-        if !DEBUGGING {
+        if !DEBUGGING || PERFORMANCE {
             return;
         }
         if let Some(plugin_info) = self.plugin_info.get() {
@@ -117,6 +120,9 @@ impl Logger {
 
     /// Logs an error message.
     pub async fn error(&self, message: &str) {
+        if PERFORMANCE {
+            return;
+        }
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
@@ -125,6 +131,9 @@ impl Logger {
 
     /// Logs a success message.
     pub async fn success(&self, message: &str) {
+        if PERFORMANCE {
+            return;
+        }
         if let Some(plugin_info) = self.plugin_info.get() {
             plugin_info(message);
         }
