@@ -14,7 +14,7 @@ pub enum Event {
 
 #[derive(Eq)]/// Used to store cluster information that we can reuse.
 pub struct ClusterInfo {
-    pub id: u32,
+    pub id: u64,
     pub name: String,
 	pub ip: IpAddr,
     pub port: u16,

@@ -7,7 +7,7 @@ use sustenet_shared::network::ClusterInfo;
 use sustenet_shared::packets::Diagnostics;
 use sustenet_shared::utils::constants::{ self, DEFAULT_IP };
 
-use std::collections::BTreeSet;
+use std::collections::{ BTreeSet, HashMap };
 use std::io::{ Error, ErrorKind };
 use std::net::SocketAddr;
 use std::sync::LazyLock;
@@ -25,11 +25,11 @@ pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| Logger::new(LogType::Mast
 #[derive(Debug, Clone)]
 pub enum MasterEvent {
     /// When a connection is established with a client or server.
-    Connected(u32),
+    Connected(u64),
     /// When a connection is closed with a client or server.
-    Disconnected(u32),
-    ClusterRegistered(u32, String),
-    ClusterRegistrationFailed(u32),
+    Disconnected(u64),
+    ClusterRegistered(u64, String),
+    ClusterRegistrationFailed(u64),
     DiagnosticsReceived(Diagnostics, Bytes),
     Error(String),
 }
@@ -38,15 +38,14 @@ pub enum MasterEvent {
 pub struct MasterServer {
     max_connections: u32,
     port: u16,
+
     // sender: mpsc::Sender<Bytes>,
     event_tx: broadcast::Sender<MasterEvent>,
     event_rx: broadcast::Receiver<MasterEvent>,
-    connections: DashMap<u32, MasterClient>,
-    // connections: Vec<MasterClient>,
-    // free_list: VecDeque<u64>,
-    cluster_servers: BTreeSet<ClusterInfo>,
-    released_ids: BTreeSet<u32>,
-    max_id: u32, // Track the maximum ID assigned to clients
+
+    connections: HashMap<u64, MasterClient>,
+    cluster_servers: HashMap<u64, ClusterInfo>,
+    next_id: u64,
 }
 
 impl MasterServer {
@@ -61,12 +60,13 @@ impl MasterServer {
         Ok(Self {
             max_connections,
             port,
+
             event_tx,
             event_rx,
-            connections: DashMap::new(),
-            cluster_servers: BTreeSet::new(),
-            released_ids: BTreeSet::new(),
-            max_id: 0,
+
+            connections: HashMap::new(),
+            cluster_servers: HashMap::new(),
+            next_id: 0,
         })
     }
 
@@ -103,22 +103,11 @@ impl MasterServer {
                             LOGGER.debug(&format!("Client #{id} connected")).await;
                         }
                         MasterEvent::Disconnected(id) => {
-                            LOGGER.debug(&format!("Client #{id} disconnected")).await;
                             if self.connections.remove(&id).is_none() {
                                 LOGGER.warning(&format!("Disconnected client #{id} not found")).await;
                                 continue;
                             }
-
-                            if id < self.max_id {
-                                if !self.released_ids.insert(id) {
-                                    LOGGER.warning(&format!("ID #{id} discarded")).await;
-                                } else {
-                                    LOGGER.debug(&format!("ID #{id} stored")).await;
-                                }
-
-                                self.max_id = self.connections.iter().map(|elem| *elem.key()).max().unwrap_or(0);
-                                self.released_ids.retain(|&released_id| released_id <= self.max_id);
-                            }
+                            LOGGER.debug(&format!("Client #{id} disconnected")).await;
                         }
                         MasterEvent::ClusterRegistered(id, name) => {
                             LOGGER.success(&format!("Cluster ({name}) registered with ID #{id}")).await;
@@ -153,24 +142,12 @@ impl MasterServer {
             }
         };
 
-        if self.max_connections != 0 && self.connections.len() >= (self.max_connections as usize) {
-            LOGGER.warning(&format!("Max connections reached: {}", self.max_connections)).await;
-            return Err(
-                Error::new(
-                    ErrorKind::Other,
-                    format!("Max connections reached: {}", self.max_connections)
-                )
-            );
-        }
-
-        let id = self.released_ids.pop_first().unwrap_or(self.max_id + 1);
-        self.max_id = self.max_id.max(id);
-
-        let connection = MasterClient::new(id, stream, self.event_tx.clone()).await?;
-        self.connections.insert(id, connection);
+        let connection = MasterClient::new(self.next_id, stream, self.event_tx.clone()).await?;
+        self.connections.insert(self.next_id, connection);
 
         LOGGER.debug(&format!("Accepted connection from {peer}")).await;
-        let _ = self.event_tx.send(MasterEvent::Connected(id));
+        let _ = self.event_tx.send(MasterEvent::Connected(self.next_id));
+        self.next_id += 1;
 
         Ok(())
     }
@@ -187,7 +164,7 @@ impl MasterServer {
     }
 
     /// Sends a message to a specific client ID.
-    pub async fn send_to(&self, id: &u32, bytes: Bytes) -> io::Result<()> {
+    pub async fn send_to(&self, id: &u64, bytes: Bytes) -> io::Result<()> {
         if let Some(client) = self.connections.get(id) {
             Self::send(&client, bytes).await?;
         } else {
@@ -199,15 +176,15 @@ impl MasterServer {
 
     /// Sends a message to all connections.
     pub async fn send_to_all(&self, bytes: Bytes) -> io::Result<()> {
-        for client in self.connections.iter() {
-            Self::send(&client, bytes.clone()).await?;
+        for client in self.connections.values() {
+            Self::send(client, bytes.clone()).await?;
         }
         Ok(())
     }
 
     /// Sends a message to all cluster servers.
     pub async fn send_to_clusters(&self, bytes: Bytes) -> io::Result<()> {
-        for cluster in self.cluster_servers.iter() {
+        for cluster in self.cluster_servers.values() {
             if let Err(e) = self.send_to(&cluster.id, bytes.clone()).await {
                 LOGGER.error(
                     &format!("Failed to send message to cluster {}: {e}", cluster.name)

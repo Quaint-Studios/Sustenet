@@ -21,7 +21,7 @@ pub struct MasterClient {
 
 impl MasterClient {
     pub async fn new(
-        id: u32,
+        id: u64,
         stream: TcpStream,
         event_tx: broadcast::Sender<MasterEvent>,
     ) -> io::Result<Self> {
@@ -53,7 +53,7 @@ impl MasterClient {
     /// It also enables the MasterServer to send messages through this
     /// struct's sender.
     pub fn receive(
-        id: u32,
+        id: u64,
         mut stream: TcpStream,
         sender: mpsc::Sender<Bytes>,
         mut receiver: mpsc::Receiver<Bytes>,
@@ -167,7 +167,7 @@ impl MasterClient {
     async fn handle_shutdown(
         mut writer: tokio::net::tcp::WriteHalf<'_>,
         event_tx: broadcast::Sender<MasterEvent>,
-        id: u32,
+        id: u64,
     ) {
         if let Err(e) = writer.shutdown().await {
             let msg = format!("Failed to shutdown writer: {e}");
