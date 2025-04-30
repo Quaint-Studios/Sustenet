@@ -1,17 +1,3 @@
-/// Create a channel to listen for shutdown signals.
-pub fn shutdown_channel() -> Result<tokio::sync::broadcast::Receiver<bool>, ctrlc::Error> {
-    let (tx, rx) = tokio::sync::broadcast::channel::<bool>(1);
-
-    // Handle shutdowns gracefully.
-    ctrlc
-        ::set_handler(move || {
-            tx.send(true).unwrap();
-        })
-        .expect("Error setting Ctrl-C handler");
-
-    Ok(rx)
-}
-
 pub mod constants {
     pub const VERSION: &str = "0.1.4";
 
