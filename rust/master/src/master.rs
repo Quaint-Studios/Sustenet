@@ -7,13 +7,12 @@ use sustenet_shared::network::ClusterInfo;
 use sustenet_shared::packets::Diagnostics;
 use sustenet_shared::utils::constants::{ self, DEFAULT_IP };
 
-use std::collections::{ BTreeSet, HashMap };
+use std::collections::HashMap;
 use std::io::{ Error, ErrorKind };
 use std::net::SocketAddr;
 use std::sync::LazyLock;
 
 use bytes::Bytes;
-use dashmap::DashMap;
 use tokio::io;
 use tokio::net::{ TcpListener, TcpStream };
 use tokio::sync::broadcast;
@@ -82,8 +81,8 @@ impl MasterServer {
 
     ///
     pub async fn start(&mut self) -> io::Result<()> {
+        // Create Listener
         let addr = format!("{}:{}", DEFAULT_IP, self.port);
-
         let listener = match TcpListener::bind(&addr).await {
             Ok(l) => {
                 LOGGER.success(&format!("Master server started on {addr}")).await;
@@ -98,42 +97,50 @@ impl MasterServer {
         lselect!(
             event = self.event_rx.recv() => {
                 if let Ok(event) = event {
-                    match event {
-                        MasterEvent::Connected(id) => {
-                            LOGGER.debug(&format!("Client #{id} connected")).await;
-                        }
-                        MasterEvent::Disconnected(id) => {
-                            if self.connections.remove(&id).is_none() {
-                                LOGGER.warning(&format!("Disconnected client #{id} not found")).await;
-                                continue;
-                            }
-                            LOGGER.debug(&format!("Client #{id} disconnected")).await;
-                        }
-                        MasterEvent::ClusterRegistered(id, name) => {
-                            LOGGER.success(&format!("Cluster ({name}) registered with ID #{id}")).await;
-                        }
-                        MasterEvent::ClusterRegistrationFailed(id) => {
-                            LOGGER.error(&format!("Cluster registration failed for ID {id}")).await;
-                        }
-                        MasterEvent::DiagnosticsReceived(diagnostics, bytes) => {
-                            LOGGER.debug(&format!("Diagnostics received: {diagnostics:?}")).await;
-                        }
-                        MasterEvent::Error(msg) => {
-                            LOGGER.error(&format!("Error: {msg}")).await;
-                        }
-                    }
+                    self.handle_events(event).await?;
                 }
             }
-            res = listener.accept() => {
-                self.handle_listener(res).await?;
-            }
+            res = listener.accept() => self.handle_listener(res).await?
         );
+    }
+
+    pub async fn handle_events(&mut self, event: MasterEvent) -> io::Result<()> {
+        match event {
+            MasterEvent::Connected(id) => {
+                LOGGER.debug(&format!("Client #{id} connected")).await;
+            }
+            MasterEvent::Disconnected(id) => {
+                if self.connections.remove(&id).is_none() {
+                    LOGGER.warning(&format!("Disconnected client #{id} not found")).await;
+                    return Ok(());
+                }
+                LOGGER.debug(&format!("Client #{id} disconnected")).await;
+            }
+            MasterEvent::ClusterRegistered(id, name) => {
+                LOGGER.success(&format!("Cluster ({name}) registered with ID #{id}")).await;
+            }
+            MasterEvent::ClusterRegistrationFailed(id) => {
+                LOGGER.error(&format!("Cluster registration failed for ID {id}")).await;
+            }
+            MasterEvent::DiagnosticsReceived(diagnostics, _bytes) => {
+                LOGGER.debug(&format!("Diagnostics received: {diagnostics:?}")).await;
+            }
+            MasterEvent::Error(msg) => {
+                LOGGER.error(&format!("Error: {msg}")).await;
+            }
+        }
+        Ok(())
     }
 
     pub async fn handle_listener(
         &mut self,
         res: io::Result<(TcpStream, SocketAddr)>
     ) -> io::Result<()> {
+        if self.max_connections != 0 && (self.connections.len() as u32) >= self.max_connections {
+            LOGGER.warning("Max connections reached, rejecting new connection").await;
+            return Ok(());
+        }
+
         let (stream, peer) = match res {
             Ok(pair) => pair,
             Err(e) => {
@@ -142,6 +149,7 @@ impl MasterServer {
             }
         };
 
+        // Add connection
         let connection = MasterClient::new(self.next_id, stream, self.event_tx.clone()).await?;
         self.connections.insert(self.next_id, connection);
 
