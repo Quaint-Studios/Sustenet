@@ -44,6 +44,10 @@ impl MasterClient {
     /// Sends a message to the sender to close the connection.
     ///
     /// This should be called before getting rid of this ServerClient.
+    /// 
+    /// It doesn't need to be called if the Disconnected event is triggered
+    /// since that event only triggers when the connection is closed by the
+    /// client so it's already handled.
     pub async fn close(&self) {
         self.sender.send(Bytes::new()).await.unwrap();
     }
@@ -179,11 +183,12 @@ impl MasterClient {
 
     async fn handle_command(
         command: u8,
-        sender: &mpsc::Sender<Bytes>,
-        reader: &mut io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
-        writer: &mut tokio::net::tcp::WriteHalf<'_>,
+        _sender: &mpsc::Sender<Bytes>,
+        _reader: &mut io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
+        _writer: &mut tokio::net::tcp::WriteHalf<'_>,
         event_tx: &broadcast::Sender<MasterEvent>,
     ) {
+        // TODO: Handle commands.
         // Handle the command received from the server.
         match command {
             x if x == (Connection::Connect as u8) => {

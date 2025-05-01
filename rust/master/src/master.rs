@@ -110,6 +110,8 @@ impl MasterServer {
                 LOGGER.debug(&format!("Client #{id} connected")).await;
             }
             MasterEvent::Disconnected(id) => {
+                // The connection is already scheduled to close, so no need
+                // to call close() on the MasterClient.
                 if self.connections.remove(&id).is_none() {
                     LOGGER.warning(&format!("Disconnected client #{id} not found")).await;
                     return Ok(());
