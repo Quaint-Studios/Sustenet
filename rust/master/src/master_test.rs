@@ -119,6 +119,59 @@ mod tests {
         }
     }
 
+    async fn add_nums(num1: usize, num2: usize) -> usize {
+        num1 + num2
+    }
+
+    #[tokio::test]
+    #[ignore]
+    async fn tokio_spawn_speed_test() {
+        const MAX_ITERS: usize = 1_000_000;
+
+        // The goal is to compare 3 different implementations.
+        // 1. No spawning.
+        // 2. Spawning only the whole loop.
+        // 3. Spawning each iteration.
+        let start_time = Instant::now();
+        let mut res = 0;
+        for _ in 0..MAX_ITERS {
+            // Simulate some work
+            res = add_nums(res, 1).await;
+        }
+        let elapsed = start_time.elapsed();
+        println!("Time for no spawning: {:?}", elapsed);
+        assert!(elapsed.as_secs() < 5);
+
+        let start_time = Instant::now();
+        let mut res = 0;
+        tokio::spawn(async move {
+            for _ in 0..MAX_ITERS {
+                res = add_nums(res, 1).await;
+            }
+        }).await.unwrap();
+        let elapsed = start_time.elapsed();
+        println!("Time for spawning loop: {:?}", elapsed);
+        assert!(elapsed.as_secs() < 5);
+
+        let start_time = Instant::now();
+        // Spawn the each iteration
+        let mut handles = Vec::new();
+        let mut res = 0;
+        for _ in 0..MAX_ITERS {
+            let handle = tokio::spawn(async move {
+                res = add_nums(res, 1).await;
+            });
+            handles.push(handle);
+        }
+        for handle in handles {
+            let _ = handle.await.unwrap();
+        }
+        println!("{res}");
+        let elapsed = start_time.elapsed();
+        println!("Time for spawning each iteration: {:?}", elapsed);
+        assert!(elapsed.as_secs() < 5);
+    }
+
     #[tokio::test]
     #[ignore]
     async fn test_add_connection() {
@@ -175,9 +228,8 @@ mod tests {
         assert!(elapsed.as_secs() < 5);
     }
 
-    #[tokio::test(flavor = "multi_thread", worker_threads = 1)]
+    #[tokio::test]
     #[ignore]
-    /// NOTE: This is bad.
     async fn test_parallel_performance_at_scale() {
         const MAX_CONNS: usize = 1_000_000;
 
