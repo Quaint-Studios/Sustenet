@@ -11,11 +11,15 @@ homepage.workspace = true
 [lints]
 workspace = true
 
+[features]
+ignored_tests = []
+
 [dependencies]
+env_logger = { version = "0.11.8", default-features = false}
+dashmap = { version = "6.1.0" }
+mio = { version = "1.0.3", features = ["os-poll", "net"] }
 bytes.workspace = true
-dashmap.workspace = true
 getrandom.workspace = true
-lazy_static.workspace = true
 sustenet-shared.workspace = true
 tokio = { workspace = true, features = [
 	# "socket2",

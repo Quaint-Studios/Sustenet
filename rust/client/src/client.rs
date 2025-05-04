@@ -15,7 +15,7 @@ use tokio::sync::{ broadcast, mpsc };
 /// Global logger for the client module.
 pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| Logger::new(LogType::Client));
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ClusterInfo {
     pub name: String,
     pub ip: String,
@@ -23,8 +23,10 @@ pub struct ClusterInfo {
     pub max_connections: u32,
 }
 
+
+
 /// Events emitted by the client to notify listeners.
-/// 
+///
 /// Should be handled with `event_receiver` or `next_event` externally.
 #[derive(Debug, Clone)]
 pub enum ClientEvent {
@@ -151,59 +153,87 @@ impl Client {
     /// This function is called in a separate task to handle incoming commands.
     async fn handle_command(
         command: u8,
-        sender: &mpsc::Sender<Bytes>,
-        reader: &mut io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
-        writer: &mut tokio::net::tcp::WriteHalf<'_>,
+        _sender: &mpsc::Sender<Bytes>,
+        _reader: &mut io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
+        _writer: &mut tokio::net::tcp::WriteHalf<'_>,
         event_tx: &broadcast::Sender<ClientEvent>
     ) {
+        // Todo: Handle commands.
         // Handle the command received from the server.
         match command {
-            x if x == (Connection::Connect as u8) => {
-                LOGGER.info("Handling Connection Connect").await;
-            }
-            x if x == (Connection::Disconnect as u8) => {
-                LOGGER.info("Handling Connection Disconnect").await;
-            }
-            x if x == (Connection::Authenticate as u8) => {
-                LOGGER.info("Handling Connection Authenticate").await;
-            }
+            x if x == (Connection::Connect as u8) => Self::handle_connect_command().await,
+            x if x == (Connection::Disconnect as u8) => Self::handle_disconnect_command().await,
+            x if x == (Connection::Authenticate as u8) => Self::handle_authenticate_command().await,
 
             x if x == (Messaging::SendGlobalMessage as u8) => {
-                LOGGER.info("Handling Messaging Send Global Message").await;
+                Self::handle_send_global_message_command().await
             }
             x if x == (Messaging::SendPrivateMessage as u8) => {
-                LOGGER.info("Handling Messaging Send Private Message").await;
+                Self::handle_send_private_message_command().await
             }
             x if x == (Messaging::SendPartyMessage as u8) => {
-                LOGGER.info("Handling Messaging Send Party Message").await;
+                Self::handle_send_party_message_command().await
             }
             x if x == (Messaging::SendLocalMessage as u8) => {
-                LOGGER.info("Handling Messaging Send Local Message").await;
+                Self::handle_send_local_message_command().await
             }
 
             x if x == (Diagnostics::CheckServerType as u8) => {
-                LOGGER.info("Handling Diagnostics Check Server Type").await;
+                Self::handle_check_server_type_command().await
             }
             x if x == (Diagnostics::CheckServerUptime as u8) => {
-                LOGGER.info("Handling Diagnostics Check Server Uptime").await;
+                Self::handle_check_server_uptime_command().await
             }
             x if x == (Diagnostics::CheckServerPlayerCount as u8) => {
-                LOGGER.info("Handling Diagnostics Check Server Player Count").await;
+                Self::handle_check_server_player_count_command().await
             }
 
-            _ => {
-                let msg = format!("Unknown command received: {command}");
-                LOGGER.error(&msg).await;
-                let _ = event_tx.send(ClientEvent::Error(msg));
-            }
+            _ => Self::handle_extra_command(command, event_tx).await,
         }
     }
 
-    /// Sends a message to the server.
-    pub async fn send_message(&self, msg: Bytes) -> Result<(), mpsc::error::SendError<Bytes>> {
+    async fn handle_connect_command() {
+        todo!();
+    }
+    async fn handle_disconnect_command() {
+        todo!();
+    }
+    async fn handle_authenticate_command() {
+        todo!();
+    }
+
+    async fn handle_send_global_message_command() {
+        todo!();
+    }
+    async fn handle_send_private_message_command() {
+        todo!();
+    }
+    async fn handle_send_party_message_command() {
+        todo!();
+    }
+    async fn handle_send_local_message_command() {
+        todo!();
+    }
+
+    async fn handle_check_server_type_command() {
+        todo!();
+    }
+    async fn handle_check_server_uptime_command() {
+        todo!();
+    }
+    async fn handle_check_server_player_count_command() {
+        todo!();
+    }
+
+    async fn handle_extra_command(command: u8, event_tx: &broadcast::Sender<ClientEvent>) {
+        let msg = format!("Unknown command received: {command}");
+        LOGGER.error(&msg).await;
+        let _ = event_tx.send(ClientEvent::Error(msg));
+    }
+
+    /// Sends data to the server.
+    pub async fn send(&self, msg: Bytes) -> Result<(), mpsc::error::SendError<Bytes>> {
         self.sender.send(msg.clone()).await?;
-        // In a full implementation, you would also notify event listeners here:
-        // (In real code, you may not want to clone and send every message event.)
         let _ = self.event_tx.send(ClientEvent::MessageSent(msg));
         Ok(())
     }
@@ -224,7 +254,7 @@ impl Client {
 
     // region: Cluster Server Utilities
     pub fn get_cluster_servers(&self) -> &[ClusterInfo] {
-        &self.cluster_servers
+    &self.cluster_servers
     }
 
     pub fn add_cluster_server(&mut self, server: ClusterInfo) {
@@ -236,7 +266,7 @@ impl Client {
     }
 
     pub fn remove_cluster_server(&mut self, server: &ClusterInfo) {
-        todo!("Remove cluster server from the list.");
+        self.cluster_servers.retain(|s| s != server);
     }
 
     pub fn clear_cluster_servers(&mut self) {

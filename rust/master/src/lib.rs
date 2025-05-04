@@ -1,6 +1,7 @@
+mod tests;
+
 pub mod master;
 pub mod master_client;
-mod master_test;
 pub mod security;
 
 pub use master::MasterServer;

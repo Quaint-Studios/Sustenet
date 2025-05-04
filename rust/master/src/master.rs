@@ -30,6 +30,7 @@ pub enum MasterEvent {
     ClusterRegistered(u64, String),
     ClusterRegistrationFailed(u64),
     DiagnosticsReceived(Diagnostics, Bytes),
+    Shutdown,
     Error(String),
 }
 
@@ -97,14 +98,24 @@ impl MasterServer {
         lselect!(
             event = self.event_rx.recv() => {
                 if let Ok(event) = event {
-                    self.handle_events(event).await?;
+                    if !self.handle_events(event).await? {
+                        println!("Cleaning up master server...");
+                        break;
+                    };
                 }
             }
             res = listener.accept() => self.handle_listener(res).await?
         );
+
+        Ok(())
     }
 
-    pub async fn handle_events(&mut self, event: MasterEvent) -> io::Result<()> {
+    ///
+    async fn tick() {
+
+    }
+
+    pub async fn handle_events(&mut self, event: MasterEvent) -> io::Result<bool> {
         match event {
             MasterEvent::Connected(id) => {
                 LOGGER.debug(&format!("Client #{id} connected")).await;
@@ -114,7 +125,7 @@ impl MasterServer {
                 // to call close() on the MasterClient.
                 if self.connections.remove(&id).is_none() {
                     LOGGER.warning(&format!("Disconnected client #{id} not found")).await;
-                    return Ok(());
+                    return Ok(true);
                 }
                 LOGGER.debug(&format!("Client #{id} disconnected")).await;
             }
@@ -130,8 +141,12 @@ impl MasterServer {
             MasterEvent::Error(msg) => {
                 LOGGER.error(&format!("Error: {msg}")).await;
             }
+            MasterEvent::Shutdown => {
+                LOGGER.info("Received shutdown event, cleaning up...").await;
+                return Ok(false)
+            }
         }
-        Ok(())
+        Ok(true)
     }
 
     pub async fn handle_listener(
@@ -202,5 +217,23 @@ impl MasterServer {
             }
         }
         Ok(())
+    }
+
+    pub async fn cleanup(&mut self) {
+        LOGGER.info("Shutting down master server, closing all connections...").await;
+        // Stop listening for new connections.
+        // TODO: This might be doing nothing...
+        if let Err(e) = self.event_tx.send(MasterEvent::Shutdown) {
+            LOGGER.error(&format!("Failed to send shutdown event: {e}")).await;
+        }
+
+        // Close all connections for shutdown.
+        for (id, client) in self.connections.drain() {
+            if let Err(e) = client.close().await {
+                LOGGER.error(&format!("Failed to close connection #{id}: {e}")).await;
+            }
+        }
+
+        LOGGER.cleanup().await;
     }
 }

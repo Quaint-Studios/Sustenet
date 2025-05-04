@@ -48,8 +48,8 @@ impl MasterClient {
     /// It doesn't need to be called if the Disconnected event is triggered
     /// since that event only triggers when the connection is closed by the
     /// client so it's already handled.
-    pub async fn close(&self) {
-        self.sender.send(Bytes::new()).await.unwrap();
+    pub async fn close(&self) -> Result<(), SendError<Bytes>> {
+        self.sender.send(Bytes::new()).await
     }
 
     /// Receives messages from clients and handles them.
@@ -189,7 +189,7 @@ impl MasterClient {
         event_tx: &broadcast::Sender<MasterEvent>,
     ) {
         // TODO: Handle commands.
-        // Handle the command received from the server.
+        // Handle the command received from the client.
         match command {
             x if x == (Connection::Connect as u8) => {
                 LOGGER.info("Handling Connection Connect").await;

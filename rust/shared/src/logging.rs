@@ -80,6 +80,12 @@ impl Logger {
         }
     }
 
+    pub async fn cleanup(&self) {
+        // Wait for the logging task to finish
+        let _ = self.task.abort();
+        println!("Logger successfully cleaned up.");
+    }
+
     /// Sets the plugin info function to be called when logging messages.
     pub fn set_plugin_info<F>(&self, plugin: F) where F: Fn(&str) + Send + Sync + 'static {
         let _ = self.plugin_info.set(Box::new(plugin));
