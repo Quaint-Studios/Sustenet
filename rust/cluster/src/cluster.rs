@@ -1,5 +1,5 @@
-//! Handles connections and logic specific to the Master Server.
-//! This module is intended for managing cluster/server registration, diagnostics, and authentication.
+//! The cluster is a server that hosts many worlds and also knows about other clusters.
+//! The cluster gets this information from the master server.
 
 use sustenet_shared::logging::{ LogType, Logger };
 use sustenet_shared::network::ClusterInfo;

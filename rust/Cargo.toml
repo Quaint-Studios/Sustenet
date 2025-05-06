@@ -25,10 +25,9 @@ aes = "0.8.4"
 aes-gcm = "0.10.3"
 base64 = "0.22.1"
 bytes = "1.10.1"
-config = "0.15.4"
-ctrlc = "3.4.5"
+config = "0.15.11"
 dashmap = "6.1.0"
 getrandom = "0.3.2"
 lazy_static = "1.5.0"
 public-ip = "0.2.2"
-tokio = { version = "1.41.1", default-features = false, features = [] }
+tokio = { version = "1.44.2", default-features = false, features = [] }

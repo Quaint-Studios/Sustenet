@@ -1,5 +1,6 @@
-//! Handles connections and logic specific to the Master Server.
-//! This module is intended for managing cluster/server registration, diagnostics, and authentication.
+//! The master serve acts as a load balancer.
+//! When a client connects to it, it will redirect them to a registered cluster.
+
 use crate::master_client::MasterClient;
 use sustenet_shared::logging::{ LogType, Logger };
 use sustenet_shared::lselect;
@@ -110,10 +111,8 @@ impl MasterServer {
         Ok(())
     }
 
-    ///
-    async fn tick() {
-
-    }
+    /// TODO
+    // async fn tick() {}
 
     pub async fn handle_events(&mut self, event: MasterEvent) -> io::Result<bool> {
         match event {
@@ -143,7 +142,7 @@ impl MasterServer {
             }
             MasterEvent::Shutdown => {
                 LOGGER.info("Received shutdown event, cleaning up...").await;
-                return Ok(false)
+                return Ok(false);
             }
         }
         Ok(true)

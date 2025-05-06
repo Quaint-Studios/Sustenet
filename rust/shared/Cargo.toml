@@ -18,5 +18,4 @@ perf = []
 aes-gcm.workspace = true
 base64.workspace = true
 config.workspace = true
-ctrlc.workspace = true
 tokio = { workspace = true, features = ["signal", "sync", "io-util", "net"] }
