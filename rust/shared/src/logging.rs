@@ -80,7 +80,7 @@ impl Logger {
         }
     }
 
-    pub async fn cleanup(&self) {
+    pub fn cleanup(&self) {
         // Wait for the logging task to finish
         let _ = self.task.abort();
         println!("Logger successfully cleaned up.");
@@ -92,7 +92,7 @@ impl Logger {
     }
 
     /// Logs a debug message if debugging is enabled.
-    pub async fn debug(&self, message: &str) {
+    pub fn debug(&self, message: &str) {
         if !DEBUGGING || PERFORMANCE {
             return;
         }
@@ -103,7 +103,7 @@ impl Logger {
     }
 
     /// Logs an info message.
-    pub async fn info(&self, message: &str) {
+    pub fn info(&self, message: &str) {
         if PERFORMANCE {
             return;
         }
@@ -114,7 +114,7 @@ impl Logger {
     }
 
     /// Logs a warning message if debugging is enabled.
-    pub async fn warning(&self, message: &str) {
+    pub fn warning(&self, message: &str) {
         if !DEBUGGING || PERFORMANCE {
             return;
         }
@@ -125,7 +125,7 @@ impl Logger {
     }
 
     /// Logs an error message.
-    pub async fn error(&self, message: &str) {
+    pub fn error(&self, message: &str) {
         if PERFORMANCE {
             return;
         }
@@ -136,7 +136,7 @@ impl Logger {
     }
 
     /// Logs a success message.
-    pub async fn success(&self, message: &str) {
+    pub fn success(&self, message: &str) {
         if PERFORMANCE {
             return;
         }

@@ -87,11 +87,11 @@ impl MasterServer {
         let addr = format!("{}:{}", DEFAULT_IP, self.port);
         let listener = match TcpListener::bind(&addr).await {
             Ok(l) => {
-                LOGGER.success(&format!("Master server started on {addr}")).await;
+                LOGGER.success(&format!("Master server started on {addr}"));
                 l
             }
             Err(e) => {
-                LOGGER.error(&format!("Failed to bind to {addr}")).await;
+                LOGGER.error(&format!("Failed to bind to {addr}"));
                 return Err(Error::new(e.kind(), format!("Failed to bind to ({addr}): {e}")));
             }
         };
@@ -117,31 +117,31 @@ impl MasterServer {
     pub async fn handle_events(&mut self, event: MasterEvent) -> io::Result<bool> {
         match event {
             MasterEvent::Connected(id) => {
-                LOGGER.debug(&format!("Client #{id} connected")).await;
+                LOGGER.debug(&format!("Client #{id} connected"));
             }
             MasterEvent::Disconnected(id) => {
                 // The connection is already scheduled to close, so no need
                 // to call close() on the MasterClient.
                 if self.connections.remove(&id).is_none() {
-                    LOGGER.warning(&format!("Disconnected client #{id} not found")).await;
+                    LOGGER.warning(&format!("Disconnected client #{id} not found"));
                     return Ok(true);
                 }
-                LOGGER.debug(&format!("Client #{id} disconnected")).await;
+                LOGGER.debug(&format!("Client #{id} disconnected"));
             }
             MasterEvent::ClusterRegistered(id, name) => {
-                LOGGER.success(&format!("Cluster ({name}) registered with ID #{id}")).await;
+                LOGGER.success(&format!("Cluster ({name}) registered with ID #{id}"));
             }
             MasterEvent::ClusterRegistrationFailed(id) => {
-                LOGGER.error(&format!("Cluster registration failed for ID {id}")).await;
+                LOGGER.error(&format!("Cluster registration failed for ID {id}"));
             }
             MasterEvent::DiagnosticsReceived(diagnostics, _bytes) => {
-                LOGGER.debug(&format!("Diagnostics received: {diagnostics:?}")).await;
+                LOGGER.debug(&format!("Diagnostics received: {diagnostics:?}"));
             }
             MasterEvent::Error(msg) => {
-                LOGGER.error(&format!("Error: {msg}")).await;
+                LOGGER.error(&format!("Error: {msg}"));
             }
             MasterEvent::Shutdown => {
-                LOGGER.info("Received shutdown event, cleaning up...").await;
+                LOGGER.info("Received shutdown event, cleaning up...");
                 return Ok(false);
             }
         }
@@ -153,14 +153,14 @@ impl MasterServer {
         res: io::Result<(TcpStream, SocketAddr)>
     ) -> io::Result<()> {
         if self.max_connections != 0 && (self.connections.len() as u32) >= self.max_connections {
-            LOGGER.warning("Max connections reached, rejecting new connection").await;
+            LOGGER.warning("Max connections reached, rejecting new connection");
             return Ok(());
         }
 
         let (stream, peer) = match res {
             Ok(pair) => pair,
             Err(e) => {
-                LOGGER.error(&format!("Failed to accept connection: {e}")).await;
+                LOGGER.error(&format!("Failed to accept connection: {e}"));
                 return Err(Error::new(e.kind(), format!("Failed to accept connection: {e}")));
             }
         };
@@ -169,7 +169,7 @@ impl MasterServer {
         let connection = MasterClient::new(self.next_id, stream, self.event_tx.clone()).await?;
         self.connections.insert(self.next_id, connection);
 
-        LOGGER.debug(&format!("Accepted connection from {peer}")).await;
+        LOGGER.debug(&format!("Accepted connection from {peer}"));
         let _ = self.event_tx.send(MasterEvent::Connected(self.next_id));
         self.next_id += 1;
 
@@ -179,7 +179,7 @@ impl MasterServer {
     /// Sends a message to a specific client.
     pub async fn send(client: &MasterClient, bytes: Bytes) -> io::Result<()> {
         if let Err(e) = client.send(bytes).await {
-            LOGGER.error(&format!("Failed to send message to client: {e}")).await;
+            LOGGER.error(&format!("Failed to send message to client: {e}"));
             return Err(
                 Error::new(ErrorKind::Other, format!("Failed to send message to client: {e}"))
             );
@@ -192,7 +192,7 @@ impl MasterServer {
         if let Some(client) = self.connections.get(id) {
             Self::send(&client, bytes).await?;
         } else {
-            LOGGER.warning(&format!("Client {id} not found")).await;
+            LOGGER.warning(&format!("Client {id} not found"));
             return Err(Error::new(std::io::ErrorKind::NotFound, format!("Client {id} not found")));
         }
         Ok(())
@@ -212,27 +212,27 @@ impl MasterServer {
             if let Err(e) = self.send_to(&cluster.id, bytes.clone()).await {
                 LOGGER.error(
                     &format!("Failed to send message to cluster {}: {e}", cluster.name)
-                ).await;
+                );
             }
         }
         Ok(())
     }
 
     pub async fn cleanup(&mut self) {
-        LOGGER.info("Shutting down master server, closing all connections...").await;
+        LOGGER.info("Shutting down master server, closing all connections...");
         // Stop listening for new connections.
         // TODO: This might be doing nothing...
         if let Err(e) = self.event_tx.send(MasterEvent::Shutdown) {
-            LOGGER.error(&format!("Failed to send shutdown event: {e}")).await;
+            LOGGER.error(&format!("Failed to send shutdown event: {e}"));
         }
 
         // Close all connections for shutdown.
         for (id, client) in self.connections.drain() {
             if let Err(e) = client.close().await {
-                LOGGER.error(&format!("Failed to close connection #{id}: {e}")).await;
+                LOGGER.error(&format!("Failed to close connection #{id}: {e}"));
             }
         }
 
-        LOGGER.cleanup().await;
+        LOGGER.cleanup();
     }
 }
