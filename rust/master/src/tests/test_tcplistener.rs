@@ -1,6 +1,8 @@
+use std::net::SocketAddr;
+
 pub const MAX_CONNS: usize = 10_000;
-pub const MAX_THREADS: usize = 8;
-pub const ADDR: &str = "0.0.0.0:6258";
+pub const MAX_THREADS: usize = 20;
+pub const ADDR: &str = "0.0.0.0:6256";
 
 /// Creates connections to a TCP listener based on the number of connections specified in the CLI.
 pub fn test_create_connections() {
@@ -59,7 +61,7 @@ pub fn test_create_connections() {
     let remainder = max_conns % max_threads;
     // Break it up over the threads
     for i in 0..max_threads {
-        let addr_clone = addr.clone();
+        let addr_clone: SocketAddr = addr.parse().unwrap();
         let num_conns = if i < remainder {
             connections_per_thread + 1
         } else {
