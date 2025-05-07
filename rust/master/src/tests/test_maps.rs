@@ -9,6 +9,7 @@ mod tests {
     /// Time taken to update 10000000 items: 5.0271649s
     /// Time taken to remove 10000000 items: 7.4092275s
     #[test]
+    #[ignore]
     fn test_hashmaps() {
         use std::collections::HashMap;
         use std::time::Instant;
@@ -54,6 +55,7 @@ mod tests {
     /// Time taken to update 10000000 items: 6.5075287s
     /// Time taken to remove 10000000 items: 8.9363106s
     #[test]
+    #[ignore]
     fn test_dashmaps() {
         use dashmap::DashMap;
         use std::time::Instant;
@@ -99,6 +101,7 @@ mod tests {
     /// Time taken to update 10000000 items with threads: 9.98254s
     /// Time taken to remove 10000000 items with threads: 13.0771387s
     #[test]
+    #[ignore]
     fn test_hashmaps_with_threads() {
         use std::collections::HashMap;
         use std::sync::{ Arc, Mutex };
@@ -188,6 +191,7 @@ mod tests {
     /// Time taken to update 10000000 items with threads: 1.4454566s
     /// Time taken to remove 10000000 items with threads: 2.0433425s
     #[test]
+    #[ignore]
     fn test_dashmaps_with_threads() {
         use dashmap::DashMap;
         use std::sync::Arc;
@@ -275,6 +279,7 @@ mod tests {
     /// Time taken to update 10000000 items with tokio: 5.5900584s
     /// Time taken to remove 10000000 items with tokio: 7.4953945s
     #[tokio::test]
+    #[ignore]
     async fn test_hashmaps_tokio() {
         use std::collections::HashMap;
         use std::sync::{ Arc, Mutex };
@@ -364,6 +369,7 @@ mod tests {
     /// Time taken to update 10000000 items with tokio: 7.4993663s
     /// Time taken to remove 10000000 items with tokio: 9.1845476s
     #[tokio::test]
+    #[ignore]
     async fn test_dashmaps_tokio() {
         use dashmap::DashMap;
         use std::sync::Arc;
