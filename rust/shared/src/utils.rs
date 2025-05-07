@@ -1,27 +1,19 @@
-/// Create a channel to listen for shutdown signals.
-pub fn shutdown_channel() -> Result<tokio::sync::broadcast::Receiver<bool>, ctrlc::Error> {
-    let (tx, rx) = tokio::sync::broadcast::channel::<bool>(1);
-
-    // Handle shutdowns gracefully.
-    ctrlc
-        ::set_handler(move || {
-            tx.send(true).unwrap();
-        })
-        .expect("Error setting Ctrl-C handler");
-
-    Ok(rx)
-}
-
 pub mod constants {
     pub const VERSION: &str = "0.1.4";
 
     pub const DEBUGGING: bool = cfg!(debug_assertions);
 
+    #[cfg(feature = "perf")]
+    pub(crate) const PERFORMANCE: bool = true;
+
+    #[cfg(not(feature = "perf"))]
+    pub(crate) const PERFORMANCE: bool = false;
+
     /// How many ticks are in a second.
     pub const TICK_RATE: i32 = 30;
     pub const MS_PER_TICK: u64 = 1000 / (TICK_RATE as u64);
 
-    pub const DEFAULT_IP: &str = "127.0.0.1";
+    pub const DEFAULT_IP: &str = "0.0.0.0";
     pub const MASTER_PORT: u16 = 6256;
     pub const CLUSTER_PORT: u16 = 6257;
 

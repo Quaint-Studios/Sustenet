@@ -1,23 +1,18 @@
-use sustenet_shared as shared;
+// use sustenet_master::MasterServer;
 
-use sustenet_master::{ LOGGER, start_with_config };
-
-use tokio::select;
-
-use shared::utils;
-
-pub mod security;
-
-#[tokio::main]
-async fn main() {
-    let mut shutdown_rx = utils::shutdown_channel().expect("Error creating shutdown channel.");
-
-    select! {
-        _ = shutdown_rx.recv() => {
-            LOGGER.warning("Shutting down...");
-        }
-        _ = start_with_config() => {}
-    }
-
-    LOGGER.success("The Master Server has been shut down.");
+fn main() {
+    sustenet_master::tests::test_tcplistener::test_create_connections();
 }
+
+// #[tokio::main]
+// async fn main() {
+//     let mut master = MasterServer::new_from_config().await.unwrap();
+
+//     // Wait for the shutdown signal or start the server
+//     tokio::select! {
+//         _ = tokio::signal::ctrl_c() => {
+//             println!("Shutting down...");
+//         },
+//         _ = master.start() => println!("Master server started.")
+//     }
+// }

@@ -12,7 +12,7 @@ homepage.workspace = true
 workspace = true
 
 [dependencies]
-lazy_static.workspace = true
+bytes.workspace = true
 sustenet-shared.workspace = true
 tokio = { workspace = true, features = [
 	# "socket2",
