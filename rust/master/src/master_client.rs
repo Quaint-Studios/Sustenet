@@ -153,10 +153,12 @@ impl MasterClient {
     }
 
     /// An external method to allow the master server to send messages to the client.
-    pub async fn send(&self, bytes: Bytes) -> Result<(), SendError<Bytes>> {
+    pub async fn send(&self, bytes: Bytes) -> io::Result<()> {
         if let Err(e) = self.sender.send(bytes).await {
             LOGGER.error(&format!("Failed to send message to client: {e}"));
-            return Err(e);
+            return Err(
+                Error::new(ErrorKind::Other, format!("Failed to send message to client: {e}"))
+            );
         }
         Ok(())
     }

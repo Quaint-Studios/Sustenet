@@ -176,21 +176,10 @@ impl MasterServer {
         Ok(())
     }
 
-    /// Sends a message to a specific client.
-    pub async fn send(client: &MasterClient, bytes: Bytes) -> io::Result<()> {
-        if let Err(e) = client.send(bytes).await {
-            LOGGER.error(&format!("Failed to send message to client: {e}"));
-            return Err(
-                Error::new(ErrorKind::Other, format!("Failed to send message to client: {e}"))
-            );
-        }
-        Ok(())
-    }
-
     /// Sends a message to a specific client ID.
     pub async fn send_to(&self, id: &u64, bytes: Bytes) -> io::Result<()> {
         if let Some(client) = self.connections.get(id) {
-            Self::send(&client, bytes).await?;
+            client.send(bytes).await?;
         } else {
             LOGGER.warning(&format!("Client {id} not found"));
             return Err(Error::new(std::io::ErrorKind::NotFound, format!("Client {id} not found")));
@@ -201,7 +190,7 @@ impl MasterServer {
     /// Sends a message to all connections.
     pub async fn send_to_all(&self, bytes: Bytes) -> io::Result<()> {
         for client in self.connections.values() {
-            Self::send(client, bytes.clone()).await?;
+            client.send(bytes.clone()).await?;
         }
         Ok(())
     }
