@@ -1,0 +1,30 @@
+[package]
+name = "sustenet-tests"
+version.workspace = true
+edition.workspace = true
+publish = false
+description = "Sustenet tests."
+
+license.workspace = true
+authors.workspace = true
+homepage.workspace = true
+
+[lints]
+workspace = true
+
+[features]
+ignored_tests = []
+
+[dependencies]
+dashmap.workspace = true
+sustenet-master.workspace = true
+sustenet-shared.workspace = true
+tokio = { workspace = true, features = [
+	# "socket2",
+	"macros",
+	"rt-multi-thread",
+	"net",
+	# "sync",
+	"io-util",
+	"time",
+] }

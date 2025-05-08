@@ -3,7 +3,7 @@ mod tests {
     use sustenet_shared::utils::constants;
     use tokio::io::AsyncWriteExt;
 
-    use crate::MasterServer;
+    use sustenet_master::MasterServer;
 
     const MAX_CONNS: usize = 10_000;
 

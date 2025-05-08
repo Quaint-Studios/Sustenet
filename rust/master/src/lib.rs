@@ -1,5 +1,3 @@
-pub mod tests;
-
 pub mod master;
 pub mod master_client;
 pub mod security;

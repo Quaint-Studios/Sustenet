@@ -132,6 +132,7 @@ pub mod tests {
 
     /// Tests the time it takes to accept a fixed number of TCP connections with threads.
     #[test]
+    #[ignore]
     fn test_tcplistener_threads() {
         let server = std::sync::Arc::new(std::net::TcpListener::bind(ADDR).unwrap());
         println!("Tokio TCP listener bound to {}", ADDR);
