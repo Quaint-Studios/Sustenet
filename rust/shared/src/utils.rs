@@ -13,9 +13,15 @@ pub mod constants {
     pub const TICK_RATE: i32 = 30;
     pub const MS_PER_TICK: u64 = 1000 / (TICK_RATE as u64);
 
+    /// Default IP for binding the server.
     pub const DEFAULT_IP: &str = "0.0.0.0";
     pub const MASTER_PORT: u16 = 6256;
     pub const CLUSTER_PORT: u16 = 6257;
+
+    /// Optional. If it's used, this domain's pub key will be used
+    /// to encrypt data between the cluster and client for one-way
+    /// communication.
+    pub const DOMAIN_PUB_KEY: &str = "https://site-cdn.playreia.com/game/pubkey.pub";
 
     pub const TERMINAL_BG_GRAY: &str = "\x1b[47m";
     pub const TERMINAL_DEFAULT: &str = "\x1b[39m";

@@ -7,11 +7,11 @@ use bytes::Bytes;
 use tokio::io;
 use tokio::io::{ AsyncReadExt, AsyncWriteExt };
 use tokio::net::TcpStream;
-use tokio::sync::broadcast;
 use tokio::sync::mpsc;
 use tokio::sync::mpsc::error::SendError;
 
 use crate::master::{ LOGGER, MasterEvent };
+use crate::security;
 
 /// Handles connections that clients and cluster servers establish with the
 /// master server.
@@ -23,7 +23,7 @@ impl MasterClient {
     pub async fn new(
         id: u64,
         stream: TcpStream,
-        event_tx: broadcast::Sender<MasterEvent>
+        event_tx: mpsc::Sender<MasterEvent>
     ) -> io::Result<Self> {
         let (sender, receiver) = mpsc::channel::<Bytes>(16);
         let connection = Self { sender };
@@ -56,7 +56,7 @@ impl MasterClient {
         mut stream: TcpStream,
         sender: mpsc::Sender<Bytes>,
         mut receiver: mpsc::Receiver<Bytes>,
-        event_tx: broadcast::Sender<MasterEvent>
+        event_tx: mpsc::Sender<MasterEvent>
     ) -> io::Result<()> {
         tokio::spawn(async move {
             let (reader, mut writer) = stream.split();
@@ -95,7 +95,7 @@ impl MasterClient {
                         Ok(command) => {
                             LOGGER.debug(&format!("Received command: {command}"));
 
-                            Self::handle_command(command, &sender, &mut reader, &mut writer, &event_tx);
+                            Self::handle_command(command, id, &sender, &mut reader, &mut writer, &event_tx).await;
 
                             // Notify listeners about the received message.
                             // TODO: Should we? I'm leaning more towards not notifying about commands.
@@ -152,6 +152,14 @@ impl MasterClient {
         Ok(())
     }
 
+    pub async fn write(writer: &mut tokio::net::tcp::WriteHalf<'_>, bytes: Bytes) -> io::Result<()> {
+        if let Err(e) = writer.write_all(&bytes).await {
+            LOGGER.error(&format!("Failed to write to stream: {e}"));
+            return Err(Error::new(ErrorKind::Other, format!("Failed to write to stream: {e}")));
+        }
+        Ok(())
+    }
+
     /// An external method to allow the master server to send messages to the client.
     pub async fn send(&self, bytes: Bytes) -> io::Result<()> {
         if let Err(e) = self.sender.send(bytes).await {
@@ -165,7 +173,7 @@ impl MasterClient {
 
     async fn handle_shutdown(
         mut writer: tokio::net::tcp::WriteHalf<'_>,
-        event_tx: broadcast::Sender<MasterEvent>,
+        event_tx: mpsc::Sender<MasterEvent>,
         id: u64
     ) {
         if let Err(e) = writer.shutdown().await {
@@ -176,12 +184,13 @@ impl MasterClient {
         let _ = event_tx.send(MasterEvent::Disconnected(id));
     }
 
-    fn handle_command(
+    async fn handle_command(
         command: u8,
+        id: u64,
         _sender: &mpsc::Sender<Bytes>,
-        _reader: &mut io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
-        _writer: &mut tokio::net::tcp::WriteHalf<'_>,
-        event_tx: &broadcast::Sender<MasterEvent>
+        reader: &mut io::BufReader<tokio::net::tcp::ReadHalf<'_>>,
+        writer: &mut tokio::net::tcp::WriteHalf<'_>,
+        event_tx: &mpsc::Sender<MasterEvent>
     ) {
         // TODO: Handle commands.
         // Handle the command received from the client.
@@ -204,7 +213,62 @@ impl MasterClient {
             }
 
             x if x == (ClusterSetup::Init as u8) => {
-                LOGGER.info("Handling Cluster Setup Init");
+                // Get len of key name.
+                let len = (match reader.read_u8().await {
+                    Ok(len) => len,
+                    Err(e) => {
+                        LOGGER.error(&format!("Failed to read cluster name length: {:?}", e));
+                        return;
+                    }
+                }) as usize;
+
+                // Read key name.
+                let mut key_name = vec![0u8; len];
+                if let Err(e) = reader.read_exact(&mut key_name).await {
+                    LOGGER.error(&format!("Failed to read cluster name to String: {:?}", e));
+                    return;
+                };
+
+                // Load the key.
+                let key_name = match String::from_utf8(key_name) {
+                    Ok(key_name) => key_name,
+                    Err(e) => {
+                        LOGGER.error(&format!("Failed to read cluster name to String: {:?}", e));
+                        return;
+                    }
+                };
+                let key = match security::AES_KEYS.get(&key_name) {
+                    Some(key) => key,
+                    None => {
+                        LOGGER.error(&format!("Key {key_name} doesn't exist."));
+                        return;
+                    }
+                };
+
+                // Generate the secret.
+                let mut data = vec![ClusterSetup::Init as u8];
+                let passphrase = match security::generate_passphrase() {
+                    Ok(passphrase) => passphrase,
+                    Err(e) => {
+                        LOGGER.error(&format!("Failed to generate passphrase: {:?}", e));
+                        return;
+                    }
+                };
+                let encrypted_passphrase = sustenet_shared::security::aes::encrypt(&passphrase, key);
+                data.push(encrypted_passphrase.len() as u8);
+                data.extend_from_slice(&encrypted_passphrase);
+
+                // Tell the MasterServer to store passphrase for this ID.
+                if let Err(e) = event_tx.send(MasterEvent::ClusterInit(id, passphrase)).await {
+                    LOGGER.error(&format!("Failed to send passphrase: {:?}", e));
+                    return;
+                }
+
+                // Send the encrypted passphrase to the client.
+                if let Err(e) = writer.write_all(&data).await {
+                    LOGGER.error(&format!("Failed to send passphrase: {:?}", e));
+                    return;
+                }
             }
             x if x == (ClusterSetup::AnswerSecret as u8) => {
                 LOGGER.info("Handling Cluster Setup Answer Secret");
