@@ -14,6 +14,7 @@ workspace = true
 [dependencies]
 aes.workspace = true
 bytes.workspace = true
+dashmap.workspace = true
 public-ip.workspace = true
 sustenet-shared.workspace = true
 tokio = { workspace = true, features = [

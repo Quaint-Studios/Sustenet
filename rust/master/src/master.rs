@@ -6,7 +6,6 @@ use sustenet_shared::logging::{ LogType, Logger };
 use sustenet_shared::lselect;
 use sustenet_shared::network::ClusterInfo;
 use sustenet_shared::packets::Diagnostics;
-use sustenet_shared::utils::constants::DEFAULT_IP;
 
 use std::collections::HashMap;
 use std::io::Error;
@@ -27,6 +26,7 @@ pub enum MasterEvent {
     Connected(u64),
     /// When a connection is closed with a client or server.
     Disconnected(u64),
+
     /// When a cluster server is initialized with a passphrase.
     ClusterInit(u64, [u8; 20]),
     /// When a cluster server answer the passphrase correctly.
@@ -34,6 +34,7 @@ pub enum MasterEvent {
     /// When a cluster server fails to register with the master server.
     /// This is usually due to a wrong passphrase. But it can also be due to a timeout.
     ClusterRegistrationFailed(u64),
+    
     DiagnosticsReceived(Diagnostics, Bytes),
     Shutdown,
     Error(String),
@@ -42,15 +43,16 @@ pub enum MasterEvent {
 /// Handles connections and interactions with Cluster Servers and Clients.
 pub struct MasterServer {
     max_connections: u32,
+    bind: String,
     port: u16,
 
     // sender: mpsc::Sender<Bytes>,
     event_tx: mpsc::Sender<MasterEvent>,
     event_rx: mpsc::Receiver<MasterEvent>,
 
-    pub(crate) connections: HashMap<u64, MasterClient>,
-    pub(crate) cluster_servers: HashMap<u64, ClusterInfo>,
-    pub(crate) cluster_passphrases: HashMap<u64, [u8; 20]>,
+    connections: HashMap<u64, MasterClient>,
+    cluster_servers: HashMap<u64, ClusterInfo>,
+    cluster_passphrases: HashMap<u64, [u8; 20]>,
     next_id: u64,
 }
 
@@ -60,6 +62,7 @@ impl MasterServer {
 
         Ok(Self {
             max_connections: settings.max_connections,
+            bind: settings.bind,
             port: settings.port,
 
             event_tx,
@@ -86,7 +89,7 @@ impl MasterServer {
     ///
     pub async fn start(&mut self) -> io::Result<()> {
         // Create Listener
-        let addr = format!("{}:{}", DEFAULT_IP, self.port);
+        let addr = format!("{}:{}", self.bind, self.port);
         let listener = match TcpListener::bind(&addr).await {
             Ok(l) => {
                 LOGGER.success(&format!("Master server started on {addr}"));

@@ -11,7 +11,7 @@ mod tests {
     #[tokio::test]
 	#[ignore]
     async fn test_without_threads() {
-        let mut server = MasterServer::new().await.unwrap();
+        let mut server = MasterServer::new_from_config().await.unwrap();
         tokio::spawn(async move {
             server.start().await.unwrap();
         });
@@ -38,7 +38,7 @@ mod tests {
     #[tokio::test]
 	#[ignore]
     async fn test_with_threads() {
-        let mut server = MasterServer::new().await.unwrap();
+        let mut server = MasterServer::new_from_config().await.unwrap();
         tokio::spawn(async move {
             server.start().await.unwrap();
         });

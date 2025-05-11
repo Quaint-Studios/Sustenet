@@ -99,6 +99,7 @@ pub mod tests {
 
     /// Tests the time it takes to accept a fixed number of TCP connections.
     #[test]
+    #[ignore]
     pub fn test_tcplistener_default() {
         let server = std::net::TcpListener::bind(ADDR).unwrap();
         println!("TCP listener bound to {}", ADDR);

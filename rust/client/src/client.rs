@@ -55,16 +55,16 @@ impl Client {
     /// Attempts to connect to a server at the specified address and port and returns a `ClientHandle`.
     pub async fn connect(address: &str, port: u16) -> io::Result<Self> {
         let addr = format!("{}:{}", address, port);
-        LOGGER.info(&format!("Connecting to {addr}...")).await;
+        LOGGER.info(&format!("Connecting to {addr}..."));
 
         // Establish a connection to the server.
         let mut stream = match TcpStream::connect(&addr).await {
             Ok(s) => {
-                LOGGER.success(&format!("Connected to {addr}")).await;
+                LOGGER.success(&format!("Connected to {addr}"));
                 s
             }
             Err(e) => {
-                LOGGER.error(&format!("Failed to connect to {addr}")).await;
+                LOGGER.error(&format!("Failed to connect to {addr}"));
                 return Err(Error::new(e.kind(), format!("Failed to connect to ({addr}): {e}")));
             }
         };
@@ -85,22 +85,22 @@ impl Client {
                     match msg {
                         Some(msg) => {
                             if msg.is_empty() {
-                                LOGGER.warning("Received empty message, shutting down client").await;
+                                LOGGER.warning("Received empty message, shutting down client");
                                 Self::handle_shutdown(writer, event_tx_clone).await;
                                 break;
                             }
 
-                            LOGGER.debug(&format!("Sending message: {:?}", msg)).await;
+                            LOGGER.debug(&format!("Sending message: {:?}", msg));
                             if let Err(e) = writer.write_all(&msg).await {
                                 let msg = format!("Failed to send message to server: {e}");
-                                LOGGER.error(&msg).await;
+                                LOGGER.error(&msg);
                                 let _ = event_tx_clone.send(ClientEvent::Error(msg));
                             } else {
                                 let _ = event_tx_clone.send(ClientEvent::MessageSent(msg));
                             }
                         },
                         None => {
-                            LOGGER.warning("Connection closed").await;
+                            LOGGER.warning("Connection closed");
                             Self::handle_shutdown(writer, event_tx_clone).await;
                             break;
                         }
@@ -109,7 +109,7 @@ impl Client {
                 command = reader.read_u8() => {
                     match command {
                         Ok(command) => {
-                            LOGGER.debug(&format!("Received command: {command}")).await;
+                            LOGGER.debug(&format!("Received command: {command}"));
 
                             Self::handle_command(command, &sender_clone, &mut reader, &mut writer, &event_tx_clone).await;
 
@@ -118,7 +118,7 @@ impl Client {
                         },
                         Err(e) => {
                             let msg = format!("Failed to read command from server: {e}");
-                            LOGGER.error(&msg).await;
+                            LOGGER.error(&msg);
                             let _ = event_tx_clone.send(ClientEvent::Error(msg));
                         }
                     }
@@ -143,7 +143,7 @@ impl Client {
     ) {
         if let Err(e) = writer.shutdown().await {
             let msg = format!("Failed to shutdown writer: {e}");
-            LOGGER.error(&msg).await;
+            LOGGER.error(&msg);
             let _ = event_tx_clone.send(ClientEvent::Error(msg));
         }
         let _ = event_tx_clone.send(ClientEvent::Disconnected);
@@ -227,7 +227,7 @@ impl Client {
 
     async fn handle_extra_command(command: u8, event_tx: &broadcast::Sender<ClientEvent>) {
         let msg = format!("Unknown command received: {command}");
-        LOGGER.error(&msg).await;
+        LOGGER.error(&msg);
         let _ = event_tx.send(ClientEvent::Error(msg));
     }
 

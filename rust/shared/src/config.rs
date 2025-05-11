@@ -1,5 +1,3 @@
-use config::{ Config, File, FileFormat::Toml };
-
 use crate::utils::constants::{ DEFAULT_IP, DOMAIN_PUB_KEY };
 
 /// Creates a new Config.toml file with default values if it doesn't exist.
@@ -48,12 +46,14 @@ pub mod master {
 
     use crate::utils::constants::{ DEFAULT_IP, MASTER_PORT };
 
+    /// The settings for a master server.
     pub struct Settings {
         pub max_connections: u32,
         pub port: u16,
         pub bind: String,
     }
 
+    /// Reads the Master configuration from the Config.toml file.
     pub fn read() -> Settings {
         super::init().expect("Failed to initialize the configuration file.");
         let settings = Config::builder()
@@ -81,6 +81,7 @@ pub mod cluster {
 
     use crate::utils::constants::{ CLUSTER_PORT, DEFAULT_IP, MASTER_PORT };
 
+    /// The settings for a cluster server.
     pub struct Settings {
         pub name: String,
 
@@ -95,6 +96,7 @@ pub mod cluster {
         pub domain_pub_key: Option<String>,
     }
 
+    /// Reads the Cluster configuration from the Config.toml file.
     pub fn read() -> Settings {
         super::init().expect("Failed to initialize the configuration file.");
         let settings = Config::builder()

@@ -2,6 +2,7 @@
 
 use std::{ future::Future, pin::Pin };
 
+use bytes::Bytes;
 use tokio::{ io::BufReader, net::tcp::ReadHalf, sync::mpsc::Sender };
 
 pub mod config;
@@ -14,15 +15,15 @@ pub mod security;
 
 pub mod macros;
 
-pub type SenderBox = Sender<Box<[u8]>>;
+pub type SenderBytes = Sender<Bytes>;
 pub type PluginPin<'plug> = Pin<Box<dyn Future<Output = ()> + Send + 'plug>>;
 
 pub trait ServerPlugin: Send + Sync {
-    fn set_sender(&self, tx: SenderBox);
+    fn set_sender(&self, tx: SenderBytes);
 
     fn receive<'plug>(
         &self,
-        tx: SenderBox,
+        tx: SenderBytes,
         command: u8,
         reader: &'plug mut BufReader<ReadHalf<'_>>
     ) -> PluginPin<'plug>;
@@ -32,18 +33,11 @@ pub trait ServerPlugin: Send + Sync {
 }
 
 pub trait ClientPlugin: Send + Sync {
-    fn set_sender(&self, tx: SenderBox);
-
-    fn receive_master<'plug>(
+    fn set_sender(&self, tx: SenderBytes);
+    
+    fn receive<'plug>(
         &self,
-        tx: SenderBox,
-        command: u8,
-        reader: &'plug mut BufReader<ReadHalf<'_>>
-    ) -> PluginPin<'plug>;
-
-    fn receive_cluster<'plug>(
-        &self,
-        tx: SenderBox,
+        tx: SenderBytes,
         command: u8,
         reader: &'plug mut BufReader<ReadHalf<'_>>
     ) -> PluginPin<'plug>;

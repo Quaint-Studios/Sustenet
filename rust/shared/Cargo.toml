@@ -17,5 +17,6 @@ perf = []
 [dependencies]
 aes-gcm.workspace = true
 base64.workspace = true
+bytes.workspace = true
 config.workspace = true
 tokio = { workspace = true, features = ["rt", "signal", "sync", "io-util", "net"] }
