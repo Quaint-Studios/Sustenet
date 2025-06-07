@@ -1,5 +1,11 @@
 //! The master serve acts as a load balancer.
+//!
 //! When a client connects to it, it will redirect them to a registered cluster.
+//!
+//! The focus for the Master Server is to accept connections fast. So it should
+//! stray away from doing too much work and it should distribute users to other
+//! servers as fast as possible.
+
 use crate::master_client::MasterClient;
 use sustenet_shared::config::master::{ Settings, read };
 use sustenet_shared::logging::{ LogType, Logger };
