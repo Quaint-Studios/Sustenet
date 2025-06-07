@@ -14,15 +14,42 @@ pub enum Messaging {
 #[repr(u8)]
 pub enum Connection {
     /// The client is requesting to connect to the server.
-    /// 
+    ///
     /// 1. From Client to Server: CMD + Len&VersionNumber
-    /// 
+    ///
     /// TODO: Run the check version function.
     Connect = 240,
     /// The client is disconnecting from the server.
+    /// This can be sent with a DisconnectReason but doesn't have to.
     Disconnect,
     /// Authenticate the client with the server.
     Authenticate,
+    /// Requests a list of clusters from the server.
+    /// 1. From Client to Server: CMD
+    /// 2. From Server to Client: CMD + ListVersionNumber + HashMapLen + ID + Len&Name + IP + Port + Max Connections + Start Time
+    RequestClusters,
+    /// Sends a list of clusters to the client but this time its ID + Player count.
+    /// We do this because the name, IP, port, and other information is generally
+    /// static.
+    /// We can send prepend a version number at the start of the packet
+    /// to ensure the client is up to date. It increments everytime a
+    /// major change is made to the cluster server list. Like when a
+    /// new cluster is added, removed, or updated.
+    /// 1. From Server to Client: CMD + VersionNumber + ID + PlayerCount
+    /// If the version number doesn't match, then RequestClusters is sent on the next request.
+    RefreshClusters,
+}
+/// These are
+#[repr(u8)]
+pub enum DisconnectReason {
+    /// The client disconnected gracefully.
+    Graceful,
+    /// The server is full.
+    Full,
+    /// Server is shutting down.
+    Shutdown,
+    /// The client disconnected due to an error.
+    Error,
 }
 
 #[repr(u8)]
@@ -32,18 +59,18 @@ pub enum ClusterSetup {
     /// If the key doesn't exist, the server will do nothing but
     /// stay silent. If it does exist, it will send a generated
     /// passphrase that's encrypted with AES.
-    /// 
+    ///
     /// 1. From Cluster to Master: CMD + Len&VersionNumber + Len&Key Name
     /// 2. From Master to Cluster: CMD + Encrypted Passphrase
     /// TODO: Then you need to temporarity store them in a DashMap outside of clusters.
-    /// 
+    ///
     /// If the key doesn't exist, do nothing.
     Init = 245,
     /// When they send the decrypted key back to the Master Server.
-    /// 
+    ///
     /// 1. From Cluster to Master: CMD + Decrypted Passphrase + IP + Port + Max connections + Len&Name
     /// 2. From Master to Cluster: CMD
-    /// 
+    ///
     /// If it fails, say nothing.
     AnswerSecret,
 }
@@ -58,6 +85,8 @@ pub enum Diagnostics {
     CheckServerUptime,
     /// Requests information about how many players are connected to a server.
     CheckServerPlayerCount,
+    /// Requests information about all players across all servers.
+    CheckTotalPlayerCount,
 }
 
 #[cfg(test)]
@@ -80,7 +109,7 @@ pub mod tests {
         use std::collections::HashSet;
 
         macro_rules! enum_values {
-            ($enum:ty, [$( $variant:path ),* $(,)?]) => {
+            ($enum:ty, [$($variant:path),* $(,)?]) => {
                 vec![$($variant as u8),*]
             };
         }
@@ -96,15 +125,15 @@ pub mod tests {
                 Connection::Connect,
                 Connection::Disconnect,
                 Connection::Authenticate,
+                Connection::RequestClusters,
+                Connection::RefreshClusters,
             ]),
-            enum_values!(ClusterSetup, [
-                ClusterSetup::Init,
-                ClusterSetup::AnswerSecret,
-            ]),
+            enum_values!(ClusterSetup, [ClusterSetup::Init, ClusterSetup::AnswerSecret]),
             enum_values!(Diagnostics, [
                 Diagnostics::CheckServerType,
                 Diagnostics::CheckServerUptime,
                 Diagnostics::CheckServerPlayerCount,
+                Diagnostics::CheckTotalPlayerCount,
             ]),
         ].concat();
 
@@ -112,7 +141,6 @@ pub mod tests {
         for val in all_enums {
             assert!(set.insert(val), "Duplicate value found: {val}");
         }
-
     }
 }
 
