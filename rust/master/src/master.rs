@@ -129,8 +129,6 @@ impl MasterServer {
         Ok(())
     }
 
-    /// TODO
-    // async fn tick() {}
     pub async fn handle_events(&mut self, event: MasterEvent) -> io::Result<bool> {
         match event {
             MasterEvent::Connected(id) => {

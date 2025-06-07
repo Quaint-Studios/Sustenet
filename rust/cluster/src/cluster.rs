@@ -141,4 +141,10 @@ impl<P: ServerPlugin + Send + Sync> ClusterServer<P> {
             self.connections.insert(id, connection);
         }
     }
+
+    // TODO: Add a tick
+    // async fn tick(&mut self) -> io::Result<()> {
+    //     LOGGER.debug("Ticking cluster server...");
+    //     Ok(())
+    // }
 }
