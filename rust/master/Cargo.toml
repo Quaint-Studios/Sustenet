@@ -18,6 +18,7 @@ ignored_tests = []
 bytes.workspace = true
 dashmap.workspace = true
 getrandom.workspace = true
+num_cpus.workspace = true
 sustenet-shared.workspace = true
 tokio = { workspace = true, features = [
 	# "socket2",
