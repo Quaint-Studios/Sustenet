@@ -19,6 +19,7 @@ use std::net::SocketAddr;
 use std::sync::LazyLock;
 
 use bytes::Bytes;
+use dashmap::DashMap;
 use tokio::io;
 use tokio::net::{ TcpListener, TcpStream };
 use tokio::sync::mpsc;
@@ -41,10 +42,13 @@ pub enum MasterEvent {
     /// This is usually due to a wrong passphrase. But it can also be due to a timeout.
     ClusterRegistrationFailed(u64),
     
+
     DiagnosticsReceived(Diagnostics, Bytes),
     Shutdown,
     Error(String),
 }
+
+pub type SharedConnections = Arc<DashMap<u64, MasterClient>>;
 
 /// Handles connections and interactions with Cluster Servers and Clients.
 pub struct MasterServer {
@@ -57,6 +61,7 @@ pub struct MasterServer {
     event_rx: mpsc::Receiver<MasterEvent>,
 
     connections: HashMap<u64, MasterClient>,
+    connections: SharedConnections,
     cluster_servers: HashMap<u64, ClusterInfo>,
     cluster_passphrases: HashMap<u64, [u8; 20]>,
     next_id: u64,
@@ -75,6 +80,7 @@ impl MasterServer {
             event_rx,
 
             connections: HashMap::new(),
+            connections: Arc::new(DashMap::new()),
             cluster_servers: HashMap::new(),
             cluster_passphrases: HashMap::new(),
             next_id: 0,
@@ -93,6 +99,7 @@ impl MasterServer {
     }
 
     ///
+    /// Starts the master server and begins listening for connections.
     pub async fn start(&mut self) -> io::Result<()> {
         // Create Listener
         let addr = format!("{}:{}", self.bind, self.port);
@@ -205,6 +212,8 @@ impl MasterServer {
     /// Sends a message to all connections.
     pub async fn send_to_all(&self, bytes: Bytes) -> io::Result<()> {
         for client in self.connections.values() {
+        for client in self.connections.iter() {
+            let client = client.value();
             client.send(bytes.clone()).await?;
         }
         Ok(())
@@ -230,9 +239,11 @@ impl MasterServer {
 
         // Close all connections for shutdown.
         for (id, client) in self.connections.drain() {
+        for (id, client) in self.connections.iter().enumerate() {
             if let Err(e) = client.close().await {
                 LOGGER.error(&format!("Failed to close connection #{id}: {e}"));
             }
+            self.connections.remove(&(id as u64));
         }
 
         LOGGER.cleanup();
