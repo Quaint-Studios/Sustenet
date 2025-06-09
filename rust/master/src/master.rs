@@ -16,13 +16,14 @@ use sustenet_shared::packets::Diagnostics;
 use std::collections::HashMap;
 use std::io::Error;
 use std::net::SocketAddr;
-use std::sync::LazyLock;
+use std::sync::{ Arc, LazyLock };
 
 use bytes::Bytes;
 use dashmap::DashMap;
-use tokio::io;
+use num_cpus;
 use tokio::net::{ TcpListener, TcpStream };
 use tokio::sync::mpsc;
+use tokio::{ io, join };
 
 /// Global logger for the master module.
 pub static LOGGER: LazyLock<Logger> = LazyLock::new(|| Logger::new(LogType::Master));
@@ -41,7 +42,6 @@ pub enum MasterEvent {
     /// When a cluster server fails to register with the master server.
     /// This is usually due to a wrong passphrase. But it can also be due to a timeout.
     ClusterRegistrationFailed(u64),
-    
 
     DiagnosticsReceived(Diagnostics, Bytes),
     Shutdown,
@@ -96,7 +96,6 @@ impl MasterServer {
         Self::new(settings).await
     }
 
-    ///
     /// Starts the master server and begins listening for connections.
     pub async fn start(&mut self) -> io::Result<()> {
         // Create Listener
@@ -207,7 +206,20 @@ impl MasterServer {
 
     /// Sends a message to all connections.
     pub async fn send_to_all(&self, bytes: Bytes) -> io::Result<()> {
-        for client in self.connections.values() {
+        // let mut handles = vec![];
+        // for i in 0..MAX_THREADS {
+        //     let map_clone = Arc::clone(&map);
+        //     let handle = thread::spawn(move || {
+        //         for j in (i * MAX_ITERS) / MAX_THREADS..((i + 1) * MAX_ITERS) / MAX_THREADS {
+        //             let _ = map_clone.get(&j);
+        //         }
+        //     });
+        //     handles.push(handle);
+        // }
+        // for handle in handles {
+        //     handle.join().unwrap();
+        // }
+
         for client in self.connections.iter() {
             let client = client.value();
             client.send(bytes.clone()).await?;
@@ -233,15 +245,22 @@ impl MasterServer {
             LOGGER.error(&format!("Failed to send shutdown event: {e}"));
         }
 
-        // Close all connections for shutdown.
-        for (id, client) in self.connections.drain() {
-        for (id, client) in self.connections.iter().enumerate() {
-            if let Err(e) = client.close().await {
-                LOGGER.error(&format!("Failed to close connection #{id}: {e}"));
-            }
-            self.connections.remove(&(id as u64));
-        }
+        // Clear all cluster connections and passphrases.
+        self.cluster_servers.clear();
+        self.cluster_passphrases.clear();
 
+        // Close all connections for shutdown.
+        let keys: Vec<u64> = self.connections
+            .iter()
+            .map(|entry| *entry.key())
+            .collect();
+        for id in keys {
+            if let Some((_, client)) = self.connections.remove(&id) {
+                if let Err(e) = client.close().await {
+                    LOGGER.error(&format!("Failed to close connection #{id}: {e}"));
+                }
+            }
+        }
         LOGGER.cleanup();
     }
 }
