@@ -60,7 +60,6 @@ pub struct MasterServer {
     event_tx: mpsc::Sender<MasterEvent>,
     event_rx: mpsc::Receiver<MasterEvent>,
 
-    connections: HashMap<u64, MasterClient>,
     connections: SharedConnections,
     cluster_servers: HashMap<u64, ClusterInfo>,
     cluster_passphrases: HashMap<u64, [u8; 20]>,
@@ -69,7 +68,7 @@ pub struct MasterServer {
 
 impl MasterServer {
     pub async fn new(settings: Settings) -> io::Result<Self> {
-        let (event_tx, event_rx) = mpsc::channel::<MasterEvent>(10000);
+        let (event_tx, event_rx) = mpsc::channel::<MasterEvent>(200_000);
 
         Ok(Self {
             max_connections: settings.max_connections,
@@ -79,7 +78,6 @@ impl MasterServer {
             event_tx,
             event_rx,
 
-            connections: HashMap::new(),
             connections: Arc::new(DashMap::new()),
             cluster_servers: HashMap::new(),
             cluster_passphrases: HashMap::new(),
