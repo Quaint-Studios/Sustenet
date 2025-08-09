@@ -1,0 +1,17 @@
+[master]
+max_connections = 0
+port = 0
+bind = "0.0.0.0" # This is the IP address to bind to.
+
+[cluster]
+name = "Cluster Server"
+
+max_connections = 0
+port = 0
+bind = "0.0.0.0" # This is the IP address to bind to.
+
+key_name = "cluster_key" # This is the name of the key that must exist BOTH on the cluster and the master.
+master_ip = "127.0.0.1" # This is the IP address of the master server.
+master_port = 0 # This is the port of the master server.
+
+domain_pub_key = "https://site-cdn.playreia.com/game/pubkey.pub" # Remove this if you want to use the server's bandwidth to send a key to a user directly.

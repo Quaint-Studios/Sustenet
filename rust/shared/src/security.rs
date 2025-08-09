@@ -25,7 +25,7 @@ pub mod aes {
     };
 
     pub fn create_keys_dir() -> std::io::Result<()> {
-        if std::fs::DirBuilder::new().recursive(true).create("keys").is_err() {
+        if std::fs::DirBuilder::new().recursive(true).create("data/keys").is_err() {
             return Err(
                 std::io::Error::new(
                     std::io::ErrorKind::Other,
@@ -42,13 +42,14 @@ pub mod aes {
     }
 
     pub fn save_key(name: &str, key: Key<Aes256Gcm>) -> std::io::Result<()> {
-        let mut file = File::create(format!("keys/{name}"))?;
+        create_keys_dir()?;
+        let mut file = File::create(format!("data/keys/{name}"))?;
         file.write_all(key.as_slice())?;
         Ok(())
     }
 
     pub fn load_key(name: &str) -> std::io::Result<Key<Aes256Gcm>> {
-        let mut file = match File::open(format!("keys/{name}")) {
+        let mut file = match File::open(format!("data/keys/{name}")) {
             Ok(file) => file,
             Err(_) => {
                 return Err(
@@ -83,7 +84,7 @@ pub mod aes {
     pub fn load_all_keys() -> std::io::Result<HashMap<String, Key<Aes256Gcm>>> {
         let mut keys = HashMap::new();
 
-        let entries = match std::fs::read_dir("keys") {
+        let entries = match std::fs::read_dir("data/keys") {
             Ok(entries) => entries,
             Err(_) => {
                 return Err(
@@ -142,7 +143,7 @@ pub mod tests {
     pub fn test_create_keys_dir() {
         match create_keys_dir() {
             Ok(_) =>
-                assert!(std::path::Path::new("keys").exists(), "Keys directory does not exist."),
+                assert!(std::path::Path::new("data/keys").exists(), "Keys directory does not exist."),
             Err(e) => {
                 panic!("Failed to create keys directory: {:?}", e);
             }
@@ -223,10 +224,6 @@ pub mod tests {
 
     #[test]
     pub fn test_load_all_keys() {
-        if let Err(e) = create_keys_dir() {
-            panic!("Failed to create keys directory: {:?}", e);
-        }
-
         match save_key("cluster_key_testrunner4", generate_key()) {
             Ok(_) => {}
             Err(e) => {
